@@ -27,7 +27,7 @@ public class MemChatJDBCDAO implements MemChatDAO_interface {
 	// memChatMemId memChatChatId memChatDate memChatContent memChatPic
 	private static final String INSERT = "INSERT INTO memChat (memChatChatId,memChatMemId, memChatDate, memChatContent, memChatPic) VALUES (?,?,?,?,?)";
 	private static final String UPDATE = "";
-	private static final String DELETE = "DELETE FROM memChat WHERE memChatChatId= ? AND memChatMemId = ? AND to_char(memChatDate,'yyyymmddhh24mmss') = to_char(?,'yyyymmddhh24mmss')";
+	private static final String DELETE = "DELETE FROM memChat WHERE memChatChatId= ? AND memChatMemId = ? AND memChatDate = ?";
 	
 	private static final String GET_ALL = "SELECT memChatChatId, memChatMemId, memChatDate, memChatContent, memChatPic FROM memChat ORDER BY memChatChatId";
 	private static final String GET_ONE = "SELECT memChatChatId, memChatMemId, memChatDate, memChatContent, memChatPic FROM memChat WHERE memChatChatId= ? AND memChatMemId = ? AND to_char(memChatDate,'yyyymmddhh24mmss') = to_char(?,'yyyymmddhh24mmss')";
@@ -212,16 +212,14 @@ public class MemChatJDBCDAO implements MemChatDAO_interface {
 //		dao.update(chatVO); // 再回放到DB中
 		
 		// 刪除 delete
-		// 有相依問題，要注意
 //		String aMemChatChatId = "10000001";
-//		String aMemChatMemId = "1000000001"; 
-//		GregorianCalendar myGCDate = new GregorianCalendar(2016, 9, 25, 15, 10, 23);
-//		Timestamp myTsp = new Timestamp(myGCDate.getTime().getTime());
+//		String aMemChatMemId = "10000002"; 
+//		Timestamp myTsp = new Timestamp(1475301780123L);
 //		dao.delete(aMemChatChatId, aMemChatMemId, myTsp);
 		
 		// 查詢全部:
-//		List<MemChatVO> memChatVOList = dao.getAll();
-//		printData(memChatVOList);
+		List<MemChatVO> memChatVOList = dao.getAll();
+		printData(memChatVOList);
 		
 		
 		// 透過PK查看一筆資料 :
@@ -234,10 +232,10 @@ public class MemChatJDBCDAO implements MemChatDAO_interface {
 //		printData(memChatVO);	
 		
 		// 透過MemChatChatId查看資料:
-		String memChatChatId = "10000001";
-		List<MemChatVO> memChatVOList = dao.findByMemChatChatId(memChatChatId);
-		printData(memChatVOList);		
-		System.out.println("new java.util.Date().getTime(): " + new java.util.Date().getTime());
+//		String memChatChatId = "10000001";
+//		List<MemChatVO> memChatVOList = dao.findByMemChatChatId(memChatChatId);
+//		printData(memChatVOList);		
+//		System.out.println("new java.util.Date().getTime(): " + new java.util.Date().getTime());
 				
 	}// end main
 	
