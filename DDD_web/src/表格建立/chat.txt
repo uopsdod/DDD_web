@@ -1,0 +1,636 @@
+--here222
+-- DROP的順序: 從最沒有被FK到的table開始
+-- 如何判斷: 連到table的數字是1的，就是被別的table FK的
+DROP TABLE memchat;
+DROP TABLE chat;
+DROP TABLE memrep;
+DROP TABLE ord;
+DROP TABLE room;
+DROP TABLE hotel;
+DROP TABLE mem;
+DROP TABLE emp;
+
+
+DROP SEQUENCE mem_seq;
+DROP SEQUENCE chat_seq;
+DROP SEQUENCE hotel_seq;
+DROP SEQUENCE ord_seq;
+DROP SEQUENCE emp_seq;
+DROP SEQUENCE room_seq;
+DROP SEQUENCE memrep_seq;
+
+
+CREATE TABLE mem(
+  memId VARCHAR2(10) NOT NULL,
+  CONSTRAINT mem_memId_pk PRIMARY KEY (memId)
+);
+--驗證用
+--SELECT * FROM user_constraints
+--WHERE table_name = 'MEM';
+
+CREATE SEQUENCE mem_seq
+INCREMENT BY 1
+START WITH 1000000001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+CREATE TABLE chat(
+  chatId VARCHAR2(8) NOT NULL,
+  chatName VARCHAR2(30),
+  CONSTRAINT chat_chatId_pk PRIMARY KEY (chatId)
+);
+--驗證用
+--SELECT * FROM user_constraints
+--WHERE table_name = 'CHAT';
+
+CREATE SEQUENCE chat_seq
+INCREMENT BY 1
+START WITH 10000001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+CREATE TABLE memChat(
+  memChatChatId VARCHAR2(8) NOT NULL,
+  memChatMemId VARCHAR2(10) NOT NULL,
+  memChatDate DATE,
+  memChatContent VARCHAR2(300),
+  memChatPic BLOB,
+  
+  CONSTRAINT memChat_memChatMemId_fk FOREIGN KEY (memChatMemId) REFERENCES mem(memId),
+  CONSTRAINT memChat_memChatChatId_fk FOREIGN KEY (memChatChatId) REFERENCES chat(chatId)
+);
+--驗證用
+--SELECT * FROM user_constraints
+--WHERE table_name = 'MEMCHAT';
+
+
+CREATE TABLE hotel(
+  hotelId VARCHAR2(5) NOT NULL,
+  CONSTRAINT hotel_hotelId_pk PRIMARY KEY (hotelId)
+);
+--驗證用
+--SELECT * FROM user_constraints
+--WHERE table_name = 'HOTEL';
+
+CREATE SEQUENCE hotel_seq
+INCREMENT BY 1
+START WITH 10001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+CREATE TABLE emp(
+  empId VARCHAR2(5) NOT NULL,
+  CONSTRAINT emp_empId_pk PRIMARY KEY (empId)
+);
+
+CREATE SEQUENCE emp_seq
+INCREMENT BY 1
+START WITH 10001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+CREATE TABLE room(
+  roomId VARCHAR2(7) NOT NULL,
+  roomHotelId VARCHAR2(5) NOT NULL,
+  CONSTRAINT room_roomId_pk PRIMARY KEY (roomId),
+  CONSTRAINT room_roomHotelId_fk FOREIGN KEY (roomHotelId) REFERENCES hotel(hotelId)
+);
+
+CREATE SEQUENCE room_seq
+INCREMENT BY 1
+START WITH 100001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+
+CREATE TABLE ord(
+  ordId VARCHAR2(10) NOT NULL,
+  ordMemId VARCHAR2(10) NOT NULL,
+  ordRoomId VARCHAR2(7) NOT NULL,
+  ordHotelId VARCHAR2(5) NOT NULL,
+  ORDPRICE           VARCHAR2(7),
+  ORDLIVEDATE        DATE,
+  ORDDATE            DATE,
+  ORDSTATUS          VARCHAR2(1),
+  ORDRATINGCONTENT   VARCHAR2(150),
+  ORDRATINGSTARNO    NUMBER(2),
+  ORDQRPIC           BLOB,
+  ORDMSGNO           VARCHAR2(4),
+  CONSTRAINT ord_ordId_pk PRIMARY KEY (ordId),
+  CONSTRAINT ord_ordMemId_fk FOREIGN KEY (ordMemId) REFERENCES mem(memId),
+  CONSTRAINT ord_ordRoomId_fk FOREIGN KEY (ordRoomId) REFERENCES room(roomId),
+  CONSTRAINT ord_ordHotelId_fk FOREIGN KEY (ordHotelId) REFERENCES hotel(hotelId)
+);
+--驗證用
+--SELECT * FROM user_constraints
+--WHERE table_name = 'ORD';
+
+CREATE SEQUENCE ord_seq
+INCREMENT BY 1
+START WITH 1001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+
+CREATE TABLE memrep( 
+  memrepId VARCHAR2(10) NOT NULL,
+  memrepOrdId VARCHAR2(10) NOT NULL,
+  memrepMemId VARCHAR2(10) NOT NULL,
+  memrepHotelId VARCHAR2(5) NOT NULL,
+  memrepEmpId VARCHAR2(8), --只有審核之後才會填入資料，因此可以是Null
+  memrepContent VARCHAR2(150),
+  memrepStatus VARCHAR2(1),
+  memrepDate DATE,
+  memrepReviewDate DATE,
+  
+  CONSTRAINT memrep_memrepId_pk PRIMARY KEY (memrepId),
+  CONSTRAINT memrep_memrepOrdId_fk FOREIGN KEY (memrepOrdId) REFERENCES ord(ordId),
+  CONSTRAINT memrep_memrepMemId_fk FOREIGN KEY (memrepMemId) REFERENCES mem(memId),  
+  CONSTRAINT memrep_memrepHotelId_fk FOREIGN KEY (memrepHotelId) REFERENCES hotel(hotelId),  
+  CONSTRAINT memrep_memrepEmpId_fk FOREIGN KEY (memrepEmpId) REFERENCES emp(empId)  
+);
+--驗證用
+--SELECT * FROM user_constraints
+--WHERE table_name = 'MEMREP';
+
+CREATE SEQUENCE memrep_seq
+INCREMENT BY 1
+START WITH 1000000001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+-- 開始新增很真的假資料
+--****** hotel ****** 
+-- 第一間hotel
+INSERT INTO hotel
+VALUES(hotel_seq.NEXTVAL);
+-- 第二間hotel
+INSERT INTO hotel
+VALUES(hotel_seq.NEXTVAL);
+
+--****** room ****** 
+-- 屬於第一間hotel的第一個房型
+INSERT INTO room
+VALUES(room_seq.NEXTVAL,
+      (select hotelid 
+       from (select rownum rnum, hotelid
+             from hotel
+             where rownum <= 1)
+       where rnum >= 1));
+-- 屬於第一間hotel的第二個房型
+INSERT INTO room
+VALUES(room_seq.NEXTVAL,
+      (select hotelid 
+       from (select rownum rnum, hotelid
+             from hotel
+             where rownum <= 1)
+       where rnum >= 1));
+-- 屬於第二間hotel的第一個房型
+INSERT INTO room
+VALUES(room_seq.NEXTVAL,
+      (select hotelid 
+       from (select rownum rnum, hotelid
+             from hotel
+             where rownum <= 2)
+       where rnum >= 2));
+-- 屬於第二間hotel的第二個房型
+INSERT INTO room
+VALUES(room_seq.NEXTVAL,
+      (select hotelid 
+       from (select rownum rnum, hotelid
+             from hotel
+             where rownum <= 2)
+       where rnum >= 2));
+-- 屬於第二間hotel的第三個房型
+INSERT INTO room
+VALUES(room_seq.NEXTVAL,
+      (select hotelid 
+       from (select rownum rnum, hotelid
+             from hotel
+             where rownum <= 2)
+       where rnum >= 2));
+
+--****** mem ******
+-- 第一個一般會員
+INSERT INTO mem
+VALUES(mem_seq.NEXTVAL);
+-- 第二個一般會員
+INSERT INTO mem
+VALUES(mem_seq.NEXTVAL);
+
+--****** ord ****** 
+-- 第一個會員，在昨天，訂了第一個房間(且附上此房間的旅館ID)
+INSERT INTO ord 
+VALUES ( to_char((sysdate-1),'yyyymm')||ord_seq.NEXTVAL ,
+         (select memid 
+          from (select rownum rnum, memid
+                from mem
+                where rownum <= 1)
+          where rnum >= 1),
+         (select roomId 
+          from (select rownum rnum, roomId
+                from room
+                where rownum <= 1)
+          where rnum >= 1),
+          (select roomHotelId 
+          from (select rownum rnum, roomId, roomHotelId
+                from room
+                where rownum <= 1)
+          where rnum >= 1),
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+          );
+ 
+-- 第一個會員，在今天，訂了第二個房間(且附上此房間的旅館ID)          
+INSERT INTO ord 
+VALUES ( to_char((sysdate),'yyyymm')||ord_seq.NEXTVAL ,
+         (select memid 
+          from (select rownum rnum, memid
+                from mem
+                where rownum <= 1)
+          where rnum >= 1),
+         (select roomId 
+          from (select rownum rnum, roomId
+                from room
+                where rownum <= 2)
+          where rnum >= 2),
+          (select roomHotelId 
+          from (select rownum rnum, roomId, roomHotelId
+                from room
+                where rownum <= 2)
+          where rnum >= 2),
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+          );          
+
+-- 第二個會員，在昨天，訂了第三個房間(且附上此房間的旅館ID)       
+INSERT INTO ord 
+VALUES ( to_char((sysdate-1),'yyyymm')||ord_seq.NEXTVAL ,
+         (select memid 
+          from (select rownum rnum, memid
+                from mem
+                where rownum <= 2)
+          where rnum >= 2),
+         (select roomId 
+          from (select rownum rnum, roomId
+                from room
+                where rownum <= 3)
+          where rnum >= 3),
+          (select roomHotelId 
+          from (select rownum rnum, roomId, roomHotelId
+                from room
+                where rownum <= 3)
+          where rnum >= 3),
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+          );            
+
+-- 第二個會員，在今天，訂了第五個房間(且附上此房間的旅館ID)  
+INSERT INTO ord 
+VALUES ( to_char((sysdate),'yyyymm')||ord_seq.NEXTVAL ,
+         (select memid 
+          from (select rownum rnum, memid
+                from mem
+                where rownum <= 2)
+          where rnum >= 2),
+         (select roomId 
+          from (select rownum rnum, roomId
+                from room
+                where rownum <= 5)
+          where rnum >= 5),
+          (select roomHotelId 
+          from (select rownum rnum, roomId, roomHotelId
+                from room
+                where rownum <= 5)
+          where rnum >= 5),
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+          );   
+
+--****** emp ****** 
+INSERT INTO emp
+VALUES (emp_seq.NEXTVAL);
+INSERT INTO emp
+VALUES (emp_seq.NEXTVAL);
+INSERT INTO emp
+VALUES (emp_seq.NEXTVAL);
+
+
+--****** memrep ****** 
+-- 此檢舉單根據第一個訂單提出(根據訂單，附上memId以及hotelId)，且尚未處理
+INSERT INTO memrep (memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus,memrepDate,memrepReviewDate  )
+VALUES ( memrep_seq.NEXTVAL,
+        (select ordid 
+          from (select rownum rnum, ordid
+                from ord
+                where rownum <= 1)
+          where rnum >= 1), 
+        (select ordmemid
+          from (select rownum rnum, ordid, ordmemid
+                from ord
+                where rownum <= 1)
+          where rnum >= 1),
+        (select ordhotelid
+          from (select rownum rnum, ordid, ordhotelid
+                from ord
+                where rownum <= 1)
+          where rnum >= 1),
+          null,
+          '此旅館的服務態度很差',
+          0, --0.未審核 1.已審核未通過 2.已審核已通過
+          sysdate, -- 檢舉單提出日
+          null
+          );
+-- 有空再補強: 增加check - 欄位: memrepEmpId, memrepStatus, memrepReviewDate 有連動關係
+
+-- 此檢舉單根據第三個訂單提出(根據訂單，附上memId以及hotelId)，且已由第一位員工處理，在隔天
+INSERT INTO memrep (memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus,memrepDate,memrepReviewDate  )
+VALUES ( memrep_seq.NEXTVAL,
+        (select ordid 
+          from (select rownum rnum, ordid
+                from ord
+                where rownum <= 3)
+          where rnum >= 3), 
+        (select ordmemid
+          from (select rownum rnum, ordid, ordmemid
+                from ord
+                where rownum <= 3)
+          where rnum >= 3),
+        (select ordhotelid
+          from (select rownum rnum, ordid, ordhotelid
+                from ord
+                where rownum <= 3)
+          where rnum >= 3),
+          (select empid
+          from (select rownum rnum, empid
+                from emp
+                where rownum <= 1)
+          where rnum >= 1), -- 第一位員工
+          '我到了旅館，他們卻要跟我說兩倍的價格，太可惡。',
+          2, --0.未審核 1.已審核未通過 2.已審核已通過
+          sysdate-1, --檢舉單提出日
+          sysdate --檢舉單審核日
+          );
+-- 有空再補強: 當審核狀態更改為2，要連動將一般會員的'黑名單狀態'作相對應更動          
+
+--****** chat ****** 
+INSERT INTO chat
+VALUES(chat_seq.NEXTVAL, null);
+
+--****** memchat ****** 
+--第一個會員跟第二個會員聊天，所開啟的聊天視窗為第一個聊天室
+--第一個會員說話
+DELETE FROM memchat;
+select * from memchat;
+
+INSERT INTO memchat
+VALUES((select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+       (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1),
+        sysdate-20/86400, --20s前
+        '你好，我也在找房間，要一起嗎',
+        null
+       );
+
+--第二個會員說話
+INSERT INTO memchat
+VALUES((select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+       (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2),
+        sysdate-19/86400, --19s前
+        '好啊，你也是自己出來自助旅行嗎?',
+        null
+       );
+
+--第一個會員說話
+INSERT INTO memchat
+VALUES((select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1),
+        sysdate-18/86400, --18s前
+        '哈我不是，我是被公司臨時叫到這出差',
+        null
+       );
+       
+--第二個會員說話
+INSERT INTO memchat
+VALUES((select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2),
+        sysdate-17/86400, --17s前
+        '好辛苦qq',
+        null
+       );       
+
+--第一個會員說話
+INSERT INTO memchat
+VALUES((select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1),
+        sysdate-16/86400, --16s前
+        '還好啦。不過還是滿羨慕你的，可以到處走來走去',
+        null
+       );       
+
+--第二個會員說話
+INSERT INTO memchat
+VALUES((select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2),
+        sysdate-15/86400, --15s前
+        '哈我也沒那麼幸運，這個假日可是我的特休',
+        null
+       );
+
+--第一個會員說話
+INSERT INTO memchat
+VALUES((select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1),
+        sysdate-14/86400, --14s前
+        '原來也是同道中人XD。我看到這間還不錯，雙人房899$，你看看。
+         http://tw.yahoo.com/',
+        null
+       ); 
+
+--第二個會員說話
+INSERT INTO memchat
+VALUES((select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2),
+        sysdate-13/86400, --13s前
+        '真的還不錯，我先加到我的願望清單。那你現在在哪裡?',
+        null
+       );       
+
+--第一個會員說話
+INSERT INTO memchat
+VALUES((select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1),
+        sysdate-12/86400, --12s前
+        '這個APP可以直接幫忙定位，你直接點"你在哪"按鈕就能看到了。',
+        null
+       ); 
+
+--第二個會員說話
+INSERT INTO memchat
+VALUES((select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2),
+        sysdate-11/86400, --11s前
+        '找到了，好像都離旅館不遠! 那我們等等直接到那間旅館會面吧。我叫小愛，穿紅色披肩和白色清衫',
+        null
+       );
+
+--第一個會員說話
+INSERT INTO memchat
+VALUES((select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1),
+        sysdate-10/86400, --10s前
+        '恩恩好。我叫大城，正統西裝男，那待回見了小愛。',
+        null
+       );
+       
+--如何使用
+--select * from memchat;
+--select * from memchat where memchatmemid = 1000000001; -- 找特定一個會員在所有會議室所說過的所有話
+--select * from memchat where memchatchatid = 10000001; -- 找特定一間會議室所有的對話
+--select * from memchat where memchatmemid = 1000000001 AND memchatchatid = 10000001; -- 找特定一間會議室中，特定一個會員所說過的所有話
+ 
+commit;
+--here222
+
+
+
+
+-- 備用工具指令
+-- 時間調整
+select to_char((sysdate-1),'yyyydd') from dual;
+select to_char(sysdate-20/1440,'yyyymmdd hh:mm:ss'), sysdate+1/24, sysdate +1/1440, sysdate + 1/86400 from dual;
+select * from hotel;
+select * from room;
+select * from mem;
+select * from ord;
+select * from emp;
+select * from memrep;
+select * from chat;
+select * from memchat;
+
+SELECT * FROM memChat;
+SELECT * FROM memChat WHERE memChatChatId = 10000001 AND memChatMemId = 1000000001 ;
+SELECT * FROM memChat WHERE memChatChatId = 10000001 AND memChatMemId = 1000000001 AND to_char(memChatDate,'yyyymmddhh24mmss') = '20161025031021';
+--SELECT * FROM memChat WHERE memChatChatId= ? AND memChatMemId = ? AND to_char(memChatDate,'yyyymmddhh24mmss') = to_char(?,'yyyymmddhh24mmss');
+
+select memChatMemId, memChatChatId, to_char(memChatDate,'yyyymmddhh24mmss') from memChat;
+select to_char(sysdate,'yyyymmddhhmmss') from dual;
+commit;
