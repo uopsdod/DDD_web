@@ -108,7 +108,7 @@ CREATE TABLE room(
 
 CREATE SEQUENCE room_seq
 INCREMENT BY 1
-START WITH 100001
+START WITH 1000001
 NOMAXVALUE
 NOCYCLE
 NOCACHE;
@@ -655,38 +655,3 @@ VALUES (101, 10000002);
 -- 會員1000000003都可以，所以沒有設定
  
 commit;
---here222
-
-
-
-
--- 備用工具指令
--- 時間調整
-select to_char((sysdate-1),'yyyydd') from dual;
-select to_char(sysdate-20/1440,'yyyymmdd hh:mm:ss'), sysdate+1/24, sysdate +1/1440, sysdate + 1/86400 from dual;
-select * from hotel;
-select * from room;
-select * from mem;
-select * from ord;
-select * from emp;
-select * from memrep;
-select * from chat;
-select * from memchat;
-select * from livecond;
-select * from memlivecond;
-
-select to_char(systimestamp,'DD-MON-YYYY HH24:MI:SSFF3') from dual;
-select systimestamp from dual;
-select systimestamp-86400 from dual;
-
-SELECT TO_TIMESTAMP ('2016-10-01 14:00:00.123', 'YYYY-MM-DD HH24:MI:SS.FF') FROM DUAL;
-select extract(day from(sys_extract_utc(systimestamp) - to_timestamp('1970-01-01', 'YYYY-MM-DD'))) * 86400000 from dual;
-select extract(day from(sys_extract_utc(systimestamp))) from dual;
-select extract(day from(sys_extract_utc(systimestamp) - to_timestamp('1970-01-01', 'YYYY-MM-DD'))) * 86400000 
-            + to_number(to_char(sys_extract_utc(systimestamp), 'SSSSSFF3')) AS msFrom1970 from dual;
-
-
-SELECT * FROM memChat;
-SELECT * FROM memChat WHERE memChatChatId = 10000001 AND memChatMemId = 1000000001 ;
-SELECT * FROM memChat WHERE memChatChatId = 10000001 AND memChatMemId = 1000000001 AND to_char(memChatDate,'yyyymmddhh24mmss') = '20161025031021';
---SELECT * FROM memChat WHERE memChatChatId= ? AND memChatMemId = ? AND to_char(memChatDate,'yyyymmddhh24mmss') = to_char(?,'yyyymmddhh24mmss');
