@@ -17,4 +17,5 @@ public class MemLiveCondVO implements Serializable {
 	public void setMemLiveCondMemId(String aMemLiveCondMemId) {
 		this.memLiveCondMemId = aMemLiveCondMemId;
 	}
+	//git使用示範-做一些修改
 }
