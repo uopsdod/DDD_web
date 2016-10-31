@@ -6,8 +6,8 @@ import java.sql.*;
 public class OrdJDBCDAO implements OrdDAO_interface {
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "ddd";
-	String passwd = "1111";
+	String userid = "scott";
+	String passwd = "tiger";
 	
 	/*
 	 * = INSERT_STMT 對應 =
