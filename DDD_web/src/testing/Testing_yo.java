@@ -28,8 +28,8 @@ public class Testing_yo extends HttpServlet {
     res.setContentType("text/html; charset=Big5");
     PrintWriter out = res.getWriter();
     
-	MemRepDAO_interface dao1 = new MemRepJNDIDAO();
-	out.println(dao1.findByPrimaryKey("1000000001").getMemRepContent()+"<br>");
+//	MemRepDAO_interface dao1 = new MemRepJNDIDAO();
+//	out.println(dao1.findByPrimaryKey("1000000001").getMemRepContent()+"<br>");
 
 	MemLiveCondDAO_interface dao2 = new MemLiveCondJDBCDAO();
 	out.println(dao2.findByPrimaryKey("102", "10000001")+"<br>");

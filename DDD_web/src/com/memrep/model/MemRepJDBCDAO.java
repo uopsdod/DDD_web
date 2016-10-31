@@ -19,7 +19,7 @@ public class MemRepJDBCDAO implements MemRepDAO_interface {
 	private static String url = "jdbc:oracle:thin:@localhost:1521:xe";
 	private static String account = "ddd";
 	private static String password = "1111";
-	// 全部欄位名(複製用):
+	// ��甈���(銴ˊ�):
 	// memrepId memrepOrdId memrepMemId memrepHotelId memrepEmpId memrepContent memrepStatus memrepDate memrepReviewDate 
 	private static final String INSERT = "INSERT INTO memrep (memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus, memrepDate, memrepReviewDate) "
 									   + "VALUES ( memrep_seq.NEXTVAL,?,?,?,null,?,'0',sysdate,null)";
@@ -49,9 +49,9 @@ public class MemRepJDBCDAO implements MemRepDAO_interface {
 			String memRepMemId = myOrdVO.getOrdMemId();
 			String memRepHotelId = myOrdVO.getOrdHotelId();
 	
-			pstmt.setString(1, memRepOrdId); // 此三者有連帶關係
-			pstmt.setString(2, memRepMemId); // 此三者有連帶關係
-			pstmt.setString(3, memRepHotelId); //  此三者有連帶關係
+			pstmt.setString(1, memRepOrdId); // 甇支�����撣園���
+			pstmt.setString(2, memRepMemId); // 甇支�����撣園���
+			pstmt.setString(3, memRepHotelId); //  甇支�����撣園���
 			pstmt.setString(4, aMemrepVO.getMemRepContent());
 			
 			int result = pstmt.executeUpdate();
@@ -207,50 +207,50 @@ public class MemRepJDBCDAO implements MemRepDAO_interface {
 		MemRepDAO_interface dao = new MemRepJDBCDAO();
 		MemRepVO memrepVO = new MemRepVO();
 		
-		// 新增 insert(總共有9個欄位):
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
-		java.util.Date d = new java.util.Date(); // convert Date to String
-		String yyyyMM = sdf.format(d);
-		String ordid = yyyyMM + "1003";
-
-		//memrepVO.setMemRepId(); //使用 memrep_seq
-		memrepVO.setMemRepOrdId(ordid);
-		//memrepVO.setMemRepMemId(myOrdVO.getOrdMemId()); // 程式內處理
-		//memrepVO.setMemRepHotelId(myOrdVO.getOrdHotelId()); // 程式內處理
-		// memrepVO.setMemRepEmpId(null); // 初始值都是 null
-		memrepVO.setMemRepContent("冷氣不冷，還在半夜被偷偷關掉");
-		//memrepVO.setMemRepStatus("0"); // 初始值都是"0"
-		//memrepVO.setMemRepDate(); //使用sysdate
-		//memrepVO.setMemRepReviewDate(null); // 初始值都是 null
-		dao.insert(memrepVO);
+		// �憓� insert(蝮賢���9����):
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+//		java.util.Date d = new java.util.Date(); // convert Date to String
+//		String yyyyMM = sdf.format(d);
+//		String ordid = yyyyMM + "1003";
+//
+//		//memrepVO.setMemRepId(); //雿輻 memrep_seq
+//		memrepVO.setMemRepOrdId(ordid);
+//		//memrepVO.setMemRepMemId(myOrdVO.getOrdMemId()); // 蝔�����
+//		//memrepVO.setMemRepHotelId(myOrdVO.getOrdHotelId()); // 蝔�����
+//		// memrepVO.setMemRepEmpId(null); // ����潮� null
+//		memrepVO.setMemRepContent("�瘞�銝嚗����◤������");
+//		//memrepVO.setMemRepStatus("0"); // ����潮�"0"
+//		//memrepVO.setMemRepDate(); //雿輻sysdate
+//		//memrepVO.setMemRepReviewDate(null); // ����潮� null
+//		dao.insert(memrepVO);
 		
-		// 修改 update(共有4個欄位可修改):
+		// 靽格 update(����4���靽格):
 //		String memrepId = "1000000005";
 //		String memrepEmpId = "10002";
 //		GregorianCalendar myGCDate = new GregorianCalendar();
 //		myGCDate.setTime(new java.util.Date());
 //		java.sql.Date reviewDate = new java.sql.Date(myGCDate.getTime().getTime());
-//		memrepVO = dao.findByPrimaryKey(memrepId); // 從DB拿舊VO，放到網頁上呈現
-//		memrepVO.setMemRepStatus("2"); // 在網頁上修改此VO資料
-//		memrepVO.setMemRepEmpId(memrepEmpId); // 在網頁上修改此VO資料
-//		memrepVO.setMemRepReviewDate(reviewDate); // 在網頁上修改此VO資料
-//		dao.update(memrepVO); // 再回放到DB中
+//		memrepVO = dao.findByPrimaryKey(memrepId); // 敺B���O嚗�蝬脤���
+//		memrepVO.setMemRepStatus("2"); // �蝬脤��耨�甇丈O鞈��
+//		memrepVO.setMemRepEmpId(memrepEmpId); // �蝬脤��耨�甇丈O鞈��
+//		memrepVO.setMemRepReviewDate(reviewDate); // �蝬脤��耨�甇丈O鞈��
+//		dao.update(memrepVO); // ����DB銝�
 		
-		// 刪除 delete
+		// �� delete
 //		String memrepId = "1000000005";
 //		dao.delete(memrepId);
 		
-		// 查詢全部:
+		// �閰Ｗ�:
 		List<MemRepVO> memrepVOList = dao.getAll();
 		printData(memrepVOList);
 		
-		// 根據memrepStatus查詢全部
-//		String memrepStatusId = "2";  //0.未審核 1.已審核未通過 2.已審核已通過
+		// ���emrepStatus�閰Ｗ�
+//		String memrepStatusId = "2";  //0.�撖拇 1.撌脣祟����� 2.撌脣祟�撌脤���
 //		List<MemRepVO> memrepVOList = dao.getAllByMemRepStatus(memrepStatusId);
 //		printData(memrepVOList);
 		
 		
-		// 特過PK查看一筆資料 :
+		// ���K����蝑��� :
 //		String memrepId = "1000000001";
 //		memrepVO = dao.findByPrimaryKey(memrepId);
 //		printData(memrepVO);	
@@ -258,7 +258,7 @@ public class MemRepJDBCDAO implements MemRepDAO_interface {
 	}// end main
 	
 	
-	//以下不重要，只是用來驗證方法正不正確
+	//隞乩�������靘��瘜迤銝迤蝣�
 	private static void printData(List<MemRepVO> memrepVOList){
 		if (!memrepVOList.isEmpty() && memrepVOList != null){   
 			System.out.printf("%-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s %-15s","MemRepId", "MemRepOrdId","memrepMemId", "MemRepHotelId", "MemRepEmpId", "MemRepContent", "MemRepStatus", "MemRepDate", "RepReviewDate");	
@@ -271,7 +271,7 @@ public class MemRepJDBCDAO implements MemRepDAO_interface {
 								  myMemrepVO.getMemRepMemId(), 
 								  myMemrepVO.getMemRepHotelId(), 
 								  myMemrepVO.getMemRepEmpId(), 
-								  myMemrepVO.getMemRepContent().substring(0,5)+"...", // 這段有風險，不過測試用別擔心兒
+								  myMemrepVO.getMemRepContent().substring(0,5)+"...", // �挾��◢�嚗��葫閰衣������
 								  myMemrepVO.getMemRepStatus(), 
 								  myMemrepVO.getMemRepDate(), 
 								  myMemrepVO.getMemRepReviewDate());	
@@ -291,7 +291,7 @@ public class MemRepJDBCDAO implements MemRepDAO_interface {
 				  memrepVO.getMemRepMemId(),
 				  memrepVO.getMemRepHotelId(), 
 				  memrepVO.getMemRepEmpId(), 
-				  memrepVO.getMemRepContent().substring(0,5)+"...", // 這段有風險，不過測試用別擔心兒
+				  memrepVO.getMemRepContent().substring(0,5)+"...", // �挾��◢�嚗��葫閰衣������
 				  memrepVO.getMemRepStatus(), 
 				  memrepVO.getMemRepDate(), 
 				  memrepVO.getMemRepReviewDate());				
