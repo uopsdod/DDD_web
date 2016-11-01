@@ -23,6 +23,7 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 	 * 10-08 ordRatingStarNo
 	 * 11-09 ordQrPic
 	 * 12-10 ordMsgNo
+	 * hello AA014 G4
 	*/
 
 	/* 日期記得改回Sysdate */
