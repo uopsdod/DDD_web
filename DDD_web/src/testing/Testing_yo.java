@@ -10,6 +10,8 @@ import com.chat.model.ChatDAO_interface;
 import com.chat.model.ChatJNDIDAO;
 import com.livecond.model.LiveCondDAO_interface;
 import com.livecond.model.LiveCondJDNIDAO;
+import com.mem.model.MemDAO_interface;
+import com.mem.model.MemJNDIDAO;
 import com.memchat.model.MemChatDAO_interface;
 import com.memchat.model.MemChatJDBCDAO;
 import com.memchat.model.MemChatJNDIDAO;
@@ -44,6 +46,9 @@ public class Testing_yo extends HttpServlet {
 	
 	ChatDAO_interface dao5 = new ChatJNDIDAO();
 	out.println(dao5.findByPrimaryKey("10000001")+"<br>");
+	
+	MemDAO_interface dao6 = new MemJNDIDAO();
+	out.println("MemDAO" +dao5.findByPrimaryKey("10000001")+"<br>");
 	
 	
   }
