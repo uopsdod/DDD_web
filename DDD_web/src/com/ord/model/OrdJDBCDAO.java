@@ -24,7 +24,7 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 	 * 11-09 ordQrPic
 	 * 12-10 ordMsgNo
 	*/
-	
+
 	/* 日期記得改回Sysdate */
 	private static final String INSERT_STMT = 
 		"INSERT INTO ord (ordID,ordRoomId,ordMemId,ordHotelId,ordPrice,ordLiveDate,ordDate,ordStatus,ordRatingContent,ordRatingStarNo,ordQrPic,ordMsgNo)"
