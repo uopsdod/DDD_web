@@ -6,7 +6,7 @@ import java.sql.Clob;
 import java.sql.Date;
 
 public class MemRepVO implements Serializable {
-	// 123 456
+	// 123 456 789 
 	private String memRepId;
 	private String memRepMemId; // Not Null
 	private String memRepHotelId; // Not Null
