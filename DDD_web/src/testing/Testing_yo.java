@@ -28,7 +28,7 @@ public class Testing_yo extends HttpServlet {
     res.setContentType("text/html; charset=Big5");
     PrintWriter out = res.getWriter();
 
-// 123 456 789 101112    
+// 123 456 789 101112  123
 //	MemRepDAO_interface dao1 = new MemRepJNDIDAO();
 //	out.println(dao1.findByPrimaryKey("1000000001").getMemRepContent()+"<br>");
 
