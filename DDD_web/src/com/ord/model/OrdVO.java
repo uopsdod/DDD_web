@@ -1,7 +1,7 @@
 package com.ord.model;
 import java.sql.Date;
 
-public class OrdVO {
+public class OrdVO implements java.io.Serializable {
 	private String ordId;
 	private String ordRoomId;
 	private String ordMemId;
