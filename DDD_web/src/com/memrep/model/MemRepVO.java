@@ -70,5 +70,6 @@ public class MemRepVO implements Serializable {
 		this.memRepReviewDate = aMemRepReviewDate;
 	}
 	
+	// abc
 	
 }
