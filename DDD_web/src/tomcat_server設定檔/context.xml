@@ -12,7 +12,7 @@
     		maxActive="20" 
     		maxIdle="10" 
     		maxWait="-1" 
-    		/>
+    		/> 
 
     <!-- Default set of monitored resources -->
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
