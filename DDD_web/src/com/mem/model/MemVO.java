@@ -1,7 +1,7 @@
 package com.mem.model;
 
 import java.sql.*;
-
+ 
 public class MemVO implements java.io.Serializable{
 	private String memId;
 	private String memAccount;
