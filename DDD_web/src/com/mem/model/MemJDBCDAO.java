@@ -7,8 +7,8 @@ import java.sql.*;
 public class MemJDBCDAO implements MemDAO_interface {
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "plzdongo";
-	String passwd = "Tom800712";
+	String userid = "scott";
+	String passwd = "tiger";
 
 	public static final String INSERT_STMT = "INSERT INTO mem (memId,memAccount,memPsw,memName,memGender,memTwId,memBirthDate,memPhone,memLiveBudget,memIntro,memProfile,memBlackList,memCreditCardNo,memCreditCheckNo,memCreditDueDate) VALUES (mem_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	public static final String GET_ALL_STMT = "SELECT memId,memAccount,memPsw,memName,memGender,memTwId,to_char(memBirthDate,'yyyy-mm-dd') memBirthDate,memPhone,memLiveBudget,memIntro,memProfile,memBlackList,memCreditCardNo,memCreditCheckNo,memCreditDueDate FROM mem order by memId";

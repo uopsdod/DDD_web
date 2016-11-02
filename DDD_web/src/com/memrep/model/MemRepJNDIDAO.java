@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -207,6 +208,53 @@ public class MemRepJNDIDAO implements MemRepDAO_interface {
 			}// end try-catch-finally	
 		return memrepVOList;	
 	}
+	@Override	
+	public List<MemRepVO> getAll(Map<String, String[]> map) {
+		return getAll(map, MemRepDAO_interface.tableName);
+	}
+	
+	private List<MemRepVO> getAll(Map<String, String[]> map, String tableName) {
+		List<MemRepVO> list = new ArrayList<MemRepVO>();
+		MemRepVO empVO = null;
+	
+		ResultSet rs = null;
+		// 重點在此行 - testing.CompositeQuery_anyTable_JNDI.getQuerySQL(map, tableName);
+		String finalSQL = util.CompositeQuery_anyTable_JNDI.getQuerySQL(map, tableName);
+		System.out.println("●●finalSQL(by DAO) = "+finalSQL);
+		try(Connection con = ds.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(finalSQL);) {
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				MemRepVO memrepVO = new MemRepVO();
+				memrepVO.setMemRepId(rs.getString("memRepId")); 
+				memrepVO.setMemRepOrdId(rs.getString("memRepOrdId"));
+				memrepVO.setMemRepMemId(rs.getString("memRepMemId")); 
+				memrepVO.setMemRepHotelId(rs.getString("memRepHotelId")); 
+				memrepVO.setMemRepEmpId(rs.getString("memRepEmpId"));
+				memrepVO.setMemRepContent(rs.getString("memRepContent"));
+				memrepVO.setMemRepStatus(rs.getString("memRepStatus"));
+				memrepVO.setMemRepDate(rs.getDate("memRepDate")); 
+				memrepVO.setMemRepReviewDate(rs.getDate("memRepReviewDate"));
+				
+				list.add(memrepVO); // Store the row in the List
+			}
+	
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
 		
 	
 	public static void main(String[] args){
@@ -303,6 +351,7 @@ public class MemRepJNDIDAO implements MemRepDAO_interface {
 				  memrepVO.getMemRepReviewDate());				
 		}			
 	}
+
 
 
 }
