@@ -11,8 +11,8 @@ import java.util.List;
 public class ChatJDBCDAO implements ChatDAO_interface {
 	private static String driver = "oracle.jdbc.driver.OracleDriver";
 	private static String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	private static String account = "ddd";
-	private static String password = "1111";
+	private static String account = "scott";
+	private static String password = "tiger";
 	// 全部欄位名(複製用):
 	// chatId chatName
 	private static final String INSERT = "INSERT INTO chat (chatId, chatName) VALUES ( chat_seq.NEXTVAL, ?)";

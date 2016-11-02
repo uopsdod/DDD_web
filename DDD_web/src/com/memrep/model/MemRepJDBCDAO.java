@@ -17,8 +17,8 @@ import com.ord.model.OrdVO;
 public class MemRepJDBCDAO implements MemRepDAO_interface {
 	private static String driver = "oracle.jdbc.driver.OracleDriver";
 	private static String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	private static String account = "ddd";
-	private static String password = "1111";
+	private static String account = "scott";
+	private static String password = "tiger";
 	// ��甈���(銴ˊ�):
 	// memrepId memrepOrdId memrepMemId memrepHotelId memrepEmpId memrepContent memrepStatus memrepDate memrepReviewDate 
 	private static final String INSERT = "INSERT INTO memrep (memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus, memrepDate, memrepReviewDate) "
