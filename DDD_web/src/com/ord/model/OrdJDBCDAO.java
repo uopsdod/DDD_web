@@ -23,7 +23,7 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 	 * 09	 ordRatingContent
 	 * 10	 ordRatingStarNo
 	 * 11-06 ordQrPic
-	 * 12-07 ordMsgNo
+	 * 12-07 ordMsgNo 
 	*/
 
 	/* (一般會員)新增一筆訂單 */
