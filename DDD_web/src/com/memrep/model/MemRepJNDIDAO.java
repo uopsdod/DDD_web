@@ -209,17 +209,17 @@ public class MemRepJNDIDAO implements MemRepDAO_interface {
 		return memrepVOList;	
 	}
 	@Override	
-	public List<MemRepVO> getAll(Map<String, String[]> map) {
-		return getAll(map, MemRepDAO_interface.tableName);
+	public List<MemRepVO> getAll(Map<String, String[]> aMap) {
+		return getAll(aMap, MemRepDAO_interface.tableName);
 	}
 	
-	private List<MemRepVO> getAll(Map<String, String[]> map, String tableName) {
+	private List<MemRepVO> getAll(Map<String, String[]> aMap, String aTableName) {
 		List<MemRepVO> list = new ArrayList<MemRepVO>();
 		MemRepVO empVO = null;
 	
 		ResultSet rs = null;
 		// 重點在此行 - testing.CompositeQuery_anyTable_JNDI.getQuerySQL(map, tableName);
-		String finalSQL = util.CompositeQuery_anyTable_JNDI.getQuerySQL(map, tableName);
+		String finalSQL = util.CompositeQuery_anyTable_JNDI.getQuerySQL(aMap, aTableName);
 		System.out.println("●●finalSQL(by DAO) = "+finalSQL);
 		try(Connection con = ds.getConnection();
 			PreparedStatement pstmt = con.prepareStatement(finalSQL);) {

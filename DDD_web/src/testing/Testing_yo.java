@@ -110,16 +110,25 @@ public class Testing_yo extends HttpServlet {
 	// 萬用查詢 - 測試memRepJNDIDAO
 	// 測試用 url:  http://localhost:8081/DDD_web/Testing_yo?memRepStatus=0
 	// 測試用 url:  http://localhost:8081/DDD_web/Testing_yo?memRepStatus=2
-	Map<String, String[]> map = req.getParameterMap();
-	MemRepDAO_interface dao10 = new MemRepJNDIDAO();
-	List<MemRepVO> memRepList = dao10.getAll(map);
-	out.println("<b>萬用查詢_MemRepDAO-OK: </b>");
+	Map<String, String[]> map1 = req.getParameterMap();
+	MemRepDAO_interface dao6 = new MemRepJNDIDAO();
+	List<MemRepVO> memRepList = dao6.getAll(map1);
+	out.println("<b>萬用查詢MemRepJNDIDAO-OK: </b><br>");
 	for (MemRepVO myVO: memRepList){
 		out.println("myVO: " + myVO.getMemRepContent() + "<br>");
 	}
 	out.println("---------------------------------------------<br>");
-
-	
+	// 萬用查詢 - 測試memChatJNDIDAO
+	MemChatDAO_interface dao7 = new MemChatJNDIDAO();
+	Map<String, String[]> map2 = req.getParameterMap();
+	List<MemChatVO> memChatList = dao7.getAll(map2);
+	out.println("<b>萬用查詢MemChatJNDIDAO-OK: </b><br>");
+	for (MemChatVO myVO: memChatList){
+		if (myVO.getMemChatContent()!=null){
+			out.println("myVO: " + myVO.getMemChatContent() + "<br>");			
+		}
+	}
+	out.println("---------------------------------------------<br>");
 	
   }
 }

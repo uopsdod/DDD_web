@@ -95,11 +95,13 @@ public class CompositeQuery_anyTable_JNDI {
 			if (value != null && value.trim().length() != 0 && !"action".equals(key)) {
 				count++;
 				String aCondition = get_aCondition_For_Oracle(key, value.trim(), tableName);
+				if (!"null".equals(aCondition.toString().trim())){
+					if (count == 1)
+						whereCondition.append(" where " + aCondition);
+					else
+						whereCondition.append(" and " + aCondition);					
+				}
 
-				if (count == 1)
-					whereCondition.append(" where " + aCondition);
-				else
-					whereCondition.append(" and " + aCondition);
 			}
 		}
 		System.out.println("有送出查詢資料的欄位數count = " + count);

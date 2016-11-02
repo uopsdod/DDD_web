@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.io.*;
 
 import com.memchat.model.MemChatVO;
@@ -276,6 +277,12 @@ public class MemChatJDBCDAO implements MemChatDAO_interface {
 			(aMemChatVO.getMemChatContent() != null)?aMemChatVO.getMemChatContent().substring(0,2): "NULL",
 			aMemChatVO.getMemChatPic());
 		}			
+	}
+
+	@Override
+	public List<MemChatVO> getAll(Map<String, String[]> map) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

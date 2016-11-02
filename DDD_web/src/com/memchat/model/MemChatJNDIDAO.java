@@ -1,26 +1,20 @@
 package com.memchat.model;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import java.io.*;
-
 import com.memchat.model.MemChatVO;
-import com.chat.model.ChatJDBCDAO;
-import com.chat.model.ChatVO;
 import com.memchat.model.MemChatDAO_interface;
 
 
@@ -184,6 +178,52 @@ public class MemChatJNDIDAO implements MemChatDAO_interface {
 			}// end try-catch-finally	
 		return memChatVOList;
 	}
+	
+	@Override
+	public List<MemChatVO> getAll(Map<String, String[]> aMap) {
+		return getAll(aMap, MemChatDAO_interface.tableName);
+	}
+	
+	public List<MemChatVO> getAll(Map<String, String[]> aMap, String aTableName) {
+		List<MemChatVO> list = new ArrayList<MemChatVO>();
+		MemChatVO empVO = null;
+	
+		ResultSet rs = null;
+		// 重點在此行 - testing.CompositeQuery_anyTable_JNDI.getQuerySQL(map, tableName);
+		String finalSQL = util.CompositeQuery_anyTable_JNDI.getQuerySQL(aMap, aTableName);
+		System.out.println("●●finalSQL(by DAO) = "+finalSQL);
+		try(Connection con = ds.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(finalSQL);) {
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				MemChatVO memChatVO = new MemChatVO();
+				
+				memChatVO.setMemChatChatId(rs.getString("memChatChatId"));
+				memChatVO.setMemChatMemId(rs.getString("memChatMemId"));
+				memChatVO.setMemChatDate(rs.getTimestamp("memChatDate"));
+				memChatVO.setMemChatContent(rs.getString("memChatContent"));
+				memChatVO.setMemChatPic(rs.getBytes("memChatPic"));
+				
+				list.add(memChatVO); // Store the row in the List
+			}
+	
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;		
+	}
+
 
 
 }
