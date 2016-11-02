@@ -187,23 +187,23 @@ public class MemChatJDBCDAO implements MemChatDAO_interface {
 		MemChatVO memChatVO = new MemChatVO();
 		
 		// 新增 insert(總共有5個欄位):
-//		String aMemChatChatId = "10000001";
-//		String aMemChatMemId = "1000000002";
-//		GregorianCalendar myGCDate = new GregorianCalendar();
-//		myGCDate.setTime(new java.util.Date());
-//		Timestamp myTsp = new Timestamp(myGCDate.getTime().getTime());
-//		InputStream is = new FileInputStream("images/smile.jpg");
-//		byte[] byteAry = new byte[is.available()];
-//		is.read(byteAry);
-//		is.close();
-//		
-//		memChatVO.setMemChatChatId(aMemChatChatId);
-//		memChatVO.setMemChatMemId(aMemChatMemId);
-//		memChatVO.setMemChatDate(myTsp);
-//		memChatVO.setMemChatContent(null);
-//		memChatVO.setMemChatPic(byteAry);
-//		
-//		dao.insert(memChatVO);
+		String aMemChatChatId = "10000001";
+		String aMemChatMemId = "10000002";
+		GregorianCalendar myGCDate = new GregorianCalendar();
+		myGCDate.setTime(new java.util.Date());
+		Timestamp myTsp = new Timestamp(myGCDate.getTime().getTime());
+		InputStream is = new FileInputStream("C:/Users/cuser/git/DDD_web/DDD_web/WebContent/images/smile.jpg");
+		byte[] byteAry = new byte[is.available()];
+		is.read(byteAry);
+		is.close();
+		
+		memChatVO.setMemChatChatId(aMemChatChatId);
+		memChatVO.setMemChatMemId(aMemChatMemId);
+		memChatVO.setMemChatDate(myTsp);
+		memChatVO.setMemChatContent(null);
+		memChatVO.setMemChatPic(byteAry);
+		
+		dao.insert(memChatVO);
 		
 		// 修改 update(共有1個欄位可修改):
 //		String chatId = "10000001";

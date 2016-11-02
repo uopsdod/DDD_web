@@ -210,25 +210,25 @@ public class MemRepJNDIDAO implements MemRepDAO_interface {
 		
 	
 	public static void main(String[] args){
-//		MemRepDAO_interface dao = new MemRepJNDIDAO();
-//		MemRepVO memrepVO = new MemRepVO();
+		MemRepDAO_interface dao = new MemRepJNDIDAO();
+		MemRepVO memrepVO = new MemRepVO();
 //		
 //		// 新增 insert(總共有9個欄位):
-////		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
-////		java.util.Date d = new java.util.Date(); // convert Date to String
-////		String yyyyMM = sdf.format(d);
-////		String ordid = yyyyMM + "1003";
-////
-////		//memrepVO.setMemRepId(); //使用 memrep_seq
-////		memrepVO.setMemRepOrdId(ordid);
-////		//memrepVO.setMemRepMemId(myOrdVO.getOrdMemId()); // 程式內處理
-////		//memrepVO.setMemRepHotelId(myOrdVO.getOrdHotelId()); // 程式內處理
-////		// memrepVO.setMemRepEmpId(null); // 初始值都是 null
-////		memrepVO.setMemRepContent("冷氣不冷，還在半夜被偷偷關掉");
-////		//memrepVO.setMemRepStatus("0"); // 初始值都是"0"
-////		//memrepVO.setMemRepDate(); //使用sysdate
-////		//memrepVO.setMemRepReviewDate(null); // 初始值都是 null
-////		dao.insert(memrepVO);
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+//		java.util.Date d = new java.util.Date(); // convert Date to String
+//		String yyyyMM = sdf.format(d);
+//		String ordid = yyyyMM + "1003";
+//
+//		//memrepVO.setMemRepId(); //使用 memrep_seq
+//		memrepVO.setMemRepOrdId(ordid);
+//		//memrepVO.setMemRepMemId(myOrdVO.getOrdMemId()); // 程式內處理
+//		//memrepVO.setMemRepHotelId(myOrdVO.getOrdHotelId()); // 程式內處理
+//		// memrepVO.setMemRepEmpId(null); // 初始值都是 null
+//		memrepVO.setMemRepContent("冷氣不冷，還在半夜被偷偷關掉");
+//		//memrepVO.setMemRepStatus("0"); // 初始值都是"0"
+//		//memrepVO.setMemRepDate(); //使用sysdate
+//		//memrepVO.setMemRepReviewDate(null); // 初始值都是 null
+//		dao.insert(memrepVO);
 //		
 //		// 修改 update(共有4個欄位可修改):
 ////		String memrepId = "1000000005";
