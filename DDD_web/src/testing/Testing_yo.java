@@ -20,6 +20,7 @@ import com.memlivecond.model.MemLiveCondDAO_interface;
 import com.memlivecond.model.MemLiveCondJDBCDAO;
 import com.memrep.model.MemRepDAO_interface;
 import com.memrep.model.MemRepJNDIDAO;
+import com.memrep.model.MemRepService;
 import com.memrep.model.MemRepVO;
     
 @WebServlet("/Testing_yo")
@@ -30,25 +31,39 @@ public class Testing_yo extends HttpServlet {
     res.setContentType("text/html; charset=Big5");
     PrintWriter out = res.getWriter();
 
-// 123 456 789 101112  123
-//	MemRepDAO_interface dao1 = new MemRepJNDIDAO();
-//	out.println(dao1.findByPrimaryKey("1000000001").getMemRepContent()+"<br>");
+	MemRepDAO_interface dao1 = new MemRepJNDIDAO();
+	out.println("<b>MemRepJNDIDAO-OK: </b>");
+	out.println(dao1.findByPrimaryKey("1000000001") +"<br>");
+	MemRepService daoServ1 = new MemRepService();
+	out.println("<b>MemRepService-OK: </b>");
+	out.println(daoServ1.findByPrimaryKey("1000000001") +"<br>");
+	out.println("---------------------------------------------<br>");
 
 	MemLiveCondDAO_interface dao2 = new MemLiveCondJDBCDAO();
+	out.println("<b>MemLiveCondJDBCDAO-OK: </b>");
 	out.println(dao2.findByPrimaryKey("102", "10000001")+"<br>");
+	out.println("---------------------------------------------<br>");	
 	
 	MemChatDAO_interface dao3 = new MemChatJNDIDAO();
 	MemChatVO myMemChatVO = dao3.getAll().get(0);
+	out.println("<b>MemChatJNDIDAO-OK: </b>");
 	out.println(dao3.findByPrimaryKey(myMemChatVO.getMemChatChatId(), myMemChatVO.getMemChatMemId(), myMemChatVO.getMemChatDate())+"<br>");
+	out.println("---------------------------------------------<br>");	
 	
 	LiveCondDAO_interface dao4 = new LiveCondJDNIDAO();
+	out.println("<b>LiveCondJDNIDAO-OK: </b>");
 	out.println(dao4.findByPrimaryKey("102")+"<br>");
+	out.println("---------------------------------------------<br>");	
 	
 	ChatDAO_interface dao5 = new ChatJNDIDAO();
+	out.println("<b>ChatJNDIDAO-OK: </b>");
 	out.println(dao5.findByPrimaryKey("10000001")+"<br>");
+	out.println("---------------------------------------------<br>");	
 	
 	MemDAO_interface dao6 = new MemJNDIDAO();
+	out.println("<b>MemJNDIDAO-OK: </b>");
 	out.println("MemDAO" +dao5.findByPrimaryKey("10000001")+"<br>");
+	out.println("---------------------------------------------<br>");	
 	
 	
   }
