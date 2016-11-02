@@ -48,7 +48,7 @@
 		<form method="post" action="ord.do">
 			選擇訂單編號:
 			<select name="ordId">
-				<c:forEach var="ordVO" items="{ordSvc.all}">	
+				<c:forEach var="ordVO" items="${ordSvc.all}">	
 					<option value="${ordVO.ordId}">${ordVO.ordId}
 				</c:forEach>
 			</select>
