@@ -2,9 +2,20 @@ package testing;
 
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+import javax.sql.DataSource;
 
 import com.chat.model.ChatDAO_interface;
 import com.chat.model.ChatJNDIDAO;
@@ -13,7 +24,9 @@ import com.livecond.model.LiveCondDAO_interface;
 import com.livecond.model.LiveCondJDNIDAO;
 import com.livecond.model.LiveCondService;
 import com.mem.model.MemDAO_interface;
+import com.mem.model.MemJDBCDAO;
 import com.mem.model.MemJNDIDAO;
+import com.mem.model.MemVO;
 import com.memchat.model.MemChatDAO_interface;
 import com.memchat.model.MemChatJDBCDAO;
 import com.memchat.model.MemChatJNDIDAO;
@@ -27,8 +40,23 @@ import com.memrep.model.MemRepJNDIDAO;
 import com.memrep.model.MemRepService;
 import com.memrep.model.MemRepVO;
     
+import java.lang.reflect.Type;
+import com.google.gson.reflect.TypeToken;
+
 @WebServlet("/Testing_yo")
 public class Testing_yo extends HttpServlet {
+	private static DataSource ds  = null;
+	static{
+		try{
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+					
+		}catch(NamingException e){
+			e.printStackTrace(System.err);
+		}
+	}
+	
+	
   public void doGet(HttpServletRequest req, HttpServletResponse res)
                                throws ServletException, IOException {
    	req.setCharacterEncoding("Big5");
@@ -76,7 +104,22 @@ public class Testing_yo extends HttpServlet {
 	out.println(daoServ5.findByPrimaryKey("10000001")+"<br>");
 	out.println("---------------------------------------------<br>");	
 	
+	// 萬用查詢
+	// 配合 req.getParameterMap()方法 回傳
+	// java.util.Map<java.lang.String,java.lang.String[]> 之測試	
+	// 萬用查詢 - 測試memRepJNDIDAO
+	// 測試用 url:  http://localhost:8081/DDD_web/Testing_yo?memRepStatus=0
+	// 測試用 url:  http://localhost:8081/DDD_web/Testing_yo?memRepStatus=2
+	Map<String, String[]> map = req.getParameterMap();
+	MemRepDAO_interface dao10 = new MemRepJNDIDAO();
+	List<MemRepVO> memRepList = dao10.getAll(map);
+	out.println("<b>萬用查詢_MemRepDAO-OK: </b>");
+	for (MemRepVO myVO: memRepList){
+		out.println("myVO: " + myVO.getMemRepContent() + "<br>");
+	}
+	out.println("---------------------------------------------<br>");
 
+	
 	
   }
 }
