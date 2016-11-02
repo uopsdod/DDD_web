@@ -13,6 +13,8 @@ import java.util.List;
 import java.io.*;
 
 import com.memchat.model.MemChatVO;
+import com.ord.model.OrdJDBCDAO;
+import com.ord.model.OrdVO;
 import com.chat.model.ChatJDBCDAO;
 import com.chat.model.ChatVO;
 import com.memchat.model.MemChatDAO_interface;
@@ -187,23 +189,23 @@ public class MemChatJDBCDAO implements MemChatDAO_interface {
 		MemChatVO memChatVO = new MemChatVO();
 		
 		// 新增 insert(總共有5個欄位):
-		String aMemChatChatId = "10000001";
-		String aMemChatMemId = "10000002";
-		GregorianCalendar myGCDate = new GregorianCalendar();
-		myGCDate.setTime(new java.util.Date());
-		Timestamp myTsp = new Timestamp(myGCDate.getTime().getTime());
-		InputStream is = new FileInputStream("C:/Users/cuser/git/DDD_web/DDD_web/WebContent/images/smile.jpg");
-		byte[] byteAry = new byte[is.available()];
-		is.read(byteAry);
-		is.close();
-		
-		memChatVO.setMemChatChatId(aMemChatChatId);
-		memChatVO.setMemChatMemId(aMemChatMemId);
-		memChatVO.setMemChatDate(myTsp);
-		memChatVO.setMemChatContent(null);
-		memChatVO.setMemChatPic(byteAry);
-		
-		dao.insert(memChatVO);
+//		String aMemChatChatId = "10000001";
+//		String aMemChatMemId = "10000002";
+//		GregorianCalendar myGCDate = new GregorianCalendar();
+//		myGCDate.setTime(new java.util.Date());
+//		Timestamp myTsp = new Timestamp(myGCDate.getTime().getTime());
+//		InputStream is = new FileInputStream("C:/Users/cuser/git/DDD_web/DDD_web/WebContent/images/smile.jpg");
+//		byte[] byteAry = new byte[is.available()];
+//		is.read(byteAry);
+//		is.close();
+//		
+//		memChatVO.setMemChatChatId(aMemChatChatId);
+//		memChatVO.setMemChatMemId(aMemChatMemId);
+//		memChatVO.setMemChatDate(myTsp);
+//		memChatVO.setMemChatContent(null);
+//		memChatVO.setMemChatPic(byteAry);
+//		
+//		dao.insert(memChatVO);
 		
 		// 修改 update(共有1個欄位可修改):
 //		String chatId = "10000001";
@@ -219,6 +221,14 @@ public class MemChatJDBCDAO implements MemChatDAO_interface {
 		// 查詢全部:
 		List<MemChatVO> memChatVOList = dao.getAll();
 		printData(memChatVOList);
+//		MemChatVO myVO = dao.getAll().get(0);
+//		java.sql.Timestamp ts = new java.sql.Timestamp(myVO.getMemChatDate().getTime());
+//		System.out.println("\n"+ts);
+		
+		OrdJDBCDAO dao_ord = new OrdJDBCDAO();
+		OrdVO myVO = dao_ord.getAll().get(0);
+		java.sql.Date date = new java.sql.Date(myVO.getOrdDate().getTime());
+		System.out.println("\n"+date);
 		
 		
 		// 透過PK查看一筆資料 :
@@ -245,7 +255,7 @@ public class MemChatJDBCDAO implements MemChatDAO_interface {
 				System.out.printf("%n%-15s %-15s %-15s %-15s %-15s",
 				memChatVO.getMemChatChatId(),
 				memChatVO.getMemChatMemId(),
-				memChatVO.getMemChatDate().getTime(),
+				memChatVO.getMemChatDate(),
 				(memChatVO.getMemChatContent() != null)?memChatVO.getMemChatContent().substring(0,2): "NULL",
 				memChatVO.getMemChatPic());
 			};	
