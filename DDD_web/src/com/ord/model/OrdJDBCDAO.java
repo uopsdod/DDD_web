@@ -10,7 +10,7 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 	String userid = "scott";
 	String passwd = "tiger";
 	
-	/*
+	/* 
 	 * = INSERT_STMT 對應 =
 	 * 01    ordID
 	 * 02-01 ordRoomId
