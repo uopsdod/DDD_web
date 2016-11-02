@@ -7,7 +7,7 @@
     <res-auth>Container</res-auth>
   </resource-ref>
  
- <servlet>
+  <servlet>
     <servlet-name>RoomServlet</servlet-name>
     <servlet-class>com.room.controler.RoomServlet</servlet-class>
   </servlet>
@@ -25,5 +25,13 @@
     <url-pattern>/roomphoto/roomphoto.do</url-pattern>
   </servlet-mapping>
  
+   <servlet>
+    <servlet-name>OrdServlet</servlet-name>
+    <servlet-class>com.ord.controler.OrdServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>OrdServlet</servlet-name>
+    <url-pattern>/ord/ord.do</url-pattern>
+  </servlet-mapping>
   
 </web-app>
