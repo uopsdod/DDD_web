@@ -21,8 +21,8 @@ import com.memchat.model.MemChatDAO_interface;
 public class MemChatJDBCDAO implements MemChatDAO_interface {
 	private static String driver = "oracle.jdbc.driver.OracleDriver";
 	private static String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	private static String account = "ddd";
-	private static String password = "1111";
+	private static String account = "scott";
+	private static String password = "tiger";
 	// 全部欄位名(複製用):
 	// memChatMemId memChatChatId memChatDate memChatContent memChatPic
 	private static final String INSERT = "INSERT INTO memChat (memChatChatId,memChatMemId, memChatDate, memChatContent, memChatPic) VALUES (?,?,?,?,?)";
@@ -187,23 +187,23 @@ public class MemChatJDBCDAO implements MemChatDAO_interface {
 		MemChatVO memChatVO = new MemChatVO();
 		
 		// 新增 insert(總共有5個欄位):
-//		String aMemChatChatId = "10000001";
-//		String aMemChatMemId = "1000000002";
-//		GregorianCalendar myGCDate = new GregorianCalendar();
-//		myGCDate.setTime(new java.util.Date());
-//		Timestamp myTsp = new Timestamp(myGCDate.getTime().getTime());
-//		InputStream is = new FileInputStream("images/smile.jpg");
-//		byte[] byteAry = new byte[is.available()];
-//		is.read(byteAry);
-//		is.close();
-//		
-//		memChatVO.setMemChatChatId(aMemChatChatId);
-//		memChatVO.setMemChatMemId(aMemChatMemId);
-//		memChatVO.setMemChatDate(myTsp);
-//		memChatVO.setMemChatContent(null);
-//		memChatVO.setMemChatPic(byteAry);
-//		
-//		dao.insert(memChatVO);
+		String aMemChatChatId = "10000001";
+		String aMemChatMemId = "10000002";
+		GregorianCalendar myGCDate = new GregorianCalendar();
+		myGCDate.setTime(new java.util.Date());
+		Timestamp myTsp = new Timestamp(myGCDate.getTime().getTime());
+		InputStream is = new FileInputStream("C:/Users/cuser/git/DDD_web/DDD_web/WebContent/images/smile.jpg");
+		byte[] byteAry = new byte[is.available()];
+		is.read(byteAry);
+		is.close();
+		
+		memChatVO.setMemChatChatId(aMemChatChatId);
+		memChatVO.setMemChatMemId(aMemChatMemId);
+		memChatVO.setMemChatDate(myTsp);
+		memChatVO.setMemChatContent(null);
+		memChatVO.setMemChatPic(byteAry);
+		
+		dao.insert(memChatVO);
 		
 		// 修改 update(共有1個欄位可修改):
 //		String chatId = "10000001";
