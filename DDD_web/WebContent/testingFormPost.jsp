@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <HTML>
 <HEAD>
@@ -9,8 +9,8 @@
 
   <FORM METHOD="post" ACTION="HelloPost">
       
-    �п�J�z���W�r!
-    <INPUT TYPE="TEXT" NAME="name" VALUE="peter1�d�ç�"><p>
+    請輸入您的名字!
+    <INPUT TYPE="TEXT" NAME="name" VALUE="peter1吳永志"><p>
     <INPUT TYPE="SUBMIT">
   </FORM>
   

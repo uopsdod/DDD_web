@@ -5,7 +5,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.WebServlet;
 
-@WebServlet("/backend/ord/HelloPost")
+@WebServlet("/HelloPost")
 public class HelloPost extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
