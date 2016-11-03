@@ -1,6 +1,7 @@
 package com.room.model;
 
 import java.util.List;
+import java.util.Set;
 
 public class RoomService {
 	
@@ -28,5 +29,9 @@ public class RoomService {
 	public RoomVO findByPrimaryKey(Integer aRoomId){
 		return dao.findByPrimaryKey(aRoomId);
 		
+	}	
+	public Set<RoomVO> getOneHotelAllRoom(String aHotelId){
+	
+		return dao.getOneHotelAllRoom(aHotelId);	
 	}	
 }

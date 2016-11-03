@@ -1,3 +1,4 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="">
 	<head>
@@ -5,11 +6,11 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>廠商前端</title>
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/0_main.css">
-		<script src="js/jquery.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="js/0_new.js "></script>
+		<link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_hotel/css/bootstrap.min.css">
+		<link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_hotel/css/0_main.css">
+		<script src="<%=request.getContextPath()%>/frontend_hotel/js/jquery.js"></script>
+		<script src="<%=request.getContextPath()%>/frontend_hotel/js/bootstrap.min.js"></script>
+		<script src="<%=request.getContextPath()%>/frontend_hotel/js/0_new.js "></script>
 		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
@@ -27,6 +28,12 @@
 </style>
 
 	<body style="background:#FFFAF0">
+	
+	
+	<%session.setAttribute("hotelId","10001");%>
+<!-- 	注意之後要註解掉,因為EL直接從session取出hotelId -->
+	
+	
 		<div id="top-bar" >
 			<nav class="navbar navbar-inverse" role="navigation">
 				<div class="navbar-header">
@@ -115,15 +122,19 @@
 					    <div class="panel-heading" role="tab" id="tab2" style="background-color:#B0C4DE;">
 					      <h4 class="panel-title">
 					        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion2" href="#bbb" aria-expanded="false" aria-controls="bbb">
-					          <span class="glyphicon glyphicon-king"></span> 一般會員
+					          <span class="glyphicon glyphicon-king"></span> 房型資料
 					        </a>
 					      </h4>
 					    </div>
 					    <div id="bbb" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab2">
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
-					        		<li>一般會員維護</li>
-					        		<li>對話紀錄維護</li>
+					        		<li>
+					        			<a href="<%=request.getContextPath()%>/room/room.do?action=getAllRoom_ForOneHotel_Display&hotelId=${hotelId}">房型資料維護
+					        		</li>
+					        		<li>
+					        			<a href="<%=request.getContextPath()%>/room/room.do?action=getAllRoomSell_ForOneHotel_Display&hotelId=${hotelId}">上架管理
+					        		</li>
 					        	</ul>
 					      </div>
 					    </div>

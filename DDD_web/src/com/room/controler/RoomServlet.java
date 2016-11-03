@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.Set;
+
 import com.room.model.RoomService;
 import com.room.model.RoomVO;
 import com.roomphoto.model.RoomPhotoService;
@@ -533,6 +535,45 @@ public class RoomServlet extends HttpServlet {
 			}
 		}
 		
+        if ("getAllRoom_ForOneHotel_Display".equals(action)){
+       
+        	String hotelId =req.getParameter("hotelId");
+//        	RoomService roomSvc = new RoomService();
+//        	Set<RoomVO> roomSet = roomSvc.getOneHotelAllRoom(hotelId);     	    	
+//        	req.setAttribute("RoomSet", roomSet);
+        	String  url ="/frontend_hotel/room/listAllRoom.jsp"; 
+        	RequestDispatcher successView = req
+					.getRequestDispatcher(url);
+        	successView.forward(req, res);
+			return;
+        	
+        }
+        
+        if ("getAllRoomSell_ForOneHotel_Display".equals(action)){
+            
+        	String hotelId =req.getParameter("hotelId");
+
+        	String  url ="/frontend_hotel/room/listAllRoomSell.jsp"; 
+        	RequestDispatcher successView = req
+					.getRequestDispatcher(url);
+        	successView.forward(req, res);
+			return;
+        	
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 		
 		if ("delete".equals(action)) { // 來自listAllEmp.jsp
 

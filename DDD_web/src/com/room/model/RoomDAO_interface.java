@@ -9,4 +9,7 @@ public interface RoomDAO_interface {
 	public boolean delete(String aRoomId);
 	public RoomVO findByPrimaryKey(Integer aRoomId);
 	public List<RoomVO> getAll();
+	
+	public Set<RoomVO> getOneHotelAllRoom(String aHotelId);
+	
 }

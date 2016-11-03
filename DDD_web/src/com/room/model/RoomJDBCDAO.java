@@ -14,6 +14,8 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 		"INSERT INTO room VALUES (room_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = 
 		"SELECT * FROM room order by roomId";
+	private static final String GET_OneHotelALLRoom_STMT = 
+			"SELECT * FROM room where roomHotelId = ? order by roomId";
 	private static final String GET_ONE_STMT = 
 		"SELECT * FROM room where roomId = ?";
 	private static final String DELETE = 
@@ -40,8 +42,85 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 		else 
 		{return false;}		
 	}
-	
-	
+	@Override
+	public Set<RoomVO> getOneHotelAllRoom(String aHotelId){
+		
+		Set<RoomVO> RoomSet = new LinkedHashSet<RoomVO>();
+		
+		RoomVO roomVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_OneHotelALLRoom_STMT);
+			pstmt.setString(1, aHotelId);			
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// empVO 也稱為 Domain objects
+				roomVO = new RoomVO();
+				roomVO.setRoomId(rs.getString("roomId"));
+				roomVO.setRoomHotelId(rs.getString("roomHotelId"));
+				roomVO.setRoomName(rs.getString("roomName"));
+				roomVO.setRoomTotalNo(rs.getInt("roomTotalNo"));
+				roomVO.setRoomPrice(rs.getInt("roomPrice"));
+				roomVO.setRoomForSell(changeString(rs.getString("roomForSell")));
+				roomVO.setRoomForSellAuto(changeString(rs.getString("roomForSellAuto")));
+				roomVO.setRoomRemainNo(rs.getInt("roomRemainNo"));
+				roomVO.setRoomDiscountStartDate(rs.getInt("roomDiscountStartDate"));
+				roomVO.setRoomDiscountEndDate(rs.getInt("roomDiscountEndDate"));
+				roomVO.setRoomDisccountPercent(rs.getDouble("roomDisccountPercent"));
+				roomVO.setRoomDiscountHr(rs.getInt("roomDiscountHr"));
+				roomVO.setRoomOnePrice(changeString(rs.getString("roomOnePrice")));
+				roomVO.setRoomFun(rs.getString("roomFun"));
+				roomVO.setRoomMeal(rs.getString("roomMeal"));
+				roomVO.setRoomSleep(rs.getString("roomSleep"));
+				roomVO.setRoomFacility(rs.getString("roomFacility"));
+				roomVO.setRoomSweetFacility(rs.getString("roomSweetFacility"));
+				roomVO.setRoomCapacity(rs.getInt("roomCapacity"));
+				roomVO.setRoomOneBed(rs.getInt("roomOneBed"));
+				roomVO.setRoomTwoBed(rs.getInt("roomTwoBed"));
+				RoomSet.add(roomVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return RoomSet;
+	}
 	@Override
 	public void insert(RoomVO aRoomVO){
 
@@ -493,7 +572,7 @@ public static void main(String[] args) {
 				System.out.println("---------------------");
 		*/
 				
-			
+		/*	
 		List<RoomVO> list = dao.getAll();
 		for (RoomVO roomVO : list) {
 			System.out.println(roomVO.getRoomId() + ",");
@@ -519,7 +598,36 @@ public static void main(String[] args) {
 			System.out.println(roomVO.getRoomTwoBed());
 			System.out.println("---------------------");
 		}
+		*/
 		
-		
+		// 查詢一家HOTEL所有的ROOM	
+				/*
+						Set<RoomVO> roomSet = dao.getOneHotelAllRoom("10002");
+						for (RoomVO roomVO : roomSet)
+						{
+						System.out.println(roomVO.getRoomId() + ",");
+						System.out.println(roomVO.getRoomHotelId() + ",");
+						System.out.println(roomVO.getRoomName() + ",");
+						System.out.println(roomVO.getRoomTotalNo() + ",");
+						System.out.println(roomVO.getRoomPrice() + ",");
+						System.out.println(roomVO.getRoomForSell() + ",");
+						System.out.println(roomVO.getRoomForSellAuto());
+						System.out.println(roomVO.getRoomRemainNo());
+						System.out.println(roomVO.getRoomDiscountStartDate());
+						System.out.println(roomVO.getRoomDiscountEndDate());
+						System.out.println(roomVO.getRoomDisccountPercent());
+						System.out.println(roomVO.getRoomDiscountHr());
+						System.out.println(roomVO.getRoomOnePrice());
+						System.out.println(roomVO.getRoomFun());
+						System.out.println(roomVO.getRoomMeal());
+						System.out.println(roomVO.getRoomSleep());
+						System.out.println(roomVO.getRoomFacility());
+						System.out.println(roomVO.getRoomSweetFacility());
+						System.out.println(roomVO.getRoomCapacity());
+						System.out.println(roomVO.getRoomOneBed());
+						System.out.println(roomVO.getRoomTwoBed());
+						System.out.println("---------------------");
+						}
+		*/
 	}
 }
