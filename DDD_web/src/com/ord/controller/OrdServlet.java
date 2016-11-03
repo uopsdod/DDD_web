@@ -50,7 +50,7 @@ public class OrdServlet extends HttpServlet {
 				}
 				/* 3.查詢完成 */	
 				aReq.setAttribute("ordVO", ordVO);
-				String url = "/ord/listOneOrd.jsp";
+				String url = "/backend/ord/listOneOrd.jsp";
 				RequestDispatcher successView = aReq.getRequestDispatcher(url);
 				successView.forward(aReq,aRes);
 				/* 其他可能的錯誤處理 */
@@ -76,14 +76,14 @@ public class OrdServlet extends HttpServlet {
 				
 				/* 3.查詢完成 準備轉交 */
 				aReq.setAttribute("ordVO", ordVO);
-				String url ="/ord/updateOrdInput.jsp";
+				String url ="/backend/ord/updateOrdInput.jsp";
 				RequestDispatcher successView = aReq.getRequestDispatcher(url);
 				successView.forward(aReq,aRes);
 			}
 				/* 其他可能錯誤處理 */
 			catch(Exception e){
 				errorMsgs.add("無法取得修改資料: " + e.getMessage());
-				RequestDispatcher failureView = aReq.getRequestDispatcher("/ord/listAllOrd.jsp");
+				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/listAllOrd.jsp");
 				failureView.forward(aReq,aRes);
 			}
 			
@@ -118,7 +118,7 @@ public class OrdServlet extends HttpServlet {
 				
 				if(!errorMsgs.isEmpty()){
 					aReq.setAttribute("ordVO", ordVO);
-					RequestDispatcher failureView = aReq.getRequestDispatcher("/ord/updateOrdInput.jsp");
+					RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/updateOrdInput.jsp");
 					failureView.forward(aReq,aRes);
 					return;
 				}
@@ -129,14 +129,14 @@ public class OrdServlet extends HttpServlet {
 				
 				/* 3.修改完成 準備轉交 */
 				aReq.setAttribute("ordVO", ordVO);
-				String url = "/ord/listOneOrd.jsp";
+				String url = "/backend/ord/listOneOrd.jsp";
 				RequestDispatcher successView = aReq.getRequestDispatcher(url);
 				successView.forward(aReq,aRes);
 				/* 其他可能錯誤處理 */
 			}
 			catch(Exception e){
 				errorMsgs.add("修改資料失敗" + e.getMessage());
-				RequestDispatcher failureView = aReq.getRequestDispatcher("/ord/updateOrdInput.jsp");
+				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/updateOrdInput.jsp");
 				failureView.forward(aReq, aRes);
 			}
 		}
@@ -188,7 +188,7 @@ public class OrdServlet extends HttpServlet {
 
 				if(!errorMsgs.isEmpty()){
 					aReq.setAttribute("ordVO", ordVO);
-					RequestDispatcher failureView = aReq.getRequestDispatcher("/ord/addOrd.jsp");
+					RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/addOrd.jsp");
 					failureView.forward(aReq, aRes);
 					return;
 				}
@@ -214,13 +214,13 @@ public class OrdServlet extends HttpServlet {
 				ordVO = ordSvc.addOrd(ordRoomId, ordMemId, ordHotelId, ordPrice, ordLiveDate, null, ordMsgNo);
 				
 				/* 3.新增完成 */
-				String url = "/ord/listAllOrd.jsp";
+				String url = "/backend/ord/listAllOrd.jsp";
 				RequestDispatcher successView = aReq.getRequestDispatcher(url);
 				successView.forward(aReq, aRes);
 			}
 			catch(Exception e){
 				errorMsgs.add(e.getMessage());
-				RequestDispatcher failureView = aReq.getRequestDispatcher("/ord/addOrd.jsp");
+				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/addOrd.jsp");
 				failureView.forward(aReq,aRes);
 			}
 		}
@@ -236,13 +236,13 @@ public class OrdServlet extends HttpServlet {
 				OrdService ordSvc = new OrdService();
 				ordSvc.deleteOrd(ordId);
 				/* 3.刪除完成 準備轉交 */
-				String url = "/ord/listAllOrd.jsp";
+				String url = "/backend/ord/listAllOrd.jsp";
 				RequestDispatcher successView = aReq.getRequestDispatcher(url);
 				successView.forward(aReq,aRes);
 			}
 			catch(Exception e){
 				errorMsgs.add("刪除資料失敗:" + e.getMessage());
-				RequestDispatcher failureView = aReq.getRequestDispatcher("/ord/listAllOrd.jsp");
+				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/listAllOrd.jsp");
 				failureView.forward(aReq,aRes);				
 			}		
 		
