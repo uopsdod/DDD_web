@@ -802,7 +802,6 @@ CREATE TABLE memLiveCond(
 
 
 
-
 -- 會員1000000001只想被女的找
 INSERT INTO memLiveCond (memLiveCondLiveCondId, memLiveCondMemId)
 VALUES (102, 10000001);
@@ -1016,8 +1015,6 @@ NOCACHE;
 
 
 
-
-
 INSERT INTO ORD
 VALUES (
 CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
@@ -1025,8 +1022,8 @@ CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
 '10000001',
 '10001',
 1000000,
-SYSDATE,
-SYSDATE+1,
+TO_DATE('2016/05/15 10:00:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/15 19:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
 0,
 '啊不就好棒棒123',
 10,
@@ -1034,16 +1031,15 @@ null,
 'ABCD'
 ); 
 
-
 INSERT INTO ORD
 VALUES (
 CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
 '1000004',
-'10000001',
+'10000002',
 '10002',
 1000000,
-SYSDATE,
-SYSDATE+1,
+TO_DATE('2016/01/01 7:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/01/01 4:03:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
 0,
 '啊不就好棒棒789',
 10,
@@ -1058,28 +1054,26 @@ INSERT INTO ORD
 VALUES (
 CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
 '1000003',
-'10000001',
+'10000003',
 '10002',
 1000000,
-SYSDATE,
-SYSDATE+1,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
 0,
 '啊不就好棒棒456',
 10,
 null,
 'ABCD'
 ); 
-
-
 INSERT INTO ORD
 VALUES (
 CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
 '1000002',
-'10000002',
+'10000004',
 '10002',
 100,
-SYSDATE,
-SYSDATE+1,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
 0,
 '台中人愛吃辣123',
 0,
@@ -1207,7 +1201,11 @@ VALUES ( memrep_seq.NEXTVAL,
           null,
           '此旅館的服務態度很差',
           0, --0.未審核 1.已審核未通過 2.已審核已通過
-          sysdate, -- 檢舉單提出日
+         (select ordDate 
+          from (select rownum rnum, ordDate
+                from ord
+                where rownum <= 1)
+          where rnum >= 1)+1, --檢舉單提出日-訂單日+1天
           null
           );
 -- 有空再補強: 增加check - 欄位: memrepEmpId, memrepStatus, memrepReviewDate 有連動關係
@@ -1215,7 +1213,7 @@ VALUES ( memrep_seq.NEXTVAL,
 
 
 
--- 此檢舉單根據第三個訂單提出(根據訂單，附上memId以及hotelId)，且已由第一位員工處理，在隔天
+-- 此檢舉單根據第二個訂單提出(根據訂單，附上memId以及hotelId)，且已由第一位員工處理
 INSERT INTO memrep (memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus,memrepDate,memrepReviewDate  )
 VALUES ( memrep_seq.NEXTVAL,
         (select ordid 
@@ -1240,19 +1238,93 @@ VALUES ( memrep_seq.NEXTVAL,
           where rnum >= 1), -- 第一位員工
           '我到了旅館，他們卻要跟我說兩倍的價格，太可惡。',
           2, --0.未審核 1.已審核未通過 2.已審核已通過
-          sysdate-1, --檢舉單提出日
-          sysdate --檢舉單審核日
+         (select ordDate 
+          from (select rownum rnum, ordDate
+                from ord
+                where rownum <= 2)
+          where rnum >= 2)+1, --檢舉單提出日-訂單日+1天
+          (select ordDate 
+          from (select rownum rnum, ordDate
+                from ord
+                where rownum <= 2)
+          where rnum >= 2)+2 --檢舉單提出日-訂單日+2天
           );
--- 有空再補強: 當審核狀態更改為2，要連動將一般會員的'黑名單狀態'作相對應更動        
+UPDATE mem
+SET memBlackList = 1
+WHERE memId = (select ordmemid
+          from (select rownum rnum, ordid, ordmemid
+                from ord
+                where rownum <= 2)
+          where rnum >= 2);
+--當審核狀態更改為2，要連動將一般會員的'黑名單狀態'作相對應更動  
 
-
-
-
+-- 此檢舉單根據第三個訂單提出(根據訂單，附上memId以及hotelId)，且已由第四位員工處理
+INSERT INTO memrep (memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus,memrepDate,memrepReviewDate  )
+VALUES ( memrep_seq.NEXTVAL,
+        (select ordid 
+          from (select rownum rnum, ordid
+                from ord
+                where rownum <= 3)
+          where rnum >= 3), 
+        (select ordmemid
+          from (select rownum rnum, ordid, ordmemid
+                from ord
+                where rownum <= 3)
+          where rnum >= 3),
+        (select ordhotelid
+          from (select rownum rnum, ordid, ordhotelid
+                from ord
+                where rownum <= 3)
+          where rnum >= 3),
+          (select empid
+          from (select rownum rnum, empid
+                from emp
+                where rownum <= 4)
+          where rnum >= 4), -- 第四位員工
+          '浴室設備老舊。',
+          1, --0.未審核 1.已審核未通過 2.已審核已通過
+         (select ordDate 
+          from (select rownum rnum, ordDate
+                from ord
+                where rownum <= 3)
+          where rnum >= 3)+2, --檢舉單提出日-訂單日+2天
+         (select ordDate 
+          from (select rownum rnum, ordDate
+                from ord
+                where rownum <= 3)
+          where rnum >= 3)+3 --檢舉單提出日-訂單日+3天
+          );
 commit;
 
-
-
-
+-- 此檢舉單根據第四個訂單提出(根據訂單，附上memId以及hotelId)，尚未處理
+INSERT INTO memrep (memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus,memrepDate,memrepReviewDate  )
+VALUES ( memrep_seq.NEXTVAL,
+        (select ordid 
+          from (select rownum rnum, ordid
+                from ord
+                where rownum <= 4)
+          where rnum >= 4), 
+        (select ordmemid
+          from (select rownum rnum, ordid, ordmemid
+                from ord
+                where rownum <= 4)
+          where rnum >= 4),
+        (select ordhotelid
+          from (select rownum rnum, ordid, ordhotelid
+                from ord
+                where rownum <= 4)
+          where rnum >= 4),
+          null, 
+          '旅館附近停車不方便。',
+          1, --0.未審核 1.已審核未通過 2.已審核已通過
+         (select ordDate 
+          from (select rownum rnum, ordDate
+                from ord
+                where rownum <= 4)
+          where rnum >= 4)+2, --檢舉單提出日-訂單日+2天
+          null --檢舉單提出日-訂單日+3天
+          );
+commit;
 /* 廠商會員檢舉單 */
 CREATE TABLE HOTELREP(
 hotelRepId       VARCHAR2(9) NOT NULL,
@@ -1274,13 +1346,6 @@ CONSTRAINT HOTELREP_hotelRepMemId_FK FOREIGN KEY (hotelRepMemId) REFERENCES MEM 
 CONSTRAINT HOTELREP_hotelRepOrdId_FK FOREIGN KEY (hotelRepOrdId) REFERENCES ORD (ORDID),
 CONSTRAINT HOTELREP_hotelRepEmpId_FK FOREIGN KEY (hotelRepEmpId) REFERENCES EMP (EMPID)
 );
-
-
-
-
-
-
-
 
 CREATE SEQUENCE hotelRep_seq
 INCREMENT BY 1
