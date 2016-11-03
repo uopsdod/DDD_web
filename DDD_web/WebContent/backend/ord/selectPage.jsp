@@ -58,5 +58,11 @@
 	</li>
 </ul>
 
+<h3>訂單管理</h3>
+
+<ul>
+	<li><a href="addOrd.jsp">Add</a> a new Ord.</li>
+</ul>
+
 </body>
 </html>
