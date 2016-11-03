@@ -8,4 +8,5 @@ public interface HotelDAO_interface {
      public void update(HotelVO aHotelVO);
      public void update_status(String hotelId,HotelVO aHotelVO);
      public void update_hotelBlackList(String hotelId,HotelVO aHotelVO);
+     public HotelVO findByPrimaryKey(String aHotelId);
 }
