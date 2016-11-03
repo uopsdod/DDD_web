@@ -36,9 +36,9 @@
   <servlet-mapping>
     <servlet-name>OrdServlet</servlet-name>
     <url-pattern>/backend/ord/ord.do</url-pattern>
-  </servlet-mapping>    
+  </servlet-mapping>
+    
    <servlet>
-   
     <servlet-name>HotelServlet</servlet-name>
     <servlet-class>android.Hotel.Hotel</servlet-class>
   </servlet>
@@ -46,5 +46,4 @@
     <servlet-name>HotelServlet</servlet-name>
     <url-pattern>/android/hotel.do</url-pattern>
   </servlet-mapping>
-
 </web-app>
