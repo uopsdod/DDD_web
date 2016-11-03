@@ -55,6 +55,8 @@ public class OrdService {
 		ordVO.setOrdRatingStarNo(aOrdRatingStarNo);
 		ordVO.setOrdId(aOrdId);
 		
+		dao.update(ordVO);
+		
 		return ordVO;
 	}
 	
