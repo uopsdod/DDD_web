@@ -25,5 +25,14 @@
     <url-pattern>/roomphoto/roomphoto.do</url-pattern>
   </servlet-mapping>
  
+ <servlet>
+    <servlet-name>HotelServlet</servlet-name>
+    <servlet-class>android.Hotel.Hotel</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HotelServlet</servlet-name>
+    <url-pattern>/android/hotel.do</url-pattern>
+  </servlet-mapping>
+ 	
   
 </web-app>
