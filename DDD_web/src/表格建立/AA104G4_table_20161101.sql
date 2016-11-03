@@ -1,24 +1,24 @@
 /*
- *  [¦n¤ß´£¿ô] 
- *  (1) ¥Ñ©ó¸ê®Æ¤ñ¸û¦h ¥i¥H³z¹L·j´M¹³¬O ord (­q³æ) ¨ì«ü©wtable¥h¸É¥R¸ê®Æ
- *  (2) level 2 3 4ªº¥~¨ÓÁä°²¸ê®Æ ¥i¥H°Ñ¦Òlevel¼Æ¸û«e­± (level 1 2 3) ªº
+ *  [å¥½å¿ƒæé†’] 
+ *  (1) ç”±æ–¼è³‡æ–™æ¯”è¼ƒå¤š å¯ä»¥é€éæœå°‹åƒæ˜¯ ord (è¨‚å–®) åˆ°æŒ‡å®štableå»è£œå……è³‡æ–™
+ *  (2) level 2 3 4çš„å¤–ä¾†éµå‡è³‡æ–™ å¯ä»¥åƒè€ƒlevelæ•¸è¼ƒå‰é¢ (level 1 2 3) çš„
  *
  *
- * table«Ø¸m¶¶§Ç :
+ * tableå»ºç½®é †åº :
  * 
  *
  *  [Level 1] (NO Foreign Key) 
- * ­û¤u Åv­­ ¤@¯ë·|­û ¼t°Ó·|­û Banner¤è®× ²á¤Ñ«Ç ªş¥[ªA°È ¦@¦í±ø¥ó
+ * å“¡å·¥ æ¬Šé™ ä¸€èˆ¬æœƒå“¡ å» å•†æœƒå“¡ Banneræ–¹æ¡ˆ èŠå¤©å®¤ é™„åŠ æœå‹™ å…±ä½æ¢ä»¶
  * 
- * [Level 2] (Foreign Key¦b lv1)
- * ­û¤uÅv­­ ²á¤Ñ«Ç¤º®e ¤W¬[¤ë¯²¬ö¿ı ªş¥[ªA°È²Ó¶µ Banner ¤@¯ë·|­ûªº¦@¦í±ø¥ó
- * ©Ğ«¬
+ * [Level 2] (Foreign Keyåœ¨ lv1)
+ * å“¡å·¥æ¬Šé™ èŠå¤©å®¤å…§å®¹ ä¸Šæ¶æœˆç§Ÿç´€éŒ„ é™„åŠ æœå‹™ç´°é … Banner ä¸€èˆ¬æœƒå“¡çš„å…±ä½æ¢ä»¶
+ * æˆ¿å‹
  *
- * [Level 3] (Foreign Key¦b lv1~2)
- * ­q³æ ©Ğ«¬·Ó¤ù Ä@±æ¶µ¥Ø
+ * [Level 3] (Foreign Keyåœ¨ lv1~2)
+ * è¨‚å–® æˆ¿å‹ç…§ç‰‡ é¡˜æœ›é …ç›®
  *
- * [Level 4] (Foreign Key¦b lv1~3)
- * ¤@¯ë·|­ûÀËÁ|³æ ¼t°Ó·|­ûÀËÁ|³æ
+ * [Level 4] (Foreign Keyåœ¨ lv1~3)
+ * ä¸€èˆ¬æœƒå“¡æª¢èˆ‰å–® å» å•†æœƒå“¡æª¢èˆ‰å–®
  *
  */
 
@@ -26,26 +26,26 @@
 
 
 /*
- *  [¦n¤ß´£¿ô] 
- *  (1) ¥Ñ©ó¸ê®Æ¤ñ¸û¦h ¥i¥H³z¹L·j´M¹³¬O ord (­q³æ) ¨ì«ü©wtable¥h¸É¥R¸ê®Æ
- *  (2) level 2 3 4ªº¥~¨ÓÁä°²¸ê®Æ ¥i¥H°Ñ¦Òlevel¼Æ¸û«e­± (level 1 2 3) ªº
+ *  [å¥½å¿ƒæé†’] 
+ *  (1) ç”±æ–¼è³‡æ–™æ¯”è¼ƒå¤š å¯ä»¥é€éæœå°‹åƒæ˜¯ ord (è¨‚å–®) åˆ°æŒ‡å®štableå»è£œå……è³‡æ–™
+ *  (2) level 2 3 4çš„å¤–ä¾†éµå‡è³‡æ–™ å¯ä»¥åƒè€ƒlevelæ•¸è¼ƒå‰é¢ (level 1 2 3) çš„
  *
  *
- * table«Ø¸m¶¶§Ç :
+ * tableå»ºç½®é †åº :
  * 
  *
  *  [Level 1] (NO Foreign Key) 
- * ­û¤u Åv­­ ¤@¯ë·|­û ¼t°Ó·|­û Banner¤è®× ²á¤Ñ«Ç ªş¥[ªA°È ¦@¦í±ø¥ó
+ * å“¡å·¥ æ¬Šé™ ä¸€èˆ¬æœƒå“¡ å» å•†æœƒå“¡ Banneræ–¹æ¡ˆ èŠå¤©å®¤ é™„åŠ æœå‹™ å…±ä½æ¢ä»¶
  * 
- * [Level 2] (Foreign Key¦b lv1)
- * ­û¤uÅv­­ ²á¤Ñ«Ç¤º®e ¤W¬[¤ë¯²¬ö¿ı ªş¥[ªA°È²Ó¶µ Banner ¤@¯ë·|­ûªº¦@¦í±ø¥ó
- * ©Ğ«¬
+ * [Level 2] (Foreign Keyåœ¨ lv1)
+ * å“¡å·¥æ¬Šé™ èŠå¤©å®¤å…§å®¹ ä¸Šæ¶æœˆç§Ÿç´€éŒ„ é™„åŠ æœå‹™ç´°é … Banner ä¸€èˆ¬æœƒå“¡çš„å…±ä½æ¢ä»¶
+ * æˆ¿å‹
  *
- * [Level 3] (Foreign Key¦b lv1~2)
- * ­q³æ ©Ğ«¬·Ó¤ù Ä@±æ¶µ¥Ø
+ * [Level 3] (Foreign Keyåœ¨ lv1~2)
+ * è¨‚å–® æˆ¿å‹ç…§ç‰‡ é¡˜æœ›é …ç›®
  *
- * [Level 4] (Foreign Key¦b lv1~3)
- * ¤@¯ë·|­ûÀËÁ|³æ ¼t°Ó·|­ûÀËÁ|³æ
+ * [Level 4] (Foreign Keyåœ¨ lv1~3)
+ * ä¸€èˆ¬æœƒå“¡æª¢èˆ‰å–® å» å•†æœƒå“¡æª¢èˆ‰å–®
  *
  */
 
@@ -56,7 +56,7 @@
 
 
 
-/* ¾ã­Ótable±ş¥ú¥ú«ü¥O */
+/* æ•´å€‹tableæ®ºå…‰å…‰æŒ‡ä»¤ */
 DROP TABLE hotelRep;
 DROP SEQUENCE hotelRep_seq;
 DROP TABLE memRep;
@@ -100,12 +100,12 @@ DROP SEQUENCE emp_seq;
 
 
 
-/* [Level 1] ­û¤u Åv­­ ¤@¯ë·|­û ¼t°Ó·|­û Banner¤è®× ²á¤Ñ«Ç ªş¥[ªA°È ¦@¦í±ø¥ó */
+/* [Level 1] å“¡å·¥ æ¬Šé™ ä¸€èˆ¬æœƒå“¡ å» å•†æœƒå“¡ Banneræ–¹æ¡ˆ èŠå¤©å®¤ é™„åŠ æœå‹™ å…±ä½æ¢ä»¶ */
 
 
 
 
-/* ­û¤u */
+/* å“¡å·¥ */
 CREATE TABLE EMP (
  empId          VARCHAR2(5) NOT NULL,
  empName        VARCHAR2(20),
@@ -132,11 +132,11 @@ NOCACHE;
 
 
 
-INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'Alen','a12345@hotmail.com','123','0953589679',SYSDATE,'','0',TO_DATE('1993-02-27','YYYY-MM-DD'),'','A177712238','®ç¶é¥«·¨±ö°Ï¥Á±Ú¸ô16¸¹');
-INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'Jack','b12345@hotmail.com','123','0923558778',SYSDATE,'','0',TO_DATE('1991-02-27','YYYY-MM-DD'),'','A194531193','¥x¥_¥««H¸q°Ï«H¸q¸ô10¸¹');
-INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'Peter','c12345@hotmail.com','123','0912356895',SYSDATE,'','0',TO_DATE('1992-02-27','YYYY-MM-DD'),'','A187836423','®ç¶é¥«¤¤Ãc°Ï¤¤¤j¸ô16¸¹');
-INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'Sara','d12345@hotmail.com','123','0988087087',SYSDATE,'','0',TO_DATE('1995-02-27','YYYY-MM-DD'),'','A162371494','·s¦Ë¥«ª÷¤sµó100¸¹');
-INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'Amy','e12345@hotmail.com','123','0972556556',SYSDATE,'','0',TO_DATE('1990-02-27','YYYY-MM-DD'),'','A164040858','®ç¶é¥«·¨±ö°Ï·s¹Aµó116¸¹');
+INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'Alen','a12345@hotmail.com','123','0953589679',SYSDATE,'','0',TO_DATE('1993-02-27','YYYY-MM-DD'),'','A177712238','æ¡ƒåœ’å¸‚æ¥Šæ¢…å€æ°‘æ—è·¯16è™Ÿ');
+INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'Jack','b12345@hotmail.com','123','0923558778',SYSDATE,'','0',TO_DATE('1991-02-27','YYYY-MM-DD'),'','A194531193','å°åŒ—å¸‚ä¿¡ç¾©å€ä¿¡ç¾©è·¯10è™Ÿ');
+INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'Peter','c12345@hotmail.com','123','0912356895',SYSDATE,'','0',TO_DATE('1992-02-27','YYYY-MM-DD'),'','A187836423','æ¡ƒåœ’å¸‚ä¸­å£¢å€ä¸­å¤§è·¯16è™Ÿ');
+INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'Sara','d12345@hotmail.com','123','0988087087',SYSDATE,'','0',TO_DATE('1995-02-27','YYYY-MM-DD'),'','A162371494','æ–°ç«¹å¸‚é‡‘å±±è¡—100è™Ÿ');
+INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'Amy','e12345@hotmail.com','123','0972556556',SYSDATE,'','0',TO_DATE('1990-02-27','YYYY-MM-DD'),'','A164040858','æ¡ƒåœ’å¸‚æ¥Šæ¢…å€æ–°è¾²è¡—116è™Ÿ');
 
 
 
@@ -146,7 +146,7 @@ commit;
 
 
 
-/* Åv­­ */
+/* æ¬Šé™ */
 CREATE TABLE AUTH (
  authId      VARCHAR2(3) NOT NULL,
  authName	 VARCHAR2(25),
@@ -163,10 +163,10 @@ NOCACHE;
 
 
 
-INSERT INTO AUTH VALUES(auth_seq.NEXTVAL,'¤H¨ÆºŞ²z');
-INSERT INTO AUTH VALUES(auth_seq.NEXTVAL,'¦æ¬F·~°ÈºŞ²z');
-INSERT INTO AUTH VALUES(auth_seq.NEXTVAL,'­º­¶ºŞ²z');
-INSERT INTO AUTH VALUES(auth_seq.NEXTVAL,'«ÈªAºŞ²z');
+INSERT INTO AUTH VALUES(auth_seq.NEXTVAL,'äººäº‹ç®¡ç†');
+INSERT INTO AUTH VALUES(auth_seq.NEXTVAL,'è¡Œæ”¿æ¥­å‹™ç®¡ç†');
+INSERT INTO AUTH VALUES(auth_seq.NEXTVAL,'é¦–é ç®¡ç†');
+INSERT INTO AUTH VALUES(auth_seq.NEXTVAL,'å®¢æœç®¡ç†');
 
 
 
@@ -176,7 +176,7 @@ commit;
 
 
 
-/* ¤@¯ë·|­û */
+/* ä¸€èˆ¬æœƒå“¡ */
 create table mem(
         memId varchar2(8) not null,
         memAccount varchar2(60),
@@ -210,24 +210,24 @@ create sequence mem_seq
 
 
 insert into mem(memId, memAccount, memPsw, memName, memGender, memTwId, memBirthDate, memPhone, memlivebudget, memintro, memprofile, memblacklist, memcreditcardno, memcreditcheckno, memcreditduedate) 
-      values(mem_seq.NEXTVAL, 'MarvinPMcNerney@armyspy.com', 'oobi6aSee', 'ÃÓªÛ¿o', 'f', 'G207842621', to_Date('1994-04-25', 'yyyy-mm-dd'), '0977885526', 1500, '§Ú±R©|¦ÛµM¡A§Æ±æ¾a³o¦¸®È¦æ¡A¯à»{ÃÑ§ó¦hªº¤H', null, '0', '5590143876967822', '641', '2021-10');
+      values(mem_seq.NEXTVAL, 'MarvinPMcNerney@armyspy.com', 'oobi6aSee', 'è­šèŠç©', 'f', 'G207842621', to_Date('1994-04-25', 'yyyy-mm-dd'), '0977885526', 1500, 'æˆ‘å´‡å°šè‡ªç„¶ï¼Œå¸Œæœ›é é€™æ¬¡æ—…è¡Œï¼Œèƒ½èªè­˜æ›´å¤šçš„äºº', null, '0', '5590143876967822', '641', '2021-10');
 insert into mem(memId, memAccount, memPsw, memName, memGender, memTwId, memBirthDate, memPhone, memlivebudget, memintro, memprofile, memblacklist, memcreditcardno, memcreditcheckno, memcreditduedate) 
-      values(mem_seq.NEXTVAL, 'PengYaPing@rhyta.com', 'aeReetoa4Th', '´^¶®µÓ', 'f', 'E204746648', to_Date('1991-12-10', 'yyyy-mm-dd'), '0954122356', 1700, '¤Ñ°¨¦æªÅªº¤Û·Q', null, '0', '4556548042942332', '836', '2018-12');
+      values(mem_seq.NEXTVAL, 'PengYaPing@rhyta.com', 'aeReetoa4Th', 'å½­é›…è', 'f', 'E204746648', to_Date('1991-12-10', 'yyyy-mm-dd'), '0954122356', 1700, 'å¤©é¦¬è¡Œç©ºçš„å¹»æƒ³', null, '0', '4556548042942332', '836', '2018-12');
 insert into mem(memId, memAccount, memPsw, memName, memGender, memTwId, memBirthDate, memPhone, memlivebudget, memintro, memprofile, memblacklist, memcreditcardno, memcreditcheckno, memcreditduedate) 
-      values(mem_seq.NEXTVAL, 'LinWeiTing@jourrapide.com', 'wah8AviC', 'ªL«Â§Ê', 'm', 'C106824310', to_Date('1973-04-22', 'yyyy-mm-dd'), '0952221456', 2000, '«¢«¢«¢«¢«¢', null, '0', '4485055095528840', '724', '2021-05');
+      values(mem_seq.NEXTVAL, 'LinWeiTing@jourrapide.com', 'wah8AviC', 'æ—å¨å»·', 'm', 'C106824310', to_Date('1973-04-22', 'yyyy-mm-dd'), '0952221456', 2000, 'å“ˆå“ˆå“ˆå“ˆå“ˆ', null, '0', '4485055095528840', '724', '2021-05');
 insert into mem(memId, memAccount, memPsw, memName, memGender, memTwId, memBirthDate, memPhone, memlivebudget, memintro, memprofile, memblacklist, memcreditcardno, memcreditcheckno, memcreditduedate) 
-      values(mem_seq.NEXTVAL, 'HuChuLing@jourrapide.com', 'ieNei8Beet', '­J²Q¬Â', 'f', 'F243467258', to_Date('1983-06-06', 'yyyy-mm-dd'), '0912556674', 1200, '1s,1h', null, '0', '5544368296299202', '696', '2020-11');
+      values(mem_seq.NEXTVAL, 'HuChuLing@jourrapide.com', 'ieNei8Beet', 'èƒ¡æ·‘ç²', 'f', 'F243467258', to_Date('1983-06-06', 'yyyy-mm-dd'), '0912556674', 1200, '1s,1h', null, '0', '5544368296299202', '696', '2020-11');
 insert into mem(memId, memAccount, memPsw, memName, memGender, memTwId, memBirthDate, memPhone, memlivebudget, memintro, memprofile, memblacklist, memcreditcardno, memcreditcheckno, memcreditduedate) 
-      values(mem_seq.NEXTVAL, 'BoGuanLin@rhyta.com', 'cuP0ahL2y', '¥Õ«aÀM', 'm', 'A167463308', to_Date('1993-12-23', 'yyyy-mm-dd'), '0955123225', 1800, '¥ş°ê³Ì¤jªº»r²á', null, '0', '4485789622527244', '795', '2018-11');
+      values(mem_seq.NEXTVAL, 'BoGuanLin@rhyta.com', 'cuP0ahL2y', 'ç™½å† éœ–', 'm', 'A167463308', to_Date('1993-12-23', 'yyyy-mm-dd'), '0955123225', 1800, 'å…¨åœ‹æœ€å¤§çš„è£¸èŠ', null, '0', '4485789622527244', '795', '2018-11');
 insert into mem(memId, memAccount, memPsw, memName, memGender, memTwId, memBirthDate, memPhone, memlivebudget, memintro, memprofile, memblacklist, memcreditcardno, memcreditcheckno, memcreditduedate) 
-      values(mem_seq.NEXTVAL, 'sandrahaneyxyK@teleosaurs.xyz', 'rruXjwCR5YvKrNS', '¶À¥P¬À', 'f', 'L167425787', to_Date('1996-10-02', 'yyyy-mm-dd'), '0921254297', 2100, '³ßÅw®È¦æ¡B»{ÃÑ·sªB¤Í¡A¹Ú·Q¬O¦³¤@¤Ñ¯à¨«¤ù¥@¬É¦U¦a', null, '0', '3337908044924274', '820', '2019-11');
+      values(mem_seq.NEXTVAL, 'sandrahaneyxyK@teleosaurs.xyz', 'rruXjwCR5YvKrNS', 'é»ƒä»™çŠ', 'f', 'L167425787', to_Date('1996-10-02', 'yyyy-mm-dd'), '0921254297', 2100, 'å–œæ­¡æ—…è¡Œã€èªè­˜æ–°æœ‹å‹ï¼Œå¤¢æƒ³æ˜¯æœ‰ä¸€å¤©èƒ½èµ°ç‰‡ä¸–ç•Œå„åœ°', null, '0', '3337908044924274', '820', '2019-11');
 
 
-INSERT INTO mem VALUES (mem_seq.NEXTVAL,'a12345@hotmail.com','123','Alen','m','H121335148',TO_DATE('1991-02-27','YYYY-MM-DD'),'0953545123','0','¤j®a¦n','','0','4752145612541121','587','2018-05');
-INSERT INTO mem VALUES (mem_seq.NEXTVAL,'b12345@hotmail.com','123','Jax','m','H121335148',TO_DATE('1993-03-27','YYYY-MM-DD'),'0953554523','0','¤j®a¦n','','0','4752145612541121','587','2018-05');
-INSERT INTO mem VALUES (mem_seq.NEXTVAL,'c12345@hotmail.com','123','Ben','m','H121335148',TO_DATE('1997-04-27','YYYY-MM-DD'),'0925745123','0','¤j®a¦n','','0','4752145612541121','587','2018-05');
-INSERT INTO mem VALUES (mem_seq.NEXTVAL,'d12345@hotmail.com','123','Scott','m','H121335148',TO_DATE('1993-05-27','YYYY-MM-DD'),'0912545123','0','¤j®a¦n','','0','4752145612541121','587','2018-05');
-INSERT INTO mem VALUES (mem_seq.NEXTVAL,'e12345@hotmail.com','123','iris','F','H221335148',TO_DATE('1998-06-27','YYYY-MM-DD'),'0953542143','0','¤j®a¦n','','0','4752145612541121','587','2018-05');
+INSERT INTO mem VALUES (mem_seq.NEXTVAL,'a12345@hotmail.com','123','Alen','m','H121335148',TO_DATE('1991-02-27','YYYY-MM-DD'),'0953545123','0','å¤§å®¶å¥½','','0','4752145612541121','587','2018-05');
+INSERT INTO mem VALUES (mem_seq.NEXTVAL,'b12345@hotmail.com','123','Jax','m','H121335148',TO_DATE('1993-03-27','YYYY-MM-DD'),'0953554523','0','å¤§å®¶å¥½','','0','4752145612541121','587','2018-05');
+INSERT INTO mem VALUES (mem_seq.NEXTVAL,'c12345@hotmail.com','123','Ben','m','H121335148',TO_DATE('1997-04-27','YYYY-MM-DD'),'0925745123','0','å¤§å®¶å¥½','','0','4752145612541121','587','2018-05');
+INSERT INTO mem VALUES (mem_seq.NEXTVAL,'d12345@hotmail.com','123','Scott','m','H121335148',TO_DATE('1993-05-27','YYYY-MM-DD'),'0912545123','0','å¤§å®¶å¥½','','0','4752145612541121','587','2018-05');
+INSERT INTO mem VALUES (mem_seq.NEXTVAL,'e12345@hotmail.com','123','iris','f','H221335148',TO_DATE('1998-06-27','YYYY-MM-DD'),'0953542143','0','å¤§å®¶å¥½','','0','4752145612541121','587','2018-05');
 
 
 
@@ -237,7 +237,7 @@ commit;
 
 
 
-/* ¼t°Ó·|­û */
+/* å» å•†æœƒå“¡ */
 CREATE TABLE hotel (
  hotelId            VARCHAR2(5) NOT NULL,
  hotelType	 	    VARCHAR2(20),
@@ -263,7 +263,7 @@ CREATE TABLE hotel (
  hotelCreditCardNo  VARCHAR2(16),
  hotelCreditCheckNo VARCHAR2(3),
  hotelCreditDueDate VARCHAR2(15),
- CONSTRAINT Hotel_hotelId_PK PRIMARY KEY (hotelId)
+ CONSTRAINT hotel_hotelId_pk PRIMARY KEY (hotelId)
 );
  
 CREATE SEQUENCE hotel_seq
@@ -276,8 +276,8 @@ NOCACHE;
 
 
 
-INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'¥Á±J','¤p·s¯ú±J®ÈÀ]','56745644','','¥x¥_¥«','«H¸q°Ï','«H¸q¸ô385¸¹','¦¿²K°]','house1@gmail.com','123456789','0925990128','121.576957','25.028702','´º¦âÀu¬ü','','https://www.agoda.com/zh-tw/city/taipei-tw.html','0','0','0','0','4705381232568781','138','2020-03');
-INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'¨T¨®®ÈÀ]','OA¨T¨®®ÈÀ]','51231655','','®ç¶é¥«','¤¤Ãc°Ï','¤¤¥_¸ô340¸¹','·¨¥P¥Í','house2@gmail.com','123456789','0925990128','121.576957','25.028702','´º¦âÀu¬ü','','https://www.agoda.com/zh-tw/city/taipei-tw.html','0','0','0','0','4705381232568781','138','2023-05');
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'æ°‘å®¿','å°æ–°èŒ—å®¿æ—…é¤¨','56745644','','å°åŒ—å¸‚','ä¿¡ç¾©å€','ä¿¡ç¾©è·¯385è™Ÿ','æ±Ÿæ·»è²¡','house1@gmail.com','123456789','0925990128','121.576957','25.028702','æ™¯è‰²å„ªç¾','','https://www.agoda.com/zh-tw/city/taipei-tw.html','0','0','0','0','4705381232568781','138','2020-03');
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'æ±½è»Šæ—…é¤¨','OAæ±½è»Šæ—…é¤¨','51231655','','æ¡ƒåœ’å¸‚','ä¸­å£¢å€','ä¸­åŒ—è·¯340è™Ÿ','æ¥Šä»™ç”Ÿ','house2@gmail.com','123456789','0925990128','121.576957','25.028702','æ™¯è‰²å„ªç¾','','https://www.agoda.com/zh-tw/city/taipei-tw.html','0','0','0','0','4705381232568781','138','2023-05');
 
 
 
@@ -295,7 +295,7 @@ commit;
 
 
 
-/* Banner¤è®× */
+/* Banneræ–¹æ¡ˆ */
 CREATE TABLE adPlan(
  adPlanId             VARCHAR2(8) NOT NULL,
  adPlanName           VARCHAR2(90),
@@ -317,7 +317,7 @@ NOMAXVALUE;
 
 
 
-INSERT INTO adPlan (adPlanId,adPlanName,adPlanStartDate,adPlanEndDate,adPlanPrice,adPlanRemainNo) VALUES (adPlan_seq.NEXTVAL,'11¤ë¤è®×',to_date('11 1,2016','MM DD,YYYY'), to_date('11 30,2016','MM DD,YYYY'),5000, 2);
+INSERT INTO adPlan (adPlanId,adPlanName,adPlanStartDate,adPlanEndDate,adPlanPrice,adPlanRemainNo) VALUES (adPlan_seq.NEXTVAL,'11æœˆæ–¹æ¡ˆ',to_date('11 1,2016','MM DD,YYYY'), to_date('11 30,2016','MM DD,YYYY'),5000, 2);
 
 
 
@@ -327,7 +327,7 @@ commit;
 
 
 
-/* ²á¤Ñ«Ç */
+/* èŠå¤©å®¤ */
 CREATE TABLE chat(
  chatId   VARCHAR2(8) NOT NULL,
  chatName VARCHAR2(30),
@@ -358,7 +358,7 @@ commit;
 
 
 
-/* ªş¥[ªA°È */
+/* é™„åŠ æœå‹™ */
 create table  serv(
               servId VARCHAR2(3) not null,
               servName  VARCHAR2(60),
@@ -382,21 +382,21 @@ create sequence serv_seq
 
 
 
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, '¦­À\');
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, '¸TµÒ¶º©±');
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, '°±¨®³õ(¨®¦ì¦³­­)');
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, '«Ç¥~´åªa¦À');
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, '§K¶OWi-Fi');
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, '¹q±è');
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, '§K¶OADSL');
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, '¬~¦ç³]¬I');
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, '°·¨­³]¬I');
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, '®È¹C¸ê°T');
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, '¦æ§õ±H©ñ');
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, '¤½¦@°Ï°ì´£¨Ñ©@°Ø/¯ù');
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, '¤jÆU´£¨Ñ§K¶O³ø¯È');
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'À\ÆU');
-insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'Âd¥x«OÀI½c');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'æ—©é¤');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'ç¦è¸é£¯åº—');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'åœè»Šå ´(è»Šä½æœ‰é™)');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'å®¤å¤–æ¸¸æ³³æ± ');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'å…è²»Wi-Fi');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'é›»æ¢¯');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'å…è²»ADSL');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'æ´—è¡£è¨­æ–½');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'å¥èº«è¨­æ–½');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'æ—…éŠè³‡è¨Š');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'è¡Œæå¯„æ”¾');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'å…¬å…±å€åŸŸæä¾›å’–å•¡/èŒ¶');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'å¤§å»³æä¾›å…è²»å ±ç´™');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'é¤å»³');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, 'æ«ƒå°ä¿éšªç®±');
 commit;		
 
 
@@ -406,7 +406,7 @@ commit;
 
 
 
-/* ¦@¦í±ø¥ó */
+/* å…±ä½æ¢ä»¶ */
 CREATE TABLE liveCond(
   liveCondId VARCHAR2(3) NOT NULL,
   liveCondName VARCHAR2(90),
@@ -427,9 +427,9 @@ NOCACHE;
 
 
 INSERT INTO livecond (liveCondId, liveCondName)
-VALUES(livecond_seq.NEXTVAL, '³Q¨kªº§ä');
+VALUES(livecond_seq.NEXTVAL, 'è¢«ç”·çš„æ‰¾');
 INSERT INTO livecond (liveCondId, liveCondName)
-VALUES(livecond_seq.NEXTVAL, '³Q¤kªº§ä');
+VALUES(livecond_seq.NEXTVAL, 'è¢«å¥³çš„æ‰¾');
 
 
 
@@ -439,12 +439,12 @@ commit;
 
 
 
-/* [Level 2] ­û¤uÅv­­ ²á¤Ñ«Ç¤º®e ¤W¬[¤ë¯²¬ö¿ı ªş¥[ªA°È²Ó¶µ Banner ¤@¯ë·|­ûªº¦@¦í±ø¥ó ©Ğ«¬ */
+/* [Level 2] å“¡å·¥æ¬Šé™ èŠå¤©å®¤å…§å®¹ ä¸Šæ¶æœˆç§Ÿç´€éŒ„ é™„åŠ æœå‹™ç´°é … Banner ä¸€èˆ¬æœƒå“¡çš„å…±ä½æ¢ä»¶ æˆ¿å‹ */
 
 
 
 
-/* ­û¤uÅv­­ */
+/* å“¡å·¥æ¬Šé™ */
 CREATE TABLE empAuth (
  empAuthEmpId            VARCHAR2(5) NOT NULL,
  empAuthAuthId	 	   VARCHAR2(3) NOT NULL,
@@ -474,7 +474,7 @@ CREATE TABLE empAuth (
 
 
 
-/* ²á¤Ñ«Ç¤º®e */
+/* èŠå¤©å®¤å…§å®¹ */
 CREATE TABLE memChat(
   memChatChatId VARCHAR2(8) NOT NULL,
   memChatMemId VARCHAR2(8) NOT NULL,
@@ -502,14 +502,14 @@ VALUES((select chatId
               where rownum <= 1)
         where rnum >= 1),
         TO_TIMESTAMP ('2016-10-01 14:00:00.123', 'YYYY-MM-DD HH24:MI:SS.FF'), 
-        '§A¦n¡A§Ú¤]¦b§ä©Ğ¶¡¡A­n¤@°_¶Ü',
+        'ä½ å¥½ï¼Œæˆ‘ä¹Ÿåœ¨æ‰¾æˆ¿é–“ï¼Œè¦ä¸€èµ·å—',
         null
        );
 
 
 
 
---²Ä¤G­Ó·|­û»¡¸Ü
+--ç¬¬äºŒå€‹æœƒå“¡èªªè©±
 INSERT INTO memchat
 VALUES((select chatId 
         from (select rownum rnum, chatId
@@ -522,14 +522,14 @@ VALUES((select chatId
               where rownum <= 2)
         where rnum >= 2),
         TO_TIMESTAMP ('2016-10-01 14:01:00.456', 'YYYY-MM-DD HH24:MI:SS.FF'),
-        '¦n°Ú¡A§A¤]¬O¦Û¤v¥X¨Ó¦Û§U®È¦æ¶Ü?',
+        'å¥½å•Šï¼Œä½ ä¹Ÿæ˜¯è‡ªå·±å‡ºä¾†è‡ªåŠ©æ—…è¡Œå—?',
         null
        );
 
 
 
 
---²Ä¤@­Ó·|­û»¡¸Ü
+--ç¬¬ä¸€å€‹æœƒå“¡èªªè©±
 INSERT INTO memchat
 VALUES((select chatId 
         from (select rownum rnum, chatId
@@ -542,11 +542,11 @@ VALUES((select chatId
               where rownum <= 1)
         where rnum >= 1),
          TO_TIMESTAMP ('2016-10-01 14:02:00.456', 'YYYY-MM-DD HH24:MI:SS.FF'),
-        '«¢§Ú¤£¬O¡A§Ú¬O³Q¤½¥qÁ{®É¥s¨ì³o¥X®t',
+        'å“ˆæˆ‘ä¸æ˜¯ï¼Œæˆ‘æ˜¯è¢«å…¬å¸è‡¨æ™‚å«åˆ°é€™å‡ºå·®',
         null
        );
        
---²Ä¤G­Ó·|­û»¡¸Ü
+--ç¬¬äºŒå€‹æœƒå“¡èªªè©±
 INSERT INTO memchat
 VALUES((select chatId 
         from (select rownum rnum, chatId
@@ -559,14 +559,14 @@ VALUES((select chatId
               where rownum <= 2)
         where rnum >= 2),
          TO_TIMESTAMP ('2016-10-01 14:03:00.123', 'YYYY-MM-DD HH24:MI:SS.FF'),
-        '¦n¨¯­Wqq',
+        'å¥½è¾›è‹¦qq',
         null
        );       
 
 
 
 
---²Ä¤@­Ó·|­û»¡¸Ü
+--ç¬¬ä¸€å€‹æœƒå“¡èªªè©±
 INSERT INTO memchat
 VALUES((select chatId 
         from (select rownum rnum, chatId
@@ -579,14 +579,14 @@ VALUES((select chatId
               where rownum <= 1)
         where rnum >= 1),
          TO_TIMESTAMP ('2016-10-01 14:04:00.456', 'YYYY-MM-DD HH24:MI:SS.FF'),
-        'ÁÙ¦n°Õ¡C¤£¹LÁÙ¬Oº¡¸r¼}§Aªº¡A¥i¥H¨ì³B¨«¨Ó¨«¥h',
+        'é‚„å¥½å•¦ã€‚ä¸éé‚„æ˜¯æ»¿ç¾¨æ…•ä½ çš„ï¼Œå¯ä»¥åˆ°è™•èµ°ä¾†èµ°å»',
         null
        );       
 
 
 
 
---²Ä¤G­Ó·|­û»¡¸Ü
+--ç¬¬äºŒå€‹æœƒå“¡èªªè©±
 INSERT INTO memchat
 VALUES((select chatId 
         from (select rownum rnum, chatId
@@ -599,14 +599,14 @@ VALUES((select chatId
               where rownum <= 2)
         where rnum >= 2),
          TO_TIMESTAMP ('2016-10-01 14:05:00.123', 'YYYY-MM-DD HH24:MI:SS.FF'),
-        '«¢§Ú¤]¨S¨º»ò©¯¹B¡A³o­Ó°²¤é¥i¬O§Úªº¯S¥ğ',
+        'å“ˆæˆ‘ä¹Ÿæ²’é‚£éº¼å¹¸é‹ï¼Œé€™å€‹å‡æ—¥å¯æ˜¯æˆ‘çš„ç‰¹ä¼‘',
         null
        );
 
 
 
 
---²Ä¤@­Ó·|­û»¡¸Ü
+--ç¬¬ä¸€å€‹æœƒå“¡èªªè©±
 INSERT INTO memchat
 VALUES((select chatId 
         from (select rownum rnum, chatId
@@ -619,7 +619,7 @@ VALUES((select chatId
               where rownum <= 1)
         where rnum >= 1),
          TO_TIMESTAMP ('2016-10-01 14:06:00.789', 'YYYY-MM-DD HH24:MI:SS.FF'),
-        '­ì¨Ó¤]¬O¦P¹D¤¤¤HXD¡C§Ú¬İ¨ì³o¶¡ÁÙ¤£¿ù¡AÂù¤H©Ğ899$¡A§A¬İ¬İ¡C
+        'åŸä¾†ä¹Ÿæ˜¯åŒé“ä¸­äººXDã€‚æˆ‘çœ‹åˆ°é€™é–“é‚„ä¸éŒ¯ï¼Œé›™äººæˆ¿899$ï¼Œä½ çœ‹çœ‹ã€‚
          http://tw.yahoo.com/',
         null
        ); 
@@ -627,7 +627,7 @@ VALUES((select chatId
 
 
 
---²Ä¤G­Ó·|­û»¡¸Ü
+--ç¬¬äºŒå€‹æœƒå“¡èªªè©±
 INSERT INTO memchat
 VALUES((select chatId 
         from (select rownum rnum, chatId
@@ -640,14 +640,14 @@ VALUES((select chatId
               where rownum <= 2)
         where rnum >= 2),
          TO_TIMESTAMP ('2016-10-01 14:07:00.456', 'YYYY-MM-DD HH24:MI:SS.FF'),
-        '¯uªºÁÙ¤£¿ù¡A§Ú¥ı¥[¨ì§ÚªºÄ@±æ²M³æ¡C¨º§A²{¦b¦b­ş¸Ì?',
+        'çœŸçš„é‚„ä¸éŒ¯ï¼Œæˆ‘å…ˆåŠ åˆ°æˆ‘çš„é¡˜æœ›æ¸…å–®ã€‚é‚£ä½ ç¾åœ¨åœ¨å“ªè£¡?',
         null
        );       
 
 
 
 
---²Ä¤@­Ó·|­û»¡¸Ü
+--ç¬¬ä¸€å€‹æœƒå“¡èªªè©±
 INSERT INTO memchat
 VALUES((select chatId 
         from (select rownum rnum, chatId
@@ -660,14 +660,14 @@ VALUES((select chatId
               where rownum <= 1)
         where rnum >= 1),
          TO_TIMESTAMP ('2016-10-01 14:08:00.123', 'YYYY-MM-DD HH24:MI:SS.FF'),
-        '³o­ÓAPP¥i¥Hª½±µÀ°¦£©w¦ì¡A§Aª½±µÂI"§A¦b­ş"«ö¶s´N¯à¬İ¨ì¤F¡C',
+        'é€™å€‹APPå¯ä»¥ç›´æ¥å¹«å¿™å®šä½ï¼Œä½ ç›´æ¥é»"ä½ åœ¨å“ª"æŒ‰éˆ•å°±èƒ½çœ‹åˆ°äº†ã€‚',
         null
        ); 
 
 
 
 
---²Ä¤G­Ó·|­û»¡¸Ü
+--ç¬¬äºŒå€‹æœƒå“¡èªªè©±
 INSERT INTO memchat
 VALUES((select chatId 
         from (select rownum rnum, chatId
@@ -680,14 +680,14 @@ VALUES((select chatId
               where rownum <= 2)
         where rnum >= 2),
          TO_TIMESTAMP ('2016-10-01 14:09:00.456', 'YYYY-MM-DD HH24:MI:SS.FF'),
-        '§ä¨ì¤F¡A¦n¹³³£Â÷®ÈÀ]¤£»·! ¨º§Ú­Ìµ¥µ¥ª½±µ¨ì¨º¶¡®ÈÀ]·|­±§a¡C§Ú¥s¤p·R¡A¬ï¬õ¦â©ÜªÓ©M¥Õ¦â²M­m',
+        'æ‰¾åˆ°äº†ï¼Œå¥½åƒéƒ½é›¢æ—…é¤¨ä¸é ! é‚£æˆ‘å€‘ç­‰ç­‰ç›´æ¥åˆ°é‚£é–“æ—…é¤¨æœƒé¢å§ã€‚æˆ‘å«å°æ„›ï¼Œç©¿ç´…è‰²æŠ«è‚©å’Œç™½è‰²æ¸…è¡«',
         null
        );
 
 
 
 
---²Ä¤@­Ó·|­û»¡¸Ü
+--ç¬¬ä¸€å€‹æœƒå“¡èªªè©±
 INSERT INTO memchat
 VALUES((select chatId 
         from (select rownum rnum, chatId
@@ -700,7 +700,7 @@ VALUES((select chatId
               where rownum <= 1)
         where rnum >= 1),
          TO_TIMESTAMP ('2016-10-01 14:10:00.123', 'YYYY-MM-DD HH24:MI:SS.FF'),
-        '®¦®¦¦n¡C§Ú¥s¤j«°¡A¥¿²Î¦è¸Ë¨k¡A¨º«İ¦^¨£¤F¤p·R¡C',
+        'æ©æ©å¥½ã€‚æˆ‘å«å¤§åŸï¼Œæ­£çµ±è¥¿è£ç”·ï¼Œé‚£å¾…å›è¦‹äº†å°æ„›ã€‚',
         null
        );
 
@@ -712,7 +712,7 @@ commit;
 
 
 
-/* ¤W¬[¤ë¯²¬ö¿ı */
+/* ä¸Šæ¶æœˆç§Ÿç´€éŒ„ */
 create table rent(
  rentId VARCHAR2(10 char) constraint rent_rentId_pk primary key,
  rentHotelId VARCHAR2(5 char) not null constraint rent_rentHotelId_fk references hotel(hotelid),
@@ -740,7 +740,7 @@ commit;
 
 
 
-/* ªş¥[ªA°È²Ó¶µ */
+/* é™„åŠ æœå‹™ç´°é … */
 create table  hotelServ(
   hotelServServId varchar(3) not null,
   hotelServHotelId varchar(5) not null,
@@ -781,7 +781,7 @@ NOMAXVALUE;
 
 
 
-INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPicContent,adHit)VALUES (Ad_seq.NEXTVAL,adPlan_seq.NEXTVAL,10001,0,sysdate,'¯S´f¤è®×',50);
+INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPicContent,adHit)VALUES (Ad_seq.NEXTVAL,adPlan_seq.NEXTVAL,10001,0,sysdate,'ç‰¹æƒ æ–¹æ¡ˆ',50);
 
 
 
@@ -791,7 +791,7 @@ commit;
 
 
 
-/* ¤@¯ë·|­ûªº¦@¦í±ø¥ó */
+/* ä¸€èˆ¬æœƒå“¡çš„å…±ä½æ¢ä»¶ */
 CREATE TABLE memLiveCond(
   memLiveCondLiveCondId VARCHAR2(3),
   memLiveCondMemId VARCHAR2(8),
@@ -803,13 +803,13 @@ CREATE TABLE memLiveCond(
 
 
 
--- ·|­û1000000001¥u·Q³Q¤kªº§ä
+-- æœƒå“¡1000000001åªæƒ³è¢«å¥³çš„æ‰¾
 INSERT INTO memLiveCond (memLiveCondLiveCondId, memLiveCondMemId)
 VALUES (102, 10000001);
--- ·|­û1000000002¥u·Q³Q¨kªº§ä
+-- æœƒå“¡1000000002åªæƒ³è¢«ç”·çš„æ‰¾
 INSERT INTO memLiveCond (memLiveCondLiveCondId, memLiveCondMemId)
 VALUES (101, 10000002);
--- ·|­û1000000003³£¥i¥H¡A©Ò¥H¨S¦³³]©w
+-- æœƒå“¡1000000003éƒ½å¯ä»¥ï¼Œæ‰€ä»¥æ²’æœ‰è¨­å®š
  
 commit;
 
@@ -820,7 +820,7 @@ commit;
 
 
 
-/* ©Ğ«¬ */
+/* æˆ¿å‹ */
 create table room(
  roomId VARCHAR2(7 char) constraint room_roomId_pk primary key,
  roomHotelId VARCHAR2(5 char) not null constraint room_roomHotelId_fk references hotel(hotelid),
@@ -872,12 +872,12 @@ roomForSellAuto,roomRemainNo,roomDiscountStartDate,roomDiscountEndDate,
 roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
 roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
 )values(
-room_seq.NEXTVAL,'10001','¼Ğ·ÇÂù§É¶¡',15,3000,'0','0',12,64800000,79200000,0.48,1,'0',
-'§K¶OµL½u¤Wºô¡B48 ¦TLCD ²G´¹¹qµø©M¥I¶O¹qµøÀW¹D',
-'¦B½c¡B¸q¤j§Q¿@ÁY©@°Ø¾÷¡B¹q¼ö¤ô³ı©M§K¶O²~¸Ë¤ô',
-'¾B¥úµ¡Ã®',
-'«OÀI½c¡B®Ñ®à©M¼÷¤æ¤Î¼÷¦çªO (¥i­n¨D)¡A¥i­n¨D´£¨Ñ §K¶O·nÄx/À¦¨à§É',
-'ªÅ½Õ©M¨C¤é«È©Ğ²M¼äªA°È',4,2,1
+room_seq.NEXTVAL,'10001','æ¨™æº–é›™åºŠé–“',15,3000,'0','0',12,64800000,79200000,0.48,1,'0',
+'å…è²»ç„¡ç·šä¸Šç¶²ã€48 å‹LCD æ¶²æ™¶é›»è¦–å’Œä»˜è²»é›»è¦–é »é“',
+'å†°ç®±ã€ç¾©å¤§åˆ©æ¿ƒç¸®å’–å•¡æ©Ÿã€é›»ç†±æ°´å£ºå’Œå…è²»ç“¶è£æ°´',
+'é®å…‰çª—ç°¾',
+'ä¿éšªç®±ã€æ›¸æ¡Œå’Œç†¨æ–—åŠç†¨è¡£æ¿ (å¯è¦æ±‚)ï¼Œå¯è¦æ±‚æä¾› å…è²»æ–ç±ƒ/å¬°å…’åºŠ',
+'ç©ºèª¿å’Œæ¯æ—¥å®¢æˆ¿æ¸…æ½”æœå‹™',4,2,1
 );
 
 
@@ -889,50 +889,12 @@ roomForSellAuto,roomRemainNo,roomDiscountStartDate,roomDiscountEndDate,
 roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
 roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
 )values(
-room_seq.NEXTVAL,'10002','¼Ğ·ÇÂù§É¶¡',15,3000,'0','0',12,64800000,79200000,0.48,1,'0',
-'§K¶OµL½u¤Wºô¡B48 ¦TLCD ²G´¹¹qµø©M¥I¶O¹qµøÀW¹D',
-'¦B½c¡B¸q¤j§Q¿@ÁY©@°Ø¾÷¡B¹q¼ö¤ô³ı©M§K¶O²~¸Ë¤ô',
-'¾B¥úµ¡Ã®',
-'«OÀI½c¡B®Ñ®à©M¼÷¤æ¤Î¼÷¦çªO (¥i­n¨D)¡A¥i­n¨D´£¨Ñ §K¶O·nÄx/À¦¨à§É',
-'ªÅ½Õ©M¨C¤é«È©Ğ²M¼äªA°È',4,2,1
-);
-
-
-
-
-
-
-
-
-insert into room(
-roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomForSell,
-roomForSellAuto,roomRemainNo,roomDiscountStartDate,roomDiscountEndDate,
-roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
-roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
-)values(
-room_seq.NEXTVAL,'10002','¶®¶h©~¤@¤j§É',8,12000,'0','0',3,64800000,79200000,0.03,1,'0',
-'§K¶OµL½u¤Wºô¡B48 ¦TLCD ²G´¹¹qµø©M¥I¶O¹qµøÀW¹D',
-'¦B½c¡B°g§A§a¡B24 ¤p®É«È©Ğ°eÀ\ªA°È©M§K¶O²~¸Ë¤ô',
-'°ª¯Å¹ì¨ã¡B¦hºØªEÀY¿ï¾Ü¡B¾B¥úµ¡Ã®©M¶}§ÉªA°È',
-'«OÀI½c¡B§K¶O³ø¯È©M®Ñ®à¡A¥i­n¨D´£¨Ñ§éÅ|§É/¥[§É©M§K¶O·nÄx/À¦¨à§É',
-'ªÅ½Õ©M¨C¤é«È©Ğ²M¼äªA°È',4,2,1
-);
-
-
-
-
-insert into room(
-roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomForSell,
-roomForSellAuto,roomRemainNo,roomDiscountStartDate,roomDiscountEndDate,
-roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
-roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
-)values(
-room_seq.NEXTVAL,'10002','¶³¤ÑÅS»O«È©Ğ',10,8670,'0','0',8,64800000,79200000,0.05,1,'0',
-'§K¶OµL½u©M¦³½u¤Wºô¡B42 ¦T¥­­±¹qµø',
-'¦B½c¡B°g§A§a¡B24 ¤p®É«È©Ğ°eÀ\ªA°È©M§K¶O²~¸Ë¤ô',
-'°ª¯Å¹ì¨ã¡B¦hºØªEÀY¿ï¾Ü¡B¾B¥úµ¡Ã®©M¶}§ÉªA°È',
-'¨Fµo§É¡B«OÀI½c©M§K¶O³ø¯È¡A¥i­n¨D´£¨Ñ§éÅ|§É/¥[§É©M§K¶O·nÄx/À¦¨à§É',
-'ªÅ½Õ©M¨C¤é«È©Ğ²M¼äªA°È,«D§l·Ï«È©Ğ',4,0,2
+room_seq.NEXTVAL,'10002','æ¨™æº–é›™åºŠé–“',15,3000,'0','0',12,64800000,79200000,0.48,1,'0',
+'å…è²»ç„¡ç·šä¸Šç¶²ã€48 å‹LCD æ¶²æ™¶é›»è¦–å’Œä»˜è²»é›»è¦–é »é“',
+'å†°ç®±ã€ç¾©å¤§åˆ©æ¿ƒç¸®å’–å•¡æ©Ÿã€é›»ç†±æ°´å£ºå’Œå…è²»ç“¶è£æ°´',
+'é®å…‰çª—ç°¾',
+'ä¿éšªç®±ã€æ›¸æ¡Œå’Œç†¨æ–—åŠç†¨è¡£æ¿ (å¯è¦æ±‚)ï¼Œå¯è¦æ±‚æä¾› å…è²»æ–ç±ƒ/å¬°å…’åºŠ',
+'ç©ºèª¿å’Œæ¯æ—¥å®¢æˆ¿æ¸…æ½”æœå‹™',4,2,1
 );
 
 
@@ -948,12 +910,50 @@ roomForSellAuto,roomRemainNo,roomDiscountStartDate,roomDiscountEndDate,
 roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
 roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
 )values(
-room_seq.NEXTVAL,'10002','´Lºa«È©Ğ (¥x¥_101´ºÆ[)',20,10900,'0','0',13,64800000,79200000,0.10,1,'0',
-'§K¶OµL½u©M¦³½u¤Wºô¡B40 ¦T¹qµø',
-'24 ¤p®É«È©Ğ°eÀ\ªA°È¡B°g§A§a©M§K¶O²~¸Ë¤ô',
-'§C¹L±Ó¹ì¨ã¡B¾B¥úµ¡Ã®©M¶}§ÉªA°È',
-'«OÀI½c¡B§K¶O³ø¯È©M®Ñ®à¡A¥i­n¨D´£¨Ñ §K¶O·nÄx/À¦¨à§É',
-'ªÅ½Õ©M¨C¤é«È©Ğ²M¼äªA°È,«D§l·Ï«È©Ğ',6,2,2
+room_seq.NEXTVAL,'10002','é›…é€¸å±…ä¸€å¤§åºŠ',8,12000,'0','0',3,64800000,79200000,0.03,1,'0',
+'å…è²»ç„¡ç·šä¸Šç¶²ã€48 å‹LCD æ¶²æ™¶é›»è¦–å’Œä»˜è²»é›»è¦–é »é“',
+'å†°ç®±ã€è¿·ä½ å§ã€24 å°æ™‚å®¢æˆ¿é€é¤æœå‹™å’Œå…è²»ç“¶è£æ°´',
+'é«˜ç´šå¯¢å…·ã€å¤šç¨®æ•é ­é¸æ“‡ã€é®å…‰çª—ç°¾å’Œé–‹åºŠæœå‹™',
+'ä¿éšªç®±ã€å…è²»å ±ç´™å’Œæ›¸æ¡Œï¼Œå¯è¦æ±‚æä¾›æŠ˜ç–ŠåºŠ/åŠ åºŠå’Œå…è²»æ–ç±ƒ/å¬°å…’åºŠ',
+'ç©ºèª¿å’Œæ¯æ—¥å®¢æˆ¿æ¸…æ½”æœå‹™',4,2,1
+);
+
+
+
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10002','é›²å¤©éœ²è‡ºå®¢æˆ¿',10,8670,'0','0',8,64800000,79200000,0.05,1,'0',
+'å…è²»ç„¡ç·šå’Œæœ‰ç·šä¸Šç¶²ã€42 å‹å¹³é¢é›»è¦–',
+'å†°ç®±ã€è¿·ä½ å§ã€24 å°æ™‚å®¢æˆ¿é€é¤æœå‹™å’Œå…è²»ç“¶è£æ°´',
+'é«˜ç´šå¯¢å…·ã€å¤šç¨®æ•é ­é¸æ“‡ã€é®å…‰çª—ç°¾å’Œé–‹åºŠæœå‹™',
+'æ²™ç™¼åºŠã€ä¿éšªç®±å’Œå…è²»å ±ç´™ï¼Œå¯è¦æ±‚æä¾›æŠ˜ç–ŠåºŠ/åŠ åºŠå’Œå…è²»æ–ç±ƒ/å¬°å…’åºŠ',
+'ç©ºèª¿å’Œæ¯æ—¥å®¢æˆ¿æ¸…æ½”æœå‹™,éå¸ç…™å®¢æˆ¿',4,0,2
+);
+
+
+
+
+
+
+
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10002','å°Šæ¦®å®¢æˆ¿ (å°åŒ—101æ™¯è§€)',20,10900,'0','0',13,64800000,79200000,0.10,1,'0',
+'å…è²»ç„¡ç·šå’Œæœ‰ç·šä¸Šç¶²ã€40 å‹é›»è¦–',
+'24 å°æ™‚å®¢æˆ¿é€é¤æœå‹™ã€è¿·ä½ å§å’Œå…è²»ç“¶è£æ°´',
+'ä½éæ•å¯¢å…·ã€é®å…‰çª—ç°¾å’Œé–‹åºŠæœå‹™',
+'ä¿éšªç®±ã€å…è²»å ±ç´™å’Œæ›¸æ¡Œï¼Œå¯è¦æ±‚æä¾› å…è²»æ–ç±ƒ/å¬°å…’åºŠ',
+'ç©ºèª¿å’Œæ¯æ—¥å®¢æˆ¿æ¸…æ½”æœå‹™,éå¸ç…™å®¢æˆ¿',6,2,2
 );
 
 
@@ -972,12 +972,12 @@ commit;
 
 
 
-/* [Level 3] ­q³æ ©Ğ«¬·Ó¤ù Ä@±æ¶µ¥Ø */
+/* [Level 3] è¨‚å–® æˆ¿å‹ç…§ç‰‡ é¡˜æœ›é …ç›® */
 
 
 
 
-/* ­q³æ */
+/* è¨‚å–® */
 CREATE TABLE ORD (
 ORDID              VARCHAR2(10) NOT NULL,
 ORDROOMID          VARCHAR2(7) NOT NULL,
@@ -1028,7 +1028,7 @@ CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
 SYSDATE,
 SYSDATE+1,
 0,
-'°Ú¤£´N¦n´Î´Î123',
+'å•Šä¸å°±å¥½æ£’æ£’123',
 10,
 null,
 'ABCD'
@@ -1045,7 +1045,7 @@ CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
 SYSDATE,
 SYSDATE+1,
 0,
-'°Ú¤£´N¦n´Î´Î789',
+'å•Šä¸å°±å¥½æ£’æ£’789',
 10,
 null,
 'ABCD'
@@ -1064,7 +1064,7 @@ CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
 SYSDATE,
 SYSDATE+1,
 0,
-'°Ú¤£´N¦n´Î´Î456',
+'å•Šä¸å°±å¥½æ£’æ£’456',
 10,
 null,
 'ABCD'
@@ -1081,7 +1081,7 @@ CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
 SYSDATE,
 SYSDATE+1,
 0,
-'¥x¤¤¤H·R¦Y»¶123',
+'å°ä¸­äººæ„›åƒè¾£123',
 0,
 null,
 'EFGH'
@@ -1095,7 +1095,7 @@ commit;
 
 
 
-/* ©Ğ«¬·Ó¤ù */
+/* æˆ¿å‹ç…§ç‰‡ */
 create table roomphoto(
  roomPhotoId VARCHAR2(12 char) constraint roomphoto_roomphotoId_pk primary key,
  roomPhotoRoomId VARCHAR2(7 char) not null constraint roomphoto_roomPhotoRoomId_fk references room(roomid),
@@ -1120,7 +1120,7 @@ commit;
 
 
 
-/* Ä@±æ¶µ¥Ø */
+/* é¡˜æœ›é …ç›® */
 create table wish(
   wishMemId varchar(8) not null,
   wishRoomId varchar(7) not null,
@@ -1149,18 +1149,18 @@ commit;
 
 
 
-/* [Level 4] ¤@¯ë·|­ûÀËÁ|³æ ¼t°Ó·|­ûÀËÁ|³æ */
+/* [Level 4] ä¸€èˆ¬æœƒå“¡æª¢èˆ‰å–® å» å•†æœƒå“¡æª¢èˆ‰å–® */
 
 
 
 
-/* ¤@¯ë·|­ûÀËÁ|³æ */
+/* ä¸€èˆ¬æœƒå“¡æª¢èˆ‰å–® */
 CREATE TABLE memrep( 
   memrepId VARCHAR2(10) NOT NULL,
   memrepOrdId VARCHAR2(10) NOT NULL,
   memrepMemId VARCHAR2(8) NOT NULL,
   memrepHotelId VARCHAR2(5) NOT NULL,
-  memrepEmpId VARCHAR2(8), --¥u¦³¼f®Ö¤§«á¤~·|¶ñ¤J¸ê®Æ¡A¦]¦¹¥i¥H¬ONull
+  memrepEmpId VARCHAR2(8), --åªæœ‰å¯©æ ¸ä¹‹å¾Œæ‰æœƒå¡«å…¥è³‡æ–™ï¼Œå› æ­¤å¯ä»¥æ˜¯Null
   memrepContent VARCHAR2(150),
   memrepStatus VARCHAR2(1),
   memrepDate DATE,
@@ -1186,7 +1186,7 @@ NOCACHE;
 
 
 
--- ¦¹ÀËÁ|³æ®Ú¾Ú²Ä¤@­Ó­q³æ´£¥X(®Ú¾Ú­q³æ¡Aªş¤WmemId¥H¤ÎhotelId)¡A¥B©|¥¼³B²z
+-- æ­¤æª¢èˆ‰å–®æ ¹æ“šç¬¬ä¸€å€‹è¨‚å–®æå‡º(æ ¹æ“šè¨‚å–®ï¼Œé™„ä¸ŠmemIdä»¥åŠhotelId)ï¼Œä¸”å°šæœªè™•ç†
 INSERT INTO memrep (memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus,memrepDate,memrepReviewDate  )
 VALUES ( memrep_seq.NEXTVAL,
         (select ordid 
@@ -1205,17 +1205,17 @@ VALUES ( memrep_seq.NEXTVAL,
                 where rownum <= 1)
           where rnum >= 1),
           null,
-          '¦¹®ÈÀ]ªºªA°ÈºA«×«Ü®t',
-          0, --0.¥¼¼f®Ö 1.¤w¼f®Ö¥¼³q¹L 2.¤w¼f®Ö¤w³q¹L
-          sysdate, -- ÀËÁ|³æ´£¥X¤é
+          'æ­¤æ—…é¤¨çš„æœå‹™æ…‹åº¦å¾ˆå·®',
+          0, --0.æœªå¯©æ ¸ 1.å·²å¯©æ ¸æœªé€šé 2.å·²å¯©æ ¸å·²é€šé
+          sysdate, -- æª¢èˆ‰å–®æå‡ºæ—¥
           null
           );
--- ¦³ªÅ¦A¸É±j: ¼W¥[check - Äæ¦ì: memrepEmpId, memrepStatus, memrepReviewDate ¦³³s°ÊÃö«Y
+-- æœ‰ç©ºå†è£œå¼·: å¢åŠ check - æ¬„ä½: memrepEmpId, memrepStatus, memrepReviewDate æœ‰é€£å‹•é—œä¿‚
 
 
 
 
--- ¦¹ÀËÁ|³æ®Ú¾Ú²Ä¤T­Ó­q³æ´£¥X(®Ú¾Ú­q³æ¡Aªş¤WmemId¥H¤ÎhotelId)¡A¥B¤w¥Ñ²Ä¤@¦ì­û¤u³B²z¡A¦b¹j¤Ñ
+-- æ­¤æª¢èˆ‰å–®æ ¹æ“šç¬¬ä¸‰å€‹è¨‚å–®æå‡º(æ ¹æ“šè¨‚å–®ï¼Œé™„ä¸ŠmemIdä»¥åŠhotelId)ï¼Œä¸”å·²ç”±ç¬¬ä¸€ä½å“¡å·¥è™•ç†ï¼Œåœ¨éš”å¤©
 INSERT INTO memrep (memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus,memrepDate,memrepReviewDate  )
 VALUES ( memrep_seq.NEXTVAL,
         (select ordid 
@@ -1237,13 +1237,13 @@ VALUES ( memrep_seq.NEXTVAL,
           from (select rownum rnum, empid
                 from emp
                 where rownum <= 1)
-          where rnum >= 1), -- ²Ä¤@¦ì­û¤u
-          '§Ú¨ì¤F®ÈÀ]¡A¥L­Ì«o­n¸ò§Ú»¡¨â­¿ªº»ù®æ¡A¤Ó¥i´c¡C',
-          2, --0.¥¼¼f®Ö 1.¤w¼f®Ö¥¼³q¹L 2.¤w¼f®Ö¤w³q¹L
-          sysdate-1, --ÀËÁ|³æ´£¥X¤é
-          sysdate --ÀËÁ|³æ¼f®Ö¤é
+          where rnum >= 1), -- ç¬¬ä¸€ä½å“¡å·¥
+          'æˆ‘åˆ°äº†æ—…é¤¨ï¼Œä»–å€‘å»è¦è·Ÿæˆ‘èªªå…©å€çš„åƒ¹æ ¼ï¼Œå¤ªå¯æƒ¡ã€‚',
+          2, --0.æœªå¯©æ ¸ 1.å·²å¯©æ ¸æœªé€šé 2.å·²å¯©æ ¸å·²é€šé
+          sysdate-1, --æª¢èˆ‰å–®æå‡ºæ—¥
+          sysdate --æª¢èˆ‰å–®å¯©æ ¸æ—¥
           );
--- ¦³ªÅ¦A¸É±j: ·í¼f®Öª¬ºA§ó§ï¬°2¡A­n³s°Ê±N¤@¯ë·|­ûªº'¶Â¦W³æª¬ºA'§@¬Û¹ïÀ³§ó°Ê        
+-- æœ‰ç©ºå†è£œå¼·: ç•¶å¯©æ ¸ç‹€æ…‹æ›´æ”¹ç‚º2ï¼Œè¦é€£å‹•å°‡ä¸€èˆ¬æœƒå“¡çš„'é»‘åå–®ç‹€æ…‹'ä½œç›¸å°æ‡‰æ›´å‹•        
 
 
 
@@ -1253,7 +1253,7 @@ commit;
 
 
 
-/* ¼t°Ó·|­ûÀËÁ|³æ */
+/* å» å•†æœƒå“¡æª¢èˆ‰å–® */
 CREATE TABLE HOTELREP(
 hotelRepId       VARCHAR2(9) NOT NULL,
 hotelRepHotelId  VARCHAR2(5) NOT NULL,
@@ -1301,9 +1301,9 @@ VALUES (
 hotelRep_seq.NEXTVAL,
 '10001',
 '10000001',
-'2016101001',
+to_char(sysdate,'yyyymm')||'1001',
 '10001',
-'«È¤H¤£µ¹¿ú',
+'å®¢äººä¸çµ¦éŒ¢',
 '0',
 sysdate,
 null
@@ -1312,10 +1312,5 @@ null
 
 
 
+
 commit;
-
-
-
-
-
-
