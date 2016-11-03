@@ -1,0 +1,106 @@
+#LogoImg {
+    /*logo*/
+    display: inline-block;
+    /*左至右 */
+    /*padding-right: 1170px;
+	padding-left: 200px;*/
+    width: 220px;
+    margin-top: 0px
+}
+
+.btn {
+    /*右上導覽列*/
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    background-color: Transparent;
+    /*按鈕去被*/
+    margin-bottom: 2px;
+    border: 0px;
+    margin-top: 22px
+}
+
+#top_header {
+    background: gray;
+    /*border: 4px solid red;*/
+    /* 外框線*/
+    */ padding: 1px;
+    width: 100%;
+    height: 70px;
+    position: relative;
+    z-index: 1;
+}
+
+#top_header1 {
+    background: gray;
+    /*border: 4px solid red;*/
+    /* 外框線*/
+    */ padding: 1px;
+    display: none;
+    width: 100%;
+    height: 70px;
+    position: fixed;
+    z-index: 1;
+}
+
+footer #list {
+    /* 列表設定*/
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    color: #ffffff;
+}
+#listHouse a{
+    text-decoration:none;
+    color:white;
+}
+#listHouse h3{
+    color: white;
+}
+
+
+#the_footer {
+    /*第一個FOOTER設定*/
+    /*clear:both; /*清除浮動元件*/
+    */ border-top: 1px solid #aaa;
+    background: #5B5B5B;
+    padding: 8px;
+    margin-top: 50px;
+}
+
+#the_footer1 {
+    /*第二個FOOTER設定*/
+    clear: both;
+    /*清除浮動元件*/
+    border-top: 1px solid #aaa;
+    background: #3C3C3C;
+    padding: 8px;
+}
+
+.app {
+    border: 0px;
+    background: #5B5B5B;
+}
+
+#the_footer1 h4 {
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    color: #ffffff;
+}
+
+#the_footer1 h3 {
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    color: #ffffff;
+}
+
+#the_footer1 img {
+    /*間距設定*/
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
+#footerPosition{
+   /* 設定footer的高度 */
+    height: 40px;
+    box-sizing: border-box;
+    /* 設定footer絕對位置在底部 */
+    position: absolute;
+    bottom: 0;
+    /* 展開footer寬度 */
+    width: 100%;
+}
