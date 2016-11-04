@@ -114,10 +114,9 @@ public class RoomPhotoServlet extends HttpServlet {
 			}
 			
 			String root = req.getParameter("root");			
-			String str = req.getParameter("roomId");
-			Integer roomId = null;
-			roomId = new Integer(str);
-			List RoomPhotoId = RoomPhotoSvc.getRoomAllRoomPhotoId(str);
+			String roomId = req.getParameter("roomId");
+		
+			List RoomPhotoId = RoomPhotoSvc.getRoomAllRoomPhotoId(roomId);
 			RoomService roomSvc = new RoomService();
 			RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
 			

@@ -1,7 +1,9 @@
 package com.room.controler;
 
 import java.util.List;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.LinkedList;
 
 import javax.servlet.RequestDispatcher;
@@ -10,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import java.util.Set;
 
@@ -74,7 +77,7 @@ public class RoomServlet extends HttpServlet {
 				
 				/***************************2.開始查詢資料*****************************************/
 				RoomService roomSvc = new RoomService();
-				RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
+				RoomVO roomVO = roomSvc.findByPrimaryKey(str);
 				if (roomVO == null) {
 					errorMsgs.add("查無資料");
 				}
@@ -123,7 +126,7 @@ public class RoomServlet extends HttpServlet {
 			
 			try {
 				/***************************1.接收請求參數****************************************/
-				Integer roomId = new Integer(req.getParameter("roomId"));
+				String roomId = req.getParameter("roomId");
 				
 				/***************************2.開始查詢資料****************************************/
 				RoomService empSvc = new RoomService();
@@ -563,7 +566,42 @@ public class RoomServlet extends HttpServlet {
         
         
         
-        
+        if ("RoomInsert".equals(action)) {
+			
+        	System.out.println("aaa");
+	
+			Collection<Part> parts = req.getParts();
+			RoomPhotoService RoomPhotoSvc = new RoomPhotoService();
+		
+			
+			
+			for(Part part:parts){
+					System.out.println(part.getContentType());
+			
+//					if("image/jpeg".equals(part.getContentType())){
+//					java.io.InputStream in = part.getInputStream();
+//					byte[] Picbyte =SetPic(in);
+//					}
+					
+					
+			}
+			
+//			String root = req.getParameter("root");			
+//			String str = req.getParameter("roomId");
+//			Integer roomId = null;
+//			roomId = new Integer(str);
+//			List RoomPhotoId = RoomPhotoSvc.getRoomAllRoomPhotoId(str);
+//			RoomService roomSvc = new RoomService();
+//			RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
+//			
+//			req.setAttribute("roomVO", roomVO);
+//			req.setAttribute("RoomPhotoId", RoomPhotoId);
+//		
+//			RequestDispatcher successView = req.getRequestDispatcher(root); // 成功轉交 listOneEmp.jsp
+//			successView.forward(req, res);
+			return;
+			
+		}
         
         
         
@@ -614,6 +652,27 @@ public class RoomServlet extends HttpServlet {
 			
 		return false;	
 		}
+		
+		
 	} 
+	
+	private static byte[] SetPic(java.io.InputStream in) {
+		
+		byte[] bytearr = null;
+		try{
+		
+         BufferedInputStream  bis  =   new  BufferedInputStream(in) ;
+         int content =bis.available();
+         
+         bytearr = new byte[content];
+         bis.read(bytearr);     
+         
+         bis.close();   
+               
+		}catch(Exception e){
+			
+		}
+		return bytearr;		
+	}
 	
 }

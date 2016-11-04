@@ -37,7 +37,7 @@
 	</ul>
 </c:if>
 
-<table>
+<table border='1'>
 	<tr>
 		<th>訂單編號</th>
 		<th>房型編號</th>
@@ -84,7 +84,7 @@
 		</tr>
 	</c:forEach>
 </table>
-<%@ include file="page2.file">
+<%@ include file="page2.file"%>
 
 </body>
 </html>

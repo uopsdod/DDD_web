@@ -26,7 +26,7 @@ public class RoomService {
 		return dao.delete(aRoomId);
 		
 	}
-	public RoomVO findByPrimaryKey(Integer aRoomId){
+	public RoomVO findByPrimaryKey(String aRoomId){
 		return dao.findByPrimaryKey(aRoomId);
 		
 	}	
