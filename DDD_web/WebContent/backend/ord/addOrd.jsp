@@ -69,7 +69,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 				
 				<tr>
 					<!--  升級成外來鍵 -->
-					<td>廠商會員編號"</td>
+					<td>廠商會員編號:</td>
 					<td>
 						<input type="text" name="ordHotelId" 
 						value="<%= (ordVO==null)? "10001" : ordVO.getOrdHotelId()%>"/>
