@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/bs/bootstrap.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/bs/bootstrap-theme.min.css">
    
-    <script src="<%=request.getContextPath()%>/js/jquery-3.1.1.min.js"></script>
-    <script src="<%=request.getContextPath()%>/js/jquery-ui.js"></script>
-    <script src="<%=request.getContextPath()%>/js/jquery-cycle-all.js"></script>
+    <script src="<%=request.getContextPath()%>/jq/jquery-3.1.1.min.js"></script>
+    <script src="<%=request.getContextPath()%>/jq/jquery-ui.js"></script>
+    <script src="<%=request.getContextPath()%>/jq/jquery-cycle-all.js"></script>
     <script src="<%=request.getContextPath()%>/bs/bootstrap.min.js"></script>
 </head>
 
