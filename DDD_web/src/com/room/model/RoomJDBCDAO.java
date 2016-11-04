@@ -313,7 +313,7 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 
 
 	@Override
-	public RoomVO findByPrimaryKey(Integer aRoomId) {
+	public RoomVO findByPrimaryKey(String aRoomId) {
 		
 		RoomVO roomVO = null;
 		Connection con = null;
@@ -326,7 +326,7 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
-			pstmt.setInt(1, aRoomId);
+			pstmt.setString(1, aRoomId);
 
 			rs = pstmt.executeQuery();
 		
