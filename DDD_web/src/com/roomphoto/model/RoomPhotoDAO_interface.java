@@ -6,7 +6,7 @@ import com.room.model.RoomVO;
 
 public interface RoomPhotoDAO_interface {
 	
-	public boolean insert(RoomPhotoVO aRoomPhotoVO,String aHotelId);
+	public boolean insert(String aHotelId,byte[] Picbyte);
 	public boolean update(RoomPhotoVO aRoomPhotoVO);
 	public boolean delete(String aRoomPhotoId);
 	public RoomPhotoVO findByPrimaryKey(String aRoomPhotoId);

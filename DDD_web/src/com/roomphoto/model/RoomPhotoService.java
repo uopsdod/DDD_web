@@ -15,13 +15,10 @@ public class RoomPhotoService {
 		dao = new RoomPhotoJDBCDAO();
 	}
 
-	public void insertRoomPhoto(String aHotelId,String roomPhotoRoomId, byte[] aRoomPhotoPic) {
+	public void insertRoomPhoto(String aHotelId, byte[] aRoomPhotoPic) {
 
-		RoomPhotoVO roomPhotoVO = new RoomPhotoVO();
-		
-		roomPhotoVO.setRoomPhotoRoomId(roomPhotoRoomId);
-		roomPhotoVO.setRoomPhotoPic(aRoomPhotoPic);
-		dao.insert(roomPhotoVO,aHotelId);
+	
+		dao.insert(aHotelId,aRoomPhotoPic);	
 	}
 
 	public RoomPhotoVO updateRoomPhoto(String aRoomPhotoId, String aRoomPhotoRoomId,byte[] aRoomPhotoPic ) 
