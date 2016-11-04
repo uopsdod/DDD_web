@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mem.model.MemVO;
 import com.room.model.RoomJDBCDAO;
+import com.room.model.RoomService;
 import com.room.model.RoomVO;
 
 import javafx.scene.effect.Light.Spot;
@@ -52,13 +54,14 @@ public class Room extends HttpServlet {
 			outStr = gson.toJson(hotelVO);
 			System.out.println(outStr);
 			System.out.println("id " + id);
-		}else if(action.equals("getAll")){
-			RoomJDBCDAO dao = new RoomJDBCDAO();
-			List<RoomVO> list = dao.getAll();
+		}else if(action.equals("getAll")){  // 取得當前飯店內的所有房型
+			String id = jsonObject.get("id").getAsString();
+			RoomService dao = new RoomService();
+			Set<RoomVO> set = dao.getOneHotelAllRoom(id);
 //			for (RoomVO myVO: list){
 //				myVO.setHotelCoverPic(null);
 //			}
-			outStr = gson.toJson(list);
+			outStr = gson.toJson(set);
 			System.out.println(outStr);
 			
 		}
