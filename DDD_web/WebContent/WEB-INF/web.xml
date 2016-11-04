@@ -27,19 +27,44 @@
  
    <servlet>
     <servlet-name>OrdServlet</servlet-name>
-    <servlet-class>com.ord.controler.OrdServlet</servlet-class>
+    <servlet-class>com.ord.controller.OrdServlet</servlet-class>
   </servlet>
+    
   <servlet-mapping>
     <servlet-name>OrdServlet</servlet-name>
-    <url-pattern>/ord/ord.do</url-pattern>
+    <url-pattern>/backend/ord/ord.do</url-pattern>
   </servlet-mapping>
-  
+    
    <servlet>
-    <servlet-name>HotelServlet</servlet-name>
+    <servlet-name>AndroindHotelServlet</servlet-name>
     <servlet-class>android.Hotel.Hotel</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>HotelServlet</servlet-name>
+    <servlet-name>AndroindHotelServlet</servlet-name>
     <url-pattern>/android/hotel.do</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>AndroidRoomServlet</servlet-name>
+    <servlet-class>android.Room.Room</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AndroidRoomServlet</servlet-name>
+    <url-pattern>/android/room.do</url-pattern>
+  </servlet-mapping>
+  
+  <filter>
+    <filter-name>setCharacterEncoding</filter-name>
+    <filter-class>com.filters.SetCharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>setCharacterEncoding</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+  
 </web-app>

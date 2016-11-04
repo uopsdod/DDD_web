@@ -14,11 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
+import com.mem.model.MemVO;
 
 import javafx.scene.effect.Light.Spot;
 @SuppressWarnings("serial")
-@WebServlet("/HotelServlet")
 public class Hotel extends HttpServlet {
 	// private ServletContext context;
 	private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
@@ -41,14 +40,22 @@ public class Hotel extends HttpServlet {
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(),
 				JsonObject.class);
 		String action = jsonObject.get("action").getAsString();
-//		String id = jsonObject.get("id").getAsString();
+		
 		String outStr = "";
 		if (action.equals("getOne")) {
+			System.out.println("1231321231321321313213132132");
+			String id = jsonObject.get("id").getAsString();
 			HotelJDBCDAO dao = new HotelJDBCDAO();
-			List<HotelVO> hotelVO = dao.getAll();
+			HotelVO hotelVO = dao.findByPrimaryKey(id);
+			outStr = gson.toJson(hotelVO);
+			System.out.println(outStr);
+			System.out.println("id " + id);
 		}else if(action.equals("getAll")){
 			HotelJDBCDAO dao = new HotelJDBCDAO();
 			List<HotelVO> list = dao.getAll();
+			for (HotelVO myVO: list){
+				myVO.setHotelCoverPic(null);
+			}
 			outStr = gson.toJson(list);
 			System.out.println(outStr);
 			
