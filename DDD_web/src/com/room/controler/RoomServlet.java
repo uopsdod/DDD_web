@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +24,7 @@ import com.roomphoto.model.RoomPhotoService;
 /**
  * Servlet implementation class RoomServlet
  */
-
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class RoomServlet extends HttpServlet {
 	
 
@@ -340,7 +341,7 @@ public class RoomServlet extends HttpServlet {
 			}
 		}
 
-        if ("insert".equals(action)) { // 來自addEmp.jsp的請求  
+        if ("RoomInsert".equals(action)) { // 來自addEmp.jsp的請求  
 			
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -485,7 +486,7 @@ public class RoomServlet extends HttpServlet {
 					errorMsgs.add("床數太少,不符合入住人數");	
 				}
 				
-				
+				System.out.println("開始包VO");
 				
 				RoomVO roomVO = new RoomVO();
 				
@@ -514,17 +515,42 @@ public class RoomServlet extends HttpServlet {
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("roomVO", roomVO); // 含有輸入格式錯誤的empVO物件,也存入req
 					RequestDispatcher failureView = req
-							.getRequestDispatcher("/room/addEmp.jsp");
+							.getRequestDispatcher("/frontend_hotel/room/AddRoom.jsp");
 					failureView.forward(req, res);
 					return;
 				}
 				
-				/***************************2.開始新增資料***************************************/
-				RoomService empSvc = new RoomService();
-				empSvc.insert(roomVO);
 				
+				
+				System.out.println("開始新增資料");
+				/***************************2.開始新增資料***************************************/
+				RoomService roomSvc = new RoomService();
+				roomSvc.insert(roomVO);
+				
+				System.out.println("VO已寫入");
+				//Thread.sleep(5000);
+			
+				
+				//處理圖片
+				Collection<Part> parts = req.getParts();
+				RoomPhotoService RoomPhotoSvc = new RoomPhotoService();
+				
+				for(Part part:parts){
+					//		System.out.println(part.getContentType());
+					//		System.out.println(part.getName());
+						
+						if("image/jpeg".equals(part.getContentType())){
+						java.io.InputStream in = part.getInputStream();
+						byte[] Picbyte =SetPic(in);
+						
+						RoomPhotoSvc.insertRoomPhoto(roomHotelId, Picbyte);
+						}
+				
+				}
+	
+				System.out.println("資料新增完畢");
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/room/listAllEmp.jsp";
+				String url = "/frontend_hotel/room/listAllRoom.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 				successView.forward(req, res);				
 				
@@ -533,7 +559,7 @@ public class RoomServlet extends HttpServlet {
 				System.out.println("沒包到VO直接跳錯了");
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/room/addEmp.jsp");
+						.getRequestDispatcher("/frontend_hotel/room/AddRoom.jsp");
 				failureView.forward(req, res);
 			}
 		}
@@ -565,43 +591,7 @@ public class RoomServlet extends HttpServlet {
         }
         
         
-        
-        if ("RoomInsert".equals(action)) {
-			
-        	System.out.println("aaa");
-	
-			Collection<Part> parts = req.getParts();
-			RoomPhotoService RoomPhotoSvc = new RoomPhotoService();
-		
-			
-			
-			for(Part part:parts){
-					System.out.println(part.getContentType());
-			
-//					if("image/jpeg".equals(part.getContentType())){
-//					java.io.InputStream in = part.getInputStream();
-//					byte[] Picbyte =SetPic(in);
-//					}
-					
-					
-			}
-			
-//			String root = req.getParameter("root");			
-//			String str = req.getParameter("roomId");
-//			Integer roomId = null;
-//			roomId = new Integer(str);
-//			List RoomPhotoId = RoomPhotoSvc.getRoomAllRoomPhotoId(str);
-//			RoomService roomSvc = new RoomService();
-//			RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
-//			
-//			req.setAttribute("roomVO", roomVO);
-//			req.setAttribute("RoomPhotoId", RoomPhotoId);
-//		
-//			RequestDispatcher successView = req.getRequestDispatcher(root); // 成功轉交 listOneEmp.jsp
-//			successView.forward(req, res);
-			return;
-			
-		}
+       
         
         
         
