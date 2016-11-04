@@ -46,4 +46,19 @@
     <servlet-name>HotelServlet</servlet-name>
     <url-pattern>/android/hotel.do</url-pattern>
   </servlet-mapping>
+  
+  <filter>
+    <filter-name>setCharacterEncoding</filter-name>
+    <filter-class>com.filters.SetCharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>setCharacterEncoding</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+  
 </web-app>
