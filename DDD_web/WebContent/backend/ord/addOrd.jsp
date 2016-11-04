@@ -54,14 +54,19 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 						</select>
 					</td>
 				</tr>
+				
+				<jsp:useBean id="memSvc" scope="page" class="com.mem.model.MemService"/>
 				<tr>
-					<!--  升級成外來鍵 -->
 					<td>一般會員編號:</td>
 					<td>
-						<input type="text" name="ordMemId" 
-						value="<%= (ordVO==null)? "10000001" : ordVO.getOrdMemId()%>"/>
+						<select name="ordMemId">
+							<c:forEach var="memVO" items="${memSvc.all}">
+								<option value="${memVO.memId}" ${(ordVO.ordMemId==memVO.memId)? 'selected':''}>${memVO.memId}
+							</c:forEach>
+						</select>
 					</td>
 				</tr>
+				
 				<tr>
 					<!--  升級成外來鍵 -->
 					<td>廠商會員編號"</td>
