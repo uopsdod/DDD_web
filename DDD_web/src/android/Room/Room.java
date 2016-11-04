@@ -1,4 +1,4 @@
-package android.Hotel;
+package android.Room;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,10 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mem.model.MemVO;
+import com.room.model.RoomJDBCDAO;
+import com.room.model.RoomVO;
 
 import javafx.scene.effect.Light.Spot;
 @SuppressWarnings("serial")
-public class Hotel extends HttpServlet {
+public class Room extends HttpServlet {
 	// private ServletContext context;
 	private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
 	private List<String> category;
@@ -45,17 +47,17 @@ public class Hotel extends HttpServlet {
 		if (action.equals("getOne")) {
 			System.out.println("1231321231321321313213132132");
 			String id = jsonObject.get("id").getAsString();
-			HotelJDBCDAO dao = new HotelJDBCDAO();
-			HotelVO hotelVO = dao.findByPrimaryKey(id);
+			RoomJDBCDAO dao = new RoomJDBCDAO();
+			RoomVO hotelVO = dao.findByPrimaryKey(id);
 			outStr = gson.toJson(hotelVO);
 			System.out.println(outStr);
 			System.out.println("id " + id);
 		}else if(action.equals("getAll")){
-			HotelJDBCDAO dao = new HotelJDBCDAO();
-			List<HotelVO> list = dao.getAll();
-			for (HotelVO myVO: list){
-				myVO.setHotelCoverPic(null);
-			}
+			RoomJDBCDAO dao = new RoomJDBCDAO();
+			List<RoomVO> list = dao.getAll();
+//			for (RoomVO myVO: list){
+//				myVO.setHotelCoverPic(null);
+//			}
 			outStr = gson.toJson(list);
 			System.out.println(outStr);
 			
