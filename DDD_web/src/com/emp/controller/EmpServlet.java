@@ -74,7 +74,21 @@ public class EmpServlet extends HttpServlet {
 						}	
 					}
 
-					java.sql.Date	empHireDate = java.sql.Date.valueOf(request.getParameter("empHireDate").trim());		
+					java.sql.Date empHireDate = null;
+					try {
+						empHireDate = java.sql.Date.valueOf(request.getParameter("empHireDate").trim());
+					} catch (IllegalArgumentException e) {
+						
+						errorMsgs.add("請輸入日期!");
+					}
+					
+					java.sql.Date empFireDate = null;
+					try {
+						empFireDate = java.sql.Date.valueOf(request.getParameter("empFireDate").trim());
+					} catch (IllegalArgumentException e) {
+						
+						errorMsgs.add("請輸入日期!");
+					}		
 					
 					String	empStatus = request.getParameter("empStatus").trim();					
 					
@@ -104,13 +118,10 @@ public class EmpServlet extends HttpServlet {
 						}	
 					}
 					
-					String empAddress=null;
-					try{
-						empAddress = request.getParameter("empAddress").trim();
-					}catch (NumberFormatException e) {				
-						empAddress = "台北市";
-						errorMsgs.add("請輸入地址");
-					}				
+					String	empAddress = request.getParameter("empAddress").trim();
+					if(empAddress.trim().isEmpty()){
+						errorMsgs.add("地址必填");
+					}
 					
 
 					EmpVO empVO = new EmpVO();
@@ -119,6 +130,7 @@ public class EmpServlet extends HttpServlet {
 					 empVO.setEmpPwd(empPwd);
 					 empVO.setEmpPhone(empPhone);
 					 empVO.setEmpHireDate(empHireDate);
+					 empVO.setEmpFireDate(empFireDate);
 					 empVO.setEmpStatus(empStatus);
 					 empVO.setEmpBirthDate(empBirthDate);
 					 empVO.setEmpProfile(buf);
@@ -136,7 +148,7 @@ public class EmpServlet extends HttpServlet {
 					
 					/***************************2.開始新增資料***************************************/
 					EmpService empSvc = new EmpService();
-					empVO = empSvc.addEmp(empName, empAccount, empPwd, empPhone, empHireDate, empStatus,
+					empVO = empSvc.addEmp(empName, empAccount, empPwd, empPhone, empHireDate,empFireDate,empStatus,
 							empBirthDate,buf,empROCId,empAddress);
 					
 					/***************************3.新增完成,準備轉交(Send the Success view)***********/
@@ -160,6 +172,9 @@ public class EmpServlet extends HttpServlet {
 				// Store this set in the request scope, in case we need to
 				// send the ErrorPage view.
 				request.setAttribute("errorMsgs", errorMsgs);
+				
+				String requestURL = request.getParameter("requestURL"); // 送出修改的來源網頁路徑: 可能為【/emp/listAllEmp.jsp】 或  【/dept/listEmps_ByDeptno.jsp】 或 【 /dept/listAllDept.jsp】		
+
 				
 				try {
 					/***************************1.接收請求參數****************************************/
@@ -192,6 +207,9 @@ public class EmpServlet extends HttpServlet {
 				// Store this set in the request scope, in case we need to
 				// send the ErrorPage view.
 				request.setAttribute("errorMsgs", errorMsgs);
+				
+				String requestURL = request.getParameter("requestURL"); // 送出修改的來源網頁路徑: 可能為【/emp/listAllEmp.jsp】 或  【/dept/listEmps_ByDeptno.jsp】 或 【 /dept/listAllDept.jsp】
+
 				
 				try {
 					/***************************1.接收請求參數****************************************/
@@ -227,11 +245,21 @@ public class EmpServlet extends HttpServlet {
 						}	
 					}
 					
-					java.sql.Date	empHireDate = java.sql.Date.valueOf(request.getParameter("empHireDate").trim());
-					java.sql.Date	empFireDate = java.sql.Date.valueOf(request.getParameter("empFireDate").trim());
+					java.sql.Date empHireDate = null;
+					try {
+						empHireDate = java.sql.Date.valueOf(request.getParameter("empHireDate").trim());
+					} catch (IllegalArgumentException e) {
+						
+						errorMsgs.add("請輸入日期!");
+					}
 					
-					
-					
+					java.sql.Date empFireDate = null;
+					try {
+						empFireDate = java.sql.Date.valueOf(request.getParameter("empFireDate").trim());
+					} catch (IllegalArgumentException e) {
+						
+						errorMsgs.add("請輸入日期!");
+					}
 					
 					String empStatus =request.getParameter("empStatus").trim();
 					if(empStatus.trim().isEmpty()){
@@ -241,8 +269,14 @@ public class EmpServlet extends HttpServlet {
 							errorMsgs.add("狀態碼只能輸入1-2");
 						}	
 					}
-					
-					java.sql.Date empBirthDate = java.sql.Date.valueOf(request.getParameter("empBirthDate").trim());
+										
+					java.sql.Date empBirthDate = null;
+					try {
+						empBirthDate = java.sql.Date.valueOf(request.getParameter("empBirthDate").trim());
+					} catch (IllegalArgumentException e) {
+						
+						errorMsgs.add("請輸入生日!");
+					}
 					
 					InputStream in=null;
 					byte[] buf=null ;
@@ -266,13 +300,11 @@ public class EmpServlet extends HttpServlet {
 						}	
 					}
 					
-					String empAddress=null;
-					try{
-						empAddress = request.getParameter("empAddress").trim();
-					}catch (NumberFormatException e) {				
-						empAddress = "台北市";
-						errorMsgs.add("請輸入地址");
-					}			
+					
+					String	empAddress = request.getParameter("empAddress").trim();
+					if(empAddress.trim().isEmpty()){
+						errorMsgs.add("地址必填");
+					}
 					
 					String empId = request.getParameter("empId").trim();
 					
@@ -305,7 +337,7 @@ public class EmpServlet extends HttpServlet {
 									
 					/***************************3.查詢完成,準備轉交(Send the Success view)************/
 					request.setAttribute("empVO", empVO);         // 資料庫取出的empVO物件,存入req
-					String url = "/emp/listAllEmp.jsp";
+					String url = requestURL;
 					RequestDispatcher successView = request.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
 					successView.forward(request, response);
 
