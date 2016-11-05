@@ -108,7 +108,7 @@ public class RoomPhotoServlet extends HttpServlet {
 					byte[] Picbyte =SetPic(in);
 					
 						
-					RoomPhotoSvc.insertRoomPhoto(HotelId,roomPhotoRoomId, Picbyte);
+					//RoomPhotoSvc.insertRoomPhoto(HotelId, Picbyte);
 			
 					}
 			}

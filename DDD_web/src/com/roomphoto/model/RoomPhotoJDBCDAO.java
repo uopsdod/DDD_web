@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.sql.Connection;
 import com.room.model.RoomJDBCDAO;
 import com.room.model.RoomVO;
 
@@ -22,7 +22,7 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 
 	
 	private static final String INSERT_STMT = 
-		"INSERT INTO roomphoto VALUES ( ? ||roomphoto_seq.NEXTVAL , ?, ?)";
+		"INSERT INTO roomphoto VALUES ( ? ||roomphoto_seq.NEXTVAL ,room_seq.CURRVAL, ?)";
 	private static final String GET_ALL_STMT = 
 		"SELECT * FROM roomphoto order by roomphotoId";
 	private static final String GET_ONE_STMT = 
@@ -36,57 +36,53 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 		"SELECT * FROM roomphoto where roomPhotoRoomId = ?";	
 	
 
+	
 	@Override
-	public boolean insert(RoomPhotoVO aRoomPhotoVO,String aHotelId) {
-		
+	public boolean	insert(String aHotelId,byte[] aRoomPhotoPic,Connection con) {
 		boolean boo = false;
 		
-		Connection con = null;
+		
 		PreparedStatement pstmt = null;
-	
+			
 		
 		try {
 			
+			System.out.println("圖片開始新增");
 			
 			
 			
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			
-			pstmt.setString(1, aHotelId);
-			pstmt.setString(2, aRoomPhotoVO.getRoomPhotoRoomId());
-			pstmt.setBytes(3, aRoomPhotoVO.getRoomPhotoPic());
+			System.out.println("圖片正在新增");
+			
+			pstmt.setString(1, aHotelId);	
+			System.out.println(aRoomPhotoPic==null);
+			System.out.println(aHotelId);
+			pstmt.setBytes(2, aRoomPhotoPic);
 			
 			pstmt.executeUpdate();
 			
-			
+				System.out.println("圖片以新增");
 	
 			
 			boo =true;
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
+			System.out.println(se.getMessage());
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
 			// Clean up JDBC resources
-		} finally {
+		} catch(Exception e){
+				System.out.println(e.getMessage());
+				throw new RuntimeException("A database error occured. "
+						+ e.getMessage());
+		}finally {
 			if (pstmt != null) {
 				try {
 					pstmt.close();
 				} catch (SQLException se) {
 					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
 				}
 			}
 		}
