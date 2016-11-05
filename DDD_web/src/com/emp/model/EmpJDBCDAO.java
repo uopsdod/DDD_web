@@ -17,7 +17,7 @@ public class EmpJDBCDAO implements EmpDAO_interface {
 	String passwd = "alen27";
 	private static final String GET_ALL_STMT = "SELECT empId,empName,empAccount,empPwd,empPhone,empHireDate,empFireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress FROM emp order by empId";
 	private static final String GET_ONE_STMT = "SELECT empId,empName,empAccount,empPwd,empPhone,empHireDate,empFireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress FROM emp where empId=?";
-	private static final String INSERT_STMT = "INSERT INTO emp (empId,empName,empAccount,empPwd,empPhone,empHireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress) VALUES (emp_seq.NEXTVAL,?,?,?,?,?,?,?,?,?,?)";
+	private static final String INSERT_STMT = "INSERT INTO emp (empId,empName,empAccount,empPwd,empPhone,empHireDate,empFireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress) VALUES (emp_seq.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String UPDATE = "UPDATE emp set  empName=?, empAccount=?, empPwd=?, empPhone=?,empHireDate=?,empFireDate=?, empStatus=? ,empBirthDate=?,empProfile=?,empROCId=?,empAddress=? where empId =?";
 	private static final String UPDATE_PSW ="UPDATE EMP set empPwd=? where empId=?";
 	private static final String GET_PHOTO ="SELECT empProfile from emp where empId=?";
@@ -223,11 +223,12 @@ public class EmpJDBCDAO implements EmpDAO_interface {
 			pstmt.setString(3, aEmpVO.getEmpPwd());
 			pstmt.setString(4, aEmpVO.getEmpPhone());
 			pstmt.setDate(5, aEmpVO.getEmpHireDate());
-			pstmt.setString(6, aEmpVO.getEmpStatus());
-			pstmt.setDate(7, aEmpVO.getEmpBirthDate());
-			pstmt.setBytes(8,aEmpVO.getEmpProfile() );
-			pstmt.setString(9, aEmpVO.getEmpROCId());
-			pstmt.setString(10, aEmpVO.getEmpAddress());
+			pstmt.setDate(6, aEmpVO.getEmpFireDate());
+			pstmt.setString(7, aEmpVO.getEmpStatus());
+			pstmt.setDate(8, aEmpVO.getEmpBirthDate());
+			pstmt.setBytes(9,aEmpVO.getEmpProfile() );
+			pstmt.setString(10, aEmpVO.getEmpROCId());
+			pstmt.setString(11, aEmpVO.getEmpAddress());
 
 			pstmt.executeUpdate();
 

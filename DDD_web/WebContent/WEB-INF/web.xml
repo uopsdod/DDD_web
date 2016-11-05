@@ -36,12 +36,21 @@
   </servlet-mapping>
     
    <servlet>
-    <servlet-name>HotelServlet</servlet-name>
+    <servlet-name>AndroindHotelServlet</servlet-name>
     <servlet-class>android.Hotel.Hotel</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>HotelServlet</servlet-name>
+    <servlet-name>AndroindHotelServlet</servlet-name>
     <url-pattern>/android/hotel.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>AndroidRoomServlet</servlet-name>
+    <servlet-class>android.Room.Room</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AndroidRoomServlet</servlet-name>
+    <url-pattern>/android/room.do</url-pattern>
   </servlet-mapping>
   
   <filter>

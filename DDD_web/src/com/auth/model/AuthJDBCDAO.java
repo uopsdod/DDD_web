@@ -14,8 +14,8 @@ public class AuthJDBCDAO implements AuthVO_interface {
 	String userid = "Alen";
 	String passwd = "alen27";
 	private static final String GET_ALL_STMT = "select authId,authName from AUTH order by authId";
-	private static final String GET_AUTH_ONE = "select e.empAuthEmpId,a.authId,a.authName from AUTH a join empAuth e "
-			+ "on a.authId=e.empAuthAuthId where e.empAuthEmpId =?";
+	private static final String GET_AUTH_ONE = "select empAuthAuthId from empAuth  where empAuthEmpId=?" ;
+			
 	private static final String DELETE = "DELETE  from empAuth where empAuthEmpId=?";
 	private static final String INSERT = "INSERT INTO empAuth (empAuthEmpId,empAuthAuthId) VALUES (?,?)";
 
@@ -78,9 +78,9 @@ public class AuthJDBCDAO implements AuthVO_interface {
 
 	// for select now
 	@Override
-	public List<AuthVo> getAuthsByEmpId(String empAuthEmpId) {
-		List<AuthVo> list = new ArrayList<AuthVo>();
-		AuthVo authVo = null;
+	public List<String> getAuthsByEmpId(String empAuthEmpId) {
+		List<String> list = new ArrayList<String>();
+		String authId = null;
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -95,11 +95,11 @@ public class AuthJDBCDAO implements AuthVO_interface {
 
 			while (rs.next()) {
 				
-				authVo = new AuthVo();
-				authVo.setAuthId(rs.getString("authId"));
-				authVo.setAuthName(rs.getString("authName"));
+				
+				authId=rs.getString("empAuthAuthId");
+				
 
-				list.add(authVo); 
+				list.add(authId); 
 			}
 
 			// Handle any driver errors
@@ -137,7 +137,7 @@ public class AuthJDBCDAO implements AuthVO_interface {
 
 	// first del them insert
 	@Override
-	public void update(String empAuthEmpId, List<AuthVo> empAuthList) {
+	public void update(String empAuthEmpId, String[] empAuthList) {
 
 		Connection con = null;
 		PreparedStatement pstmt_delete = null;
@@ -154,10 +154,10 @@ public class AuthJDBCDAO implements AuthVO_interface {
 			rs = pstmt_delete.executeQuery();
 
 			pstmt_insert = con.prepareStatement(INSERT);
-			for (AuthVo authVo : empAuthList) {
+			for (String authid : empAuthList) {
 
 				pstmt_insert.setString(1, empAuthEmpId);
-				pstmt_insert.setString(2, authVo.getAuthId());
+				pstmt_insert.setString(2, authid);
 				rs = pstmt_insert.executeQuery();
 			}
 
@@ -205,8 +205,8 @@ public class AuthJDBCDAO implements AuthVO_interface {
 		AuthJDBCDAO dao = new AuthJDBCDAO();
 
 		// select one Auth
-//		 List<AuthVo> list1 = dao.getAuthsByEmpId("10004");
-//		 for (AuthVo aAuth : list1) {
+//		 List<String> list1 = dao.getAuthsByEmpId("10004");
+//		 for (String aAuth : list1) {
 //		 System.out.print(aAuth.getAuthId() + ",");
 //		 System.out.print(aAuth.getAuthName() + ",");
 //		 System.out.println();

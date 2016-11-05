@@ -18,7 +18,6 @@ import com.mem.model.MemVO;
 
 import javafx.scene.effect.Light.Spot;
 @SuppressWarnings("serial")
-@WebServlet("/HotelServlet")
 public class Hotel extends HttpServlet {
 	// private ServletContext context;
 	private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
