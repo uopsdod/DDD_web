@@ -10,8 +10,8 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>訂單資料新增 - addOrd.jsp</title>
-		<link rel="stylesheet" type="text/css" href="js/calendar.css">
-		<script type="text/javascript" src="js/calendarcode.js"></script>
+		<link rel="stylesheet" type="text/css">
+		<script type="text/javascript"></script>
 	</head>	
 		
 	<body>
@@ -68,7 +68,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 				</tr>
 				
 				<tr>
-					<!--  升級成外來鍵 -->
+					<!-- 改天升級成外來鍵 -->
 					<td>廠商會員編號:</td>
 					<td>
 						<input type="text" name="ordHotelId" 
@@ -86,17 +86,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 					<%java.sql.Date dateSQL = new java.sql.Date(System.currentTimeMillis());%>
 					<td>入住日期:</td>
 					<td>
-						<input class="cal-TextBox" onFocus="this.blur()" readonly type="text" name="ordLiveDate" 
-						value="<%= (ordVO==null)? dateSQL : ordVO.getOrdLiveDate()%>">
-
-						<a class="so-BtnLink"
-							href="javascript:calClick();return false;"
-							onmouseover="calSwapImg('BTN_date', 'img_Date_OVER',true);"
-							onmouseout="calSwapImg('BTN_date', 'img_Date_UP',true);"
-							onclick="calSwapImg('BTN_date', 'img_Date_DOWN');
-							showCalendar('form1','ordLiveDate','BTN_date');return false;">
-							<img name="BTN_date" src="images/btn_date_up.gif" alt="入住日期"/>
-						</a>
+						<input type="datetime-local" name="ordLiveDate" value="<%= (ordVO==null)? dateSQL : ordVO.getOrdLiveDate()%>">
 					</td>
 				</tr>
 <!-- 				<tr> -->
