@@ -122,17 +122,36 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 		return RoomSet;
 	}
 	@Override
-	public void insert(RoomVO aRoomVO){
+	public void insert(RoomVO aRoomVO,Connection con){
 
-		Connection con = null;
+		
 		PreparedStatement pstmt = null;
 
 		try {
 
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			System.out.println("HotelId  :  "+aRoomVO.getRoomHotelId().getClass()+aRoomVO.getRoomHotelId());
+			System.out.println("RoomName  :  "+aRoomVO.getRoomName().getClass()+aRoomVO.getRoomName());
+			System.out.println("RoomTotalNo  :  "+aRoomVO.getRoomTotalNo().getClass()+aRoomVO.getRoomTotalNo());
+			System.out.println("RoomPrice  :  "+aRoomVO.getRoomPrice().getClass()+aRoomVO.getRoomPrice());
+			System.out.println("RoomForSell  :  "+changeBoolean(aRoomVO.getRoomForSell()).getClass()+changeBoolean(aRoomVO.getRoomForSell()));
+			System.out.println("RoomForSellAuto  :  "+changeBoolean(aRoomVO.getRoomForSellAuto()).getClass()+changeBoolean(aRoomVO.getRoomForSellAuto()));
+			System.out.println("RoomRemainNo  :  "+aRoomVO.getRoomRemainNo().getClass()+aRoomVO.getRoomRemainNo());
+			System.out.println("RoomDiscountStartDate  :  "+aRoomVO.getRoomDiscountStartDate().getClass()+aRoomVO.getRoomDiscountStartDate());
+			System.out.println("RoomDiscountEndDate  :  "+aRoomVO.getRoomDiscountEndDate().getClass()+aRoomVO.getRoomDiscountEndDate());
+			System.out.println("RoomDisccountPercent  :  "+aRoomVO.getRoomDisccountPercent().getClass()+aRoomVO.getRoomDisccountPercent());
+			System.out.println("RoomDiscountHr  :  "+aRoomVO.getRoomDiscountHr().getClass()+aRoomVO.getRoomDiscountHr());
+			System.out.println("RoomOnePrice  :  "+changeBoolean(aRoomVO.getRoomOnePrice()).getClass()+changeBoolean(aRoomVO.getRoomOnePrice()));
+			System.out.println("RoomFun  :  "+aRoomVO.getRoomFun().getClass()+aRoomVO.getRoomFun());
+			System.out.println("RoomMeal  :  "+aRoomVO.getRoomMeal().getClass()+aRoomVO.getRoomMeal());
+			System.out.println("RoomSleep  :  "+aRoomVO.getRoomSleep().getClass()+aRoomVO.getRoomSleep());
+			System.out.println("RoomFacility  :  "+aRoomVO.getRoomFacility().getClass()+aRoomVO.getRoomFacility());
+			System.out.println("RoomSweetFacility  :  "+aRoomVO.getRoomSweetFacility().getClass()+aRoomVO.getRoomSweetFacility());
+			System.out.println("RoomCapacity  :  "+aRoomVO.getRoomCapacity().getClass()+aRoomVO.getRoomCapacity());
+			System.out.println("RoomOneBed  :  "+aRoomVO.getRoomOneBed().getClass()+aRoomVO.getRoomOneBed());
+			System.out.println("RoomTwoBed  :  "+aRoomVO.getRoomTwoBed().getClass()+aRoomVO.getRoomTwoBed());
+			
 			pstmt = con.prepareStatement(INSERT_STMT);
-
+			
 			pstmt.setString(1, aRoomVO.getRoomHotelId());
 			pstmt.setString(2, aRoomVO.getRoomName());
 			pstmt.setInt(3, aRoomVO.getRoomTotalNo());
@@ -154,20 +173,16 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 			pstmt.setInt(19, aRoomVO.getRoomOneBed());
 			pstmt.setInt(20, aRoomVO.getRoomTwoBed());
 		
-			
+			System.out.println("aaaaa");
 
 			pstmt.executeUpdate();
 
 			
 			
 			
-			
+			System.out.println("aaaaa");
 
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
@@ -180,13 +195,7 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 					se.printStackTrace(System.err);
 				}
 			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
+			
 		}
 		
 	}

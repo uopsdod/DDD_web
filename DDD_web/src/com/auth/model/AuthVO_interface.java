@@ -4,9 +4,9 @@ import java.util.List;
 
 
 public interface AuthVO_interface {
-	public List<AuthVo> getAll();  
-	public List<AuthVo> getAuthsByEmpId(String empAuthEmpId);
-	public void update(String empAuthEmpId, List<AuthVo> empAuthList);
+	public List<AuthVo> getAll();
+	public List<String> getAuthsByEmpId(String empAuthEmpId);
+	public void update(String empAuthEmpId, String[] empAuthList);
 	
 	
 }

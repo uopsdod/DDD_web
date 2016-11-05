@@ -6,11 +6,11 @@ public class EmpService {
 	private EmpDAO_interface dao;
 	
 	public EmpService() {
-		dao = new EmpJDBCDAO();
+		dao = new EmpDAO();
 	}
 	
 	public EmpVO addEmp(String aEmpName, String aEmpAccount,String aEmpPwd,String aEmpPhone, java.sql.Date aEmpHireDate,
-				String aEmpStatus,java.sql.Date aEmpBirthDate,byte[] aEmpProfile, String aEmpROCId, String aEmpAddress) {
+			 java.sql.Date aEmpFireDate,String aEmpStatus,java.sql.Date aEmpBirthDate,byte[] aEmpProfile, String aEmpROCId, String aEmpAddress) {
 
 		EmpVO empVO = new EmpVO();
 
@@ -19,6 +19,7 @@ public class EmpService {
 		empVO.setEmpPwd(aEmpPwd);
 		empVO.setEmpPhone(aEmpPhone);
 		empVO.setEmpHireDate(aEmpHireDate);
+		empVO.setEmpFireDate(aEmpFireDate);
 		empVO.setEmpStatus(aEmpStatus);
 		empVO.setEmpBirthDate(aEmpBirthDate);
 		empVO.setEmpProfile(aEmpProfile);

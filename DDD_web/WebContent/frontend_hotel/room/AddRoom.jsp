@@ -33,15 +33,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 
 <div style="height:200px">
 <%--錯誤表列--%>
-<c:if test="${not empty errorMsgs}">
-	<font color='red'>請修正以下錯誤:
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li>${message}</li>
-		</c:forEach>
-	</ul>
-	</font>
-</c:if>
+
 </div>
 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/room/room.do" name="form1"  method=post enctype="multipart/form-data">
 
@@ -53,8 +45,17 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 						
 						<div class="form-horizontal">
 						
-							
-							
+							<div>
+								<c:if test="${not empty errorMsgs}">
+									<font color='red'>請修正以下錯誤:
+									<ul>
+										<c:forEach var="message" items="${errorMsgs}">
+											<li>${message}</li>
+										</c:forEach>
+									</ul>
+									</font>
+								</c:if>
+							</div>	
 							
 							<!------------------------頁簽---------------------------->
 							<div class="col-xs-12 col-sm-8">
@@ -84,23 +85,23 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 														<label class="col-sm-3 control-label">房型名稱</label>
 														<div class="col-sm-9">
 																<input type="TEXT" name="roomName" size="45" class="form-control"
-																		value="<%= (roomVO==null)? "大雅房" : roomVO.getRoomName()%>" />
+																		value="<%= (roomVO==null)? "" : roomVO.getRoomName()%>" />
 														</div>
 													</div>
 							
 													<div class="form-group">
 														<label class="col-sm-3 control-label">房間總數</label>
 														<div class="col-sm-9">
-																<input type="TEXT" name="roomTotalNo" size="10" class="form-control
-																	value="<%= (roomVO==null)? "5" : roomVO.getRoomTotalNo()%>" />
+																<input type="TEXT" name="roomTotalNo" size="10" class="form-control"
+																	value="<%= (roomVO==null)? "" : (roomVO.getRoomTotalNo()==null?"":roomVO.getRoomTotalNo())%>" />
 														</div>
 													</div>
 							
 													<div class="form-group">
 														<label class="col-sm-3 control-label">房間定價</label>
 														<div class="col-sm-9">
-																<input type="TEXT" name="roomPrice" size="45" class="form-control
-																	value="<%= (roomVO==null)? "5000" : roomVO.getRoomPrice()%>" />
+																<input type="TEXT" name="roomPrice" size="45" class="form-control"
+																	value="<%= (roomVO==null)? "" : (roomVO.getRoomPrice()==null?"":roomVO.getRoomPrice())%>" />
 														</div>
 													</div>
 							
@@ -172,7 +173,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 													</div>
 													
 													<div class="form-group">
-														<label class="col-sm-3 control-label">單人床數</label>
+														<label class="col-sm-3 control-label">雙人床數</label>
 														<div class="col-sm-9">
 																<select  name="roomTwoBed" class="form-control" style="width:100px">
 													  	
@@ -191,8 +192,8 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 										 			<div class="form-group">
 														<label class="col-sm-3 control-label">今日上架房數</label>
 														<div class="col-sm-9">
-																<input type="TEXT" name="roomRemainNo" size="45" class="form-control
-																		value="<%= (roomVO==null)? "4" : roomVO.getRoomRemainNo()%>" />
+																<input type="TEXT" name="roomRemainNo" size="45" class="form-control"
+																		value="<%= (roomVO==null)? "" : (roomVO.getRoomRemainNo()==null?"":roomVO.getRoomRemainNo())%>" />
 														</div>
 													</div>
 										 			
@@ -201,7 +202,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 														<label class="col-sm-3 control-label">是否上架</label>
 														<div class="col-sm-9">
 															<div class="col-xs-12 col-sm-3">
-																<input type="radio" name="roomForSell" size="10" class="form-control
+																<input type="radio" name="roomForSell" size="10" class="form-control"
 																	value="true" <%=(roomVO==null)?"":(roomVO.getRoomForSell()==true?"checked":"") %> />
 															
 															</div>
@@ -211,7 +212,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 																</div>
 															</div>
 															<div class="col-xs-12 col-sm-3">
-																<input type="radio" name="roomForSell" size="10" class="form-control
+																<input type="radio" name="roomForSell" size="10" class="form-control"
 																	value="false" <%=(roomVO==null)?"":(roomVO.getRoomForSell()==false?"checked":"") %> />
 														
 															</div>
@@ -230,7 +231,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 														<label class="col-sm-3 control-label">是否自動上架</label>
 														<div class="col-sm-9">
 															<div class="col-xs-12 col-sm-3">
-																<input type="radio" name="roomForSellAuto"  class="form-control
+																<input type="radio" name="roomForSellAuto"  class="form-control"
 																	value="true" <%=(roomVO==null)?"":(roomVO.getRoomForSellAuto()==true?"checked":"") %> />
 															</div>
 															<div class="col-xs-12 col-sm-3">
@@ -239,7 +240,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 																</div>
 															</div>
 															<div class="col-xs-12 col-sm-3">
-																<input type="radio" name="roomForSellAuto" class="form-control 
+																<input type="radio" name="roomForSellAuto" class="form-control" 
 																	value="false"<%=(roomVO==null)?"":(roomVO.getRoomForSellAuto()==false?"checked":"") %> />
 															</div>
 															<div class="col-xs-12 col-sm-3">

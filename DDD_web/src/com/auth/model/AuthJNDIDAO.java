@@ -8,17 +8,28 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AuthJDBCDAO implements AuthVO_interface {
-	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "Alen";
-	String passwd = "alen27";
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+public class AuthJNDIDAO implements AuthVO_interface {
+	private static DataSource ds = null;
+	static {
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private static final String GET_ALL_STMT = "select authId,authName from AUTH order by authId";
 	private static final String GET_AUTH_ONE = "select empAuthAuthId from empAuth  where empAuthEmpId=?" ;
 			
 	private static final String DELETE = "DELETE  from empAuth where empAuthEmpId=?";
 	private static final String INSERT = "INSERT INTO empAuth (empAuthEmpId,empAuthAuthId) VALUES (?,?)";
-
+	
 	@Override
 	public List<AuthVo> getAll() {
 		List<AuthVo> list = new ArrayList<AuthVo>();
@@ -29,8 +40,7 @@ public class AuthJDBCDAO implements AuthVO_interface {
 		ResultSet rs = null;
 
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_STMT);
 			rs = pstmt.executeQuery();
 
@@ -44,9 +54,6 @@ public class AuthJDBCDAO implements AuthVO_interface {
 			}
 
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
@@ -75,8 +82,6 @@ public class AuthJDBCDAO implements AuthVO_interface {
 		}
 		return list;
 	}
-
-	// for select now
 	@Override
 	public List<String> getAuthsByEmpId(String empAuthEmpId) {
 		List<String> list = new ArrayList<String>();
@@ -87,8 +92,7 @@ public class AuthJDBCDAO implements AuthVO_interface {
 		ResultSet rs = null;
 
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_AUTH_ONE);
 			pstmt.setString(1, empAuthEmpId);
 			rs = pstmt.executeQuery();
@@ -103,9 +107,6 @@ public class AuthJDBCDAO implements AuthVO_interface {
 			}
 
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 			// Clean up JDBC resources
@@ -134,19 +135,15 @@ public class AuthJDBCDAO implements AuthVO_interface {
 		}
 		return list;
 	}
-
-	// first del them insert
 	@Override
 	public void update(String empAuthEmpId, String[] empAuthList) {
-
 		Connection con = null;
 		PreparedStatement pstmt_delete = null;
 		PreparedStatement pstmt_insert = null;
 		ResultSet rs = null;
 
 		try {
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			con = ds.getConnection();
 			con.setAutoCommit(false);
 			pstmt_delete = con.prepareStatement(DELETE);
 			pstmt_delete.setString(1, empAuthEmpId);
@@ -163,9 +160,6 @@ public class AuthJDBCDAO implements AuthVO_interface {
 
 			con.commit();
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			try {
 				con.rollback();
@@ -199,47 +193,4 @@ public class AuthJDBCDAO implements AuthVO_interface {
 			}
 		}
 	}
-
-
-	public static void main(String[] args) {
-		AuthJDBCDAO dao = new AuthJDBCDAO();
-
-		// select one Auth
-//		 List<String> list1 = dao.getAuthsByEmpId("10004");
-//		 for (String aAuth : list1) {
-//		 System.out.print(aAuth.getAuthId() + ",");
-//		 System.out.print(aAuth.getAuthName() + ",");
-//		 System.out.println();
-//		 }
-//		 System.out.println("--------------------------------------------------");
-		
-		
-		// //UPDATE&insert
-//		 List<AuthVo> list2 = new ArrayList<AuthVo>();
-//		 AuthVo AuthVo = new AuthVo();
-//		 AuthVo.setAuthId("103");
-//		 AuthVo AuthVo2 = new AuthVo();
-//		 AuthVo2.setAuthId("104");
-//		 list2.add(AuthVo);
-//		 list2.add(AuthVo2);
-//		
-//		 dao.update("10006", list2);
-//		 //select ans
-//		 List<AuthVo> list3 = dao.getAuthsByEmpId("10005");
-//		 for (AuthVo aAuth : list3) {
-//		 System.out.print(aAuth.getAuthId() + ",");
-//		 System.out.print(aAuth.getAuthName() + ",");
-//		 System.out.println();
-//		 }
-
-		// select ALL
-//		List<AuthVo> list = dao.getAll();
-//		for (AuthVo aAuth : list) {
-//			System.out.print(aAuth.getAuthId() + ",");
-//			System.out.print(aAuth.getAuthName() + ",");
-//			System.out.println();
-//		}
-
-	}
-
 }
