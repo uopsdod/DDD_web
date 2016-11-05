@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.sql.Connection;
 import com.room.model.RoomJDBCDAO;
 import com.room.model.RoomVO;
 
@@ -38,10 +38,10 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 
 	
 	@Override
-	public boolean	insert(String aHotelId,byte[] aRoomPhotoPic) {
+	public boolean	insert(String aHotelId,byte[] aRoomPhotoPic,Connection con) {
 		boolean boo = false;
 		
-		Connection con = null;
+		
 		PreparedStatement pstmt = null;
 			
 		
@@ -50,8 +50,7 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 			System.out.println("圖片開始新增");
 			
 			
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			
@@ -69,11 +68,6 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 			
 			boo =true;
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			System.out.println(e.getMessage());
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			System.out.println(se.getMessage());
 			throw new RuntimeException("A database error occured. "
@@ -81,19 +75,14 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 			// Clean up JDBC resources
 		} catch(Exception e){
 				System.out.println(e.getMessage());
+				throw new RuntimeException("A database error occured. "
+						+ e.getMessage());
 		}finally {
 			if (pstmt != null) {
 				try {
 					pstmt.close();
 				} catch (SQLException se) {
 					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
 				}
 			}
 		}

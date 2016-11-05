@@ -1,7 +1,7 @@
 package com.roomphoto.model;
 
 import java.util.List;
-
+import java.sql.Connection;
 import com.room.model.RoomDAO_interface;
 import com.room.model.RoomJDBCDAO;
 import com.room.model.RoomVO;
@@ -15,10 +15,10 @@ public class RoomPhotoService {
 		dao = new RoomPhotoJDBCDAO();
 	}
 
-	public void insertRoomPhoto(String aHotelId, byte[] aRoomPhotoPic) {
+	public void insertRoomPhoto(String aHotelId, byte[] aRoomPhotoPic,Connection con) {
 
 	
-		dao.insert(aHotelId,aRoomPhotoPic);	
+		dao.insert(aHotelId,aRoomPhotoPic,con);	
 	}
 
 	public RoomPhotoVO updateRoomPhoto(String aRoomPhotoId, String aRoomPhotoRoomId,byte[] aRoomPhotoPic ) 
@@ -30,7 +30,7 @@ public class RoomPhotoService {
 		roomPhotoVO.setRoomPhotoRoomId(aRoomPhotoRoomId);
 		roomPhotoVO.setRoomPhotoPic(aRoomPhotoPic);
 		dao.update(roomPhotoVO);
-
+	
 		return roomPhotoVO;
 	}
 
