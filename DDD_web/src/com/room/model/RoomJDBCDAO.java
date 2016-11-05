@@ -7,8 +7,8 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 	
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "scott";
-	String passwd = "tiger";
+	String userid = "JDBCcucuboy";
+	String passwd = "123";
 
 	private static final String INSERT_STMT = 
 		"INSERT INTO room VALUES (room_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
