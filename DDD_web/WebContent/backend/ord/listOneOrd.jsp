@@ -14,7 +14,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controlle
 			<td>
 				<h3>訂單資料 - ListOneOrd.jsp</h3>
 				<a href="selectPage.jsp">
-					<img src="images/back1.gif" alt="">回首頁
+					<img src="images/back1.gif" alt="Back Home">回首頁
 				</a>
 			</td>
 		</tr>

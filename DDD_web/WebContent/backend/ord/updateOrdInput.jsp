@@ -8,9 +8,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>訂單資料修改 - updateOrdInput.jsp</title>
-<link rel="stylesheet" type="text/css">
-<script type="text/javascript"></script>
+	<title>訂單資料修改 - updateOrdInput.jsp</title>
+	<link rel="stylesheet" type="text/css">
+	<script type="text/javascript"></script>
 </head>
 
 <body>
@@ -67,17 +67,20 @@
 		</tr>
 
 		<tr>
-			<%java.sql.Date dateSQL = new java.sql.Date(System.currentTimeMillis());%>
 			<td>下訂日期:</td>
-			<td>
-				<input type="datetime-local" name="ordDate" value="<%= (ordVO==null)? dateSQL : ordVO.getOrdDate()%>">
-			</td>
+			<td><%=ordVO.getOrdDate()%>></td>
 		</tr>
 
 		<tr>
 			<td>訂單狀態名稱:</td>
-			<td>
-				<input type="text" name="ordStatus" value="<%=ordVO.getOrdStatus()%>">
+			<td>				
+				<select name="ordStatus">
+  					<option value="0">已下單</option>
+  					<option value="1">主動取消</option>
+  					<option value="2">已入住</option>
+  					<option value="3">已繳費</option>
+  					<option value="4">逾時取消</option>
+				</select>
 			</td>
 		</tr>
 
@@ -91,7 +94,7 @@
 		<tr>
 			<td>評價星星數:</td>
 			<td>
-				 0<input type="range" name="ordRatingStarNo" min="0" max="10" value="<%=ordVO.getOrdRatingStarNo()%>">10
+				 0<input type="range" name="ordRatingStarNo" min="0" max="10" value="<%= (ordVO==null)? "10" : ordVO.getOrdRatingStarNo()%>">10
 			</td>
 		</tr>
 

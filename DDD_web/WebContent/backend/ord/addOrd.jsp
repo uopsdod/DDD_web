@@ -73,7 +73,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 				<tr>
 					<td>訂單金額:</td>
 					<td>
-						<input type="text" name="ordPrice" 
+						<input type="number" name="ordPrice" 
 						value="<%= (ordVO==null)? "8888" : ordVO.getOrdPrice()%>"/>
 					</td>
 				</tr>
@@ -81,7 +81,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 					<%java.sql.Date dateSQL = new java.sql.Date(System.currentTimeMillis());%>
 					<td>入住日期:</td>
 					<td>
-						<input type="datetime-local" name="ordLiveDate" value="<%= (ordVO==null)? dateSQL : ordVO.getOrdLiveDate()%>">
+						<input type="date" name="ordLiveDate" value="<%= (ordVO==null)? dateSQL : ordVO.getOrdLiveDate()%>">
 					</td>
 				</tr>
 <!-- 				<tr> -->
