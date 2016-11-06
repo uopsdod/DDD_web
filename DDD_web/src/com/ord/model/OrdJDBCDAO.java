@@ -482,34 +482,34 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 		OrdVO ordVO1 = new OrdVO();
 				
 		//測試圖片		
-		File pic = new File("C:/Users/cuser/Desktop/QRCode.png");
-		if(pic.exists()){
-			System.out.println("Panda Here.");
-		}
-		else{
-			System.out.println("Panda Not Here.");
-		}
-		
-		InputStream fin = new FileInputStream(pic);
-		byte[] byteAry = new byte[fin.available()];
-		fin.read(byteAry);
-		fin.close();
+//		File pic = new File("C:/Users/cuser/Desktop/QRCode.png");
+//		if(pic.exists()){
+//			System.out.println("Panda Here.");
+//		}
+//		else{
+//			System.out.println("Panda Not Here.");
+//		}
+//		
+//		InputStream fin = new FileInputStream(pic);
+//		byte[] byteAry = new byte[fin.available()];
+//		fin.read(byteAry);
+//		fin.close();
 		
 		/* 給它指定日期 */
-	    GregorianCalendar liveDate = new GregorianCalendar(2016, 11, 1, 22, 30, 59); 
-
-	    java.util.Date aliveDate = liveDate.getTime();
-	    
-	    System.out.println(new java.sql.Date(aliveDate.getTime()));
-	    
-		ordVO1.setOrdRoomId("1000001");
-		ordVO1.setOrdMemId("10000002");
-		ordVO1.setOrdHotelId("10001");
-		ordVO1.setOrdPrice(777);
-		ordVO1.setOrdLiveDate(new java.sql.Date(aliveDate.getTime()));
-		ordVO1.setOrdQrPic(byteAry);
-		ordVO1.setOrdMsgNo("ZZZZ");
-		dao.insert(ordVO1);
+//	    GregorianCalendar liveDate = new GregorianCalendar(2016, 11, 1, 22, 30, 59); 
+//
+//	    java.util.Date aliveDate = liveDate.getTime();
+//	    
+//	    System.out.println(new java.sql.Date(aliveDate.getTime()));
+//	    
+//		ordVO1.setOrdRoomId("1000001");
+//		ordVO1.setOrdMemId("10000002");
+//		ordVO1.setOrdHotelId("10001");
+//		ordVO1.setOrdPrice(777);
+//		ordVO1.setOrdLiveDate(new java.sql.Date(aliveDate.getTime()));
+//		ordVO1.setOrdQrPic(byteAry);
+//		ordVO1.setOrdMsgNo("ZZZZ");
+//		dao.insert(ordVO1);
 		
 		//修改
 //		OrdVO ordVO2 = new OrdVO();
@@ -540,21 +540,21 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 //		System.out.println();		
 		
 		//列出所有		
-		List<OrdVO> list0 = dao.getAll();
-		for(OrdVO aOrd : list0){
-			System.out.print(aOrd.getOrdId() +",");
-			System.out.print(aOrd.getOrdRoomId()+",");
-			System.out.print(aOrd.getOrdMemId()+",");
-			System.out.print(aOrd.getOrdHotelId()+",");
-			System.out.print(aOrd.getOrdPrice() +",");			
-			System.out.print(aOrd.getOrdLiveDate()+",");
-			System.out.print(aOrd.getOrdDate()+",");
-			System.out.print(aOrd.getOrdStatus()+",");
-			System.out.print(aOrd.getOrdRatingContent()+",");
-			System.out.print(aOrd.getOrdRatingStarNo() +",");
-			System.out.print(aOrd.getOrdMsgNo());
-			System.out.println();
-		}
+//		List<OrdVO> list0 = dao.getAll();
+//		for(OrdVO aOrd : list0){
+//			System.out.print(aOrd.getOrdId() +",");
+//			System.out.print(aOrd.getOrdRoomId()+",");
+//			System.out.print(aOrd.getOrdMemId()+",");
+//			System.out.print(aOrd.getOrdHotelId()+",");
+//			System.out.print(aOrd.getOrdPrice() +",");			
+//			System.out.print(aOrd.getOrdLiveDate()+",");
+//			System.out.print(aOrd.getOrdDate()+",");
+//			System.out.print(aOrd.getOrdStatus()+",");
+//			System.out.print(aOrd.getOrdRatingContent()+",");
+//			System.out.print(aOrd.getOrdRatingStarNo() +",");
+//			System.out.print(aOrd.getOrdMsgNo());
+//			System.out.println();
+//		}
 		
 		//依一般會員ID查詢		
 //		List<OrdVO> list1 = dao.getAllByOrdMemId("10000001");
