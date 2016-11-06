@@ -1,14 +1,15 @@
 package com.room.model;
 
 import java.util.*;
+
+import javax.naming.Context;
+import javax.sql.DataSource;
+
 import java.sql.*;
 
 public class RoomJDBCDAO implements RoomDAO_interface{
 	
-	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "scott";
-	String passwd = "tiger";
+
 
 	private static final String INSERT_STMT = 
 		"INSERT INTO room VALUES (room_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -53,9 +54,13 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 		ResultSet rs = null;
 
 		try {
-
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			
+			Context ctx = new javax.naming.InitialContext();	//連線池
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			con = ds.getConnection();	
+			
+			
+	
 			pstmt = con.prepareStatement(GET_OneHotelALLRoom_STMT);
 			pstmt.setString(1, aHotelId);			
 			rs = pstmt.executeQuery();
@@ -88,11 +93,11 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 			}
 
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
-		} catch (SQLException se) {
+		}  catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		}  catch (Exception se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
 			// Clean up JDBC resources
@@ -129,27 +134,27 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 
 		try {
 
-			System.out.println("HotelId  :  "+aRoomVO.getRoomHotelId().getClass()+aRoomVO.getRoomHotelId());
-			System.out.println("RoomName  :  "+aRoomVO.getRoomName().getClass()+aRoomVO.getRoomName());
-			System.out.println("RoomTotalNo  :  "+aRoomVO.getRoomTotalNo().getClass()+aRoomVO.getRoomTotalNo());
-			System.out.println("RoomPrice  :  "+aRoomVO.getRoomPrice().getClass()+aRoomVO.getRoomPrice());
-			System.out.println("RoomForSell  :  "+changeBoolean(aRoomVO.getRoomForSell()).getClass()+changeBoolean(aRoomVO.getRoomForSell()));
-			System.out.println("RoomForSellAuto  :  "+changeBoolean(aRoomVO.getRoomForSellAuto()).getClass()+changeBoolean(aRoomVO.getRoomForSellAuto()));
-			System.out.println("RoomRemainNo  :  "+aRoomVO.getRoomRemainNo().getClass()+aRoomVO.getRoomRemainNo());
-			System.out.println("RoomDiscountStartDate  :  "+aRoomVO.getRoomDiscountStartDate().getClass()+aRoomVO.getRoomDiscountStartDate());
-			System.out.println("RoomDiscountEndDate  :  "+aRoomVO.getRoomDiscountEndDate().getClass()+aRoomVO.getRoomDiscountEndDate());
-			System.out.println("RoomDisccountPercent  :  "+aRoomVO.getRoomDisccountPercent().getClass()+aRoomVO.getRoomDisccountPercent());
-			System.out.println("RoomDiscountHr  :  "+aRoomVO.getRoomDiscountHr().getClass()+aRoomVO.getRoomDiscountHr());
-			System.out.println("RoomOnePrice  :  "+changeBoolean(aRoomVO.getRoomOnePrice()).getClass()+changeBoolean(aRoomVO.getRoomOnePrice()));
-			System.out.println("RoomFun  :  "+aRoomVO.getRoomFun().getClass()+aRoomVO.getRoomFun());
-			System.out.println("RoomMeal  :  "+aRoomVO.getRoomMeal().getClass()+aRoomVO.getRoomMeal());
-			System.out.println("RoomSleep  :  "+aRoomVO.getRoomSleep().getClass()+aRoomVO.getRoomSleep());
-			System.out.println("RoomFacility  :  "+aRoomVO.getRoomFacility().getClass()+aRoomVO.getRoomFacility());
-			System.out.println("RoomSweetFacility  :  "+aRoomVO.getRoomSweetFacility().getClass()+aRoomVO.getRoomSweetFacility());
-			System.out.println("RoomCapacity  :  "+aRoomVO.getRoomCapacity().getClass()+aRoomVO.getRoomCapacity());
-			System.out.println("RoomOneBed  :  "+aRoomVO.getRoomOneBed().getClass()+aRoomVO.getRoomOneBed());
-			System.out.println("RoomTwoBed  :  "+aRoomVO.getRoomTwoBed().getClass()+aRoomVO.getRoomTwoBed());
-			
+//			System.out.println("HotelId  :  "+aRoomVO.getRoomHotelId().getClass()+aRoomVO.getRoomHotelId());
+//			System.out.println("RoomName  :  "+aRoomVO.getRoomName().getClass()+aRoomVO.getRoomName());
+//			System.out.println("RoomTotalNo  :  "+aRoomVO.getRoomTotalNo().getClass()+aRoomVO.getRoomTotalNo());
+//			System.out.println("RoomPrice  :  "+aRoomVO.getRoomPrice().getClass()+aRoomVO.getRoomPrice());
+//			System.out.println("RoomForSell  :  "+changeBoolean(aRoomVO.getRoomForSell()).getClass()+changeBoolean(aRoomVO.getRoomForSell()));
+//			System.out.println("RoomForSellAuto  :  "+changeBoolean(aRoomVO.getRoomForSellAuto()).getClass()+changeBoolean(aRoomVO.getRoomForSellAuto()));
+//			System.out.println("RoomRemainNo  :  "+aRoomVO.getRoomRemainNo().getClass()+aRoomVO.getRoomRemainNo());
+//			System.out.println("RoomDiscountStartDate  :  "+aRoomVO.getRoomDiscountStartDate().getClass()+aRoomVO.getRoomDiscountStartDate());
+//			System.out.println("RoomDiscountEndDate  :  "+aRoomVO.getRoomDiscountEndDate().getClass()+aRoomVO.getRoomDiscountEndDate());
+//			System.out.println("RoomDisccountPercent  :  "+aRoomVO.getRoomDisccountPercent().getClass()+aRoomVO.getRoomDisccountPercent());
+//			System.out.println("RoomDiscountHr  :  "+aRoomVO.getRoomDiscountHr().getClass()+aRoomVO.getRoomDiscountHr());
+//			System.out.println("RoomOnePrice  :  "+changeBoolean(aRoomVO.getRoomOnePrice()).getClass()+changeBoolean(aRoomVO.getRoomOnePrice()));
+//			System.out.println("RoomFun  :  "+aRoomVO.getRoomFun().getClass()+aRoomVO.getRoomFun());
+//			System.out.println("RoomMeal  :  "+aRoomVO.getRoomMeal().getClass()+aRoomVO.getRoomMeal());
+//			System.out.println("RoomSleep  :  "+aRoomVO.getRoomSleep().getClass()+aRoomVO.getRoomSleep());
+//			System.out.println("RoomFacility  :  "+aRoomVO.getRoomFacility().getClass()+aRoomVO.getRoomFacility());
+//			System.out.println("RoomSweetFacility  :  "+aRoomVO.getRoomSweetFacility().getClass()+aRoomVO.getRoomSweetFacility());
+//			System.out.println("RoomCapacity  :  "+aRoomVO.getRoomCapacity().getClass()+aRoomVO.getRoomCapacity());
+//			System.out.println("RoomOneBed  :  "+aRoomVO.getRoomOneBed().getClass()+aRoomVO.getRoomOneBed());
+//			System.out.println("RoomTwoBed  :  "+aRoomVO.getRoomTwoBed().getClass()+aRoomVO.getRoomTwoBed());
+//			
 			pstmt = con.prepareStatement(INSERT_STMT);
 			
 			pstmt.setString(1, aRoomVO.getRoomHotelId());
@@ -209,8 +214,9 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 
 		try {
 
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			Context ctx = new javax.naming.InitialContext();	//連線池
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			con = ds.getConnection();	
 			pstmt = con.prepareStatement(UPDATE);
 
 			
@@ -241,15 +247,15 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 			
 		
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
-		} catch (SQLException se) {
+		}  catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
 			// Clean up JDBC resources
-		} finally {
+		} catch (Exception e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
+		}finally {
 			if (pstmt != null) {
 				try {
 					pstmt.close();
@@ -281,8 +287,9 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 
 		try {
 
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			Context ctx = new javax.naming.InitialContext();	//連線池
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			con = ds.getConnection();	
 			pstmt = con.prepareStatement(DELETE);
 
 			pstmt.setString(1, aRoomId);
@@ -291,14 +298,14 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 			
 			boo = true;
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
 			// Clean up JDBC resources
+		} catch (Exception e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -331,8 +338,9 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 
 		try {
 
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			Context ctx = new javax.naming.InitialContext();	//連線池
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			con = ds.getConnection();	
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
 			pstmt.setString(1, aRoomId);
@@ -367,14 +375,14 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 			}
 
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
 			// Clean up JDBC resources
+		} catch (Exception e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
 		} finally {
 			if (rs != null) {
 				try {
@@ -416,8 +424,9 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 
 		try {
 
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			Context ctx = new javax.naming.InitialContext();	//連線池
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			con = ds.getConnection();	
 			pstmt = con.prepareStatement(GET_ALL_STMT);
 			rs = pstmt.executeQuery();
 
@@ -449,15 +458,15 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 			}
 
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
-		} catch (SQLException se) {
+		}  catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
 			// Clean up JDBC resources
-		} finally {
+		} catch (Exception e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
+		}finally {
 			if (rs != null) {
 				try {
 					rs.close();
