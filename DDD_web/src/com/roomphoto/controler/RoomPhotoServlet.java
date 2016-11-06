@@ -88,46 +88,75 @@ public class RoomPhotoServlet extends HttpServlet {
 			
 			return;
 					
-	}
-			
-		if ("upPic".equals(action)) {
-			
-			String roomPhotoRoomId = req.getParameter("roomPhotoRoomId");
-			String HotelId = req.getParameter("HotelId");
-			String url = req.getParameter("root");
-			Collection<Part> parts = req.getParts();
-			RoomPhotoService RoomPhotoSvc = new RoomPhotoService();
+	}	
 		
+		if ("getAllPic_For_OneRoom".equals(action)) { // 來自select_page.jsp的請求
 			
 			
-			for(Part part:parts){
-					System.out.println(part.getContentType());
 			
-					if("image/jpeg".equals(part.getContentType())){
-					java.io.InputStream in = part.getInputStream();
-					byte[] Picbyte =SetPic(in);
-					
-						
-					//RoomPhotoSvc.insertRoomPhoto(HotelId, Picbyte);
+			/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+			String roomPhotoRoomId = req.getParameter("roomPhotoRoomId");
+			/***************************2.開始查詢資料*****************************************/
+			RoomPhotoService RoomPhotoSvc = new RoomPhotoService();
+			List<RoomPhotoVO> RoomPhotoVOList = RoomPhotoSvc.getOneAllRoomPhotoVO(roomPhotoRoomId);
 			
-					}
+			JSONArray array = new JSONArray();
+			for(RoomPhotoVO roomPhotoVO:RoomPhotoVOList)
+			{
+				 array.put(roomPhotoVO.getRoomPhotoPic());
 			}
 			
-			String root = req.getParameter("root");			
-			String roomId = req.getParameter("roomId");
+			res.setContentType("text/plain");
 		
-			List RoomPhotoId = RoomPhotoSvc.getRoomAllRoomPhotoId(roomId);
-			RoomService roomSvc = new RoomService();
-			RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
+			PrintWriter out = res.getWriter();
+			out.write(array.toString());
+			out.flush();
+			out.close();
 			
-			req.setAttribute("roomVO", roomVO);
-			req.setAttribute("RoomPhotoId", RoomPhotoId);
-		
-			RequestDispatcher successView = req.getRequestDispatcher(root); // 成功轉交 listOneEmp.jsp
-			successView.forward(req, res);
 			return;
+					
+	}	
+		
+		
 			
-		}
+//		if ("upPic".equals(action)) {
+//			
+//			String roomPhotoRoomId = req.getParameter("roomPhotoRoomId");
+//			String HotelId = req.getParameter("HotelId");
+//			String url = req.getParameter("root");
+//			Collection<Part> parts = req.getParts();
+//			RoomPhotoService RoomPhotoSvc = new RoomPhotoService();
+//		
+//			
+//			
+//			for(Part part:parts){
+//					System.out.println(part.getContentType());
+//			
+//					if("image/jpeg".equals(part.getContentType())){
+//					java.io.InputStream in = part.getInputStream();
+//					byte[] Picbyte =SetPic(in);
+//					
+//						
+//					//RoomPhotoSvc.insertRoomPhoto(HotelId, Picbyte);
+//			
+//					}
+//			}
+//			
+//			String root = req.getParameter("root");			
+//			String roomId = req.getParameter("roomId");
+//		
+//			List RoomPhotoId = RoomPhotoSvc.getRoomAllRoomPhotoId(roomId);
+//			RoomService roomSvc = new RoomService();
+//			RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
+//			
+//			req.setAttribute("roomVO", roomVO);
+//			req.setAttribute("RoomPhotoId", RoomPhotoId);
+//		
+//			RequestDispatcher successView = req.getRequestDispatcher(root); // 成功轉交 listOneEmp.jsp
+//			successView.forward(req, res);
+//			return;
+//			
+//		}
 	
 		
 		
