@@ -17,8 +17,8 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "JDBCcucuboy";
-	String passwd = "123";
+	String userid = "scott";
+	String passwd = "tiger";
 
 	
 	private static final String INSERT_STMT = 

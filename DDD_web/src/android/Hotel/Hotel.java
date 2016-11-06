@@ -2,6 +2,7 @@ package android.Hotel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mem.model.MemVO;
+
 
 import javafx.scene.effect.Light.Spot;
 @SuppressWarnings("serial")
@@ -43,29 +45,51 @@ public class Hotel extends HttpServlet {
 		
 		String outStr = "";
 		if (action.equals("getOne")) {
-			System.out.println("1231321231321321313213132132");
+			
+			
 			String id = jsonObject.get("id").getAsString();
 			HotelJDBCDAO dao = new HotelJDBCDAO();
 			HotelVO hotelVO = dao.findByPrimaryKey(id);
 			outStr = gson.toJson(hotelVO);
 			System.out.println(outStr);
-			System.out.println("id " + id);
+			rp.setContentType(CONTENT_TYPE);
+			PrintWriter out = rp.getWriter();
+			out.println(outStr);
+			
 		}else if(action.equals("getAll")){
+			
 			HotelJDBCDAO dao = new HotelJDBCDAO();
-			List<HotelVO> list = dao.getAll();
+			List<HotelVO> list = new ArrayList<HotelVO>();
+			list = dao.getAll();
 			for (HotelVO myVO: list){
 				myVO.setHotelCoverPic(null);
 			}
+			
 			outStr = gson.toJson(list);
 			System.out.println(outStr);
+			rp.setContentType(CONTENT_TYPE);
+			PrintWriter out = rp.getWriter();
+			out.println(outStr);
+		}else if(action.equals("getImage")){
+			
+			OutputStream os = rp.getOutputStream();
+			HotelJDBCDAO dao = new HotelJDBCDAO();
+			String id = jsonObject.get("id").getAsString();
+			int imageSize = jsonObject.get("imageSize").getAsInt();
+			byte[] image = dao.findByPrimaryKey(id).getHotelCoverPic();
+			if (image != null) {
+				image = ImageUtil.shrink(image, imageSize);
+				rp.setContentType("image/jpeg");
+				rp.setContentLength(image.length);
+			}
+			os.write(image);
+			System.out.println("image"+image);
 			
 		}
 		
 		// ��hotelVO�নJSON�r��A�^��
 		
-		rp.setContentType(CONTENT_TYPE);
-		PrintWriter out = rp.getWriter();
-		out.println(outStr);
+		
 	}
 
 	@Override

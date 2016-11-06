@@ -2,6 +2,7 @@ package android.Room;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,10 @@ import com.mem.model.MemVO;
 import com.room.model.RoomJDBCDAO;
 import com.room.model.RoomService;
 import com.room.model.RoomVO;
+import com.roomphoto.model.RoomPhotoJDBCDAO;
 
+import android.Hotel.HotelJDBCDAO;
+import android.Hotel.ImageUtil;
 import javafx.scene.effect.Light.Spot;
 @SuppressWarnings("serial")
 public class Room extends HttpServlet {
@@ -47,30 +51,50 @@ public class Room extends HttpServlet {
 		
 		String outStr = "";
 		if (action.equals("getOne")) {
+			
 			System.out.println("1231321231321321313213132132");
 			String id = jsonObject.get("id").getAsString();
 			RoomJDBCDAO dao = new RoomJDBCDAO();
 			RoomVO hotelVO = dao.findByPrimaryKey(id);
 			outStr = gson.toJson(hotelVO);
+			rp.setContentType(CONTENT_TYPE);
+			PrintWriter out = rp.getWriter();
+			out.println(outStr);
 			System.out.println(outStr);
-			System.out.println("id " + id);
+			System.out.println("id123123132131313132 " + id);
+			
 		}else if(action.equals("getAll")){  // 取得當前飯店內的所有房型
+			
 			String id = jsonObject.get("id").getAsString();
 			RoomService dao = new RoomService();
 			Set<RoomVO> set = dao.getOneHotelAllRoom(id);
-//			for (RoomVO myVO: list){
-//				myVO.setHotelCoverPic(null);
-//			}
+			
 			outStr = gson.toJson(set);
+			rp.setContentType(CONTENT_TYPE);
+			PrintWriter out = rp.getWriter();
+			out.println(outStr);
 			System.out.println(outStr);
 			
+		}else if(action.equals("getImage")){
+
+			OutputStream os = rp.getOutputStream();
+			RoomPhotoJDBCDAO dao = new RoomPhotoJDBCDAO();
+			String id = jsonObject.get("id").getAsString();
+			int imageSize = jsonObject.get("imageSize").getAsInt();
+			System.out.println("id : " + id);
+//			byte[] image = dao.getRoomAllRoomPhotoId(id);
+//			if (image != null) {
+//				image = ImageUtil.shrink(image, imageSize);
+//				rp.setContentType("image/jpeg");
+//				rp.setContentLength(image.length);
+//			}
+//			os.write(image);
+//			System.out.println("image"+image);
 		}
 		
 		// ��hotelVO�নJSON�r��A�^��
 		
-		rp.setContentType(CONTENT_TYPE);
-		PrintWriter out = rp.getWriter();
-		out.println(outStr);
+		
 	}
 
 	@Override
