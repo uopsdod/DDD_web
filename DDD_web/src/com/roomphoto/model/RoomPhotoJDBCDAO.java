@@ -8,6 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.naming.Context;
+import javax.sql.DataSource;
+
 import java.sql.Connection;
 import com.room.model.RoomJDBCDAO;
 import com.room.model.RoomVO;
@@ -15,10 +19,7 @@ import com.room.model.RoomVO;
 public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 	
 
-	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "scott";
-	String passwd = "tiger";
+
 
 	
 	private static final String INSERT_STMT = 
@@ -109,8 +110,9 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 		RoomPhotoVO roomPhotoVO = null;
 		try {
 
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			Context ctx = new javax.naming.InitialContext();	//連線池
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_AllVOForOne_STMT);
 
 			pstmt.setString(1, aRoomId);
@@ -129,14 +131,14 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 			}
 
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
 			// Clean up JDBC resources
+		} catch (Exception e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
 		} finally {
 			if (rs != null) {
 				try {
@@ -179,8 +181,9 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 
 		try {
 
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			Context ctx = new javax.naming.InitialContext();	//連線池
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(UPDATE);
 
 			
@@ -194,14 +197,14 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 			
 			boo = true;
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
 			// Clean up JDBC resources
+		} catch (Exception e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -231,8 +234,9 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 
 		try {
 
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			Context ctx = new javax.naming.InitialContext();	//連線池
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(DELETE);
 
 			pstmt.setString(1, aRoomPhotoId);
@@ -241,14 +245,14 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 			
 			boo = true;
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
 			// Clean up JDBC resources
+		} catch (Exception e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
 		} finally {
 			if (pstmt != null) {
 				try {
@@ -277,8 +281,9 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 
 		try {
 
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			Context ctx = new javax.naming.InitialContext();	//連線池
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
 			pstmt.setString(1, aRoomPhotoId);
@@ -295,14 +300,14 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 			}
 
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
 			// Clean up JDBC resources
+		} catch (Exception e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
 		} finally {
 			if (rs != null) {
 				try {
@@ -341,8 +346,9 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 
 		try {
 
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			Context ctx = new javax.naming.InitialContext();	//連線池
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_AllForOne_STMT);
 
 			pstmt.setString(1, aRoomId);
@@ -358,14 +364,14 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 			}
 
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
 			// Clean up JDBC resources
+		} catch (Exception e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
 		} finally {
 			if (rs != null) {
 				try {
@@ -405,8 +411,9 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 
 		try {
 
-			Class.forName(driver);
-			con = DriverManager.getConnection(url, userid, passwd);
+			Context ctx = new javax.naming.InitialContext();	//連線池
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_STMT);
 			rs = pstmt.executeQuery();
 
@@ -421,14 +428,14 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 			}
 
 			// Handle any driver errors
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Couldn't load database driver. "
-					+ e.getMessage());
-			// Handle any SQL errors
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
 			// Clean up JDBC resources
+		} catch (Exception e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
 		} finally {
 			if (rs != null) {
 				try {
