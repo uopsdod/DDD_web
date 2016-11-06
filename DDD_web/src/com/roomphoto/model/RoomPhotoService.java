@@ -46,7 +46,16 @@ public class RoomPhotoService {
 		return dao.getAll();
 	}	
 	
-	public List<String> getRoomAllRoomPhotoId(String aRoomPhotoRoomId){
-		return dao.getRoomAllRoomPhotoId(aRoomPhotoRoomId);
+	public List<String> getRoomAllRoomPhotoId(String aRoomId){
+		return dao.getRoomAllRoomPhotoId(aRoomId);
 	}
+	
+	public List<RoomPhotoVO> getOneAllRoomPhotoVO(String aRoomId){
+		return dao.getOneAllRoomPhotoVO(aRoomId);
+	}
+	
+	
+	
+	
+	
 }

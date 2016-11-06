@@ -35,7 +35,10 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 	private static final String GET_AllForOne_STMT = 
 		"SELECT * FROM roomphoto where roomPhotoRoomId = ?";	
 	
-
+	
+	private static final String GET_AllVOForOne_STMT = 
+		"SELECT * FROM roomphoto where roomPhotoRoomId = ?";
+	
 	
 	@Override
 	public boolean	insert(String aHotelId,byte[] aRoomPhotoPic,Connection con) {
@@ -95,8 +98,71 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 	
 	
 	
-	
-	
+	@Override
+	public List<RoomPhotoVO> getOneAllRoomPhotoVO(String aRoomId){
+		
+	List<RoomPhotoVO> roomPhotoVOList = new ArrayList<RoomPhotoVO>();
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		RoomPhotoVO roomPhotoVO = null;
+		try {
+
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_AllVOForOne_STMT);
+
+			pstmt.setString(1, aRoomId);
+
+			rs = pstmt.executeQuery();
+		
+			
+			while (rs.next()) {
+				// empVO 也稱為 Domain objects
+				roomPhotoVO = new RoomPhotoVO();
+				roomPhotoVO.setRoomPhotoId(rs.getString("roomPhotoId"));
+				roomPhotoVO.setRoomPhotoRoomId(rs.getString("roomPhotoRoomId"));
+				roomPhotoVO.setRoomPhotoPic(rs.getBytes("roomPhotoPic"));
+				
+				roomPhotoVOList.add(roomPhotoVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return roomPhotoVOList;
+		
+	}
 	
 	
 	
@@ -264,7 +330,7 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 		
 	}
 	@Override
-	public List<String> getRoomAllRoomPhotoId(String aRoomPhotoRoomId) {
+	public List<String> getRoomAllRoomPhotoId(String aRoomId) {
 		
 		
 		List<String> roomPhotoIdList = new ArrayList<String>();
@@ -279,7 +345,7 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(GET_AllForOne_STMT);
 
-			pstmt.setString(1, aRoomPhotoRoomId);
+			pstmt.setString(1, aRoomId);
 
 			rs = pstmt.executeQuery();
 		
