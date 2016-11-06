@@ -81,7 +81,11 @@ public class EmpServlet extends HttpServlet {
 			
 			//查
 			EmpVO empVO = allowUser(account, password);
-			if(empVO==null){
+			String Status =empVO.getEmpStatus();
+			if(Status.equals("1")){
+				errorMsgs.add("此用戶已離職");
+			}
+			else if(empVO==null){
 				errorMsgs.add("帳號或密碼錯誤");
 			}else{
 				String paw = Util_psw.key(empVO.getEmpPwd());
