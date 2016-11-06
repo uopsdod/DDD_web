@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 
 public class EmpDAO implements EmpDAO_interface {
 	private static DataSource ds = null;
-	static {
+	static { 
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
