@@ -12,7 +12,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=BIG5">
 <title>所有訂單資料 - listAllOrd.jsp</title>
 </head>
 <body>

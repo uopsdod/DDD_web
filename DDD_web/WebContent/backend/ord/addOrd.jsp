@@ -8,16 +8,12 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>訂單資料新增 - addOrd.jsp</title>
 		<link rel="stylesheet" type="text/css">
 		<script type="text/javascript"></script>
 	</head>	
 		
-	<body>
-	
-		<div id="popupcalendar" class="text"></div>
-		
+	<body>		
 		<table border='1'>
 			<tr>
 				<td>
@@ -41,7 +37,6 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 		</c:if>
 
 		<form method="post" action="ord.do" name="form1">
-
 			<table>
 				<jsp:useBean id="roomSvc" scope="page" class="com.room.model.RoomService"/>
 				<tr>
@@ -49,7 +44,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 					<td>
 						<select name="ordRoomId">
 							<c:forEach var="roomVO"  items="${roomSvc.all}">
-								<option value="${roomVO.roomId}" ${(ordVO.ordRoomId==roomVO.roomId)?'selected':''}>${roomVO.roomId}
+								<option value="${roomVO.roomId}" ${(ordVO.ordRoomId==roomVO.roomId)?'selected':''}>${roomVO.roomName}
 							</c:forEach>
 						</select>
 					</td>
@@ -61,7 +56,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 					<td>
 						<select name="ordMemId">
 							<c:forEach var="memVO" items="${memSvc.all}">
-								<option value="${memVO.memId}" ${(ordVO.ordMemId==memVO.memId)? 'selected':''}>${memVO.memId}
+								<option value="${memVO.memId}" ${(ordVO.ordMemId==memVO.memId)? 'selected':''}>${memVO.memName}
 							</c:forEach>
 						</select>
 					</td>
@@ -99,8 +94,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 				<tr>
 					<td>簡訊驗證碼:</td>
 					<td>
-						<input type="text" name="ordMsgNo" 
-						value="<%= (ordVO==null)? "AAAA" : ordVO.getOrdMsgNo()%>"/>
+						<input type="text" name="ordMsgNo" value="<%= (ordVO==null)? "AAAA" : ordVO.getOrdMsgNo()%>"/>
 					</td>
 				</tr>
 			</table>

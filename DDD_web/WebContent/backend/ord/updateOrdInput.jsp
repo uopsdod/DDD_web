@@ -8,7 +8,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>訂單資料修改 - updateOrdInput.jsp</title>
 <link rel="stylesheet" type="text/css">
 <script type="text/javascript"></script>

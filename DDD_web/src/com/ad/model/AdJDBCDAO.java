@@ -310,7 +310,7 @@ public class AdJDBCDAO implements AdDAO_interface {
 		return list;
 	}
 	public static void main(String[] args) throws Exception {
-		File pic = new File("C:/tomcat/eclipse_WTP_WorkSpace1/Banner/src/Ad/panda.jpg");
+		File pic = new File("WebContent/images/panda.jpg");
 		if (pic.exists()){
 			System.out.println("panda here.");
 		}else{
@@ -333,7 +333,7 @@ public class AdJDBCDAO implements AdDAO_interface {
 		adVO1.setAdHotelId("10002");
 		adVO1.setAdPayDate(new Date(new java.util.Date().getTime()));
 		adVO1.setAdPic(byteAry);
-		adVO1.setAdPicContent("�}�G��6");
+		adVO1.setAdPicContent("我是阿華");
 		adVO1.setAdHit(10);
 		dao.insert(adVO1);
 
