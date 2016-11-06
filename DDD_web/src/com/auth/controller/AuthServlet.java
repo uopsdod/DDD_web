@@ -59,7 +59,7 @@ public class AuthServlet extends HttpServlet {
 				 ************/
 				request.setAttribute("authList", authList);
 				request.setAttribute("empId", empId);
-				String url = "/emp/listAllEmp.jsp";
+				String url = "/backend/emp/listAllEmp.jsp";
 
 				RequestDispatcher successView = request.getRequestDispatcher(url);// 成功轉交
 				successView.forward(request, response);
@@ -67,7 +67,7 @@ public class AuthServlet extends HttpServlet {
 				/*************************** 其他可能的錯誤處理 **********************************/
 			} catch (Exception e) {
 				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
-				RequestDispatcher failureView = request.getRequestDispatcher("/auth/update_auth.jsp");
+				RequestDispatcher failureView = request.getRequestDispatcher("/backend/auth/update_auth.jsp");
 				failureView.forward(request, response);
 			}
 		}
@@ -91,14 +91,15 @@ public class AuthServlet extends HttpServlet {
 
 				/*************************** 2.開始查詢資料 ****************************************/
 				AuthService authSvc = new AuthService();
-				authSvc = authSvc.updateAuthEmp(authIdlistNo, authId);
+				List<String> authList = authSvc.updateAuthEmp(authIdlistNo, authId);
 
 				/***************************
 				 * 3.查詢完成,準備轉交(Send the Success view)
 				 ************/
-				// request.setAttribute("authSvc", authSvc); //
+				 request.setAttribute("authList", authList); 
+//				 request.setAttribute("authIdlistNo", authIdlistNo); 
 				// 資料庫取出的empVO物件,存入req
-				String url = "/auth/update_secess.jsp";
+				String url = "/backend/emp/listAllEmp.jsp";
 				RequestDispatcher successView = request.getRequestDispatcher(url);// 成功轉交
 																					// update_emp_input.jsp
 				successView.forward(request, response);
@@ -106,7 +107,7 @@ public class AuthServlet extends HttpServlet {
 				/*************************** 其他可能的錯誤處理 **********************************/
 			} catch (Exception e) {
 				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
-				RequestDispatcher failureView = request.getRequestDispatcher("/emp/listAllEmp.jsp");
+				RequestDispatcher failureView = request.getRequestDispatcher("/backend/emp/listAllEmp.jsp");
 				failureView.forward(request, response);
 			}
 		}

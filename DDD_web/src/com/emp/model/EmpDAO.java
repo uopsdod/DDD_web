@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 
 public class EmpDAO implements EmpDAO_interface {
 	private static DataSource ds = null;
-	static { 
+	static {
 		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
@@ -26,8 +26,9 @@ public class EmpDAO implements EmpDAO_interface {
 	}
 	private static final String GET_ALL_STMT = "SELECT empId,empName,empAccount,empPwd,empPhone,empHireDate,empFireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress FROM emp order by empId";
 	private static final String GET_ONE_STMT = "SELECT empId,empName,empAccount,empPwd,empPhone,empHireDate,empFireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress FROM emp where empId=?";
+	private static final String GET_ONE_USER ="SELECT empId,empName,empAccount,empPwd,empPhone,empHireDate,empFireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress FROM emp where empAccount=?";
 	private static final String INSERT_STMT = "INSERT INTO emp (empId,empName,empAccount,empPwd,empPhone,empHireDate,empFireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress) VALUES (emp_seq.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?)";
-	private static final String UPDATE = "UPDATE emp set  empName=?, empAccount=?, empPwd=?, empPhone=?,empHireDate=?,empFireDate=?, empStatus=? ,empBirthDate=?,empProfile=?,empROCId=?,empAddress=? where empId =?";
+	private static final String UPDATE = "UPDATE emp set  empName=?, empAccount=?, empPhone=?,empHireDate=?,empFireDate=?, empStatus=? ,empBirthDate=?,empProfile=?,empROCId=?,empAddress=? where empId =?";
 	private static final String UPDATE_PSW ="UPDATE EMP set empPwd=? where empId=?";
 	private static final String GET_PHOTO ="SELECT empProfile from emp where empId=?";
 	private static final Base64.Encoder encoder = Base64.getEncoder();
@@ -100,7 +101,71 @@ public class EmpDAO implements EmpDAO_interface {
 		}
 		return list;
 	}
+	
+	@Override
+	public EmpVO getUser(String aAccount) {
+		EmpVO empVO = null;
 
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ONE_USER);
+			pstmt.setString(1, aAccount);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// empVO 也稱為 Domain objects
+				
+				empVO = new EmpVO();
+				empVO.setEmpId(rs.getString("empId"));
+				empVO.setEmpName(rs.getString("empName"));
+				empVO.setEmpAccount(rs.getString("empAccount"));
+				empVO.setEmpPwd(rs.getString("empPwd"));
+				empVO.setEmpPhone(rs.getString("empPhone"));
+				empVO.setEmpHireDate(rs.getDate("empHireDate"));
+				empVO.setEmpFireDate(rs.getDate("empFireDate"));
+				empVO.setEmpStatus(rs.getString("empStatus"));
+				empVO.setEmpBirthDate(rs.getDate("empBirthDate"));
+				empVO.setEmpProfile(rs.getBytes("empProfile"));
+				empVO.setEmpROCId(rs.getString("empROCId"));
+				empVO.setEmpAddress(rs.getString("empAddress"));
+				
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+			return empVO;
+		}
+	
 	@Override
 	public EmpVO getOne(String aEmpId) {
 		EmpVO empVO = null;
@@ -220,16 +285,16 @@ public class EmpDAO implements EmpDAO_interface {
 
 			pstmt.setString(1, aEmpVO.getEmpName());
 			pstmt.setString(2, aEmpVO.getEmpAccount());
-			pstmt.setString(3, aEmpVO.getEmpPwd());
-			pstmt.setString(4, aEmpVO.getEmpPhone());
-			pstmt.setDate(5, aEmpVO.getEmpHireDate());
-			pstmt.setDate(6, aEmpVO.getEmpFireDate());
-			pstmt.setString(7, aEmpVO.getEmpStatus());
-			pstmt.setDate(8, aEmpVO.getEmpBirthDate());
-			pstmt.setBytes(9, aEmpVO.getEmpProfile());
-			pstmt.setString(10, aEmpVO.getEmpROCId());
-			pstmt.setString(11, aEmpVO.getEmpAddress());
-			pstmt.setString(12, aEmpVO.getEmpId());
+//			pstmt.setString(3, aEmpVO.getEmpPwd());
+			pstmt.setString(3, aEmpVO.getEmpPhone());
+			pstmt.setDate(4, aEmpVO.getEmpHireDate());
+			pstmt.setDate(5, aEmpVO.getEmpFireDate());
+			pstmt.setString(6, aEmpVO.getEmpStatus());
+			pstmt.setDate(7, aEmpVO.getEmpBirthDate());
+			pstmt.setBytes(8, aEmpVO.getEmpProfile());
+			pstmt.setString(9, aEmpVO.getEmpROCId());
+			pstmt.setString(10, aEmpVO.getEmpAddress());
+			pstmt.setString(11, aEmpVO.getEmpId());
 
 			pstmt.executeUpdate();
 
@@ -335,6 +400,8 @@ public class EmpDAO implements EmpDAO_interface {
 			
 			return empProfile;
 		}
+
+	
 
 }
 

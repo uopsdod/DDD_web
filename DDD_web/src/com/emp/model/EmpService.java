@@ -31,7 +31,7 @@ public class EmpService {
 		return empVO;
 	}
 	
-	public EmpVO updateEmp(String aEmpName, String aEmpAccount, String aEmpPwd,String aEmpPhone, java.sql.Date aEmpHireDate,
+	public EmpVO updateEmp(String aEmpName, String aEmpAccount,String aEmpPhone, java.sql.Date aEmpHireDate,
 			 java.sql.Date aEmpFireDate,String aEmpStatus,java.sql.Date aEmpBirthDate,byte[] aEmpProfile, 
 			 String aEmpROCId, String aEmpAddress,String aEmpId) {
 			
@@ -39,7 +39,7 @@ public class EmpService {
 
 		empVO.setEmpName(aEmpName);
 		empVO.setEmpAccount(aEmpAccount);
-		empVO.setEmpPwd(aEmpPwd);
+		
 		empVO.setEmpPhone(aEmpPhone);
 		empVO.setEmpHireDate(aEmpHireDate);
 		empVO.setEmpFireDate(aEmpFireDate);
@@ -78,4 +78,12 @@ public class EmpService {
 		empVO = dao.getOne(aEmpId);
 		return empVO;		
 	}
+	
+	public EmpVO getUser(String aAccount) {
+		EmpVO empVO = new EmpVO();
+		empVO = dao.getUser(aAccount);
+		return empVO;		
+	}
+		
+	
 }

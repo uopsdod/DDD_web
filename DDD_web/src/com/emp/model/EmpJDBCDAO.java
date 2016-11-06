@@ -17,11 +17,70 @@ public class EmpJDBCDAO implements EmpDAO_interface {
 	String passwd = "alen27";
 	private static final String GET_ALL_STMT = "SELECT empId,empName,empAccount,empPwd,empPhone,empHireDate,empFireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress FROM emp order by empId";
 	private static final String GET_ONE_STMT = "SELECT empId,empName,empAccount,empPwd,empPhone,empHireDate,empFireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress FROM emp where empId=?";
+	private static final String GET_ONE_USER ="SELECT empAccount,empPwd FROM emp where empAccount=?";
 	private static final String INSERT_STMT = "INSERT INTO emp (empId,empName,empAccount,empPwd,empPhone,empHireDate,empFireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress) VALUES (emp_seq.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String UPDATE = "UPDATE emp set  empName=?, empAccount=?, empPwd=?, empPhone=?,empHireDate=?,empFireDate=?, empStatus=? ,empBirthDate=?,empProfile=?,empROCId=?,empAddress=? where empId =?";
 	private static final String UPDATE_PSW ="UPDATE EMP set empPwd=? where empId=?";
 	private static final String GET_PHOTO ="SELECT empProfile from emp where empId=?";
 	private static final Base64.Encoder encoder = Base64.getEncoder();
+	
+	@Override
+	public EmpVO getUser(String aAccount) {
+		EmpVO empVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ONE_USER);
+			pstmt.setString(1, aAccount);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				// empVO 也稱為 Domain objects
+				empVO = new EmpVO();
+				
+				empVO.setEmpAccount(rs.getString("empAccount"));
+				empVO.setEmpPwd(rs.getString("empPwd"));
+				
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+			return empVO;
+		}
+	
 	@Override
 	public EmpVO getOne(String aEmpId) {
 		EmpVO empVO = null;
@@ -412,6 +471,8 @@ public class EmpJDBCDAO implements EmpDAO_interface {
 		}
 
 	}
+
+
 
 
 	
