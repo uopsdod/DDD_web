@@ -13,6 +13,8 @@
 	session.getAttribute("account");
 	EmpVO empvo =(EmpVO)session.getAttribute("empVO");
 	List<String> authorityList =(List<String>)session.getAttribute("authorityList");
+	session.setAttribute("empvo", empvo);
+	session.setAttribute("authorityList",authorityList);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

@@ -15,6 +15,8 @@
 	session.getAttribute("account");
 	EmpVO empvo =(EmpVO)session.getAttribute("empVO");
 	List<String> authorityList =(List<String>)session.getAttribute("authorityList");
+	session.setAttribute("empvo", empvo);
+	session.setAttribute("authorityList",authorityList);
 %>
 <!DOCTYPE html>
 <html>
@@ -295,7 +297,7 @@ body {
 
 				<tr>
 					<td>電話:</td>
-					<td><input type="TEXT" name="empPhone" size="45"
+					<td><input type="TEXT" name="empPhone" size="45" maxlength="10"
 						class="UserName" placeholder="請輸入員工電話"
 						value="<%=(empVO == null) ? "" : empVO.getEmpPhone()%>" /></td>
 				</tr>
