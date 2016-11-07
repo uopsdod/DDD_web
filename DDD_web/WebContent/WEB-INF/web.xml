@@ -43,7 +43,14 @@
     <url-pattern>/auth/auth.do</url-pattern>
   </servlet-mapping>
   
-  
+  <servlet>
+    <servlet-name>HotelServlet</servlet-name>
+    <servlet-class>com.hotel.controller.HotelServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HotelServlet</servlet-name>
+    <url-pattern>/hotel/hotel.do</url-pattern>
+  </servlet-mapping>
   
   <servlet>
     <servlet-name>RoomServlet</servlet-name>
