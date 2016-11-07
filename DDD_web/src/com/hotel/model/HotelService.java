@@ -20,7 +20,12 @@ public class HotelService {
 	public HotelVO getOne(String aHotelId) {
 		return dao.findByPrimaryKey(aHotelId);
 	}
-	//取得需要審核
+	
+	public List<HotelVO> getAll_TO_VIEW(){
+		return dao.getAll_TO_VIEW();
+	}
+	
+	//取得需要審核2
 	public List<HotelVO> getAll_NEED_CHECK(){
 		
 		return dao.getAll_NEED_CHECK();	
@@ -97,7 +102,7 @@ public class HotelService {
 		return hotelvo;
 	}
 	
-	//按鍵修改狀態
+	//按鍵修改狀態2
 	public void update_status(String hotelId, HotelVO aHotelVO) {
 		dao.update_status(hotelId, aHotelVO);
 	}
