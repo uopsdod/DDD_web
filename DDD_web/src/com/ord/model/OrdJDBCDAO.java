@@ -230,6 +230,7 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 				ordVO.setOrdRatingContent(rs.getString("ordRatingContent"));
 				ordVO.setOrdRatingStarNo(rs.getInt("ordRatingStarNo"));
 				ordVO.setOrdMsgNo(rs.getString("ordMsgNo"));
+				ordVO.setOrdQrPic(rs.getBytes("ordQrPic"));
 			}
 		}
 		
@@ -298,6 +299,7 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 				ordVO.setOrdRatingContent(rs.getString("ordRatingContent"));
 				ordVO.setOrdRatingStarNo(rs.getInt("ordRatingStarNo"));
 				ordVO.setOrdMsgNo(rs.getString("ordMsgNo"));
+				ordVO.setOrdQrPic(rs.getBytes("ordQrPic"));
 				list.add(ordVO);
 			}			
 		}
@@ -367,6 +369,7 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 				ordVO.setOrdRatingContent(rs.getString("ordRatingContent"));
 				ordVO.setOrdRatingStarNo(rs.getInt("ordRatingStarNo"));
 				ordVO.setOrdMsgNo(rs.getString("ordMsgNo"));
+				ordVO.setOrdQrPic(rs.getBytes("ordQrPic"));
 				list.add(ordVO);
 			}			
 		}
@@ -435,6 +438,7 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 				ordVO.setOrdRatingContent(rs.getString("ordRatingContent"));
 				ordVO.setOrdRatingStarNo(rs.getInt("ordRatingStarNo"));
 				ordVO.setOrdMsgNo(rs.getString("ordMsgNo"));
+				ordVO.setOrdQrPic(rs.getBytes("ordQrPic"));
 				list.add(ordVO);
 			}			
 		}

@@ -19,24 +19,19 @@ public class DBGifReader4 extends HttpServlet {
 		ServletOutputStream out = res.getOutputStream();
 
 		try {
-			String no = req.getParameter("no");
-			
-			System.out.println("Here is " + no);
-			
+			String ordId = req.getParameter("ordId");
+						
 			OrdService OrdSvc = new OrdService();
-			OrdVO ordVO = OrdSvc.getOneOrd(no);
-			
-			System.out.println("There is " + ordVO.getOrdId());
-			
+			OrdVO ordVO = OrdSvc.getOneOrd(ordId);
+						
 			out.write(ordVO.getOrdQrPic());
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Here is Exception.");
 			InputStream in = getServletContext().getResourceAsStream("/backend/ord/images/noImage.jpg");
-			byte[] b = new byte[in.available()];
-			in.read(b);
-			out.write(b);
+			byte[] buf = new byte[in.available()];
+			in.read(buf);
+			out.write(buf);
 			in.close();
 		}
 	}

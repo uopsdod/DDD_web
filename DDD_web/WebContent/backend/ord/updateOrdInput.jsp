@@ -120,6 +120,11 @@
 			<td>簡訊驗證碼:</td>
 			<td><%=ordVO.getOrdMsgNo()%></td>
 		</tr>
+		
+		<tr>
+			<th>QR Code圖片</th>
+			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td>
+		</tr>
 	</table>
 	<br>
 	<input type="hidden" name="action" value="update">

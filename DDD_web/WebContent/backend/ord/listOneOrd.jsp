@@ -49,7 +49,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controlle
 			<td>${ordVO.ordRatingContent}</td>
 			<td>${ordVO.ordRatingStarNo}</td>
 			<td>${ordVO.ordMsgNo}</td>
-			<td><img src="DBGifReader4?picNO=漂亮"></td>
+			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td>
 		</tr>
 
 	</table>
