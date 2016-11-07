@@ -1,0 +1,68 @@
+.aa{
+	height: 900px;
+	background-color: #ccc;
+	margin-top: 53px;
+}
+
+.bb{
+	height: 900px;
+	background-color: #aaa;
+	margin-top: 53px;
+}
+
+#top-bar{
+	z-index: 10;
+	top:0px;
+	position:fixed;
+	width: 100%;
+}
+
+.panel-group {
+	margin-top: 15px;
+}
+
+*{
+	font-family:Tahoma,Verdana,Arial,微軟正黑體;
+}
+
+/* table tr td:nth-child(even){ */
+/* 	background-color: #DCDCDC; */
+/* } */
+/* table tr td:nth-child(odd){ */
+/* 	background-color: #FFFFFF; */
+/* } */
+
+.table-hover tbody tr:hover {
+	background-color: #F5DEB3;
+}
+
+body {
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	font-size: 13px;
+}
+
+#LoginButton {
+	opacity: 0.7;
+	z-index: 1;
+	background: #0283df;
+	color: #ffffff;
+	position: relative;
+	font-weight: bold;
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	border: 0px;
+	border-radius: 10px;
+	padding: 4px;
+	font-size: 12px;
+}
+
+.vcenter {
+	display: inline-block;
+	vertical-align: middle;
+	float: none;
+}
+.tablediv{
+	margin-top:6%;
+}
+.tablediv tr th{
+	background-color:#B0C4DE;
+}
