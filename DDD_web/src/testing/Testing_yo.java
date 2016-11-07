@@ -59,8 +59,8 @@ public class Testing_yo extends HttpServlet {
 	
   public void doGet(HttpServletRequest req, HttpServletResponse res)
                                throws ServletException, IOException {
-   	req.setCharacterEncoding("Big5");
-    res.setContentType("text/html; charset=Big5");
+   	req.setCharacterEncoding("UTF-8");
+    res.setContentType("text/html; charset=UTF-8");
     PrintWriter out = res.getWriter();
 
 	MemRepDAO_interface dao1 = new MemRepJNDIDAO();

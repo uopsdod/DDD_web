@@ -1,13 +1,30 @@
 package com.hotelrep.model;
 
 import java.util.*;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import java.sql.*;
 
-public class HotelRepJDBCDAO implements HotelRepDAO_interface {
-	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "scott";
-	String passwd = "tiger";
+public class HotelRepJNDIDAO implements HotelRepDAO_interface {
+//	String driver = "oracle.jdbc.driver.OracleDriver";
+//	String url = "jdbc:oracle:thin:@localhost:1521:XE";
+//	String userid = "scott";
+//	String passwd = "tiger";
+	
+	private static DataSource ds = null;
+	static {
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+		}
+		catch(NamingException e){
+			e.printStackTrace();
+		}
+	}	
 	
 	private static final String INSERT =
 			"INSERT INTO hotelrep (hotelrepId, hotelrepHotelId, hotelrepMemId, hotelrepOrdId, hotelrepEmpId, hotelrepContent, hotelrepStatus, hotelrepDate, hotelrepReviewDate) "
@@ -36,21 +53,15 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 		int updateCount = 0;
 		
 		try {
-			Class.forName(this.driver);
-			con = DriverManager.getConnection(this.url,this.userid,this.passwd);
-			pstmt = con.prepareStatement(HotelRepJDBCDAO.INSERT);
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(HotelRepJNDIDAO.INSERT);
 			
 			pstmt.setString(1,aHotelRepVO.getHotelRepHotelId());
 			pstmt.setString(2,aHotelRepVO.getHotelRepMemId());
 			pstmt.setString(3,aHotelRepVO.getHotelRepOrdId());
 			pstmt.setString(4,aHotelRepVO.getHotelRepContent());
 			updateCount = pstmt.executeUpdate();
-		}
-		
-		catch(ClassNotFoundException e){
-			throw new RuntimeException("Could not load database driver."+ e.getMessage());
-		}
-		
+		}		
 		catch(SQLException se){
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 		}
@@ -72,7 +83,6 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 				}
 			}
 		}
-		
 		return updateCount;
 	}
 	
@@ -83,19 +93,15 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 		int updateCount = 0;
 		
 		try {
-			Class.forName(this.driver);
-			con = DriverManager.getConnection(this.url,this.userid,this.passwd);
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(HotelRepJNDIDAO.UPDATE);
 			
-			pstmt = con.prepareStatement(HotelRepJDBCDAO.UPDATE);
 			pstmt.setString(1, aHotelRepVO.getHotelRepEmpId());
 			pstmt.setString(2, aHotelRepVO.getHotelRepStatus());
 			pstmt.setString(3, aHotelRepVO.getHotelRepId());
-
+			
 			updateCount = pstmt.executeUpdate();
-
-		}
-		catch(ClassNotFoundException e){
-			throw new RuntimeException("Could not load database driver."+ e.getMessage());
+			
 		}
 		catch(SQLException se){
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -127,18 +133,12 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 		PreparedStatement pstmt = null;
 		int updateCount = 0;
 		try {
-			Class.forName(this.driver);
-			con = DriverManager.getConnection(this.url,this.userid,this.passwd);
-			pstmt = con.prepareStatement(HotelRepJDBCDAO.DELETE);
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(HotelRepJNDIDAO.DELETE);
 			pstmt.setString(1, aHotelRepId);
 			updateCount = pstmt.executeUpdate();
 			
-		}
-		
-		catch(ClassNotFoundException e){
-			throw new RuntimeException("Could not load database driver."+ e.getMessage());
-		}
-		
+		}		
 		catch(SQLException se){
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 		}
@@ -173,9 +173,8 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 		ResultSet rs = null;
 		
 		try {
-			Class.forName(this.driver);
-			con = DriverManager.getConnection(this.url,this.userid,this.passwd);
-			pstmt = con.prepareStatement(HotelRepJDBCDAO.GET_ALL);
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(HotelRepJNDIDAO.GET_ALL);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()){
@@ -191,12 +190,7 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 				hotelRepVO.setHotelRepReviewDate(rs.getDate("hotelRepReviewDate"));
 				list.add(hotelRepVO);				
 			}
-		}
-		
-		catch(ClassNotFoundException e){
-			throw new RuntimeException("Could not load database driver."+ e.getMessage());
-		}
-		
+		}		
 		catch(SQLException se){
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 		}
@@ -231,9 +225,8 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 		ResultSet rs = null;
 		
 		try {
-			Class.forName(this.driver);
-			con = DriverManager.getConnection(this.url,this.userid,this.passwd);
-			pstmt = con.prepareStatement(HotelRepJDBCDAO.GET_ALL_HOTELREPSTATUS);
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(HotelRepJNDIDAO.GET_ALL_HOTELREPSTATUS);
 			pstmt.setString(1, aHotelRepStatus);
 			rs = pstmt.executeQuery();
 			
@@ -251,12 +244,7 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 				list.add(hotelRepVO);				
 			}
 			
-		}
-		
-		catch(ClassNotFoundException e){
-			throw new RuntimeException("Could not load database driver."+ e.getMessage());
-		}
-		
+		}		
 		catch(SQLException se){
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 		}
@@ -289,9 +277,8 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 		HotelRepVO hotelRepVO = null;
 		
 		try {
-			Class.forName(this.driver);
-			con = DriverManager.getConnection(this.url,this.userid,this.passwd);
-			pstmt = con.prepareStatement(HotelRepJDBCDAO.GET_ONE);
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(HotelRepJNDIDAO.GET_ONE);
 			pstmt.setString(1, aHotelRepId);
 			rs = pstmt.executeQuery();
 			
@@ -307,12 +294,7 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 				hotelRepVO.setHotelRepDate(rs.getDate("hotelRepDate")); 
 				hotelRepVO.setHotelRepReviewDate(rs.getDate("hotelRepReviewDate"));
 			}
-		}
-		
-		catch(ClassNotFoundException e){
-			throw new RuntimeException("Could not load database driver."+ e.getMessage());
-		}
-		
+		}		
 		catch(SQLException se){
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 		}
@@ -350,9 +332,8 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 	
-		try {
-			Class.forName(this.driver);			
-			con = DriverManager.getConnection(this.url,this.userid,this.passwd);		
+		try {		
+			con = ds.getConnection();		
 			String finalSQL = testing.CompositeQuery_anyTable_JNDI.getQuerySQL(aMap, tableName);
 			
 			pstmt = con.prepareStatement(finalSQL);
@@ -380,10 +361,6 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
-		}
-		
-		catch(ClassNotFoundException e){
-			throw new RuntimeException("Could not load database driver."+ e.getMessage());
 		}		
 		finally {
 			if (rs != null) {
@@ -412,7 +389,7 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 	}
 	
 	public static void main(String[] args) {
-		HotelRepJDBCDAO dao = new HotelRepJDBCDAO();
+		//HotelRepJDBCDAO dao = new HotelRepJDBCDAO();
 		
 		//新增
 //		HotelRepVO hotelRepVO01 = new HotelRepVO();
@@ -473,8 +450,6 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 //		System.out.println(hotelRepVO03.getHotelRepStatus()); 
 //		System.out.println(hotelRepVO03.getHotelRepDate()); 
 //		System.out.println(hotelRepVO03.getHotelRepDate()); 	
-		
-		
 		
 	}
 

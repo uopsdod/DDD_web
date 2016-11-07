@@ -476,10 +476,10 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 	
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
-		OrdJDBCDAO dao = new OrdJDBCDAO();
+		//OrdJDBCDAO dao = new OrdJDBCDAO();
 		
 		//新增		
-		OrdVO ordVO1 = new OrdVO();
+		//OrdVO ordVO1 = new OrdVO();
 				
 		//測試圖片		
 //		File pic = new File("C:/Users/cuser/Desktop/QRCode.png");

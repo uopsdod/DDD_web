@@ -87,14 +87,25 @@
 		<tr>
 			<td>評價內容:</td>
 			<td>
-				<input type="text" name="ordRatingContent" value="<%= (ordVO==null)? "我不轉彎" : ordVO.getOrdRatingContent()%>">
+				<input type="text" name="ordRatingContent" value="<%= (ordVO.getOrdRatingContent() == null)? "我不轉彎" : ordVO.getOrdRatingContent()%>">
 			</td>
 		</tr>
 
 		<tr>
 			<td>評價星星數:</td>
 			<td>
-				 0<input type="range" name="ordRatingStarNo" min="0" max="10" value="<%= (ordVO==null)? "10" : ordVO.getOrdRatingStarNo()%>">10
+				<select name="ordRatingStarNo">
+  					<option value="0">1顆星</option>
+  					<option value="1">2顆星</option>
+  					<option value="2">3顆星</option>
+  					<option value="3">4顆星</option>
+  					<option value="5">5顆星</option>
+    				<option value="6">6顆星</option>
+  					<option value="7">7顆星</option>
+  					<option value="8">8顆星</option>
+  					<option value="9">9顆星</option>
+  					<option value="10">10顆星</option>					
+				</select>			
 			</td>
 		</tr>
 

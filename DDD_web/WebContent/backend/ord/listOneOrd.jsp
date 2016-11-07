@@ -34,6 +34,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controlle
 			<th>評價內容</th>
 			<th>評價星星數</th>
 			<th>簡訊驗證碼</th>
+			<th>QR Code圖片</th>
 		</tr>
 
 		<tr>
@@ -48,6 +49,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controlle
 			<td>${ordVO.ordRatingContent}</td>
 			<td>${ordVO.ordRatingStarNo}</td>
 			<td>${ordVO.ordMsgNo}</td>
+			<td><img src="DBGifReader4?picNO=漂亮"></td>
 		</tr>
 
 	</table>
