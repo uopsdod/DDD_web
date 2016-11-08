@@ -130,5 +130,15 @@ public class Testing_yo extends HttpServlet {
 	}
 	out.println("---------------------------------------------<br>");
 	
+	
+	// test
+	MemDAO_interface dao8 = new MemJNDIDAO();
+	out.println("<b>MemJNDIDAO-OK: </b>");
+	out.println(dao8.getAll()+"<br>");
+	out.println(dao8.getAll().get(0).getMemProfile()+"<br>");
+	out.println("---------------------------------------------<br>");	
+	
+	
+	
   }
 }

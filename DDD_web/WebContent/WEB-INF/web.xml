@@ -53,6 +53,15 @@
     <url-pattern>/android/room.do</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>AndroidMemServlet</servlet-name>
+    <servlet-class>android.Member.Member</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AndroidMemServlet</servlet-name>
+    <url-pattern>/android/mem.do</url-pattern>
+  </servlet-mapping>
+  
   <filter>
     <filter-name>setCharacterEncoding</filter-name>
     <filter-class>com.filters.SetCharacterEncodingFilter</filter-class>

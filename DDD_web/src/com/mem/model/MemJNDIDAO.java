@@ -23,7 +23,7 @@ public class MemJNDIDAO implements MemDAO_interface {
 	}
 	
 	public static final String INSERT_STMT = "INSERT INTO mem (memId,memAccount,memPsw,memName,memGender,memTwId,memBirthDate,memPhone,memLiveBudget,memIntro,memProfile,memBlackList,memCreditCardNo,memCreditCheckNo,memCreditDueDate) VALUES (mem_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	public static final String GET_ALL_STMT = "SELECT memId,memAccount,memPsw,memName,memGender,memTwId,to_char(memBirthDate,'yyyy-mm-dd') memBirthDate,memPhone,memLiveBudget,memIntro,memProfile,memBlackList,memCreditCardNo,memCreditCheckNo,memCreditDueDate FROM mem order by memId";
+	public static final String GET_ALL_STMT = "SELECT memId,memAccount,memPsw,memName,memGender,memTwId,to_char(memBirthDate,'yyyy-mm-dd') memBirthDate,memPhone,memLiveBudget,memIntro,memBlackList,memCreditCardNo,memCreditCheckNo,memCreditDueDate FROM mem order by memId";
 	public static final String GET_ONE_STMT = "SELECT memId,memAccount,memPsw,memName,memGender,memTwId,to_char(memBirthDate,'yyyy-mm-dd') memBirthDate,memPhone,memLiveBudget,memIntro,memProfile,memBlackList,memCreditCardNo,memCreditCheckNo,memCreditDueDate FROM mem where memId=?";
 	public static final String DELETE = "DELETE FROM mem where memId = ?";
 	public static final String UPDATE = "UPDATE mem set memAccount=?,memPsw=?,memName=?,memGender=?,memTwId=?,memBirthDate=?,memPhone=?,memLiveBudget=?,memIntro=?,memProfile=?,memBlackList=?,memCreditCardNo=?,memCreditCheckNo=?,memCreditDueDate=? where memId = ?";
@@ -240,7 +240,6 @@ public class MemJNDIDAO implements MemDAO_interface {
 				memVO.setMemPhone(rs.getString("memPhone"));
 				memVO.setMemLiveBudget(rs.getInt("memLiveBudget"));
 				memVO.setMemIntro(rs.getString("memIntro"));
-				memVO.setMemProfile(rs.getBytes("memProfile"));
 				memVO.setMemBlackList(rs.getString("memBlackList"));
 				memVO.setMemCreditCardNo(rs.getString("memCreditCardNo"));
 				memVO.setMemCreditCheckNo(rs.getString("memCreditCheckNo"));
