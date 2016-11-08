@@ -1,7 +1,7 @@
 package com.ord.model;
 
 import java.util.List;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class OrdService {
 
@@ -11,7 +11,7 @@ public class OrdService {
 		dao = new OrdDAO();
 	}
 	
-	/*
+	/* 
 	 * = INSERT_STMT 對應 =
 	 * 01    ordID
 	 * 02-01 ordRoomId
@@ -20,15 +20,15 @@ public class OrdService {
 	 * 05-04 ordPrice
 	 * 06-05 ordLiveDate
 	 * 07    ordDate
-	 * 08    ordStatus
-	 * 09	 ordRatingContent
-	 * 10	 ordRatingStarNo
-	 * 11-06 ordQrPic
-	 * 12-07 ordMsgNo
-	*/	
+	 * 08-06 ordStatus
+	 * 09-07 ordRatingContent
+	 * 10-08 ordRatingStarNo
+	 * 11-09 ordQrPic
+	 * 12-10 ordMsgNo
+	*/
 	
 	/* (一般會員)新增一筆訂單 */
-	public OrdVO addOrd(String aOrdRoomId,String aOrdMemId,String aOrdHotelId,Integer aOrdPrice,Date aOrdLiveDate,byte[] aOrdQrPic,String aOrdMsgNo){
+	public OrdVO addOrd(String aOrdRoomId,String aOrdMemId,String aOrdHotelId,Integer aOrdPrice,Timestamp aOrdLiveDate,String aOrdStatus,String aOrdRatingContent,Integer aOrdRatingStarNo,byte[] aOrdQrPic,String aOrdMsgNo){
 		
 		OrdVO ordVO = new OrdVO();
 		
@@ -37,6 +37,9 @@ public class OrdService {
 		ordVO.setOrdHotelId(aOrdHotelId);
 		ordVO.setOrdPrice(aOrdPrice);
 		ordVO.setOrdLiveDate(aOrdLiveDate);
+		ordVO.setOrdStatus(aOrdStatus);
+		ordVO.setOrdRatingContent(aOrdRatingContent);
+		ordVO.setOrdRatingStarNo(aOrdRatingStarNo);
 		ordVO.setOrdQrPic(aOrdQrPic);
 		ordVO.setOrdMsgNo(aOrdMsgNo);
 		
@@ -45,14 +48,36 @@ public class OrdService {
 		return ordVO;
 	}
 	
+	/* 
+	 * = UPDATE 對應 =
+	 * 02-01 ordRoomId
+	 * 03-02 ordMemId
+	 * 04-03 ordHotelId
+	 * 05-04 ordPrice
+	 * 06-05 ordLiveDate
+	 * 07    ordDate
+	 * 08-06 ordStatus
+	 * 09-07 ordRatingContent
+	 * 10-08 ordRatingStarNo
+	 * 11-09 ordQrPic
+	 * 12-10 ordMsgNo
+	 * 01-11 ordID
+	*/	
+	
 	/* (一般會員)新增評論及星星數 & (系統)修改訂單狀態 */
-	/* UPDATE ord set ordStatus=?, ordRatingContent=?, ordRatingStarNo=? where ordId = ? */
-	public OrdVO updateOrd(String aOrdStatus, String aOrdRatingContent, Integer aOrdRatingStarNo, String aOrdId){
+	public OrdVO updateOrd(String aOrdRoomId,String aOrdMemId,String aOrdHotelId,Integer aOrdPrice,Timestamp aOrdLiveDate,String aOrdStatus,String aOrdRatingContent,Integer aOrdRatingStarNo,byte[] aOrdQrPic,String aOrdMsgNo,String aOrdId){
 		OrdVO ordVO = new OrdVO();
 		
+		ordVO.setOrdRoomId(aOrdRoomId);
+		ordVO.setOrdMemId(aOrdMemId);
+		ordVO.setOrdHotelId(aOrdHotelId);
+		ordVO.setOrdPrice(aOrdPrice);
+		ordVO.setOrdLiveDate(aOrdLiveDate);
 		ordVO.setOrdStatus(aOrdStatus);
 		ordVO.setOrdRatingContent(aOrdRatingContent);
 		ordVO.setOrdRatingStarNo(aOrdRatingStarNo);
+		ordVO.setOrdQrPic(aOrdQrPic);
+		ordVO.setOrdMsgNo(aOrdMsgNo);
 		ordVO.setOrdId(aOrdId);
 		
 		dao.update(ordVO);

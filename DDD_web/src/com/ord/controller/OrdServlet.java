@@ -1,12 +1,14 @@
 package com.ord.controller;
 
 import java.io.*;
+import java.sql.Timestamp;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import com.ord.model.*;
+import javax.servlet.annotation.MultipartConfig;
 
-
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class OrdServlet extends HttpServlet {
 
 	public void doGet (HttpServletRequest aReq, HttpServletResponse aRes ) throws ServletException, IOException {
@@ -94,10 +96,55 @@ public class OrdServlet extends HttpServlet {
 			aReq.setAttribute("errorMsgs", errorMsgs);
 			
 			try{
+				
+				/* 
+				 * = UPDATE 對應 =
+				 * 02-01 ordRoomId
+				 * 03-02 ordMemId
+				 * 04-03 ordHotelId
+				 * 05-04 ordPrice
+				 * 06-05 ordLiveDate
+				 * 07    ordDate
+				 * 08-06 ordStatus
+				 * 09-07 ordRatingContent
+				 * 10-08 ordRatingStarNo
+				 * 11-09 ordQrPic
+				 * 12-10 ordMsgNo
+				 * 01-11 ordID
+				*/				
+				
 				/* 1.接收請求參數 輸入格式錯誤 */
-				String ordId = aReq.getParameter("ordId").trim();
-				String ordRatingContent = aReq.getParameter("ordRatingContent").trim();				
+				String ordRoomId = aReq.getParameter("ordRoomId").trim();
+				String ordMemId = aReq.getParameter("ordMemId").trim();
+				String ordHotelId = aReq.getParameter("ordHotelId").trim();
 				String ordStatus = aReq.getParameter("ordStatus").trim();
+				String ordRatingContent = aReq.getParameter("ordRatingContent").trim();				
+				String ordMsgNo = aReq.getParameter("ordMsgNo").trim();
+				String ordId = aReq.getParameter("ordId").trim();
+				
+				
+				Integer ordPrice = null;
+				
+				try{
+					ordPrice = new Integer(aReq.getParameter("ordPrice").trim()); 
+				}
+				catch(NumberFormatException e){
+					ordPrice = 0;
+					errorMsgs.add("訂單金額請填數字");
+				}
+				
+				java.sql.Date ordLiveDate = null;
+				Timestamp ordLiveDateTs = null;
+				
+				try{
+					ordLiveDate = java.sql.Date.valueOf(aReq.getParameter("ordLiveDate").trim());
+					ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
+				}
+				catch(IllegalArgumentException e){
+					ordLiveDate = new java.sql.Date(System.currentTimeMillis());
+					ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
+					errorMsgs.add("請輸入日期");
+				}				
 				
 				Integer ordRatingStarNo = null;
 				
@@ -109,12 +156,41 @@ public class OrdServlet extends HttpServlet {
 					errorMsgs.add("評價星星數請填數字");
 				}
 				
-				/* UPDATE ord set ordStatus=?, ordRatingContent=?, ordRatingStarNo=? where ordId = ? */
+				/* 處理上傳圖片進資料庫 */
+				Part part = aReq.getPart("ordQrPic");
+				InputStream in = part.getInputStream();
+				byte[] ordQrPic = new byte[in.available()];
+				in.read(ordQrPic);
+				in.close();				
+				
+				/* 
+				 * = UPDATE 對應 =
+				 * 02-01 ordRoomId
+				 * 03-02 ordMemId
+				 * 04-03 ordHotelId
+				 * 05-04 ordPrice
+				 * 06-05 ordLiveDate
+				 * 07    ordDate
+				 * 08-06 ordStatus
+				 * 09-07 ordRatingContent
+				 * 10-08 ordRatingStarNo
+				 * 11-09 ordQrPic
+				 * 12-10 ordMsgNo
+				 * 01-11 ordID
+				*/				
+				
 				OrdVO ordVO = new OrdVO();
-				ordVO.setOrdId(ordId);
+				ordVO.setOrdRoomId(ordRoomId);
+				ordVO.setOrdMemId(ordMemId);
+				ordVO.setOrdHotelId(ordHotelId);
+				ordVO.setOrdPrice(ordPrice);
+				ordVO.setOrdLiveDate(ordLiveDateTs);
 				ordVO.setOrdStatus(ordStatus);
 				ordVO.setOrdRatingContent(ordRatingContent);
 				ordVO.setOrdRatingStarNo(ordRatingStarNo);
+				ordVO.setOrdQrPic(ordQrPic);	
+				ordVO.setOrdMsgNo(ordMsgNo);
+				ordVO.setOrdId(ordId);
 				
 				if(!errorMsgs.isEmpty()){
 					aReq.setAttribute("ordVO", ordVO);
@@ -125,7 +201,7 @@ public class OrdServlet extends HttpServlet {
 				
 				/* 2.開始修改資料 */
 				OrdService ordSvc = new OrdService();
-				ordVO = ordSvc.updateOrd(ordStatus, ordRatingContent, ordRatingStarNo, ordId);
+				ordVO = ordSvc.updateOrd(ordRoomId,ordMemId,ordHotelId,ordPrice,ordLiveDateTs,ordStatus,ordRatingContent,ordRatingStarNo,ordQrPic,ordMsgNo,ordId);
 				
 				/* 3.修改完成 準備轉交 */
 				aReq.setAttribute("ordVO", ordVO);
@@ -141,15 +217,35 @@ public class OrdServlet extends HttpServlet {
 			}
 		}
 		
-		/* !新增欠圖片上傳 */
 		if("insert".equals(action)){ //來自addOrd.jsp的請求
 			List<String> errorMsgs = new LinkedList<String>();
 			aReq.setAttribute("errorMsgs",errorMsgs);
-			
-			try{				
+				
+			try{
+				
+				/* 
+				 * = INSERT_STMT 對應 =
+				 * 01    ordID
+				 * 02-01 ordRoomId
+				 * 03-02 ordMemId
+				 * 04-03 ordHotelId
+				 * 05-04 ordPrice
+				 * 06-05 ordLiveDate
+				 * 07    ordDate
+				 * 08-06 ordStatus
+				 * 09-07 ordRatingContent
+				 * 10-08 ordRatingStarNo
+				 * 11-09 ordQrPic
+				 * 12-10 ordMsgNo
+				*/				
+				
+				/* 1.接收請求參數 */		
 				String ordRoomId = aReq.getParameter("ordRoomId").trim();
 				String ordMemId = aReq.getParameter("ordMemId").trim();
 				String ordHotelId = aReq.getParameter("ordHotelId").trim();
+				String ordStatus = aReq.getParameter("ordStatus").trim();
+				String ordRatingContent = aReq.getParameter("ordRatingContent").trim();
+				String ordMsgNo = aReq.getParameter("ordMsgNo").trim();
 				
 				Integer ordPrice = null;
 				
@@ -161,39 +257,37 @@ public class OrdServlet extends HttpServlet {
 					errorMsgs.add("訂單金額請填數字");
 				}
 				
-				String ordMsgNo = aReq.getParameter("ordMsgNo").trim();
-				
 				java.sql.Date ordLiveDate = null;
+				Timestamp ordLiveDateTs = null;
 				
 				try{
 					ordLiveDate = java.sql.Date.valueOf(aReq.getParameter("ordLiveDate").trim());
+					ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
 				}
 				catch(IllegalArgumentException e){
 					ordLiveDate = new java.sql.Date(System.currentTimeMillis());
+					ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
 					errorMsgs.add("請輸入日期");
+				}				
+				
+				Integer ordRatingStarNo = null;
+				
+				try{
+					ordRatingStarNo = new Integer(aReq.getParameter("ordRatingStarNo").trim()); 
 				}
-	
-				/* 1.接收請求參數 */				
-				OrdVO ordVO = new OrdVO();
-				ordVO.setOrdRoomId(ordRoomId);
-				ordVO.setOrdMemId(ordMemId);
-				ordVO.setOrdHotelId(ordHotelId);
-				ordVO.setOrdPrice(ordPrice);
-				ordVO.setOrdLiveDate(ordLiveDate);
-				ordVO.setOrdMsgNo(ordMsgNo);
-				
-				/* 先給空圖 */
-				ordVO.setOrdQrPic(null);
-				
-
-				if(!errorMsgs.isEmpty()){
-					aReq.setAttribute("ordVO", ordVO);
-					RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/addOrd.jsp");
-					failureView.forward(aReq, aRes);
-					return;
+				catch(NumberFormatException e){
+					ordRatingStarNo = 0;
+					errorMsgs.add("評價星星數請填數字");
 				}
 				
-				/*
+				/* 處理上傳圖片進資料庫 */
+				Part part = aReq.getPart("ordQrPic");
+				InputStream in = part.getInputStream();
+				byte[] ordQrPic = new byte[in.available()];
+				in.read(ordQrPic);
+				in.close();				
+				
+				/* 
 				 * = INSERT_STMT 對應 =
 				 * 01    ordID
 				 * 02-01 ordRoomId
@@ -202,16 +296,35 @@ public class OrdServlet extends HttpServlet {
 				 * 05-04 ordPrice
 				 * 06-05 ordLiveDate
 				 * 07    ordDate
-				 * 08    ordStatus
-				 * 09	 ordRatingContent
-				 * 10	 ordRatingStarNo
-				 * 11-06 ordQrPic
-				 * 12-07 ordMsgNo
-				*/
-				
+				 * 08-06 ordStatus
+				 * 09-07 ordRatingContent
+				 * 10-08 ordRatingStarNo
+				 * 11-09 ordQrPic
+				 * 12-10 ordMsgNo
+				*/				
+								
+				OrdVO ordVO = new OrdVO();
+				ordVO.setOrdRoomId(ordRoomId);
+				ordVO.setOrdMemId(ordMemId);
+				ordVO.setOrdHotelId(ordHotelId);
+				ordVO.setOrdPrice(ordPrice);
+				ordVO.setOrdLiveDate(ordLiveDateTs);
+				ordVO.setOrdStatus(ordStatus);
+				ordVO.setOrdRatingContent(ordRatingContent);
+				ordVO.setOrdRatingStarNo(ordRatingStarNo);
+				ordVO.setOrdQrPic(ordQrPic);
+				ordVO.setOrdMsgNo(ordMsgNo);
+
+				if(!errorMsgs.isEmpty()){
+					aReq.setAttribute("ordVO", ordVO);
+					RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/addOrd.jsp");
+					failureView.forward(aReq, aRes);
+					return;
+				}
+								
 				/* 2.開始新增資料 */
 				OrdService ordSvc = new OrdService();
-				ordVO = ordSvc.addOrd(ordRoomId, ordMemId, ordHotelId, ordPrice, ordLiveDate, null, ordMsgNo);
+				ordVO = ordSvc.addOrd(ordRoomId, ordMemId, ordHotelId, ordPrice, ordLiveDateTs, ordStatus, ordRatingContent, ordRatingStarNo, ordQrPic, ordMsgNo);
 				
 				/* 3.新增完成 */
 				String url = "/backend/ord/listAllOrd.jsp";

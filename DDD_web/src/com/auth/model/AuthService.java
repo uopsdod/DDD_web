@@ -21,12 +21,11 @@ public class AuthService {
 		return authVo;
 	}
 
-	public AuthService updateAuthEmp(String empAuthEmpId, String[] authId) {
-		AuthService authService = new AuthService();
-		authService.getAuthsByEmpId(empAuthEmpId);
-
+	public List<String> updateAuthEmp(String empAuthEmpId, String[] authId) {
 		dao.update(empAuthEmpId, authId);
-		return authService;
+		List<String> authid =dao.getAuthsByEmpId(empAuthEmpId);
+		
+		return authid;
 	}
 
 	private void update(String empAuthEmpId, String[] authId) {

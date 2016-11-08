@@ -62,11 +62,11 @@ public class Partner extends HttpServlet {
 		if ("getAll".equals(param)) {
 			System.out.println("getAll match");
 			// 去掉圖片資料，提升效能
-			List<MemVO> tmpMemVOList = this.memVOList;
-			for (MemVO myVO: tmpMemVOList){
-				myVO.setMemProfile(null);
-			}
-			outStr = gson.toJson(tmpMemVOList);
+//			List<MemVO> tmpMemVOList = this.memVOList;
+//			for (MemVO myVO: tmpMemVOList){
+//				myVO.setMemProfile(null);
+//			}
+			outStr = gson.toJson(this.memVOList);
 			res.setContentType(CONTENT_TYPE);
 			PrintWriter out = res.getWriter();
 			System.out.println("outStr:" + outStr);

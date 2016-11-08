@@ -12,7 +12,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=BIG5">
 <title>所有訂單資料 - listAllOrd.jsp</title>
 </head>
 <body>
@@ -50,6 +49,7 @@
 		<th>評價內容</th>
 		<th>評價星星數</th>
 		<th>簡訊驗證碼</th>
+		<th>QR Code圖片</th>
 		<th>修改</th>
 		<th>刪除</th>
 	</tr>
@@ -67,6 +67,7 @@
 			<td>${ordVO.ordRatingContent}</td>
 			<td>${ordVO.ordRatingStarNo}</td>
 			<td>${ordVO.ordMsgNo}</td>
+			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td>
 			<td>
 				<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
 					<input type="submit" value="修改">

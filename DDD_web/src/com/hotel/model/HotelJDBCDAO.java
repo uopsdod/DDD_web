@@ -40,7 +40,10 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 			+ ",hotelCity,hotelCounty,hotelRoad,hotelOwner,hotelAccount,hotelPwd,hotelPhone,hotelLon,hotelLat,"
 			+ "hotelIntro,hotelCoverPic,hotelLink,hotelStatus,hotelBlackList,hotelRatingTotal,hotelRatingResult,"
 			+ "hotelCreditCardNo,hotelCreditCheckNo,hotelCreditDueDate from hotel where hotelId = ?";
-
+	private static final String GET_ALL_VIEW ="select hotelId,hotelType,hotelName,hotelTaxId,hotelRegisterPic,"
+			+ "hotelCity,hotelCounty,hotelRoad,hotelOwner,hotelPhone from hotel order by hotelId";
+	
+	
 	@Override
 	public HotelVO findByPrimaryKey(String aHotelId) {
 		HotelVO hotelVO = null;
@@ -264,7 +267,72 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 		}
 		return list;
 	}
+	
+	@Override
+	public List<HotelVO> getAll_TO_VIEW() {
+		List<HotelVO> list = new ArrayList<HotelVO>();
+		HotelVO hotelVO = null;
 
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ALL_VIEW);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+
+				hotelVO = new HotelVO();
+				hotelVO.setHotelId(rs.getString("hotelId"));
+				hotelVO.setHotelType(rs.getString("hotelType"));
+				hotelVO.setHotelName(rs.getString("hotelName"));
+				hotelVO.setHotelTaxId(rs.getString("hotelTaxId"));
+				hotelVO.setHotelRegisterPic(rs.getBytes("hotelRegisterPic"));
+				hotelVO.setHotelCity(rs.getString("hotelCity"));
+				hotelVO.setHotelCounty(rs.getString("hotelCounty"));
+				hotelVO.setHotelRoad(rs.getString("hotelRoad"));
+				hotelVO.setHotelOwner(rs.getString("hotelOwner"));
+				hotelVO.setHotelPhone(rs.getString("hotelPhone"));
+				
+				list.add(hotelVO);
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+	
 	@Override
 	public void insert(HotelVO aHotelVO) {
 		Connection con = null;
@@ -389,7 +457,7 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 	}
 
 	@Override
-	public void update_status(String hotelId, HotelVO aHotelVO) {
+	public void update_status(String hotelId, String hotelStatus) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -399,7 +467,7 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE_STATUS);
 
-			pstmt.setString(1, aHotelVO.getHotelStatus());
+			pstmt.setString(1, hotelStatus);
 			pstmt.setString(2, hotelId);
 			pstmt.executeUpdate();
 
@@ -429,7 +497,7 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 	}
 
 	@Override
-	public void update_hotelBlackList(String hotelId, HotelVO aHotelVO) {
+	public void update_hotelBlackList(String hotelId, String hotelBlackList) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -439,7 +507,7 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE_HOTELBLACKLIST);
 
-			pstmt.setString(1, aHotelVO.getHotelBlackList());
+			pstmt.setString(1, hotelBlackList);
 			pstmt.setString(2, hotelId);
 			pstmt.executeUpdate();
 
