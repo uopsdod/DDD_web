@@ -9,7 +9,11 @@ import java.sql.*;
 
 public class RoomJDBCDAO implements RoomDAO_interface{
 	
+	
 
+	
+	
+	
 
 	private static final String INSERT_STMT = 
 		"INSERT INTO room VALUES (room_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -213,12 +217,13 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 		PreparedStatement pstmt = null;
 
 		try {
-
+			
 			Context ctx = new javax.naming.InitialContext();	//連線池
 			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
 			con = ds.getConnection();	
 			pstmt = con.prepareStatement(UPDATE);
-
+			
+		
 			
 			pstmt.setString(1, aRoomVO.getRoomName());
 			pstmt.setInt(2, aRoomVO.getRoomTotalNo());
@@ -240,18 +245,23 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 			pstmt.setInt(18, aRoomVO.getRoomOneBed());
 			pstmt.setInt(19, aRoomVO.getRoomTwoBed());
 			
+			
+
 			//條件
 			pstmt.setString(20, aRoomVO.getRoomId());
-
+	
 			pstmt.executeUpdate();
-			
+		
 		
 			// Handle any driver errors
 		}  catch (SQLException se) {
+			System.out.println(se.getMessage());
 			throw new RuntimeException("A database error occured. "
 					+ se.getMessage());
+			
 			// Clean up JDBC resources
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			throw new RuntimeException("Couldn't load database driver. "
 					+ e.getMessage());
 			// Handle any SQL errors

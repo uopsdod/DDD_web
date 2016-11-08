@@ -31,8 +31,7 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 	private static final String DELETE = 
 		"DELETE FROM roomphoto where roomphotoId = ?";
 	private static final String UPDATE = 
-		"UPDATE roomphoto set roomphotoroomid = ?,roomPhotoPic = ?"
-		+ "where roomphotoId = ?";
+		"INSERT INTO roomphoto VALUES ( ? ||roomphoto_seq.NEXTVAL ,?, ?)";
 	private static final String GET_AllForOne_STMT = 
 		"SELECT * FROM roomphoto where roomPhotoRoomId = ?";	
 	
@@ -173,7 +172,7 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 	
 	
 	@Override
-	public boolean update(RoomPhotoVO aRoomPhotoVO) {
+	public boolean update(String aHotelId,String roomId,byte[] Picbyte) {
 		boolean boo =false;
 		
 		Connection con = null;
@@ -187,11 +186,11 @@ public class RoomPhotoJDBCDAO implements RoomPhotoDAO_interface {
 			pstmt = con.prepareStatement(UPDATE);
 
 			
-			pstmt.setString(1, aRoomPhotoVO.getRoomPhotoRoomId());
-			pstmt.setBytes(2, aRoomPhotoVO.getRoomPhotoPic());
+			pstmt.setString(1, aHotelId);
+			pstmt.setString(2, roomId);
 		
 			//條件
-			pstmt.setString(3, aRoomPhotoVO.getRoomPhotoId());
+			pstmt.setBytes(3, Picbyte);
 
 			pstmt.executeUpdate();
 			

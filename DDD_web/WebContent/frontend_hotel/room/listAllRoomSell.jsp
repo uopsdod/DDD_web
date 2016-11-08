@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.room.model.*"%>		
-		
+<%@ page import="com.room.model.RoomVO"%>		
 		<%@ include file="../head.jsp"%>
 
 		
@@ -22,10 +22,10 @@
 					<th>總房間數</th>
 					<th>剩餘房數</th>		
 					<th>房間定價</th>
-					<th>是否上架中</th>
-					<th>是否自動上架</th>	
-					<th>折扣開始時間</th>
-					<th>折扣結束時間</th>
+					<th>上架狀態</th>
+					<th>開啟定時系統</th>	
+					<th>定時上架時間</th>
+					<th>下架時間</th>
 					<th>單位時間折扣百分比</th>
 					<th>折扣單位時間</th>
 					<th>是否一價到底</th>
@@ -91,14 +91,18 @@
 							
 							
 							<td>${roomVO.roomPrice}</td>
-							<td>${roomVO.roomForSell}</td>
-							<td>${roomVO.roomForSellAuto}</td>
+							<td>${roomVO.roomForSell==true?'上架中':'未上架'}</td>
+							<td>${roomVO.roomForSellAuto==true?'開啟':'關閉'}</td>
+						
+					
+						
 							
-							<td>${roomVO.roomDiscountStartDate}</td>
-							<td>${roomVO.roomDiscountEndDate}</td>
-							<td>${roomVO.roomDisccountPercent}</td>
+							<td>${(roomVO.roomDiscountStartDate/3600000).intValue()}時 ${((roomVO.roomDiscountStartDate%3600000)/60000).intValue()}分</td>
+							<td>${(roomVO.roomDiscountEndDate/3600000).intValue()}時 ${((roomVO.roomDiscountEndDate%3600000)/60000).intValue()}分</td>															
+							
+							<td>${(roomVO.roomDisccountPercent*100).intValue()}%</td>
 							<td>${roomVO.roomDiscountHr}</td>
-							<td>${roomVO.roomOnePrice}</td>
+							<td>${roomVO.roomOnePrice==true?'是':'否'}</td>
 							<td>
 								<button type="button" class="btn btn-primary">修改</button>						
 							</td>
@@ -107,7 +111,7 @@
 					</c:forEach>
 				  </table>
 					
-						<table border="0">    
+						<table border="0" > 
 							 <tr>
 							  <%if (rowsPerPage<rowNumber) {%>
 							    <%if(pageIndex>=rowsPerPage){%>

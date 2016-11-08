@@ -10,7 +10,7 @@
 		<link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_hotel/css/0_main.css">
 		<script src="<%=request.getContextPath()%>/frontend_hotel/js/jquery.js"></script>
 		<script src="<%=request.getContextPath()%>/frontend_hotel/js/bootstrap.min.js"></script>
-		<script src="<%=request.getContextPath()%>/frontend_hotel/js/0_new.js "></script>
+<%-- 		<script src="<%=request.getContextPath()%>/frontend_hotel/js/0_new.js "></script> --%>
 		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
