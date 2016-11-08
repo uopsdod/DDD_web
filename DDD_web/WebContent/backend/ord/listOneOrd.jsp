@@ -14,7 +14,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controlle
 			<td>
 				<h3>訂單資料 - ListOneOrd.jsp</h3>
 				<a href="selectPage.jsp">
-					<img src="images/back1.gif" alt="">回首頁
+					<img src="images/back1.gif" alt="Back Home">回首頁
 				</a>
 			</td>
 		</tr>
@@ -34,6 +34,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controlle
 			<th>評價內容</th>
 			<th>評價星星數</th>
 			<th>簡訊驗證碼</th>
+			<th>QR Code圖片</th>
 		</tr>
 
 		<tr>
@@ -48,6 +49,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controlle
 			<td>${ordVO.ordRatingContent}</td>
 			<td>${ordVO.ordRatingStarNo}</td>
 			<td>${ordVO.ordMsgNo}</td>
+			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td>
 		</tr>
 
 	</table>

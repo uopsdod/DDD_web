@@ -3,12 +3,12 @@ import java.sql.Date;
 
 public class HotelRepVO implements java.io.Serializable {
 	private String hotelRepId;
-	private String hotelRepHotelId;
-	private String hotelRepMemId;
-	private String hotelRepOrdId;
+	private String hotelRepHotelId; //Not Null
+	private String hotelRepMemId; // Not Null
+	private String hotelRepOrdId; //Not Null
 	private String hotelRepEmpId;
 	private String hotelRepContent;
-	private String hotelRepStatus;
+	private String hotelRepStatus; //0.未審核 1.已審核未通過 2.已審核已通過
 	private Date   hotelRepDate;
 	private Date   hotelRepReviewDate;
 	

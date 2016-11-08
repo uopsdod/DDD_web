@@ -63,8 +63,10 @@
 			<select name="ordId">
 				<c:forEach var="ordVO" items="${ordSvc.all}">	
 					<option value="${ordVO.ordId}">${ordVO.ordMsgNo}
-				</c:forEach>			
-			</select>
+				</c:forEach>
+			</select>	
+			<input type="submit" value="送出">
+			<input type="hidden" name="action" value="getOneForDisplay">		
 		</form>
 	</li>
 	

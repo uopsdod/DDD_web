@@ -1,9 +1,6 @@
 package com.hotelrep.model;
 
 import java.util.*;
-
-import com.ord.model.OrdJDBCDAO;
-
 import java.sql.*;
 
 public class HotelRepJDBCDAO implements HotelRepDAO_interface {
@@ -93,15 +90,9 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 			pstmt.setString(1, aHotelRepVO.getHotelRepEmpId());
 			pstmt.setString(2, aHotelRepVO.getHotelRepStatus());
 			pstmt.setString(3, aHotelRepVO.getHotelRepId());
-			
-			System.out.println(HotelRepJDBCDAO.UPDATE);
-			System.out.println(aHotelRepVO.getHotelRepEmpId());
-			System.out.println(aHotelRepVO.getHotelRepStatus());
-			System.out.println(aHotelRepVO.getHotelRepId());
-			
-			updateCount = pstmt.executeUpdate();//有問題!!!!
 
-			System.out.println("xxxxx");
+			updateCount = pstmt.executeUpdate();
+
 		}
 		catch(ClassNotFoundException e){
 			throw new RuntimeException("Could not load database driver."+ e.getMessage());
@@ -126,9 +117,7 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 					e.printStackTrace(System.err);
 				}
 			}
-			System.out.println("Hello");
 		}
-		System.out.println(updateCount);
 		return updateCount;
 	}
 	
@@ -347,6 +336,80 @@ public class HotelRepJDBCDAO implements HotelRepDAO_interface {
 		}
 		return hotelRepVO;
 	}	
+	
+	@Override
+	public List<HotelRepVO> getAll(Map<String, String[]> aMap){
+		return getAll(aMap, HotelRepDAO_interface.tableName);
+	}
+	
+	private List<HotelRepVO> getAll(Map<String, String[]> aMap, String aTableName) {
+		List<HotelRepVO> list = new ArrayList<HotelRepVO>();
+		HotelRepVO empVO = null;
+	
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+	
+		try {
+			Class.forName(this.driver);			
+			con = DriverManager.getConnection(this.url,this.userid,this.passwd);		
+			String finalSQL = testing.CompositeQuery_anyTable_JNDI.getQuerySQL(aMap, tableName);
+			
+			pstmt = con.prepareStatement(finalSQL);
+			
+			System.out.println("●●finalSQL(by DAO) = "+finalSQL);
+			
+			rs = pstmt.executeQuery();
+	
+			while (rs.next()) {
+				HotelRepVO hotelRepVO = new HotelRepVO();
+				hotelRepVO.setHotelRepId(rs.getString("hotelRepId")); 
+				hotelRepVO.setHotelRepOrdId(rs.getString("hotelRepOrdId"));
+				hotelRepVO.setHotelRepMemId(rs.getString("hotelRepMemId")); 
+				hotelRepVO.setHotelRepHotelId(rs.getString("hotelRepHotelId")); 
+				hotelRepVO.setHotelRepEmpId(rs.getString("hotelRepEmpId"));
+				hotelRepVO.setHotelRepContent(rs.getString("hotelRepContent"));
+				hotelRepVO.setHotelRepStatus(rs.getString("hotelRepStatus"));
+				hotelRepVO.setHotelRepDate(rs.getDate("hotelRepDate")); 
+				hotelRepVO.setHotelRepReviewDate(rs.getDate("hotelRepReviewDate"));
+
+				list.add(hotelRepVO); // Store the row in the List
+			}
+	
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		}
+		
+		catch(ClassNotFoundException e){
+			throw new RuntimeException("Could not load database driver."+ e.getMessage());
+		}		
+		finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
 	
 	public static void main(String[] args) {
 		HotelRepJDBCDAO dao = new HotelRepJDBCDAO();

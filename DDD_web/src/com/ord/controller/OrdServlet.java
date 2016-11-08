@@ -5,8 +5,9 @@ import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import com.ord.model.*;
+import javax.servlet.annotation.MultipartConfig;
 
-
+@MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class OrdServlet extends HttpServlet {
 
 	public void doGet (HttpServletRequest aReq, HttpServletResponse aRes ) throws ServletException, IOException {
@@ -141,7 +142,6 @@ public class OrdServlet extends HttpServlet {
 			}
 		}
 		
-		/* !新增欠圖片上傳 */
 		if("insert".equals(action)){ //來自addOrd.jsp的請求
 			List<String> errorMsgs = new LinkedList<String>();
 			aReq.setAttribute("errorMsgs",errorMsgs);
@@ -182,10 +182,14 @@ public class OrdServlet extends HttpServlet {
 				ordVO.setOrdLiveDate(ordLiveDate);
 				ordVO.setOrdMsgNo(ordMsgNo);
 				
-				/* 先給空圖 */
-				ordVO.setOrdQrPic(null);
-				
-
+				/* 處理上傳圖片進資料庫 */
+				Part part = aReq.getPart("ordQrPic");
+				InputStream in = part.getInputStream();
+				byte[] ordQrPic = new byte[in.available()];
+				in.read(ordQrPic);
+				in.close();
+				ordVO.setOrdQrPic(ordQrPic);
+					
 				if(!errorMsgs.isEmpty()){
 					aReq.setAttribute("ordVO", ordVO);
 					RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/addOrd.jsp");
@@ -211,7 +215,7 @@ public class OrdServlet extends HttpServlet {
 				
 				/* 2.開始新增資料 */
 				OrdService ordSvc = new OrdService();
-				ordVO = ordSvc.addOrd(ordRoomId, ordMemId, ordHotelId, ordPrice, ordLiveDate, null, ordMsgNo);
+				ordVO = ordSvc.addOrd(ordRoomId, ordMemId, ordHotelId, ordPrice, ordLiveDate, ordQrPic, ordMsgNo);
 				
 				/* 3.新增完成 */
 				String url = "/backend/ord/listAllOrd.jsp";

@@ -36,7 +36,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 			</ul>
 		</c:if>
 
-		<form method="post" action="ord.do" name="form1">
+		<form method="post" action="ord.do" name="form1" enctype="multipart/form-data">
 			<table>
 				<jsp:useBean id="roomSvc" scope="page" class="com.room.model.RoomService"/>
 				<tr>
@@ -73,7 +73,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 				<tr>
 					<td>訂單金額:</td>
 					<td>
-						<input type="text" name="ordPrice" 
+						<input type="number" name="ordPrice" 
 						value="<%= (ordVO==null)? "8888" : ordVO.getOrdPrice()%>"/>
 					</td>
 				</tr>
@@ -81,16 +81,15 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 					<%java.sql.Date dateSQL = new java.sql.Date(System.currentTimeMillis());%>
 					<td>入住日期:</td>
 					<td>
-						<input type="datetime-local" name="ordLiveDate" value="<%= (ordVO==null)? dateSQL : ordVO.getOrdLiveDate()%>">
+						<input type="date" name="ordLiveDate" value="<%= (ordVO==null)? dateSQL : ordVO.getOrdLiveDate()%>">
 					</td>
 				</tr>
-<!-- 				<tr> -->
-<!-- 					<td>QR Code圖片:</td> -->
-<!-- 					<td> -->
-<!-- 						<input type="text" name="ordQrPic"  -->
-<%-- 						value="<%= (ordVO==null)? "" : ordVO.getOrdQrPic()%>"/> --%>
-<!-- 					</td> -->
-<!-- 				</tr> -->
+				<tr>
+					<td>QR Code圖片:</td>
+					<td>
+						<input type="file" name="ordQrPic"/>
+					</td>
+				</tr>
 				<tr>
 					<td>簡訊驗證碼:</td>
 					<td>

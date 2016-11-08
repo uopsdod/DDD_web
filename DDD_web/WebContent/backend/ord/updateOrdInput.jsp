@@ -8,9 +8,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>訂單資料修改 - updateOrdInput.jsp</title>
-<link rel="stylesheet" type="text/css">
-<script type="text/javascript"></script>
+	<title>訂單資料修改 - updateOrdInput.jsp</title>
+	<link rel="stylesheet" type="text/css">
+	<script type="text/javascript"></script>
 </head>
 
 <body>
@@ -67,31 +67,45 @@
 		</tr>
 
 		<tr>
-			<%java.sql.Date dateSQL = new java.sql.Date(System.currentTimeMillis());%>
 			<td>下訂日期:</td>
-			<td>
-				<input type="datetime-local" name="ordDate" value="<%= (ordVO==null)? dateSQL : ordVO.getOrdDate()%>">
-			</td>
+			<td><%=ordVO.getOrdDate()%>></td>
 		</tr>
 
 		<tr>
 			<td>訂單狀態名稱:</td>
-			<td>
-				<input type="text" name="ordStatus" value="<%=ordVO.getOrdStatus()%>">
+			<td>				
+				<select name="ordStatus">
+  					<option value="0">已下單</option>
+  					<option value="1">主動取消</option>
+  					<option value="2">已入住</option>
+  					<option value="3">已繳費</option>
+  					<option value="4">逾時取消</option>
+				</select>
 			</td>
 		</tr>
 
 		<tr>
 			<td>評價內容:</td>
 			<td>
-				<input type="text" name="ordRatingContent" value="<%= (ordVO==null)? "我不轉彎" : ordVO.getOrdRatingContent()%>">
+				<input type="text" name="ordRatingContent" value="<%= (ordVO.getOrdRatingContent() == null)? "我不轉彎" : ordVO.getOrdRatingContent()%>">
 			</td>
 		</tr>
 
 		<tr>
 			<td>評價星星數:</td>
 			<td>
-				 0<input type="range" name="ordRatingStarNo" min="0" max="10" value="<%=ordVO.getOrdRatingStarNo()%>">10
+				<select name="ordRatingStarNo">
+  					<option value="0">1顆星</option>
+  					<option value="1">2顆星</option>
+  					<option value="2">3顆星</option>
+  					<option value="3">4顆星</option>
+  					<option value="5">5顆星</option>
+    				<option value="6">6顆星</option>
+  					<option value="7">7顆星</option>
+  					<option value="8">8顆星</option>
+  					<option value="9">9顆星</option>
+  					<option value="10">10顆星</option>					
+				</select>			
 			</td>
 		</tr>
 
@@ -105,6 +119,11 @@
 		<tr>
 			<td>簡訊驗證碼:</td>
 			<td><%=ordVO.getOrdMsgNo()%></td>
+		</tr>
+		
+		<tr>
+			<th>QR Code圖片</th>
+			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td>
 		</tr>
 	</table>
 	<br>
