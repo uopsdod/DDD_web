@@ -27,7 +27,7 @@ public class DBGifReader4 extends HttpServlet {
 			out.write(ordVO.getOrdQrPic());
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			InputStream in = getServletContext().getResourceAsStream("/backend/ord/images/noImage.jpg");
 			byte[] buf = new byte[in.available()];
 			in.read(buf);

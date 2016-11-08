@@ -65,7 +65,7 @@ public class OrdService {
 	*/	
 	
 	/* (一般會員)新增評論及星星數 & (系統)修改訂單狀態 */
-	public OrdVO updateOrd(String aOrdRoomId,String aOrdMemId,String aOrdHotelId,Integer aOrdPrice,Timestamp aOrdLiveDate,String aOrdStatus,String aOrdRatingContent,Integer aOrdRatingStarNo,byte[] aOrdQrPic,String aOrdMsgNo,String aOrdId){
+	public OrdVO updateOrd(String aOrdRoomId,String aOrdMemId,String aOrdHotelId,Integer aOrdPrice,Timestamp aOrdLiveDate,String aOrdStatus,String aOrdRatingContent,Integer aOrdRatingStarNo,byte[] aOrdQrPic,String aOrdMsgNo,String aOrdId,Timestamp aOrdDate){
 		OrdVO ordVO = new OrdVO();
 		
 		ordVO.setOrdRoomId(aOrdRoomId);
@@ -79,6 +79,7 @@ public class OrdService {
 		ordVO.setOrdQrPic(aOrdQrPic);
 		ordVO.setOrdMsgNo(aOrdMsgNo);
 		ordVO.setOrdId(aOrdId);
+		ordVO.setOrdDate(aOrdDate);
 		
 		dao.update(ordVO);
 		

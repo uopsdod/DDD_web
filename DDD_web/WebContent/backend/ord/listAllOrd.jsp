@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.*" %>
-<%@ page import="com.ord.model.*"%>
+<%@ page import="java.util.*, com.ord.model.*, java.text.SimpleDateFormat" %>
 
 <%
 	OrdService ordSvc = new OrdService();
@@ -61,8 +60,8 @@
 			<td>${ordVO.ordMemId}</td>
 			<td>${ordVO.ordHotelId}</td>
 			<td>${ordVO.ordPrice}</td>
-			<td>${ordVO.ordLiveDate}</td>
-			<td>${ordVO.ordDate}</td>
+			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdLiveDate())%></td>
+			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdDate())%></td>		
 			<td>${ordVO.ordStatus}</td>
 			<td>${ordVO.ordRatingContent}</td>
 			<td>${ordVO.ordRatingStarNo}</td>

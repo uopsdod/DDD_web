@@ -43,8 +43,8 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 					<td>房型編號:</td>
 					<td>
 						<select name="ordRoomId">
-							<c:forEach var="roomVO"  items="${roomSvc.all}">
-								<option value="${roomVO.roomId}" ${(ordVO.ordRoomId==roomVO.roomId)?'selected':''}>${roomVO.roomName}
+							<c:forEach var="roomVO" items="${roomSvc.all}">
+								<option value="${roomVO.roomId}" ${(ordVO.ordRoomId==roomVO.roomId)?'selected':''}>${roomVO.roomName}</option>
 							</c:forEach>
 						</select>
 					</td>
@@ -56,27 +56,32 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 					<td>
 						<select name="ordMemId">
 							<c:forEach var="memVO" items="${memSvc.all}">
-								<option value="${memVO.memId}" ${(ordVO.ordMemId==memVO.memId)? 'selected':''}>${memVO.memName}
+								<option value="${memVO.memId}" ${(ordVO.ordMemId==memVO.memId)? 'selected':''}>${memVO.memName}</option>
 							</c:forEach>
 						</select>
 					</td>
 				</tr>
 				
+				<jsp:useBean id="hotelSvc" scope="page" class="com.hotel.model.HotelService"/>
 				<tr>
-					<!-- 改天升級成外來鍵 -->
 					<td>廠商會員編號:</td>
 					<td>
-						<input type="text" name="ordHotelId" 
-						value="<%= (ordVO==null)? "10001" : ordVO.getOrdHotelId()%>"/>
+						<select name="ordHotelId">
+							<c:forEach var="hotelVO" items="${hotelSvc.all}">
+								<option value="${hotelVO.hotelId}" ${(ordVO.ordHotelId==hotelVO.hotelId)?'selected':''}>${hotelVO.hotelName}</option>
+							</c:forEach>
+						</select>
 					</td>
 				</tr>
+
 				<tr>
 					<td>訂單金額:</td>
 					<td>
 						<input type="number" name="ordPrice" 
-						value="<%= (ordVO==null)? "8888" : ordVO.getOrdPrice()%>"/>
+						value="<%= (ordVO==null)? "" : ordVO.getOrdPrice()%>"/>
 					</td>
 				</tr>
+
 				<tr>
 					<%java.sql.Date dateSQL = new java.sql.Date(System.currentTimeMillis());%>
 					<td>入住日期:</td>
@@ -84,6 +89,41 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 						<input type="date" name="ordLiveDate" value="<%= (ordVO==null)? dateSQL : ordVO.getOrdLiveDate()%>">
 					</td>
 				</tr>
+				
+				<tr>
+					<td>訂單狀態名稱:</td>
+					<td>				
+						<select name="ordStatus">
+		  					<option value="0">已下單</option>
+		  					<option value="1">主動取消</option>
+		  					<option value="2">已入住</option>
+		  					<option value="3">已繳費</option>
+		  					<option value="4">逾時取消</option>
+						</select>
+					</td>
+				</tr>
+
+				<tr>
+					<td>評價內容:</td>
+					<td>						
+						<textarea name="ordRatingContent" value="<%= (ordVO == null)? "" : ordVO.getOrdRatingContent()%>"></textarea>
+					</td>
+				</tr>
+
+				<tr>
+					<td>評價星星數:</td>
+					<td>
+						<select name="ordRatingStarNo">
+		  					<option value="0">0顆星</option>
+		  					<option value="1">1顆星</option>
+		  					<option value="2">2顆星</option>
+		  					<option value="3">3顆星</option>
+		  					<option value="4">4顆星</option>
+		    				<option value="5">5顆星</option>				
+						</select>			
+					</td>
+				</tr>
+
 				<tr>
 					<td>QR Code圖片:</td>
 					<td>
@@ -93,7 +133,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 				<tr>
 					<td>簡訊驗證碼:</td>
 					<td>
-						<input type="text" name="ordMsgNo" value="<%= (ordVO==null)? "AAAA" : ordVO.getOrdMsgNo()%>"/>
+						<input type="text" name="ordMsgNo" value="<%= (ordVO==null)? "" : ordVO.getOrdMsgNo()%>"/>
 					</td>
 				</tr>
 			</table>

@@ -91,9 +91,10 @@ public class OrdServlet extends HttpServlet {
 			
 		}
 		
-		if("update".equals(action)){ // 來自updateEmpInput.jsp
+		if("update".equals(action)){ // 來自updateOrdInput.jsp
 			List<String> errorMsgs = new LinkedList<String>();
 			aReq.setAttribute("errorMsgs", errorMsgs);
+			OrdVO ordVO =  null;
 			
 			try{
 				
@@ -138,13 +139,28 @@ public class OrdServlet extends HttpServlet {
 				
 				try{
 					ordLiveDate = java.sql.Date.valueOf(aReq.getParameter("ordLiveDate").trim());
+					//System.out.println("入住日期: "+ordLiveDate);
 					ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
 				}
 				catch(IllegalArgumentException e){
 					ordLiveDate = new java.sql.Date(System.currentTimeMillis());
 					ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
-					errorMsgs.add("請輸入日期");
+					//errorMsgs.add("請輸入入住日期");
 				}				
+				
+				//java.sql.Date ordDate2 = null;
+				Timestamp ordDateTs = null;
+				
+				try{
+					Long ordDate = Long.parseLong(aReq.getParameter("ordDate").trim());;
+
+					ordDateTs = new Timestamp(ordDate);
+				}
+				catch(IllegalArgumentException e){
+					//ordDate2 = new java.sql.Date(System.currentTimeMillis());
+					//ordDateTs = new Timestamp(ordDate2.getTime());
+					errorMsgs.add("請輸入下訂日期");
+				}					
 				
 				Integer ordRatingStarNo = null;
 				
@@ -177,21 +193,22 @@ public class OrdServlet extends HttpServlet {
 				 * 11-09 ordQrPic
 				 * 12-10 ordMsgNo
 				 * 01-11 ordID
-				*/				
+				*/
 				
-				OrdVO ordVO = new OrdVO();
+				ordVO = new OrdVO();
 				ordVO.setOrdRoomId(ordRoomId);
 				ordVO.setOrdMemId(ordMemId);
 				ordVO.setOrdHotelId(ordHotelId);
 				ordVO.setOrdPrice(ordPrice);
 				ordVO.setOrdLiveDate(ordLiveDateTs);
+				ordVO.setOrdDate(ordDateTs);
 				ordVO.setOrdStatus(ordStatus);
 				ordVO.setOrdRatingContent(ordRatingContent);
 				ordVO.setOrdRatingStarNo(ordRatingStarNo);
 				ordVO.setOrdQrPic(ordQrPic);	
 				ordVO.setOrdMsgNo(ordMsgNo);
 				ordVO.setOrdId(ordId);
-				
+
 				if(!errorMsgs.isEmpty()){
 					aReq.setAttribute("ordVO", ordVO);
 					RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/updateOrdInput.jsp");
@@ -201,7 +218,7 @@ public class OrdServlet extends HttpServlet {
 				
 				/* 2.開始修改資料 */
 				OrdService ordSvc = new OrdService();
-				ordVO = ordSvc.updateOrd(ordRoomId,ordMemId,ordHotelId,ordPrice,ordLiveDateTs,ordStatus,ordRatingContent,ordRatingStarNo,ordQrPic,ordMsgNo,ordId);
+				ordVO = ordSvc.updateOrd(ordRoomId,ordMemId,ordHotelId,ordPrice,ordLiveDateTs,ordStatus,ordRatingContent,ordRatingStarNo,ordQrPic,ordMsgNo,ordId,ordDateTs);
 				
 				/* 3.修改完成 準備轉交 */
 				aReq.setAttribute("ordVO", ordVO);
@@ -212,6 +229,7 @@ public class OrdServlet extends HttpServlet {
 			}
 			catch(Exception e){
 				errorMsgs.add("修改資料失敗" + e.getMessage());
+				aReq.setAttribute("ordVO", ordVO);
 				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/updateOrdInput.jsp");
 				failureView.forward(aReq, aRes);
 			}
@@ -220,9 +238,8 @@ public class OrdServlet extends HttpServlet {
 		if("insert".equals(action)){ //來自addOrd.jsp的請求
 			List<String> errorMsgs = new LinkedList<String>();
 			aReq.setAttribute("errorMsgs",errorMsgs);
-				
+			OrdVO ordVO = null;	
 			try{
-				
 				/* 
 				 * = INSERT_STMT 對應 =
 				 * 01    ordID
@@ -267,7 +284,7 @@ public class OrdServlet extends HttpServlet {
 				catch(IllegalArgumentException e){
 					ordLiveDate = new java.sql.Date(System.currentTimeMillis());
 					ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
-					errorMsgs.add("請輸入日期");
+					errorMsgs.add("請輸入入住日期");
 				}				
 				
 				Integer ordRatingStarNo = null;
@@ -303,7 +320,7 @@ public class OrdServlet extends HttpServlet {
 				 * 12-10 ordMsgNo
 				*/				
 								
-				OrdVO ordVO = new OrdVO();
+				ordVO = new OrdVO();
 				ordVO.setOrdRoomId(ordRoomId);
 				ordVO.setOrdMemId(ordMemId);
 				ordVO.setOrdHotelId(ordHotelId);
@@ -333,6 +350,7 @@ public class OrdServlet extends HttpServlet {
 			}
 			catch(Exception e){
 				errorMsgs.add(e.getMessage());
+				aReq.setAttribute("ordVO", ordVO);
 				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/addOrd.jsp");
 				failureView.forward(aReq,aRes);
 			}
