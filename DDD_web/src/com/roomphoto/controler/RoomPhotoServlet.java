@@ -42,6 +42,7 @@ public class RoomPhotoServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
 
+		
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
@@ -50,6 +51,7 @@ public class RoomPhotoServlet extends HttpServlet {
 
 				/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 				String roomPhotoId = req.getParameter("roomPhotoId");
+				
 				/***************************2.開始查詢資料*****************************************/
 				RoomPhotoService RoomPhotoSvc = new RoomPhotoService();
 				RoomPhotoVO roomPhotoVO = RoomPhotoSvc.getOneRoomPhoto(roomPhotoId);
@@ -68,17 +70,17 @@ public class RoomPhotoServlet extends HttpServlet {
 			
 		
 			/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-			String roomPhotoRoomId = req.getParameter("roomPhotoRoomId");
+			String RoomId = req.getParameter("RoomId");
 			/***************************2.開始查詢資料*****************************************/
 			RoomPhotoService RoomPhotoSvc = new RoomPhotoService();
-			List<String> RoomPhotoIdList = RoomPhotoSvc.getRoomAllRoomPhotoId(roomPhotoRoomId);
+			List<String> RoomPhotoIdList = RoomPhotoSvc.getRoomAllRoomPhotoId(RoomId);
 			
 			JSONArray array = new JSONArray();
 			for(String photoId:RoomPhotoIdList)
 			{
 				 array.put(photoId);
 			}
-			
+		
 			res.setContentType("text/plain");
 		
 			PrintWriter out = res.getWriter();
@@ -117,46 +119,102 @@ public class RoomPhotoServlet extends HttpServlet {
 					
 	}	
 		
+	if ("DeleteOneRoomPhoto".equals(action)) { // 來自select_page.jsp的請求
+			
+			
+			
+			/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+			String roomPhotoRoomId = req.getParameter("RoomPhotoId");
+			/***************************2.開始查詢資料*****************************************/
+			RoomPhotoService RoomPhotoSvc = new RoomPhotoService();
+			RoomPhotoSvc.deleteRoomPhoto(roomPhotoRoomId);
+			
+			
+			return;
+					
+	}	
+		
 		
 			
-//		if ("upPic".equals(action)) {
-//			
-//			String roomPhotoRoomId = req.getParameter("roomPhotoRoomId");
-//			String HotelId = req.getParameter("HotelId");
-//			String url = req.getParameter("root");
-//			Collection<Part> parts = req.getParts();
-//			RoomPhotoService RoomPhotoSvc = new RoomPhotoService();
-//		
-//			
-//			
-//			for(Part part:parts){
-//					System.out.println(part.getContentType());
-//			
-//					if("image/jpeg".equals(part.getContentType())){
-//					java.io.InputStream in = part.getInputStream();
-//					byte[] Picbyte =SetPic(in);
-//					
-//						
-//					//RoomPhotoSvc.insertRoomPhoto(HotelId, Picbyte);
-//			
-//					}
-//			}
-//			
-//			String root = req.getParameter("root");			
-//			String roomId = req.getParameter("roomId");
-//		
-//			List RoomPhotoId = RoomPhotoSvc.getRoomAllRoomPhotoId(roomId);
-//			RoomService roomSvc = new RoomService();
-//			RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
-//			
-//			req.setAttribute("roomVO", roomVO);
-//			req.setAttribute("RoomPhotoId", RoomPhotoId);
-//		
-//			RequestDispatcher successView = req.getRequestDispatcher(root); // 成功轉交 listOneEmp.jsp
-//			successView.forward(req, res);
-//			return;
-//			
-//		}
+		if ("PhotoUpdate".equals(action)) {
+			
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			String roomId = null;
+			
+			try{
+			
+			roomId = req.getParameter("roomId");
+			String HotelId = req.getParameter("hotelId");
+			String url = req.getParameter("requestURL");
+			Collection<Part> parts = req.getParts();
+			RoomPhotoService RoomPhotoSvc = new RoomPhotoService();
+			
+		
+			
+			java.io.InputStream in = null;
+			int count = 0;
+			for(Part part:parts){
+					System.out.println(part.getContentType());
+					try{
+					
+							if("image/jpeg".equals(part.getContentType())){
+								count++;	
+							in = part.getInputStream();
+							byte[] Picbyte =SetPic(in);
+							RoomPhotoSvc.updateRoomPhoto(HotelId,roomId,Picbyte);
+							}
+							
+		
+					}catch(Exception e){
+						
+						errorMsgs.add("圖片寫入有錯");
+					}finally{
+						try{
+							if(!(in==null)){	
+							in.close();
+							}
+						}catch(Exception e)
+						{}
+					}					
+			}
+		
+			if(count ==0){
+				errorMsgs.add("請輸入jpg圖檔");
+			}
+			
+			
+			if (!errorMsgs.isEmpty()) {
+				RoomService roomSvc = new RoomService();
+				RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);								
+				req.setAttribute("roomVO", roomVO);
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/frontend_hotel/room/update_room_input.jsp");
+				failureView.forward(req, res);
+				return; //程式中斷
+			}
+					
+		
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
+			return;
+				
+			
+			}catch(Exception e){
+				RoomService roomSvc = new RoomService();
+				RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);								
+				req.setAttribute("roomVO", roomVO); 				
+				errorMsgs.add("新增圖檔失敗:"+e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/frontend_hotel/room/update_room_input.jsp");
+				failureView.forward(req, res);
+				return;
+			}
+			
+		}
 	
 		
 		
@@ -164,21 +222,24 @@ public class RoomPhotoServlet extends HttpServlet {
 	}
 	
 	
-	private static byte[] SetPic(java.io.InputStream in) {
+	private static byte[] SetPic(java.io.InputStream in) throws IOException {
 		
+		BufferedInputStream  bis = null;
 		byte[] bytearr = null;
 		try{
 		
-         BufferedInputStream  bis  =   new  BufferedInputStream(in) ;
+         bis  =   new  BufferedInputStream(in) ;
          int content =bis.available();
          
          bytearr = new byte[content];
          bis.read(bytearr);     
          
-         bis.close();   
+        
                
 		}catch(Exception e){
-			
+			  
+		}finally{
+			 bis.close(); 
 		}
 		return bytearr;		
 	}

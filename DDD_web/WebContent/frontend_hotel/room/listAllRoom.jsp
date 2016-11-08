@@ -91,11 +91,12 @@
 					         }
 					    } 
 					%>
+					
 					<c:forEach var="roomVO" items="${roomSet}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 					
-
-						<tr>
-							<td><a href=""  id="${roomVO.roomId}"  onclick="show()">${roomVO.roomName}</a></td>
+				
+						<tr ${(roomVO.roomId==param.roomId) ? 'bgcolor=#CCCCFF':''}>
+							<td><span>${roomVO.roomName}</span></td>
 							<td>${roomVO.roomTotalNo}</td>
 							<td>${roomVO.roomPrice}</td>
 							<td>${roomVO.roomFun}</td> 
@@ -107,16 +108,25 @@
 							<td>${roomVO.roomOneBed}</td> 
 							<td>${roomVO.roomTwoBed}</td>
 							<td>
-								<button type="button" class="btn btn-primary">修改</button>
-								<button type="button" class="btn btn-danger">刪除</button>
+								
+									  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/room/room.do">
+									     <input type="submit" class="btn btn-primary" value="修改"> 
+									     <input type="hidden" name="roomId" value="${roomVO.roomId}">
+									     <input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller-->
+									     <input type="hidden" name="whichPage"	value="<%=whichPage%>">               <!--送出當前是第幾頁給Controller-->
+									     <input type="hidden" name="action"	value="getOne_For_Update">
+									   </FORM>
+								
+								
+								<button type="button" class="btn btn-danger" id="${roomVO.roomId}" onclick="showImg(this)" >圖示</button>
 							</td>
 						</tr>
 							</tbody>
 					</c:forEach>
 				  </table>
 					
-						<table border="0">    
-							 <tr>
+						<table border="0"   >    
+							 <tr >
 							  <%if (rowsPerPage<rowNumber) {%>
 							    <%if(pageIndex>=rowsPerPage){%>
 							        <td><A href="<%=request.getRequestURI()%>?whichPage=1">至第一頁</A>&nbsp;</td>
@@ -174,14 +184,185 @@
 
 <!-- 					</div> -->
 <!-- 				</div> -->
-
-
-
-
-
-		</div>	
 		
+		<div id="showBarItem" class="panel " style="margin:0px;background:#dff0d8;padding:10px;height:50px;border-color:pink"  >		
+			
+			
+			
+		
+			
+			<span id="showBar">
+			
+			
+			</span>  	
+										
+		</div>
+		
+		
+		<div id="showPanel" >
+
+		</div>
+		
+		<script>
+		var xhr = null;
+		
+
+		
+		
+		
+				
+		function deleteImg(){
+			
+ 		this.parentElement.remove();	
+		
+	
+			var xhr = new XMLHttpRequest();
+			  //設定好回呼函數 
+			  xhr.onreadystatechange = function (){
+			    if( xhr.readyState == 4 ){
+			      if(xhr.status == 200){
+//	 		    	  alert(xhr.responseText);
+					
+			    	
+			      }else{
+			        alert( xhr.status);
+			      }//xhr.status == 200
+			    }//xhr.readyState == 4
+			  }//onreadystatechange
+			  
+		
+			  
+			  //建立好Post連接
+			  var url = "<%=request.getContextPath()%>/RoomPhotoServlet";
+			  var data_info = "action=DeleteOneRoomPhoto&RoomPhotoId="+this.id;
+			  xhr.open("Post",url,true);
+			  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			  xhr.send(data_info);
+			  //送出請求
+		
+		}
+		
+		//建立顯示圖片區之dom元件	
+		function showRoom(jsonStr){
+		  //剖析json字串,將其轉成jsob物件
+			var roomImgArray = JSON.parse(jsonStr); 
+			
+	
+			var showPanel = document.querySelector('#showPanel');
+			showPanel.innerHTML=null;
+			
+			for(var a=0;a<roomImgArray.length;a++){
+				
+				
+				var Debutton =document.createElement('button');
+				Debutton.innerHTML="刪除";
+				Debutton.onclick=deleteImg;
+				Debutton.style="position:absolute;top:50px:right:50px;z-index:4";	
+				Debutton.id=roomImgArray[a];
+				
+				
+				var img = document.createElement('img');
+				img.src="<%=request.getContextPath()%>/RoomPhotoServlet?action=getOne_For_Display&roomPhotoId="+roomImgArray[a];
+				img.style="width:350px;position:absolute;z-index:1";
+				
+				var span = document.createElement('span');
+				span.style="position:absolute;"
+				
+				var spanOut = document.createElement('span');
+				span.style="margin-right:375px;"
+				
+				span.appendChild(Debutton);
+				
+				span.appendChild(img);
+
+				spanOut.appendChild(span);
+				
+				if((a+1)%3==0){
+					for(var i =0;i<11;i++){
+					var br = document.createElement('br');
+					showPanel.appendChild(br);
+					}
+				}
+				
+				showPanel.appendChild(spanOut);
+ 				
+			}
+			
+			
+			
+			
+
+		}
+
+
+		function showImg(obj){
+			
+			
+			
+			
+		  var xhr = new XMLHttpRequest();
+		  //設定好回呼函數 
+		  xhr.onreadystatechange = function (){
+		    if( xhr.readyState == 4 ){
+		      if(xhr.status == 200){
+// 		    	  alert(xhr.responseText);  
+		        showRoom(xhr.responseText);
+		        showBar();
+		      }else{
+		        alert( xhr.status);
+		      }//xhr.status == 200
+		    }//xhr.readyState == 4
+		  }//onreadystatechange
+		  
+	
+		  
+		  //建立好Post連接
+		  var url = "<%=request.getContextPath()%>/RoomPhotoServlet";
+		  var data_info = "action=getAllId_For_OneRoom&RoomId="+obj.id;
+		  xhr.open("Post",url,true);
+		  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		  xhr.send(data_info);
+		  //送出請求
+		}
+		
+		
+		function showBar(){
+			 
+			
+			var showBarLine = document.querySelector('#showBar');
+			showBarLine.innerHTML = null;
+			
+		
+			
+			var hide =document.createElement('button');
+			hide.innerHTML="全部隱藏";
+			hide.onclick=hidezoon;
+			
+		
+			
+			showBarLine.appendChild(hide);
+	
+		}
+		
+		function hidezoon(){
+			
+			var showPanel = document.querySelector('#showPanel');
+			showPanel.innerHTML = null; 
+			var showBarLine = document.querySelector('#showBar');
+			showBarLine.innerHTML = null;
+		}
+		
+		
+		
+		</script>
+			
+	</div>	
 		
 		
 		
 		<%@ include file="../footer.jsp" %>
+		
+		
+		
+		
+		
