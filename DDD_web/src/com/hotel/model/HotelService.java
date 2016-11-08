@@ -103,12 +103,12 @@ public class HotelService {
 	}
 	
 	//按鍵修改狀態2
-	public void update_status(String hotelId, HotelVO aHotelVO) {
-		dao.update_status(hotelId, aHotelVO);
+	public void update_status(String hotelId, String hotelStatus) {
+		dao.update_status(hotelId, hotelStatus);
 	}
 	
 	//更新黑名單
-	public void update_hotelBlackList(String hotelId, HotelVO aHotelVO) {
-		dao.update_hotelBlackList(hotelId, aHotelVO);
+	public void update_hotelBlackList(String hotelId, String hotelBlackList) {
+		dao.update_hotelBlackList(hotelId, hotelBlackList);
 	}
 }

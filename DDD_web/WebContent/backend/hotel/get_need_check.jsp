@@ -2,13 +2,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.util.*"%>
+<%@ page import="com.hotel.model.*"%>
 <%@ page import="com.emp.model.*"%>
 
 <%
-	EmpService dao = new EmpService();
-	List<EmpVO> list = dao.getAll();
+	HotelService dao = new HotelService();
+	List<HotelVO> list = dao.getAll_NEED_CHECK();
 	pageContext.setAttribute("list", list);
 %>
+
 <%
 session.getAttribute("account");
 EmpVO empvo =(EmpVO)session.getAttribute("empVO");
@@ -56,6 +58,32 @@ body {
 }
 #empName{
 	color:white;
+}
+#LoginButton{
+	opacity: 0.7;
+	z-index: 1;
+	background: #0283df;
+	color: #ffffff;
+	position: relative;
+	font-weight: bold;
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	border: 0px;
+	border-radius: 10px;
+	padding: 3px;
+	font-size: 15px;
+}
+#LoginButton1{
+	opacity: 0.7;
+	z-index: 1;
+	background: rgb(212, 74, 151);
+	color: #ffffff;
+	position: relative;
+	font-weight: bold;
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	border: 0px;
+	border-radius: 10px;
+	padding: 3px;
+	font-size: 15px;
 }
 </style>
 </head>
@@ -255,80 +283,102 @@ body {
 				</div>
 			<!-- 				bar結束 -->
 			<div class="col-xs-12 col-sm-10 tablediv" > 
-			<table border='3' bordercolor='black' cellspacing="0" cellpadding="5"
+				<table border='3' bordercolor='black' cellspacing="0" cellpadding="5"
 				width='800' class="table table-hover">	
 				<tr>
-					<th>empProfile</th>
-					<th>empId</th>
-					<th>empName</th>
-					<th>empAccount</th>
-					<th>empBirthDate</th>
-					<th>empPhone</th>
-					<th>empStatus</th>
-					<th>empROCId</th>
-					<th>empAddress</th>
-					<th>empHireDate</th>
-					<th>empFireDate</th>
-					<th>update</th>
-					<th>Auth</th>
+					<th>封面照片</th>
+					<th>廠商登記證</th>
+					
+					<th>廠商會員編號</th>
+					<th>廠商種類名稱</th>
+					<th>廠商名稱</th>
+					<th>統一編號</th>
+					
+					<th>縣市</th>
+					<th>鄉鎮區</th>
+					<th>路名牌號</th>
+					<th>負責人姓名</th>
+					<th>電話</th>
+					<th>審核結果</th>
+					
+					
 				</tr>
 				<%@ include file="page1.file"%>
-				<c:forEach var="EmpVO" items="${list}" begin="<%=pageIndex%>"
+				<c:forEach var="HotelVO" items="${list}" begin="<%=pageIndex%>"
 					end="<%=pageIndex+rowsPerPage-1%>">			
 					<tr align='center' valign='middle'
-						${(EmpVO.empId==param.empId) ? 'bgcolor=lightblue':''}
+						${(HotelVO.hotelId==param.hotelId) ? 'bgcolor=lightblue':''}
 						>
-<%-- 						${(EmpVO.empId==param.authIdlistNo) ? 'bgcolor=lightblue':''} --%>
 						<!--將修改的那一筆加入對比色而已-->
-						<td><img src='data:image/jpeg;base64,${EmpVO.bs64}'
+						<td><img src='data:image/jpeg;base64,${HotelVO.bs64}'
 							width="120" height="80" /></td>
-						<td>${EmpVO.empId}</td>
-						<td>${EmpVO.empName}</td>
-						<td>${EmpVO.empAccount}</td>
-						<td>${EmpVO.empBirthDate}</td>
-						<td>${EmpVO.empPhone}</td>
-						<td>${EmpVO.empStatus}</td>
-						<td>${EmpVO.empAddress}</td>
-						<td>${EmpVO.empROCId}</td>
-						<td>${EmpVO.empHireDate}</td>
-						<td>${EmpVO.empFireDate}</td>
+						<td><img src='data:image/jpeg;base64,${HotelVO.bs64_2}'
+							width="120" height="80" /></td>
+						<td>${HotelVO.hotelId}</td>
+						<td>${HotelVO.hotelType}</td>
+						<td>${HotelVO.hotelName}</td>
+						<td>${HotelVO.hotelTaxId}</td>
+						<td>${HotelVO.hotelCity}</td>
+						<td>${HotelVO.hotelCounty}</td>
+						<td>${HotelVO.hotelRoad}</td>
+						<td>${HotelVO.hotelOwner}</td>
+						<td>${HotelVO.hotelPhone}</td>
 						<td>
 							<FORM METHOD="post"
-								ACTION="<%=request.getContextPath()%>/emp/emp.do">
-								<input type="submit" value="修改" id="LoginButton"> <input
-									type="hidden" name="empId" value="${EmpVO.empId}"> <input
-									type="hidden" name="requestURL"
-									value="<%=request.getServletPath()%>">
-								<!--送出本網頁的路徑給Controller-->
+								ACTION="<%=request.getContextPath()%>/hotel/hotel.do">
+								<input type="submit" value="審核通過" id="LoginButton"> 
+								<input type="hidden" name="hotelId" value="${HotelVO.hotelId}"> 
+								<input type="hidden" name="hotelStatus" value="${HotelVO.hotelStatus}">
+								<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+<!-- 								送出本網頁的路徑給Controller -->
 								<input type="hidden" name="whichPage" value="<%=whichPage%>">
-								<!--送出當前是第幾頁給Controller-->
-								<input type="hidden" name="action" value="getOne_For_Update">
+<!-- 								送出當前是第幾頁給Controller -->
+								<input type="hidden" name="action" value="secess">
 							</FORM>
-						</td>
-						<td>
+							<br>
 							<FORM METHOD="post"
-								ACTION="<%=request.getContextPath()%>/auth/auth.do">
-								<input type="submit" value="查詢權限" id="LoginButton"> <input
-									type="hidden" name="empId" value="${EmpVO.empId}"> <input
-									type="hidden" name="requestURL"
-									value="<%=request.getServletPath()%>">
-								<!--送出本網頁的路徑給Controller-->
+								ACTION="<%=request.getContextPath()%>/hotel/hotel.do">
+								<input type="submit" value="審核未通過" id="LoginButton1"> 
+								<input type="hidden" name="hotelId" value="${HotelVO.hotelId}"> 
+								<input type="hidden" name="hotelStatus" value="${HotelVO.hotelStatus}">
+								<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+<!-- 								送出本網頁的路徑給Controller -->
 								<input type="hidden" name="whichPage" value="<%=whichPage%>">
-								<!--送出當前是第幾頁給Controller-->
-								<input type="hidden" name="action" value="getOne_For_Auth">
+<!-- 								送出當前是第幾頁給Controller -->
+								<input type="hidden" name="action" value="nosecess">
 							</FORM>
 						</td>
+<!-- 						<td> -->
+<!-- 							<FORM METHOD="post" -->
+<%-- 								ACTION="<%=request.getContextPath()%>/hotel/hotel.do"> --%>
+<!-- 								<input type="submit" value="查看" id="LoginButton"> <input -->
+<%-- 									type="hidden" name="hotelId" value="${HotelVO.hotelId}"> <input --%>
+<!-- 									type="hidden" name="requestURL" -->
+<%-- 									value="<%=request.getServletPath()%>"> --%>
+<!-- <!-- 								送出本網頁的路徑給Controller --> 
+<%-- 								<input type="hidden" name="whichPage" value="<%=whichPage%>"> --%>
+<!-- <!-- 								送出當前是第幾頁給Controller --> 
+<!-- 								<input type="hidden" name="action" value="getOne"> -->
+<!-- 							</FORM> -->
+<!-- 						</td> -->
+<!-- 						<td> -->
+<!-- 							<FORM METHOD="post" -->
+<%-- 								ACTION="<%=request.getContextPath()%>/auth/auth.do"> --%>
+<!-- 								<input type="submit" value="查詢權限" id="LoginButton"> <input -->
+<%-- 									type="hidden" name="empId" value="${EmpVO.empId}"> <input --%>
+<!-- 									type="hidden" name="requestURL" -->
+<%-- 									value="<%=request.getServletPath()%>"> --%>
+<!-- 								送出本網頁的路徑給Controller -->
+<%-- 								<input type="hidden" name="whichPage" value="<%=whichPage%>"> --%>
+<!-- 								送出當前是第幾頁給Controller -->
+<!-- 								<input type="hidden" name="action" value="getOne_For_Auth"> -->
+<!-- 							</FORM> -->
+<!-- 						</td> -->
 					</tr>
 				</c:forEach>
 			</table>
+				<div align="center"><a href="<%=request.getContextPath()%>/backend/hotel/listAllHotel.jsp">回廠商首頁</a></div>
+			
 			</div>
-			<%@ include file="page2.file"%>
 </body>
 </html>
-			<%
-				if (request.getAttribute("authList") != null) {
-			%>
-			<jsp:include page="/backend/auth/update_auth.jsp" />
-			<%
-				}
-%>

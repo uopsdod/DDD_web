@@ -4,7 +4,21 @@ package com.hotel.model;
 public class HotelVO implements java.io.Serializable{
 
 	private static final long serialVersionUID = 1L;
+	private String bs64_2;
+	public String getBs64_2() {
+		return this.bs64_2;
+	}
+	public void setBs64_2(String aBs64_2) {
+		this.bs64_2 = aBs64_2;
+	}
 	
+	private String bs64;
+	public String getBs64() {
+		return this.bs64;
+	}
+	public void setBs64(String aBs64) {
+		this.bs64 = aBs64;
+	}
 	private String hotelId;
 	private String hotelType;
 	private String hotelName;
