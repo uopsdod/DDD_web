@@ -114,6 +114,15 @@
     <url-pattern>/android/mem.do</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>AndroidPartnerServlet</servlet-name>
+    <servlet-class>android.live2.Partner</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AndroidPartnerServlet</servlet-name>
+    <url-pattern>/android/live2/partner.do</url-pattern>
+  </servlet-mapping>
+  
   <filter>
     <filter-name>setCharacterEncoding</filter-name>
     <filter-class>com.filters.SetCharacterEncodingFilter</filter-class>
