@@ -33,8 +33,8 @@ public class HotelService {
 	//新增廠商會員
 	public HotelVO addHotel(String hotelType,String hotelName,String hotelTaxId,byte[] hotelRegisterPic
 			,String hotelCity,String hotelCounty,String hotelRoad,String hotelOwner,String hotelAccount,
-			String hotelPwd,String hotelPhone,Double hotelLon,Double hotelLat,String hotelIntro,byte[] hotelCoverPic,
-			String hotelLink,String hotelStatus,String hotelBlackList,Integer hotelRatingTotal,Integer hotelRatingResult,
+			String hotelPwd,String hotelPhone,Double hotelLon,Double hotelLat,String hotelIntro,String hotelLink,
+			byte[] hotelCoverPic,String hotelStatus,String hotelBlackList,Integer hotelRatingTotal,Integer hotelRatingResult,
 			String hotelCreditCardNo,String hotelCreditCheckNo,String hotelCreditDueDate) {
 		HotelVO hotelvo = new HotelVO();
 
@@ -95,6 +95,7 @@ public class HotelService {
 		hotelvo.setHotelCreditCardNo(hotelCreditCardNo);
 		hotelvo.setHotelCreditCheckNo(hotelCreditCheckNo);
 		hotelvo.setHotelCreditDueDate(hotelCreditDueDate);
+		hotelvo.setHotelId(hotelId);
 		
 		
 		dao.update(hotelvo);
@@ -103,12 +104,12 @@ public class HotelService {
 	}
 	
 	//按鍵修改狀態2
-	public void update_status(String hotelId, HotelVO aHotelVO) {
-		dao.update_status(hotelId, aHotelVO);
+	public void update_status(String hotelId, String hotelStatus) {
+		dao.update_status(hotelId, hotelStatus);
 	}
 	
 	//更新黑名單
-	public void update_hotelBlackList(String hotelId, HotelVO aHotelVO) {
-		dao.update_hotelBlackList(hotelId, aHotelVO);
+	public void update_hotelBlackList(String hotelId, String hotelBlackList) {
+		dao.update_hotelBlackList(hotelId, hotelBlackList);
 	}
 }

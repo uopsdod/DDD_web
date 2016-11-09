@@ -21,17 +21,9 @@ public class RoomPhotoService {
 		dao.insert(aHotelId,aRoomPhotoPic,con);	
 	}
 
-	public RoomPhotoVO updateRoomPhoto(String aRoomPhotoId, String aRoomPhotoRoomId,byte[] aRoomPhotoPic ) 
-	{
-
-		RoomPhotoVO roomPhotoVO = new RoomPhotoVO();
-
-		roomPhotoVO.setRoomPhotoId(aRoomPhotoId);
-		roomPhotoVO.setRoomPhotoRoomId(aRoomPhotoRoomId);
-		roomPhotoVO.setRoomPhotoPic(aRoomPhotoPic);
-		dao.update(roomPhotoVO);
-	
-		return roomPhotoVO;
+	public void updateRoomPhoto(String aHotelId, String aRoomId,byte[] aRoomPhotoPic ) 
+	{		
+		dao.update(aHotelId,aRoomId,aRoomPhotoPic);		
 	}
 
 	public void deleteRoomPhoto(String aRoomPhotoId) {

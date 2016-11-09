@@ -1,6 +1,7 @@
 package com.ord.controller;
 
 import java.io.*;
+import java.sql.Timestamp;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -17,6 +18,8 @@ public class OrdServlet extends HttpServlet {
 	public void doPost (HttpServletRequest aReq, HttpServletResponse aRes ) throws ServletException, IOException {
 		aReq.setCharacterEncoding("UTF-8");
 		String action = aReq.getParameter("action");
+		
+		//System.out.println("now action: " + action);
 		
 		if("getOneForDisplay".equals(action)){ //來自selectPage.jsp請求
 			List<String> errorMsgs = new LinkedList<String>();
@@ -90,66 +93,38 @@ public class OrdServlet extends HttpServlet {
 			
 		}
 		
-		if("update".equals(action)){ // 來自updateEmpInput.jsp
+		if("update".equals(action)){ // 來自updateOrdInput.jsp
 			List<String> errorMsgs = new LinkedList<String>();
 			aReq.setAttribute("errorMsgs", errorMsgs);
+			OrdVO ordVO =  null;
 			
 			try{
+				
+				/* 
+				 * = UPDATE 對應 =
+				 * 02-01 ordRoomId
+				 * 03-02 ordMemId
+				 * 04-03 ordHotelId
+				 * 05-04 ordPrice
+				 * 06-05 ordLiveDate
+				 * 07    ordDate
+				 * 08-06 ordStatus
+				 * 09-07 ordRatingContent
+				 * 10-08 ordRatingStarNo
+				 * 11-09 ordQrPic
+				 * 12-10 ordMsgNo
+				 * 01-11 ordID
+				*/				
+				
 				/* 1.接收請求參數 輸入格式錯誤 */
-				String ordId = aReq.getParameter("ordId").trim();
-				String ordRatingContent = aReq.getParameter("ordRatingContent").trim();				
-				String ordStatus = aReq.getParameter("ordStatus").trim();
-				
-				Integer ordRatingStarNo = null;
-				
-				try{
-					ordRatingStarNo = new Integer(aReq.getParameter("ordRatingStarNo").trim());	
-				}
-				catch(NumberFormatException e){
-					ordRatingStarNo = 0;
-					errorMsgs.add("評價星星數請填數字");
-				}
-				
-				/* UPDATE ord set ordStatus=?, ordRatingContent=?, ordRatingStarNo=? where ordId = ? */
-				OrdVO ordVO = new OrdVO();
-				ordVO.setOrdId(ordId);
-				ordVO.setOrdStatus(ordStatus);
-				ordVO.setOrdRatingContent(ordRatingContent);
-				ordVO.setOrdRatingStarNo(ordRatingStarNo);
-				
-				if(!errorMsgs.isEmpty()){
-					aReq.setAttribute("ordVO", ordVO);
-					RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/updateOrdInput.jsp");
-					failureView.forward(aReq,aRes);
-					return;
-				}
-				
-				/* 2.開始修改資料 */
-				OrdService ordSvc = new OrdService();
-				ordVO = ordSvc.updateOrd(ordStatus, ordRatingContent, ordRatingStarNo, ordId);
-				
-				/* 3.修改完成 準備轉交 */
-				aReq.setAttribute("ordVO", ordVO);
-				String url = "/backend/ord/listOneOrd.jsp";
-				RequestDispatcher successView = aReq.getRequestDispatcher(url);
-				successView.forward(aReq,aRes);
-				/* 其他可能錯誤處理 */
-			}
-			catch(Exception e){
-				errorMsgs.add("修改資料失敗" + e.getMessage());
-				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/updateOrdInput.jsp");
-				failureView.forward(aReq, aRes);
-			}
-		}
-		
-		if("insert".equals(action)){ //來自addOrd.jsp的請求
-			List<String> errorMsgs = new LinkedList<String>();
-			aReq.setAttribute("errorMsgs",errorMsgs);
-			
-			try{				
 				String ordRoomId = aReq.getParameter("ordRoomId").trim();
 				String ordMemId = aReq.getParameter("ordMemId").trim();
 				String ordHotelId = aReq.getParameter("ordHotelId").trim();
+				String ordStatus = aReq.getParameter("ordStatus").trim();
+				String ordRatingContent = aReq.getParameter("ordRatingContent").trim();				
+				String ordMsgNo = aReq.getParameter("ordMsgNo").trim();
+				String ordId = aReq.getParameter("ordId").trim();
+				
 				
 				Integer ordPrice = null;
 				
@@ -161,43 +136,113 @@ public class OrdServlet extends HttpServlet {
 					errorMsgs.add("訂單金額請填數字");
 				}
 				
-				String ordMsgNo = aReq.getParameter("ordMsgNo").trim();
-				
 				java.sql.Date ordLiveDate = null;
+				Timestamp ordLiveDateTs = null;
 				
 				try{
 					ordLiveDate = java.sql.Date.valueOf(aReq.getParameter("ordLiveDate").trim());
+					//System.out.println("入住日期: "+ordLiveDate);
+					ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
 				}
 				catch(IllegalArgumentException e){
 					ordLiveDate = new java.sql.Date(System.currentTimeMillis());
-					errorMsgs.add("請輸入日期");
+					ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
+					//errorMsgs.add("請輸入入住日期");
+				}				
+				
+				//java.sql.Date ordDate2 = null;
+				Timestamp ordDateTs = null;
+				
+				try{
+					Long ordDate = Long.parseLong(aReq.getParameter("ordDate").trim());;
+
+					ordDateTs = new Timestamp(ordDate);
 				}
-	
-				/* 1.接收請求參數 */				
-				OrdVO ordVO = new OrdVO();
-				ordVO.setOrdRoomId(ordRoomId);
-				ordVO.setOrdMemId(ordMemId);
-				ordVO.setOrdHotelId(ordHotelId);
-				ordVO.setOrdPrice(ordPrice);
-				ordVO.setOrdLiveDate(ordLiveDate);
-				ordVO.setOrdMsgNo(ordMsgNo);
+				catch(IllegalArgumentException e){
+					//ordDate2 = new java.sql.Date(System.currentTimeMillis());
+					//ordDateTs = new Timestamp(ordDate2.getTime());
+					errorMsgs.add("請輸入下訂日期");
+				}					
+				
+				Integer ordRatingStarNo = null;
+				
+				try{
+					ordRatingStarNo = new Integer(aReq.getParameter("ordRatingStarNo").trim());	
+				}
+				catch(NumberFormatException e){
+					ordRatingStarNo = 0;
+					errorMsgs.add("評價星星數請填數字");
+				}
 				
 				/* 處理上傳圖片進資料庫 */
 				Part part = aReq.getPart("ordQrPic");
 				InputStream in = part.getInputStream();
 				byte[] ordQrPic = new byte[in.available()];
 				in.read(ordQrPic);
-				in.close();
-				ordVO.setOrdQrPic(ordQrPic);
-					
+				in.close();				
+				
+				/* 
+				 * = UPDATE 對應 =
+				 * 02-01 ordRoomId
+				 * 03-02 ordMemId
+				 * 04-03 ordHotelId
+				 * 05-04 ordPrice
+				 * 06-05 ordLiveDate
+				 * 07    ordDate
+				 * 08-06 ordStatus
+				 * 09-07 ordRatingContent
+				 * 10-08 ordRatingStarNo
+				 * 11-09 ordQrPic
+				 * 12-10 ordMsgNo
+				 * 01-11 ordID
+				*/
+				
+				ordVO = new OrdVO();
+				ordVO.setOrdRoomId(ordRoomId);
+				ordVO.setOrdMemId(ordMemId);
+				ordVO.setOrdHotelId(ordHotelId);
+				ordVO.setOrdPrice(ordPrice);
+				ordVO.setOrdLiveDate(ordLiveDateTs);
+				ordVO.setOrdDate(ordDateTs);
+				ordVO.setOrdStatus(ordStatus);
+				ordVO.setOrdRatingContent(ordRatingContent);
+				ordVO.setOrdRatingStarNo(ordRatingStarNo);
+				ordVO.setOrdQrPic(ordQrPic);	
+				ordVO.setOrdMsgNo(ordMsgNo);
+				ordVO.setOrdId(ordId);
+
 				if(!errorMsgs.isEmpty()){
 					aReq.setAttribute("ordVO", ordVO);
-					RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/addOrd.jsp");
-					failureView.forward(aReq, aRes);
+					RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/updateOrdInput.jsp");
+					failureView.forward(aReq,aRes);
 					return;
 				}
 				
-				/*
+				/* 2.開始修改資料 */
+				OrdService ordSvc = new OrdService();
+				ordVO = ordSvc.updateOrd(ordRoomId,ordMemId,ordHotelId,ordPrice,ordLiveDateTs,ordStatus,ordRatingContent,ordRatingStarNo,ordQrPic,ordMsgNo,ordId,ordDateTs);
+				
+				/* 3.修改完成 準備轉交 */
+				aReq.setAttribute("ordVO", ordVO);
+				String url = "/backend/ord/listOneOrd.jsp";
+				RequestDispatcher successView = aReq.getRequestDispatcher(url);
+				successView.forward(aReq,aRes);
+				/* 其他可能錯誤處理 */
+			}
+			catch(Exception e){
+				errorMsgs.add("修改資料失敗" + e.getMessage());
+				aReq.setAttribute("ordVO", ordVO);
+				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/updateOrdInput.jsp");
+				failureView.forward(aReq, aRes);
+			}
+		}
+		
+		if("insert".equals(action)){ //來自addOrd.jsp的請求
+			List<String> errorMsgs = new LinkedList<String>();
+			aReq.setAttribute("errorMsgs",errorMsgs);
+			OrdVO ordVO = null;	
+			try{
+				/* 
 				 * = INSERT_STMT 對應 =
 				 * 01    ordID
 				 * 02-01 ordRoomId
@@ -206,16 +251,99 @@ public class OrdServlet extends HttpServlet {
 				 * 05-04 ordPrice
 				 * 06-05 ordLiveDate
 				 * 07    ordDate
-				 * 08    ordStatus
-				 * 09	 ordRatingContent
-				 * 10	 ordRatingStarNo
-				 * 11-06 ordQrPic
-				 * 12-07 ordMsgNo
-				*/
+				 * 08-06 ordStatus
+				 * 09-07 ordRatingContent
+				 * 10-08 ordRatingStarNo
+				 * 11-09 ordQrPic
+				 * 12-10 ordMsgNo
+				*/				
 				
+				/* 1.接收請求參數 */		
+				String ordRoomId = aReq.getParameter("ordRoomId").trim();
+				String ordMemId = aReq.getParameter("ordMemId").trim();
+				String ordHotelId = aReq.getParameter("ordHotelId").trim();
+				String ordStatus = aReq.getParameter("ordStatus").trim();
+				String ordRatingContent = aReq.getParameter("ordRatingContent").trim();
+				String ordMsgNo = aReq.getParameter("ordMsgNo").trim();
+				
+				Integer ordPrice = null;
+				
+				try{
+					ordPrice = new Integer(aReq.getParameter("ordPrice").trim()); 
+				}
+				catch(NumberFormatException e){
+					ordPrice = 0;
+					errorMsgs.add("訂單金額請填數字");
+				}
+				
+				java.sql.Date ordLiveDate = null;
+				Timestamp ordLiveDateTs = null;
+				
+				try{
+					ordLiveDate = java.sql.Date.valueOf(aReq.getParameter("ordLiveDate").trim());
+					ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
+				}
+				catch(IllegalArgumentException e){
+					ordLiveDate = new java.sql.Date(System.currentTimeMillis());
+					ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
+					errorMsgs.add("請輸入入住日期");
+				}				
+				
+				Integer ordRatingStarNo = null;
+				
+				try{
+					ordRatingStarNo = new Integer(aReq.getParameter("ordRatingStarNo").trim()); 
+				}
+				catch(NumberFormatException e){
+					ordRatingStarNo = 0;
+					errorMsgs.add("評價星星數請填數字");
+				}
+				
+				/* 處理上傳圖片進資料庫 */
+				Part part = aReq.getPart("ordQrPic");
+				InputStream in = part.getInputStream();
+				byte[] ordQrPic = new byte[in.available()];
+				in.read(ordQrPic);
+				in.close();				
+				
+				/* 
+				 * = INSERT_STMT 對應 =
+				 * 01    ordID
+				 * 02-01 ordRoomId
+				 * 03-02 ordMemId
+				 * 04-03 ordHotelId
+				 * 05-04 ordPrice
+				 * 06-05 ordLiveDate
+				 * 07    ordDate
+				 * 08-06 ordStatus
+				 * 09-07 ordRatingContent
+				 * 10-08 ordRatingStarNo
+				 * 11-09 ordQrPic
+				 * 12-10 ordMsgNo
+				*/				
+								
+				ordVO = new OrdVO();
+				ordVO.setOrdRoomId(ordRoomId);
+				ordVO.setOrdMemId(ordMemId);
+				ordVO.setOrdHotelId(ordHotelId);
+				ordVO.setOrdPrice(ordPrice);
+				ordVO.setOrdLiveDate(ordLiveDateTs);
+				ordVO.setOrdStatus(ordStatus);
+				ordVO.setOrdRatingContent(ordRatingContent);
+				ordVO.setOrdRatingStarNo(ordRatingStarNo);
+				ordVO.setOrdQrPic(ordQrPic);
+				ordVO.setOrdMsgNo(ordMsgNo);
+
+				if(!errorMsgs.isEmpty()){
+					aReq.setAttribute("ordVO", ordVO);
+					RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/addOrd.jsp");
+					failureView.forward(aReq, aRes);
+					return;
+				}
+								
 				/* 2.開始新增資料 */
 				OrdService ordSvc = new OrdService();
-				ordVO = ordSvc.addOrd(ordRoomId, ordMemId, ordHotelId, ordPrice, ordLiveDate, ordQrPic, ordMsgNo);
+				ordVO = ordSvc.addOrd(ordRoomId, ordMemId, ordHotelId, ordPrice, ordLiveDateTs, ordStatus, ordRatingContent, ordRatingStarNo, ordQrPic, ordMsgNo);
 				
 				/* 3.新增完成 */
 				String url = "/backend/ord/listAllOrd.jsp";
@@ -224,6 +352,7 @@ public class OrdServlet extends HttpServlet {
 			}
 			catch(Exception e){
 				errorMsgs.add(e.getMessage());
+				aReq.setAttribute("ordVO", ordVO);
 				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/addOrd.jsp");
 				failureView.forward(aReq,aRes);
 			}
@@ -252,6 +381,54 @@ public class OrdServlet extends HttpServlet {
 		
 		
 		}
+		
+		if("listAllByMemId".equals(action)){ //來自selectPage.jsp的請求
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			aReq.setAttribute("errorMsgs", errorMsgs);
+			
+			try{
+				/* 1.接收請求參數 */
+				String ordMemId = aReq.getParameter("ordMemId");				
+				aReq.setAttribute("ordMemId",ordMemId);
+				
+				/* 3.準備至轉交 */
+				String url ="/backend/ord/listAllByMemId.jsp";
+				RequestDispatcher successView = aReq.getRequestDispatcher(url);
+				successView.forward(aReq,aRes);
+				
+			}
+			catch(Exception e){
+				errorMsgs.add("無法取得修改資料(listAllByMemId): " + e.getMessage());
+				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/selectPage.jsp");
+				failureView.forward(aReq,aRes);
+			}
+			
+		}
+		
+		if("listAllByHotelId".equals(action)){ //來自selectPage.jsp的請求
+						
+			List<String> errorMsgs = new LinkedList<String>();
+			aReq.setAttribute("errorMsgs", errorMsgs);
+			
+			try{
+				/* 1.接收請求參數 */
+				String ordHotelId = aReq.getParameter("ordHotelId");			
+				aReq.setAttribute("ordHotelId",ordHotelId);
+				
+				/* 3.準備至轉交 */
+				String url ="/backend/ord/listAllByHotelId.jsp";
+				RequestDispatcher successView = aReq.getRequestDispatcher(url);
+				successView.forward(aReq,aRes);
+				
+			}
+			catch(Exception e){
+				errorMsgs.add("無法取得修改資料(listAllByHotelId): " + e.getMessage());
+				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/selectPage.jsp");
+				failureView.forward(aReq,aRes);
+			}
+			
+		}		
 		
 	}
 	

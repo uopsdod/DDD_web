@@ -22,7 +22,7 @@ import com.mem.model.MemJNDIDAO;
 import com.mem.model.MemVO;
 
 @SuppressWarnings("serial")
-@WebServlet("/live2/Partner")
+//@WebServlet("/android/live2/partner.do")
 public class Partner extends HttpServlet {
 	// private ServletContext context;
 	private final static String CONTENT_TYPE = "text/html; charset=UTF-8";

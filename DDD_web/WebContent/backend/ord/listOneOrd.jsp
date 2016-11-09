@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.ord.model.*"%>
+<%@ page import="com.ord.model.*,java.text.SimpleDateFormat"%>
 <!DOCTYPE html>
 <%
 OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controller),存入req的ordVO物件
@@ -43,8 +43,8 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controlle
 			<td>${ordVO.ordMemId}</td>
 			<td>${ordVO.ordHotelId}</td>
 			<td>${ordVO.ordPrice}</td>
-			<td>${ordVO.ordLiveDate}</td>
-			<td>${ordVO.ordDate}</td>
+			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdLiveDate())%></td>
+			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdDate())%></td>
 			<td>${ordVO.ordStatus}</td>
 			<td>${ordVO.ordRatingContent}</td>
 			<td>${ordVO.ordRatingStarNo}</td>

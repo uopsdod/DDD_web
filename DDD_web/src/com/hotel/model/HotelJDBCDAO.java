@@ -457,7 +457,7 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 	}
 
 	@Override
-	public void update_status(String hotelId, HotelVO aHotelVO) {
+	public void update_status(String hotelId, String hotelStatus) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -467,7 +467,7 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE_STATUS);
 
-			pstmt.setString(1, aHotelVO.getHotelStatus());
+			pstmt.setString(1, hotelStatus);
 			pstmt.setString(2, hotelId);
 			pstmt.executeUpdate();
 
@@ -497,7 +497,7 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 	}
 
 	@Override
-	public void update_hotelBlackList(String hotelId, HotelVO aHotelVO) {
+	public void update_hotelBlackList(String hotelId, String hotelBlackList) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -507,7 +507,7 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE_HOTELBLACKLIST);
 
-			pstmt.setString(1, aHotelVO.getHotelBlackList());
+			pstmt.setString(1, hotelBlackList);
 			pstmt.setString(2, hotelId);
 			pstmt.executeUpdate();
 

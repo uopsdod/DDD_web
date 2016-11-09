@@ -3,15 +3,16 @@
 <%@ page import="java.util.*, com.ord.model.*, java.text.SimpleDateFormat" %>
 
 <%
+	String ordHotelId =  (String) request.getAttribute("ordHotelId");
 	OrdService ordSvc = new OrdService();
-	List<OrdVO> list = ordSvc.getAll();
+	List<OrdVO> list = ordSvc.getAllByOrdHotelId(ordHotelId);
 	pageContext.setAttribute("list",list);
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title>所有訂單資料 - listAllOrd.jsp</title>
+<title>該廠商會員所有訂單資料 - listAllByHotelId.jsp</title>
 </head>
 <body>
 練習用EL寫法取值
@@ -19,7 +20,7 @@
 <table>
 	<tr>
 		<td>
-			<h3>所有訂單資料 - ListAllOrd.jsp</h3>
+			<h3>該廠商會員所有訂單資料 - listAllByHotelId.jsp</h3>
 			<a href="selectPage.jsp"> <img src="images/back1.gif"> 回首頁 </a>
 		</td>
 	</tr>

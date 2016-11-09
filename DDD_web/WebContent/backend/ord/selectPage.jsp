@@ -78,5 +78,31 @@
 	<li><a href="addOrd.jsp">Add</a> a new Ord.</li>
 </ul>
 
+<h3>(一般會員)列出所有訂單</h3>
+
+		<form method="post" action="ord.do">
+			選擇一般會員編號:
+			<select name="ordMemId">
+				<c:forEach var="ordVO" items="${ordSvc.all}">	
+					<option value="${ordVO.ordMemId}">${ordVO.ordMemId}
+				</c:forEach>
+			</select>	
+			<input type="submit" value="送出">
+			<input type="hidden" name="action" value="listAllByMemId">		
+		</form>
+
+<h3>(廠商會員)列出所有訂單</h3>
+
+		<form method="post" action="ord.do">
+			選擇廠商會員編號:
+			<select name="ordHotelId">
+				<c:forEach var="ordVO" items="${ordSvc.all}">	
+					<option value="${ordVO.ordHotelId}">${ordVO.ordHotelId}
+				</c:forEach>
+			</select>	
+			<input type="submit" value="送出">
+			<input type="hidden" name="action" value="listAllByHotelId">		
+		</form>
+
 </body>
 </html>

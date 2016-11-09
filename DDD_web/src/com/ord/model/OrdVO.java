@@ -1,5 +1,5 @@
 package com.ord.model;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class OrdVO implements java.io.Serializable {
 	private String ordId;
@@ -7,8 +7,8 @@ public class OrdVO implements java.io.Serializable {
 	private String ordMemId;
 	private String ordHotelId;
 	private Integer ordPrice;
-	private Date ordLiveDate;
-	private Date ordDate;
+	private Timestamp ordLiveDate;
+	private Timestamp ordDate;
 	private String ordStatus;
 	private String ordRatingContent;
 	private Integer ordRatingStarNo;
@@ -45,16 +45,16 @@ public class OrdVO implements java.io.Serializable {
 	public void setOrdPrice(Integer aOrdPrice) {
 		this.ordPrice = aOrdPrice;
 	}
-	public Date getOrdLiveDate() {
+	public Timestamp getOrdLiveDate() {
 		return this.ordLiveDate;
 	}
-	public void setOrdLiveDate(Date aOrdLiveDate) {
+	public void setOrdLiveDate(Timestamp aOrdLiveDate) {
 		this.ordLiveDate = aOrdLiveDate;
 	}
-	public Date getOrdDate() {
+	public Timestamp getOrdDate() {
 		return this.ordDate;
 	}
-	public void setOrdDate(Date aOrdDate) {
+	public void setOrdDate(Timestamp aOrdDate) {
 		this.ordDate = aOrdDate;
 	}
 	public String getOrdStatus() {

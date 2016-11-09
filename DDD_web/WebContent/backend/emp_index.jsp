@@ -162,8 +162,8 @@
 					    <div id="ccc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab3">
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
-					        		<li>廠商審核作業</li>
-					        		<li>廠商會員維護</li>
+					        		<a href="<%=request.getContextPath()%>/backend/hotel/get_need_check.jsp"><li>廠商審核作業</li></a>
+					        		<a href="<%=request.getContextPath()%>/backend/hotel/listAllHotel.jsp"><li>廠商會員維護</li></a>
 					        	</ul>
 					      </div>
 					    </div>
