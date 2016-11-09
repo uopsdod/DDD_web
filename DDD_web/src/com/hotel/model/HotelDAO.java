@@ -41,7 +41,7 @@ public class HotelDAO implements HotelDAO_interface {
 			+ "hotelRatingResult,hotelCreditCardNo,hotelCreditCheckNo,hotelCreditDueDate) "
 			+ "VALUES (hotel_seq.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String UPDATE_BASIC = "UPDATE hotel set  hotelType=?, hotelName=?, hotelTaxId=?, hotelRegisterPic=?"
-			+ ",hotelCity=?,hotelCounty=?, hotelRoad=? ,hotelOwner=?,hotelAccount=?,hotelPwd=?,hotelPhone=? "
+			+ ",hotelCity=?,hotelCounty=?, hotelRoad=? ,hotelOwner=?,hotelAccount=?,hotelPhone=? "
 			+ ",hotelLon=?,hotelLat=?,hotelIntro=?,hotelCoverPic=?,hotelLink=?,hotelCreditCardNo=?,hotelCreditCheckNo=?"
 			+ ",hotelCreditDueDate=? where hotelId = ?";
 	private static final String UPDATE_STATUS = "UPDATE hotel set hotelStatus=? where hotelId = ?";
@@ -356,17 +356,17 @@ public class HotelDAO implements HotelDAO_interface {
 			pstmt.setString(7, aHotelVO.getHotelRoad());
 			pstmt.setString(8, aHotelVO.getHotelOwner());
 			pstmt.setString(9, aHotelVO.getHotelAccount());
-			pstmt.setString(10, aHotelVO.getHotelPwd());
-			pstmt.setString(11, aHotelVO.getHotelPhone());
-			pstmt.setDouble(12, aHotelVO.getHotelLon());
-			pstmt.setDouble(13, aHotelVO.getHotelLat());
-			pstmt.setString(14, aHotelVO.getHotelIntro());
-			pstmt.setBytes(15, aHotelVO.getHotelCoverPic());
-			pstmt.setString(16, aHotelVO.getHotelLink());
-			pstmt.setString(17, aHotelVO.getHotelCreditCardNo());
-			pstmt.setString(18, aHotelVO.getHotelCreditCheckNo());
-			pstmt.setString(19, aHotelVO.getHotelCreditDueDate());
-			pstmt.setString(20, aHotelVO.getHotelId());
+//			pstmt.setString(10, aHotelVO.getHotelPwd());
+			pstmt.setString(10, aHotelVO.getHotelPhone());
+			pstmt.setDouble(11, aHotelVO.getHotelLon());
+			pstmt.setDouble(12, aHotelVO.getHotelLat());
+			pstmt.setString(13, aHotelVO.getHotelIntro());
+			pstmt.setBytes(14, aHotelVO.getHotelCoverPic());
+			pstmt.setString(15, aHotelVO.getHotelLink());
+			pstmt.setString(16, aHotelVO.getHotelCreditCardNo());
+			pstmt.setString(17, aHotelVO.getHotelCreditCheckNo());
+			pstmt.setString(18, aHotelVO.getHotelCreditDueDate());
+			pstmt.setString(19, aHotelVO.getHotelId());
 
 			pstmt.executeUpdate();
 

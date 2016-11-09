@@ -71,7 +71,7 @@ public class HotelService {
 	//會員修改基本資料哦
 	public HotelVO updateBasic(String hotelType,String hotelName,String hotelTaxId,byte[] hotelRegisterPic,
 			String hotelCity,String hotelCounty,String hotelRoad,String hotelOwner,String hotelAccount,
-			String hotelPwd,String hotelPhone,Double hotelLon,Double hotelLat,String hotelIntro,
+			String hotelPhone,Double hotelLon,Double hotelLat,String hotelIntro,
 			byte[] hotelCoverPic,String hotelLink,String hotelCreditCardNo,String hotelCreditCheckNo,
 			String hotelCreditDueDate,String hotelId) {
 		HotelVO hotelvo = new HotelVO();
@@ -90,7 +90,7 @@ public class HotelService {
 		hotelvo.setHotelRoad(hotelRoad);
 		hotelvo.setHotelOwner(hotelOwner);
 		hotelvo.setHotelAccount(hotelAccount);
-		hotelvo.setHotelPwd(hotelPwd);
+		
 		hotelvo.setHotelPhone(hotelPhone);
 		hotelvo.setHotelLon(hotelLon);
 		hotelvo.setHotelLat(hotelLat);
