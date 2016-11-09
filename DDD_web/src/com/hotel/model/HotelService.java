@@ -95,6 +95,7 @@ public class HotelService {
 		hotelvo.setHotelCreditCardNo(hotelCreditCardNo);
 		hotelvo.setHotelCreditCheckNo(hotelCreditCheckNo);
 		hotelvo.setHotelCreditDueDate(hotelCreditDueDate);
+		hotelvo.setHotelId(hotelId);
 		
 		
 		dao.update(hotelvo);
