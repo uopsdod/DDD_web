@@ -636,7 +636,7 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 		}
 	
 	@Override
-	public void update_psw(String hotelId) {
+	public void update_psw(String hotelPwd,String hotelId) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -644,7 +644,8 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE_PSW);	
-			pstmt.setString(1, hotelId);
+			pstmt.setString(1, hotelPwd);
+			pstmt.setString(2, hotelId);
 			pstmt.executeUpdate();
 
 			// Handle any driver errors

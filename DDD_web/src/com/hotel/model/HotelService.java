@@ -118,6 +118,12 @@ public class HotelService {
 		dao.update_status(hotelId, hotelStatus);
 	}
 	
+	public void update_pasw(String paw,String hotelId) {
+		dao.update_psw(paw,hotelId);
+	} 
+		
+	
+	
 	//更新黑名單
 	public void update_hotelBlackList(String hotelId, String hotelBlackList) {
 		dao.update_hotelBlackList(hotelId, hotelBlackList);
