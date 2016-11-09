@@ -15,7 +15,8 @@ public class MemJDBCDAO implements MemDAO_interface {
 	public static final String GET_ONE_STMT = "SELECT memId,memAccount,memPsw,memName,memGender,memTwId,to_char(memBirthDate,'yyyy-mm-dd') memBirthDate,memPhone,memLiveBudget,memIntro,memProfile,memBlackList,memCreditCardNo,memCreditCheckNo,memCreditDueDate FROM mem where memId=?";
 	public static final String DELETE = "DELETE FROM mem where memId = ?";
 	public static final String UPDATE = "UPDATE mem set memAccount=?,memPsw=?,memName=?,memGender=?,memTwId=?,memBirthDate=?,memPhone=?,memLiveBudget=?,memIntro=?,memProfile=?,memBlackList=?,memCreditCardNo=?,memCreditCheckNo=?,memCreditDueDate=? where memId = ?";
-
+	public static final String CHECK_MEMBER = "SELECT memId, mamAccount, memPassword FROM mem where memAccount = ?";
+	
 	@Override
 	public void insert(MemVO aMemVO) {
 		Connection con = null;
@@ -272,6 +273,49 @@ public class MemJDBCDAO implements MemDAO_interface {
 
 	}
 
+	@Override
+	public MemVO memCheck(String aMemAccount, String aMemPsw) {
+		MemVO memVO = new MemVO();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			Class.forName(this.driver);
+			con = DriverManager.getConnection(this.url, this.userid, this.passwd);
+			pstmt = con.prepareStatement(CHECK_MEMBER);
+			pstmt.setString(1, aMemAccount);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				memVO.setMemAccount(rs.getString("memAccount"));
+				memVO.setMemPsw(rs.getString("memPsw"));
+				memVO.setMemId(rs.getString("memId"));
+			}
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
+
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return memVO;
+	}
+	
 	public static void main(String[] args) {
 
 		String picName = "javaWu.jpg";
@@ -379,5 +423,4 @@ public class MemJDBCDAO implements MemDAO_interface {
 		// }
 
 	}
-
 }

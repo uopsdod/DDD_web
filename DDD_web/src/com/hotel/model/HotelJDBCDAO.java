@@ -31,17 +31,20 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 			+ "hotelRatingResult,hotelCreditCardNo,hotelCreditCheckNo,hotelCreditDueDate) "
 			+ "VALUES (hotel_seq.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String UPDATE_BASIC = "UPDATE hotel set  hotelType=?, hotelName=?, hotelTaxId=?, hotelRegisterPic=?"
-			+ ",hotelCity=?,hotelCounty=?, hotelRoad=? ,hotelOwner=?,hotelAccount=?,hotelPwd=?,hotelPhone=? "
+			+ ",hotelCity=?,hotelCounty=?, hotelRoad=? ,hotelOwner=?,hotelAccount=?,hotelPhone=? "
 			+ ",hotelLon=?,hotelLat=?,hotelIntro=?,hotelCoverPic=?,hotelLink=?,hotelCreditCardNo=?,hotelCreditCheckNo=?"
 			+ ",hotelCreditDueDate=? where hotelId = ?";
 	private static final String UPDATE_STATUS = "UPDATE hotel set hotelStatus=? where hotelId = ?";
 	private static final String UPDATE_HOTELBLACKLIST = "UPDATE hotel set hotelBlackList=? where hotelId = ?";
+	private static final String GET_PHOTO_REGISTER ="SELECT hotelRegisterPic from emp where empId=?";//廠商正
+	private static final String GET_PHOTO_COV ="SELECT hotelCoverPic from emp where empId=?";//封面
 	public static final String GET_ONE_STMT = "select hotelId,hotelType,hotelName,hotelTaxId,hotelRegisterPic"
 			+ ",hotelCity,hotelCounty,hotelRoad,hotelOwner,hotelAccount,hotelPwd,hotelPhone,hotelLon,hotelLat,"
 			+ "hotelIntro,hotelCoverPic,hotelLink,hotelStatus,hotelBlackList,hotelRatingTotal,hotelRatingResult,"
 			+ "hotelCreditCardNo,hotelCreditCheckNo,hotelCreditDueDate from hotel where hotelId = ?";
 	private static final String GET_ALL_VIEW ="select hotelId,hotelType,hotelName,hotelTaxId,hotelRegisterPic,"
 			+ "hotelCity,hotelCounty,hotelRoad,hotelOwner,hotelPhone from hotel order by hotelId";
+	private static final String UPDATE_PSW = "UPDATE hotel set hotelPwd=? where hotelId = ?";
 	
 	
 	@Override
@@ -416,17 +419,17 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 			pstmt.setString(7, aHotelVO.getHotelRoad());
 			pstmt.setString(8, aHotelVO.getHotelOwner());
 			pstmt.setString(9, aHotelVO.getHotelAccount());
-			pstmt.setString(10, aHotelVO.getHotelPwd());
-			pstmt.setString(11, aHotelVO.getHotelPhone());
-			pstmt.setDouble(12, aHotelVO.getHotelLon());
-			pstmt.setDouble(13, aHotelVO.getHotelLat());
-			pstmt.setString(14, aHotelVO.getHotelIntro());
-			pstmt.setBytes(15, aHotelVO.getHotelCoverPic());
-			pstmt.setString(16, aHotelVO.getHotelLink());
-			pstmt.setString(17, aHotelVO.getHotelCreditCardNo());
-			pstmt.setString(18, aHotelVO.getHotelCreditCheckNo());
-			pstmt.setString(19, aHotelVO.getHotelCreditDueDate());
-			pstmt.setString(20, aHotelVO.getHotelId());
+//			pstmt.setString(10, aHotelVO.getHotelPwd());
+			pstmt.setString(10, aHotelVO.getHotelPhone());
+			pstmt.setDouble(11, aHotelVO.getHotelLon());
+			pstmt.setDouble(12, aHotelVO.getHotelLat());
+			pstmt.setString(13, aHotelVO.getHotelIntro());
+			pstmt.setBytes(14, aHotelVO.getHotelCoverPic());
+			pstmt.setString(15, aHotelVO.getHotelLink());
+			pstmt.setString(16, aHotelVO.getHotelCreditCardNo());
+			pstmt.setString(17, aHotelVO.getHotelCreditCheckNo());
+			pstmt.setString(18, aHotelVO.getHotelCreditDueDate());
+			pstmt.setString(19, aHotelVO.getHotelId());
 
 			pstmt.executeUpdate();
 
@@ -535,7 +538,141 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 			}
 		}
 	}
+	
+	@Override
+	public byte[] getPhoto_cov(String aHotelId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		byte[] hotelCoverPic = null;
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_PHOTO_COV);
+			pstmt.setString(1, aHotelId);
+			rs = pstmt.executeQuery();
+			rs.next();
+			hotelCoverPic=rs.getBytes("hotelCoverPic");
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+			
+			return hotelCoverPic;
+		}
 
+	@Override
+	public byte[] getPhoto_register(String aHotelId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		byte[] hotelRegisterPic = null;
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_PHOTO_REGISTER);
+			pstmt.setString(1, aHotelId);
+			rs = pstmt.executeQuery();
+			rs.next();
+			hotelRegisterPic=rs.getBytes("hotelRegisterPic");
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+			
+			return hotelRegisterPic;
+		}
+	
+	@Override
+	public void update_psw(String hotelId) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(UPDATE_PSW);	
+			pstmt.setString(1, hotelId);
+			pstmt.executeUpdate();
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+
+	
 	public static void main(String[] args) {
 		HotelJDBCDAO dao = new HotelJDBCDAO();
 

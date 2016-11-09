@@ -505,14 +505,14 @@ public class HotelServlet extends HttpServlet {
 						}	
 					}
 					//進DB亂數
-					String hotelPwd = request.getParameter("hotelPwd").trim();
-					if(hotelPwd.trim().isEmpty()){
-						errorMsgs.add("請輸入密碼");
-					}else{
-						if(!hotelPwd.matches("^[a-zA-Z]\\w{6,10}$")){
-							errorMsgs.add("以字母開頭，長度在6-10之間，只能包含字符、數字和下劃線。");
-						}	
-					}
+//					String hotelPwd = request.getParameter("hotelPwd").trim();
+//					if(hotelPwd.trim().isEmpty()){
+//						errorMsgs.add("請輸入密碼");
+//					}else{
+//						if(!hotelPwd.matches("^[a-zA-Z]\\w{6,10}$")){
+//							errorMsgs.add("以字母開頭，長度在6-10之間，只能包含字符、數字和下劃線。");
+//						}	
+//					}
 					
 					String hotelLink = request.getParameter("hotelLink").trim();
 					if(hotelLink.trim().isEmpty()){
@@ -579,7 +579,7 @@ public class HotelServlet extends HttpServlet {
 					 hotelVO.setHotelRoad(hotelRoad);
 					 hotelVO.setHotelOwner(hotelOwner);
 					 hotelVO.setHotelAccount(hotelAccount);
-					 hotelVO.setHotelPwd(hotelPwd);
+//					 hotelVO.setHotelPwd(hotelPwd);
 					 hotelVO.setHotelPhone(hotelPhone);
 					 hotelVO.setHotelLon(hotelLon);
 					 hotelVO.setHotelLat(hotelLat);
@@ -610,7 +610,7 @@ public class HotelServlet extends HttpServlet {
 					HotelService hotelSvc = new HotelService();
 					hotelVO = hotelSvc.updateBasic(hotelType,hotelName,hotelTaxId,buf,
 							hotelCity,hotelCounty,hotelRoad,hotelOwner,hotelAccount,
-							hotelPwd,hotelPhone,hotelLon,hotelLat,hotelIntro,
+							hotelPhone,hotelLon,hotelLat,hotelIntro,
 							buf1,hotelLink,hotelCreditCardNo,hotelCreditCheckNo,
 							hotelCreditDueDate,hotelId);
 									

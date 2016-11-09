@@ -66,4 +66,14 @@ public class MemService {
 	public List<MemVO> getAll(){
 		return dao.getAll();
 	}
+	
+	public MemVO memCheck(String aMemAccount, String aMemPsw){
+		MemVO memVO = dao.memCheck(aMemAccount, aMemPsw);
+		if(aMemAccount.equals(memVO.getMemAccount()) && aMemPsw.equals(memVO.getMemPsw())){
+			{
+				return memVO;
+			}
+		}
+		return null;
+	}
 }

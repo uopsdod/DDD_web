@@ -71,7 +71,7 @@ public class HotelService {
 	//會員修改基本資料哦
 	public HotelVO updateBasic(String hotelType,String hotelName,String hotelTaxId,byte[] hotelRegisterPic,
 			String hotelCity,String hotelCounty,String hotelRoad,String hotelOwner,String hotelAccount,
-			String hotelPwd,String hotelPhone,Double hotelLon,Double hotelLat,String hotelIntro,
+			String hotelPhone,Double hotelLon,Double hotelLat,String hotelIntro,
 			byte[] hotelCoverPic,String hotelLink,String hotelCreditCardNo,String hotelCreditCheckNo,
 			String hotelCreditDueDate,String hotelId) {
 		HotelVO hotelvo = new HotelVO();
@@ -79,18 +79,28 @@ public class HotelService {
 		hotelvo.setHotelType(hotelType);
 		hotelvo.setHotelName(hotelName);
 		hotelvo.setHotelTaxId(hotelTaxId);
-		hotelvo.setHotelRegisterPic(hotelRegisterPic);
+		
+		if(hotelRegisterPic.length==0){
+			hotelvo.setHotelRegisterPic(dao.getPhoto_register(hotelId));
+		}else{
+			hotelvo.setHotelRegisterPic(hotelRegisterPic);
+		}	
 		hotelvo.setHotelCity(hotelCity);
 		hotelvo.setHotelCounty(hotelCounty);
 		hotelvo.setHotelRoad(hotelRoad);
 		hotelvo.setHotelOwner(hotelOwner);
 		hotelvo.setHotelAccount(hotelAccount);
-		hotelvo.setHotelPwd(hotelPwd);
+		
 		hotelvo.setHotelPhone(hotelPhone);
 		hotelvo.setHotelLon(hotelLon);
 		hotelvo.setHotelLat(hotelLat);
 		hotelvo.setHotelIntro(hotelIntro);
-		hotelvo.setHotelCoverPic(hotelCoverPic);
+		
+		if(hotelCoverPic.length==0){
+			hotelvo.setHotelCoverPic(dao.getPhoto_cov(hotelId));
+		}else{
+			hotelvo.setHotelCoverPic(hotelCoverPic);
+		}	
 		hotelvo.setHotelLink(hotelLink);
 		hotelvo.setHotelCreditCardNo(hotelCreditCardNo);
 		hotelvo.setHotelCreditCheckNo(hotelCreditCheckNo);

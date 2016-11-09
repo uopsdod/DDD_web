@@ -11,22 +11,23 @@ import java.io.*;
 import java.sql.*;
 
 public class MemDAO implements MemDAO_interface {
-	private static DataSource ds  = null;
-	static{
-		try{
+	private static DataSource ds = null;
+	static {
+		try {
 			Context ctx = new InitialContext();
 			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
-					
-		}catch(NamingException e){
+
+		} catch (NamingException e) {
 			e.printStackTrace(System.err);
 		}
 	}
-	
+
 	public static final String INSERT_STMT = "INSERT INTO mem (memId,memAccount,memPsw,memName,memGender,memTwId,memBirthDate,memPhone,memLiveBudget,memIntro,memProfile,memBlackList,memCreditCardNo,memCreditCheckNo,memCreditDueDate) VALUES (mem_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	public static final String GET_ALL_STMT = "SELECT memId,memAccount,memPsw,memName,memGender,memTwId,to_char(memBirthDate,'yyyy-mm-dd') memBirthDate,memPhone,memLiveBudget,memIntro,memProfile,memBlackList,memCreditCardNo,memCreditCheckNo,memCreditDueDate FROM mem order by memId";
 	public static final String GET_ONE_STMT = "SELECT memId,memAccount,memPsw,memName,memGender,memTwId,to_char(memBirthDate,'yyyy-mm-dd') memBirthDate,memPhone,memLiveBudget,memIntro,memProfile,memBlackList,memCreditCardNo,memCreditCheckNo,memCreditDueDate FROM mem where memId=?";
 	public static final String DELETE = "DELETE FROM mem where memId = ?";
 	public static final String UPDATE = "UPDATE mem set memAccount=?,memPsw=?,memName=?,memGender=?,memTwId=?,memBirthDate=?,memPhone=?,memLiveBudget=?,memIntro=?,memProfile=?,memBlackList=?,memCreditCardNo=?,memCreditCheckNo=?,memCreditDueDate=? where memId = ?";
+	public static final String CHECK_MEMBER = "SELECT memId, memAccount, memPsw FROM mem where memAccount = ?";
 
 	@Override
 	public void insert(MemVO aMemVO) {
@@ -34,7 +35,7 @@ public class MemDAO implements MemDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			
+
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(MemDAO.INSERT_STMT);
 
@@ -54,9 +55,9 @@ public class MemDAO implements MemDAO_interface {
 			pstmt.setString(14, aMemVO.getMemCreditDueDate());
 
 			pstmt.executeUpdate();
-		}catch (SQLException se) {
+		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
-		}finally {
+		} finally {
 			if (pstmt != null) {
 				try {
 					pstmt.close();
@@ -81,8 +82,8 @@ public class MemDAO implements MemDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			
-			con =ds.getConnection();
+
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(MemDAO.UPDATE);
 
 			pstmt.setString(1, aMemVO.getMemAccount());
@@ -102,9 +103,9 @@ public class MemDAO implements MemDAO_interface {
 			pstmt.setString(15, aMemVO.getMemId());
 
 			pstmt.executeUpdate();
-		}catch (SQLException se) {
+		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
-		}finally {
+		} finally {
 			if (pstmt != null) {
 				try {
 					pstmt.close();
@@ -130,7 +131,7 @@ public class MemDAO implements MemDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
-			
+
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(MemDAO.DELETE);
 
@@ -165,7 +166,7 @@ public class MemDAO implements MemDAO_interface {
 		ResultSet rs = null;
 
 		try {
-			
+
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ONE_STMT);
 
@@ -223,7 +224,7 @@ public class MemDAO implements MemDAO_interface {
 		ResultSet rs = null;
 
 		try {
-			
+
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(GET_ALL_STMT);
 			rs = pstmt.executeQuery();
@@ -269,5 +270,44 @@ public class MemDAO implements MemDAO_interface {
 		}
 		return list;
 
+	}
+
+	@Override
+	public MemVO memCheck(String aMemAccount, String aMemPsw) {
+		MemVO memVO = new MemVO();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(CHECK_MEMBER);
+			pstmt.setString(1, aMemAccount);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				memVO.setMemAccount(rs.getString("memAccount"));
+				memVO.setMemPsw(rs.getString("memPsw"));
+				memVO.setMemId(rs.getString("memId"));
+			}
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return memVO;
 	}
 }
