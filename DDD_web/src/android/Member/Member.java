@@ -13,9 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.codec.binary.Base64;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mem.model.MemJDBCDAO;
+import com.mem.model.MemService;
 import com.mem.model.MemVO;
 
 
@@ -32,6 +35,7 @@ public class Member extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest rq, HttpServletResponse rp)
 			throws ServletException, IOException {
+		MemJDBCDAO dao = new MemJDBCDAO();
 		rq.setCharacterEncoding("UTF-8");
 		Gson gson = new Gson();
 		BufferedReader br = rq.getReader();
@@ -49,9 +53,8 @@ public class Member extends HttpServlet {
 			
 			
 			String id = jsonObject.get("id").getAsString();
-			MemJDBCDAO dao = new MemJDBCDAO();
-			MemVO hotelVO = dao.findByPrimaryKey(id);
-			outStr = gson.toJson(hotelVO);
+			MemVO memVO = dao.findByPrimaryKey(id);
+			outStr = gson.toJson(memVO);
 			System.out.println(outStr);
 			rp.setContentType(CONTENT_TYPE);
 			PrintWriter out = rp.getWriter();
@@ -59,7 +62,6 @@ public class Member extends HttpServlet {
 			
 		}else if(action.equals("getAll")){
 			
-			MemJDBCDAO dao = new MemJDBCDAO();
 			List<MemVO> list = new ArrayList<MemVO>();
 			list = dao.getAll();
 			for (MemVO myVO: list){
@@ -74,7 +76,6 @@ public class Member extends HttpServlet {
 		}else if(action.equals("getImage")){
 			
 			OutputStream os = rp.getOutputStream();
-			MemJDBCDAO dao = new MemJDBCDAO();
 			String id = jsonObject.get("id").getAsString();
 			int imageSize = jsonObject.get("imageSize").getAsInt();
 			byte[] image = dao.findByPrimaryKey(id).getMemProfile();
@@ -87,12 +88,26 @@ public class Member extends HttpServlet {
 			System.out.println("image"+image);
 			
 		}else if(action.equals("Insert")){
-			MemJDBCDAO dao = new MemJDBCDAO();
 			String memVOJson = jsonObject.get("memVO").getAsString();
 			MemVO memVO = gson.fromJson(memVOJson, MemVO.class);
-				memVO.setMemBlackList(null);
+			//String imageBase64 = jsonObject.get("imageBase64").getAsString();
+			//byte[] image = Base64.decodeBase64(imageBase64);
+				memVO.setMemBlackList("0");
+			System.out.println(memVO);
 			 dao.insert(memVO);
 			
+		}else if(action.equals("memCheck")){
+			String memUserName = jsonObject.get("userName").getAsString();
+			String memPassword = jsonObject.get("password").getAsString();
+			MemService memServ = new MemService();
+			MemVO memVO = memServ.memCheck(memUserName, memPassword);
+			
+			System.out.println("memId : " + memVO.getMemId());
+			outStr = gson.toJson(memVO);
+			System.out.println(outStr);
+			rp.setContentType(CONTENT_TYPE);
+			PrintWriter out = rp.getWriter();
+			out.println(outStr);
 		}
 		
 		// ��hotelVO�নJSON�r��A�^��
