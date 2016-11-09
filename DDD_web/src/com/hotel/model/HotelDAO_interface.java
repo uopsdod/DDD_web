@@ -9,5 +9,8 @@ public interface HotelDAO_interface {
      public void update(HotelVO aHotelVO);
      public void update_status(String hotelId,String hotelStatus);
      public void update_hotelBlackList(String hotelId,String hotelBlackList);
+     public void update_psw(String hotelId);
      public HotelVO findByPrimaryKey(String aHotelId);
+     public byte[] getPhoto_cov(String aHotelId);
+     public byte[] getPhoto_register(String aHotelId);
 }
