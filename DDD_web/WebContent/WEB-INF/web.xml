@@ -6,7 +6,6 @@
     <res-type>javax.sql.DataSource</res-type>
     <res-auth>Container</res-auth>
   </resource-ref>
-  
   <filter>
     <filter-name>loginFilter</filter-name>
     <filter-class>com.filters.LoginFilter</filter-class>
@@ -17,17 +16,12 @@
     <url-pattern>/backend/emp/addEmp.jsp</url-pattern>
     <url-pattern>/backend/emp_index.jsp</url-pattern>
     <url-pattern>/backend/auth/update_auth.jsp</url-pattern>
-<!--     <url-pattern>/backend/hotel/listAllHotel.jsp</url-pattern> -->
-<!--     <url-pattern>/backend/hotel/getOneHotel.jsp</url-pattern> -->
-<!--     <url-pattern>/backend/hotel/get_need_check.jsp</url-pattern> -->
-     
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
     <dispatcher>ERROR</dispatcher>
     <dispatcher>ASYNC</dispatcher>
   </filter-mapping>
-  
   <servlet>
     <servlet-name>EmpServlet</servlet-name>
     <servlet-class>com.emp.controller.EmpServlet</servlet-class>
@@ -36,7 +30,6 @@
     <servlet-name>EmpServlet</servlet-name>
     <url-pattern>/emp/emp.do</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>AuthServlet</servlet-name>
     <servlet-class>com.auth.controller.AuthServlet</servlet-class>
@@ -45,7 +38,6 @@
     <servlet-name>AuthServlet</servlet-name>
     <url-pattern>/auth/auth.do</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>HotelServlet</servlet-name>
     <servlet-class>com.hotel.controller.HotelServlet</servlet-class>
@@ -54,7 +46,6 @@
     <servlet-name>HotelServlet</servlet-name>
     <url-pattern>/hotel/hotel.do</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>RoomServlet</servlet-name>
     <servlet-class>com.room.controler.RoomServlet</servlet-class>
@@ -80,14 +71,13 @@
     <url-pattern>/backend/ord/ord.do</url-pattern>
   </servlet-mapping>
   <servlet>
-	<servlet-name>DBGifReader4</servlet-name>
-	<servlet-class>com.ord.controller.DBGifReader4</servlet-class>
+    <servlet-name>DBGifReader4</servlet-name>
+    <servlet-class>com.ord.controller.DBGifReader4</servlet-class>
   </servlet>
   <servlet-mapping>
-	<servlet-name>DBGifReader4</servlet-name>
-	<url-pattern>/backend/ord/DBGifReader4</url-pattern>
-  </servlet-mapping>	
-  
+    <servlet-name>DBGifReader4</servlet-name>
+    <url-pattern>/backend/ord/DBGifReader4</url-pattern>
+  </servlet-mapping>
   <servlet>
     <servlet-name>AndroindHotelServlet</servlet-name>
     <servlet-class>android.Hotel.Hotel</servlet-class>
@@ -104,7 +94,6 @@
     <servlet-name>AndroidRoomServlet</servlet-name>
     <url-pattern>/android/room.do</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>AndroidMemServlet</servlet-name>
     <servlet-class>android.Member.Member</servlet-class>
@@ -113,7 +102,6 @@
     <servlet-name>AndroidMemServlet</servlet-name>
     <url-pattern>/android/mem.do</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>AndroidPartnerServlet</servlet-name>
     <servlet-class>android.live2.Partner</servlet-class>
@@ -122,7 +110,6 @@
     <servlet-name>AndroidPartnerServlet</servlet-name>
     <url-pattern>/android/live2/partner.do</url-pattern>
   </servlet-mapping>
-  
   <filter>
     <filter-name>setCharacterEncoding</filter-name>
     <filter-class>com.filters.SetCharacterEncodingFilter</filter-class>
