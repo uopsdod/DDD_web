@@ -2,11 +2,25 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*, com.ord.model.*, java.text.SimpleDateFormat" %>
 
+<%-- 用EL練習寫 --%>
+
 <%
 	OrdService ordSvc = new OrdService();
 	List<OrdVO> list = ordSvc.getAll();
 	pageContext.setAttribute("list",list);
 %>
+
+<%
+	HashMap<String,String> ordStatusTrans = (HashMap<String,String>)(application.getAttribute("ordStatusTrans"));
+
+	pageContext.setAttribute("ordStatusTrans",ordStatusTrans);
+
+%>
+
+
+<jsp:useBean id="roomSvc" scope="page" class="com.room.model.RoomService" />
+<jsp:useBean id="memSvc" scope="page" class="com.mem.model.MemService" />
+<jsp:useBean id="hotelSvc" scope="page" class="com.hotel.model.HotelService" />
 
 <!DOCTYPE html>
 <html>
@@ -20,7 +34,7 @@
 	<tr>
 		<td>
 			<h3>所有訂單資料 - ListAllOrd.jsp</h3>
-			<a href="selectPage.jsp"> <img src="images/back1.gif"> 回首頁 </a>
+			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"> <img src="images/back1.gif"> 回首頁 </a>
 		</td>
 	</tr>
 </table>
@@ -42,35 +56,70 @@
 		<th>一般會員編號</th>
 		<th>廠商會員編號</th>
 		<th>訂單金額</th>
-		<th>入住日期</th>
+<!-- 		<th>入住日期</th> -->
 		<th>下訂日期</th>
 		<th>訂單狀態名稱</th>
-		<th>評價內容</th>
-		<th>評價星星數</th>
-		<th>簡訊驗證碼</th>
-		<th>QR Code圖片</th>
+<!-- 		<th>評價內容</th> -->
+<!-- 		<th>評價星星數</th> -->
+<!-- 		<th>簡訊驗證碼</th> -->
+<!-- 		<th>QR Code圖片</th> -->
 		<th>修改</th>
 		<th>刪除</th>
 	</tr>
-	<%@ include file="page1.file" %>
+	<%@ include file="pages/page1.file" %>
 	<c:forEach var="ordVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 		<tr>
 			<td>${ordVO.ordId}</td>
-			<td>${ordVO.ordRoomId}</td>
-			<td>${ordVO.ordMemId}</td>
-			<td>${ordVO.ordHotelId}</td>
+
+			<%-- <td>${ordVO.ordRoomId}</td> --%>
+			
+			<td>
+				<c:forEach var="roomVO" items="${roomSvc.all}">
+					<c:if test="${ordVO.ordRoomId==roomVO.roomId}">
+						${roomVO.roomId} <br>
+						[${roomVO.roomName}]
+					</c:if>
+				</c:forEach>
+			</td>
+
+			<%-- <td>${ordVO.ordMemId}</td> --%>
+			<td>
+				<c:forEach var="memVO" items="${memSvc.all}">
+					<c:if test="${ordVO.ordMemId==memVO.memId}">
+						${memVO.memId} <br>
+						[${memVO.memName}]
+					</c:if>
+				</c:forEach>
+			</td>
+
+			<%-- <td>${ordVO.ordHotelId}</td> --%>
+			<td>
+				<c:forEach var="hotelVO" items="${hotelSvc.all}">
+					<c:if test="${ordVO.ordHotelId==hotelVO.hotelId}">
+						${hotelVO.hotelId} <br>
+						[${hotelVO.hotelName}]
+					</c:if>
+				</c:forEach>
+			</td>
+
 			<td>${ordVO.ordPrice}</td>
-			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdLiveDate())%></td>
+<%-- 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdLiveDate())%></td> --%>
 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdDate())%></td>		
-			<td>${ordVO.ordStatus}</td>
-			<td>${ordVO.ordRatingContent}</td>
-			<td>${ordVO.ordRatingStarNo}</td>
-			<td>${ordVO.ordMsgNo}</td>
-			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td>
+			
+<%-- 			<td>${ordVO.ordStatus}</td> --%>
+<%-- 			<td><%=ordStatusTrans.get( ((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdStatus() )%></td> --%>
+
+			<td>${ordStatusTrans.get(ordVO.ordStatus)}</td>
+			
+<%-- 			<td>${ordVO.ordRatingContent}</td> --%>
+<%-- 			<td>${ordVO.ordRatingStarNo}</td> --%>
+<%-- 			<td>${ordVO.ordMsgNo}</td> --%>
+<%-- 			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td> --%>
 			<td>
 				<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
 					<input type="submit" value="修改">
 					<input type="hidden" name="ordId" value="${ordVO.ordId}">
+					<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 					<input type="hidden" name="action" value="getOneForUpdate">
 				</form>
 			</td>
@@ -78,13 +127,17 @@
 				<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
 					<input type="submit" value="刪除">
 					<input type="hidden" name="ordId" value="${ordVO.ordId}">
+					<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 					<input type="hidden" name="action" value="delete">
 				</form>
 			</td>
 		</tr>
 	</c:forEach>
 </table>
-<%@ include file="page2.file"%>
+<%@ include file="pages/page2.file"%>
 
+<br>本網頁路徑:<br>
+	request.getServletPath(): <%= request.getServletPath() %> <br>
+	request.getRequestURI():  <%= request.getRequestURI() %>
 </body>
 </html>
