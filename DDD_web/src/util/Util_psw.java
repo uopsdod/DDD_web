@@ -24,6 +24,10 @@ public class Util_psw {
 		String account_new = "AA104"+account;
 		return account_new;	
 	}
+	public static String key_open(String account){
+		String account_new = account.substring(5);
+		return account_new;	
+	}
 		
 		// 設定傳送郵件:至收信人的Email信箱,Email主旨,Email內容
 		public static void sendMail(String to, String subject, String messageText) {
