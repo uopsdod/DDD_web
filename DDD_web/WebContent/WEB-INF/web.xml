@@ -9,7 +9,7 @@
   
   <filter>
     <filter-name>loginFilter</filter-name>
-    <filter-class>filter.LoginFilter</filter-class>
+    <filter-class>com.filters.LoginFilter</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>loginFilter</filter-name>
@@ -17,9 +17,9 @@
     <url-pattern>/backend/emp/addEmp.jsp</url-pattern>
     <url-pattern>/backend/emp_index.jsp</url-pattern>
     <url-pattern>/backend/auth/update_auth.jsp</url-pattern>
-    <url-pattern>/backend/hotel/listAllHotel.jsp</url-pattern>
-    <url-pattern>/backend/hotel/getOneHotel.jsp</url-pattern>
-    <url-pattern>/backend/hotel/get_need_check.jsp</url-pattern>
+<!--     <url-pattern>/backend/hotel/listAllHotel.jsp</url-pattern> -->
+<!--     <url-pattern>/backend/hotel/getOneHotel.jsp</url-pattern> -->
+<!--     <url-pattern>/backend/hotel/get_need_check.jsp</url-pattern> -->
      
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
@@ -112,6 +112,15 @@
   <servlet-mapping>
     <servlet-name>AndroidMemServlet</servlet-name>
     <url-pattern>/android/mem.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>AndroidPartnerServlet</servlet-name>
+    <servlet-class>android.live2.Partner</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AndroidPartnerServlet</servlet-name>
+    <url-pattern>/android/live2/partner.do</url-pattern>
   </servlet-mapping>
   
   <filter>

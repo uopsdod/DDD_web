@@ -19,6 +19,8 @@ public class OrdServlet extends HttpServlet {
 		aReq.setCharacterEncoding("UTF-8");
 		String action = aReq.getParameter("action");
 		
+		//System.out.println("now action: " + action);
+		
 		if("getOneForDisplay".equals(action)){ //來自selectPage.jsp請求
 			List<String> errorMsgs = new LinkedList<String>();
 			aReq.setAttribute("errorMsgs",errorMsgs);
@@ -379,6 +381,54 @@ public class OrdServlet extends HttpServlet {
 		
 		
 		}
+		
+		if("listAllByMemId".equals(action)){ //來自selectPage.jsp的請求
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			aReq.setAttribute("errorMsgs", errorMsgs);
+			
+			try{
+				/* 1.接收請求參數 */
+				String ordMemId = aReq.getParameter("ordMemId");				
+				aReq.setAttribute("ordMemId",ordMemId);
+				
+				/* 3.準備至轉交 */
+				String url ="/backend/ord/listAllByMemId.jsp";
+				RequestDispatcher successView = aReq.getRequestDispatcher(url);
+				successView.forward(aReq,aRes);
+				
+			}
+			catch(Exception e){
+				errorMsgs.add("無法取得修改資料(listAllByMemId): " + e.getMessage());
+				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/selectPage.jsp");
+				failureView.forward(aReq,aRes);
+			}
+			
+		}
+		
+		if("listAllByHotelId".equals(action)){ //來自selectPage.jsp的請求
+						
+			List<String> errorMsgs = new LinkedList<String>();
+			aReq.setAttribute("errorMsgs", errorMsgs);
+			
+			try{
+				/* 1.接收請求參數 */
+				String ordHotelId = aReq.getParameter("ordHotelId");			
+				aReq.setAttribute("ordHotelId",ordHotelId);
+				
+				/* 3.準備至轉交 */
+				String url ="/backend/ord/listAllByHotelId.jsp";
+				RequestDispatcher successView = aReq.getRequestDispatcher(url);
+				successView.forward(aReq,aRes);
+				
+			}
+			catch(Exception e){
+				errorMsgs.add("無法取得修改資料(listAllByHotelId): " + e.getMessage());
+				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/selectPage.jsp");
+				failureView.forward(aReq,aRes);
+			}
+			
+		}		
 		
 	}
 	

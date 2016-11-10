@@ -82,7 +82,7 @@
 
 		<form method="post" action="ord.do">
 			選擇一般會員編號:
-			<select name="ordId">
+			<select name="ordMemId">
 				<c:forEach var="ordVO" items="${ordSvc.all}">	
 					<option value="${ordVO.ordMemId}">${ordVO.ordMemId}
 				</c:forEach>
@@ -95,7 +95,7 @@
 
 		<form method="post" action="ord.do">
 			選擇廠商會員編號:
-			<select name="ordId">
+			<select name="ordHotelId">
 				<c:forEach var="ordVO" items="${ordSvc.all}">	
 					<option value="${ordVO.ordHotelId}">${ordVO.ordHotelId}
 				</c:forEach>
