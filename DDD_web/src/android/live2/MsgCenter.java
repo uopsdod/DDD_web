@@ -22,17 +22,21 @@ import javax.websocket.server.ServerEndpoint;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 @ServerEndpoint("/android/live2/MsgCenter")
 public class MsgCenter extends HttpServlet {
-				//  <memId,tokenId>
-	private HashMap<String,String> tokenMap = new HashMap<>();
-				//  <memId,session>	
-	private HashMap<String,Session> sessionMap = new HashMap<>();
-
+				//  <memId,tokenId> // 注意:要加上static，不然實體每次都會消失
+	private static HashMap<String,String> tokenMap = new HashMap<>();
+				//  <memId,session>	// 注意:要加上static，不然實體每次都會消失
+	//private static HashMap<String,Session> sessionMap = new HashMap<>(); 
+	
+	private static BiMap<String, Session> sessionMap = new HashBiMap();
+	
 	private static final Set<Session> connectedSessions = Collections.synchronizedSet(new HashSet<>());
 
 	@OnOpen
@@ -40,30 +44,30 @@ public class MsgCenter extends HttpServlet {
 		connectedSessions.add(userSession);
 		String text = String.format("Session ID = %s, connected", userSession.getId());
 		System.out.println(text);
-		
-		
 	}
 
 	@OnMessage
 	public void onMessage(Session aUserSession, String aMessage) throws JSONException {
 		// 客戶端傳來FCM - tockenId
-		Gson gson = new GsonBuilder().create();
 		JSONObject jsonObj = new JSONObject(aMessage);
 		String action = jsonObj.getString("action");
 		String memId = jsonObj.getString("memId");
 		if ("uploadTokenId".equals(action)){
-			System.out.println("jsonObj: " + jsonObj);
+			System.out.println("客戶端傳來的tokenId,memId: " + jsonObj);
 			String token = jsonObj.getString("tokenId");
 			tokenMap.put(memId, token);
 			aUserSession.getAsyncRemote().sendText("Server aleary stored your token.");
-			System.out.println("tokenMap.size(): "+tokenMap.size());
+			System.out.println("tokenMap.size(): "+ tokenMap.size());
 			return;
 		}
 		
-		// 客戶第一次進行即時通訊(進行中)
-		if (!sessionMap.containsKey(memId)){
+		// 使用者建立與MsgCenter建立WebSocket連線，並把memId和session用map綁定
+		if("bindMemIdWithSession".equals(action) && !sessionMap.containsKey(memId)){
 			sessionMap.put(memId, aUserSession);
 		}
+		System.out.println("sessionMap.size(): "+ sessionMap.size());
+		
+		// 狀況一: 使用者A主動寄出訊息，使用者B不再訊息室窗頁面
 		
 		// 一般聊天通訊
 		for (Session session : connectedSessions) {
@@ -79,10 +83,13 @@ public class MsgCenter extends HttpServlet {
 	}
 
 	@OnClose
-	public void onClose(Session userSession, CloseReason reason) {
-		connectedSessions.remove(userSession);
-		String text = String.format("session ID = %s, disconnected; close code = %d", userSession.getId(),
-				reason.getCloseCode().getCode());
+	public void onClose(Session aUserSession, CloseReason aReason) {
+		MsgCenter.sessionMap.inverse().remove(aUserSession);
+		System.out.println("sessionMap.size(): "+ sessionMap.size());
+		
+		connectedSessions.remove(aUserSession);
+		String text = String.format("session ID = %s, disconnected; close code = %d", aUserSession.getId(),
+				aReason.getCloseCode().getCode());
 		System.out.println(text);
 	}
 
