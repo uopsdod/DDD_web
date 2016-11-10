@@ -190,45 +190,45 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 										 
 										 
 										 			<div class="form-group">
-														<label class="col-sm-3 control-label">今日上架房數</label>
+														<label class="col-sm-3 control-label">每日預定上架房數</label>
 														<div class="col-sm-9">
-																<input type="TEXT" name="roomRemainNo" size="45" class="form-control"
-																		value="<%= (roomVO==null)? "" : (roomVO.getRoomRemainNo()==null?"":roomVO.getRoomRemainNo())%>" />
+																<input type="TEXT" name="roomDefaultNo" size="45" class="form-control"
+																		value="<%= (roomVO==null)? "" : (roomVO.getRoomDefaultNo()==null?"":roomVO.getRoomDefaultNo())%>" />
 														</div>
 													</div>
 										 			
 										 			
-										 			<div class="form-group">
-														<label class="col-sm-3 control-label">是否上架</label>
-														<div class="col-sm-9">
-															<div class="col-xs-12 col-sm-3">
-																<input type="radio" name="roomForSell" size="10" class="form-control"
-																	value="true" <%=(roomVO==null)?"":(roomVO.getRoomForSell()==true?"checked":"") %> />
+<!-- 										 			<div class="form-group"> -->
+<!-- 														<label class="col-sm-3 control-label">是否上架</label> -->
+<!-- 														<div class="col-sm-9"> -->
+<!-- 															<div class="col-xs-12 col-sm-3"> -->
+<!-- 																<input type="radio" name="roomForSell" size="10" class="form-control" -->
+<%-- 																	value="true" <%=(roomVO==null)?"":(roomVO.getRoomForSell()==true?"checked":"") %> /> --%>
 															
-															</div>
-															<div class="col-xs-12 col-sm-3">
-																<div class="row">
-																<h3>yes</h3>
-																</div>
-															</div>
-															<div class="col-xs-12 col-sm-3">
-																<input type="radio" name="roomForSell" size="10" class="form-control"
-																	value="false" <%=(roomVO==null)?"":(roomVO.getRoomForSell()==false?"checked":"") %> />
+<!-- 															</div> -->
+<!-- 															<div class="col-xs-12 col-sm-3"> -->
+<!-- 																<div class="row"> -->
+<!-- 																<h3>yes</h3> -->
+<!-- 																</div> -->
+<!-- 															</div> -->
+<!-- 															<div class="col-xs-12 col-sm-3"> -->
+<!-- 																<input type="radio" name="roomForSell" size="10" class="form-control" -->
+<%-- 																	value="false" <%=(roomVO==null)?"":(roomVO.getRoomForSell()==false?"checked":"") %> /> --%>
 														
-															</div>
-															<div class="col-xs-12 col-sm-3">
-																<div class="row">
-																<h3>no</h3>
-																</div>
-															</div>
+<!-- 															</div> -->
+<!-- 															<div class="col-xs-12 col-sm-3"> -->
+<!-- 																<div class="row"> -->
+<!-- 																<h3>no</h3> -->
+<!-- 																</div> -->
+<!-- 															</div> -->
 															
-														</div>
-													</div>
+<!-- 														</div> -->
+<!-- 													</div> -->
 										 			
 										 			
 										 			
 										 			<div class="form-group">
-														<label class="col-sm-3 control-label">是否自動上架</label>
+														<label class="col-sm-3 control-label">是否開啟定時上架</label>
 														<div class="col-sm-9">
 															<div class="col-xs-12 col-sm-3">
 																<input type="radio" name="roomForSellAuto"  class="form-control"
@@ -255,7 +255,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 										 			
 										 			<div class="form-group">
 													
-														<label class="col-sm-3 control-label">優惠開始時間</label>
+														<label class="col-sm-3 control-label">定時上架時間</label>
 															<div class="col-sm-9">
 															<table>
 																	<tr>	
@@ -273,12 +273,12 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 																		</select>
 																		</td>
 																	
-																		<td>秒<select class="form-control" size="1" name="roomDiscountStartDateSecond">
-																			<% for(int i =0;i<60;i++){%>
-																				<option value="<%=i%>" 	  <%=roomVO==null?"":(((roomVO.getRoomDiscountStartDate())%(60*60*1000))%(60*1000)/1000==i)?"selected":""%>	><%=i%>	
-																			<%}%>	
-																		</select>
-																		</td>
+<!-- 																		<td>秒<select class="form-control" size="1" name="roomDiscountStartDateSecond"> -->
+<%-- 																			<% for(int i =0;i<60;i++){%> --%>
+<%-- 																				<option value="<%=i%>" 	  <%=roomVO==null?"":(((roomVO.getRoomDiscountStartDate())%(60*60*1000))%(60*1000)/1000==i)?"selected":""%>	><%=i%>	 --%>
+<%-- 																			<%}%>	 --%>
+<!-- 																		</select> -->
+<!-- 																		</td> -->
 																	</tr>
 																</table>
 														
@@ -287,7 +287,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 										 			
 										 			<div class="form-group">
 													
-														<label class="col-sm-3 control-label">優惠結束時間</label>
+														<label class="col-sm-3 control-label">下架時間</label>
 															<div class="col-sm-9">
 															<table>
 																	<tr>	
@@ -305,12 +305,12 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 																		</select>
 																		</td>
 																	
-																		<td>秒<select class="form-control" size="1" name="roomDiscountEndDateSecond">
-																			<% for(int i =0;i<60;i++){%>
-																				<option value="<%=i%>" 	  <%=roomVO==null?"":(((roomVO.getRoomDiscountEndDate())%(60*60*1000))%(60*1000)/1000==i)?"selected":""%>	><%=i%>	
-																			<%}%>	
-																		</select>
-																		</td>
+<!-- 																		<td>秒<select class="form-control" size="1" name="roomDiscountEndDateSecond"> -->
+<%-- 																			<% for(int i =0;i<60;i++){%> --%>
+<%-- 																				<option value="<%=i%>" 	  <%=roomVO==null?"":(((roomVO.getRoomDiscountEndDate())%(60*60*1000))%(60*1000)/1000==i)?"selected":""%>	><%=i%>	 --%>
+<%-- 																			<%}%>	 --%>
+<!-- 																		</select> -->
+<!-- 																		</td> -->
 																	</tr>
 																</table>
 														
@@ -322,18 +322,18 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 														<label class="col-sm-3 control-label">單位時間折扣</label>
 														<div class="col-sm-9">
 																<select size="1" name="roomDisccountPercent" class="form-control" style="width:100px">
-																<% for(double i =0.05;i<0.61;i+=0.05){%>
-																	<option value="<%=i%>"	<%=roomVO==null?"":((roomVO.getRoomDisccountPercent()==i)?"selected":"")%>	><%=(new Double(i*100)).intValue()+"%"%>	
+																<% for(int i =1;i<30;i++){%>
+																	<option value="<%=i%>"	<%=roomVO==null?"":((roomVO.getRoomDisccountPercent()==i)?"selected":"")%>	><%=i+"%"%>	
 																<%}%>	
 															</select>
 														</div>
 													</div>
 													
 													<div class="form-group">
-														<label class="col-sm-3 control-label">折扣單位時間-hr</label>
+														<label class="col-sm-3 control-label">折扣每單位時間30*n(min)</label>
 														<div class="col-sm-9">
 																<select size="1" name="roomDiscountHr" class="form-control" style="width:100px">
-																<% for(int i =1;i<5;i+=1){%>
+																<% for(int i =1;i<7;i+=1){%>
 																	<option value="<%=i%>"  <%=roomVO==null?"":((roomVO.getRoomDiscountHr()==i)?"selected":"")%>	>	<%=i%>
 																<%}%>
 															</select>

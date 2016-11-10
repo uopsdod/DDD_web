@@ -1,10 +1,14 @@
 package com.room.controler;
 
-import java.util.List;
+import java.util.*;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import javax.servlet.RequestDispatcher;
@@ -28,7 +32,38 @@ import com.roomphoto.model.RoomPhotoService;
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class RoomServlet extends HttpServlet {
 	
-
+	
+	
+	static Map<String,Map> OnData = new HashMap<String,Map>();
+	static Map<String,Timer> OnTimer = new HashMap<String,Timer>();
+	static long today = 0; 
+	
+	public void init(){
+		
+		
+		Calendar begin = new GregorianCalendar(2016,11,2,0,0,0);
+		Date beginDate = begin.getTime();
+	
+		Timer timer = new Timer();
+		
+		 TimerTask task = new TimerTask(){
+		        
+	         public void run(){
+	         	//排程器要執行的任務	
+	        	 
+	        	Calendar caler = new GregorianCalendar();
+	     		long times = caler.get(Calendar.HOUR_OF_DAY)*60*60*1000 - 
+	         	caler.get(Calendar.MINUTE)*60*1000 -  
+	         	caler.get(Calendar.SECOND)*1000;
+	     		today = caler.getTime().getTime()-times;
+	     		
+	        	System.out.println(today);
+	         }
+	     };
+		
+		timer.scheduleAtFixedRate(task, beginDate, 24*60*60*1000); 
+		
+	}	
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
@@ -115,6 +150,7 @@ public class RoomServlet extends HttpServlet {
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/room/select_page.jsp");
 				failureView.forward(req, res);
+				return;
 			}
 		}
 		
@@ -144,8 +180,169 @@ public class RoomServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/frontend_hotel/room/listAllEmp.jsp");
+						.getRequestDispatcher("/frontend_hotel/room/listRoomSell.jsp");
 				failureView.forward(req, res);
+				return;
+			}
+		}
+		
+		if ("setSell".equals(action)) { // 來自listAllRoom.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***************************1.接收請求參數****************************************/
+				String roomId = req.getParameter("roomId");
+				
+				/***************************2.開始查詢資料****************************************/
+				RoomService roomSvc = new RoomService();
+				RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
+								
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				req.setAttribute("roomVO", roomVO);         // 資料庫取出的empVO物件,存入req
+				String url = "/frontend_hotel/room/setSell.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
+				successView.forward(req, res);
+
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/frontend_hotel/room/listRoomSell.jsp");
+				failureView.forward(req, res);
+				return;
+			}
+		}
+		
+		if ("OnTimeSell".equals(action)) { // 來自listAllRoom.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***************************1.接收請求參數****************************************/
+				String roomId = req.getParameter("roomId");
+				
+			
+				Integer roomPrice = null;
+				String roomPriceStr = req.getParameter("roomPrice").trim();
+				if ( "".equals(roomPriceStr)) {
+					errorMsgs.add("請輸入房間定價");
+				}else{
+					roomPrice = new Integer(roomPriceStr);
+				}
+				
+				boolean roomForSell = true;
+
+				Calendar now = new GregorianCalendar();		//now
+				int roomDiscountStartDate = now.get(Calendar.HOUR_OF_DAY)*60*60*1000+
+            	+ now.get(Calendar.MINUTE)*60*1000;
+				
+
+				Integer roomDiscountEndDateHour = (new Integer(req.getParameter("roomDiscountEndDatehour").trim()))*60*60*1000;
+				Integer roomDiscountEndDateMinute = (new Integer(req.getParameter("roomDiscountEndDateminute").trim()))*60*1000;				
+				Integer roomDiscountEndDate = roomDiscountEndDateHour+ roomDiscountEndDateMinute;
+				
+				if(roomDiscountStartDate>=roomDiscountEndDate){
+						errorMsgs.add("下架時間時間得較此時此刻晚");		
+				}	
+				
+				if(roomDiscountEndDate==0){	
+						errorMsgs.add("請輸入下架時間");				
+				}
+				
+				
+				
+				
+		
+				//roomDisccountPercent
+				Integer roomDisccountPercent = (new Integer(req.getParameter("roomDisccountPercent").trim()));
+	
+				
+				//bottomPrice
+				Integer bottomPrice=0;
+				try{
+				bottomPrice = (new Integer(req.getParameter("bottomPrice").trim()));
+				}catch(Exception e){
+					bottomPrice = 0;
+				}
+				
+				
+				
+				//roomDiscountHr
+			
+				Integer roomDiscountHr = new Integer(req.getParameter("roomDiscountHr").trim());
+			
+				//roomOnePrice
+				
+				boolean roomOnePrice;
+				try{
+					
+					roomOnePrice = getBoolean(req.getParameter("roomOnePrice").trim());
+					if(req.getParameter("roomOnePrice").trim().length()==0)
+					{
+						errorMsgs.add("請輸入是否一價到底");
+					}	
+				}catch(Exception e){
+					errorMsgs.add("請輸入是否一價到底");	
+					roomOnePrice = false;
+				}
+				
+							
+				
+				/***************************2.開始查詢資料****************************************/
+				
+				RoomService roomSvc = new RoomService();
+				RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
+
+				roomVO.setRoomPrice(roomPrice);
+		
+			
+				roomVO.setRoomDiscountEndDate(roomDiscountEndDate);
+				roomVO.setRoomDisccountPercent(roomDisccountPercent);
+				roomVO.setRoomDiscountHr(roomDiscountHr);
+				roomVO.setRoomOnePrice(roomOnePrice);
+				roomVO.setRoomForSell(roomForSell);
+				
+				if (!errorMsgs.isEmpty()) {
+					req.setAttribute("roomVO", roomVO); // 含有輸入格式錯誤的empVO物件,也存入req
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/frontend_hotel/room/setSell.jsp");
+					failureView.forward(req, res);
+					return; //程式中斷
+				}
+						
+				roomSvc.update(roomVO);
+				
+				//建立房型的降價機制,與下架機制
+				Float cutPrice = roomPrice*roomDisccountPercent*0.01f;
+				int cutPriceInt = cutPrice.intValue();
+				DynamicPrice(roomId,roomDiscountHr*30*60*1000,roomPrice,cutPriceInt,bottomPrice,roomOnePrice,roomDiscountEndDate);
+					
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				req.setAttribute("roomVO", roomVO);         // 資料庫取出的empVO物件,存入req
+				String url = "/frontend_hotel/room/listAllRoomSell.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
+				successView.forward(req, res);
+				return;	
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				String roomId = req.getParameter("roomId");
+				RoomService roomSvc = new RoomService();
+				RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
+				req.setAttribute("roomVO", roomVO);         // 資料庫取出的empVO物件,存入req
+								
+				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/frontend_hotel/room/setSell.jsp");
+				failureView.forward(req, res);
+				return;
 			}
 		}
 		
@@ -268,7 +465,7 @@ public class RoomServlet extends HttpServlet {
 //				String url = "/frontend_hotel/room/listAllRoom.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 				successView.forward(req, res);
-
+				return;
 				/***************************其他可能的錯誤處理*************************************/
 			} catch (Exception e) {
 				System.out.println("沒包到VO直接跳錯了");
@@ -283,6 +480,7 @@ public class RoomServlet extends HttpServlet {
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/frontend_hotel/room/update_room_input.jsp");
 				failureView.forward(req, res);
+				return;
 			}
 		}
 
@@ -325,38 +523,41 @@ public class RoomServlet extends HttpServlet {
 				}
 				
 			
-							
-				boolean roomForSell;
-				try{
-				roomForSell = getBoolean(req.getParameter("roomForSell").trim());
-				if(req.getParameter("roomForSell").trim().length()==0)
-				{
-					errorMsgs.add("請輸入是否上架");
-				}
-				}catch(Exception e){
-					roomForSell = false;
-				}
+				boolean roomForSell= false;			
+//				boolean roomForSell;
+//				try{
+//				roomForSell = getBoolean(req.getParameter("roomForSell").trim());
+//				if(req.getParameter("roomForSell").trim().length()==0)
+//				{
+//					errorMsgs.add("請輸入是否上架");
+//				}
+//				}catch(Exception e){
+//					roomForSell = false;
+//				}
+				
+				
+				
 				
 				boolean roomForSellAuto;
 				try{
 					roomForSellAuto = getBoolean(req.getParameter("roomForSellAuto").trim());
 					if(req.getParameter("roomForSellAuto").trim().length()==0)
 					{
-						errorMsgs.add("請輸入是否自動上架");
+						errorMsgs.add("請輸入是否開啟定時上架");
 					}
 				}catch(Exception e){
 					roomForSellAuto = false;
 				}
 																
-				
+				Integer roomRemainNo = null;
 			
 				
-				Integer roomRemainNo = null;
-				String roomRemainNoStr = req.getParameter("roomRemainNo").trim();
-				if ( "".equals(roomRemainNoStr)) {
-					errorMsgs.add("請輸入當日上架房數");
+				Integer roomDefaultNo = null;
+				String roomDefaultNoStr = req.getParameter("roomDefaultNo").trim();
+				if ( "".equals(roomDefaultNoStr)) {
+					errorMsgs.add("請輸入每日預定上架房數");
 				}else{
-					roomRemainNo = new Integer(roomRemainNoStr);
+					roomDefaultNo = new Integer(roomDefaultNoStr);
 				}
 				
 	
@@ -364,26 +565,50 @@ public class RoomServlet extends HttpServlet {
 				//roomDiscountStartDate
 				Integer roomDiscountStartDateHour = (new Integer(req.getParameter("roomDiscountStartDatehour").trim()))*60*60*1000;
 				Integer roomDiscountStartDateMinute = (new Integer(req.getParameter("roomDiscountStartDateminute").trim()))*60*1000;
-				Integer roomDiscountStartDateSecond = (new Integer(req.getParameter("roomDiscountStartDateSecond").trim()))*1000;
-				Integer roomDiscountStartDate = roomDiscountStartDateHour+ roomDiscountStartDateMinute + roomDiscountStartDateSecond;
-				if(roomDiscountStartDateHour==0&&roomDiscountStartDateMinute==0&&roomDiscountStartDateSecond==0){
-					errorMsgs.add("請輸入折扣開始時間");		
-				}	
+//				Integer roomDiscountStartDateSecond = (new Integer(req.getParameter("roomDiscountStartDateSecond").trim()))*1000;
+//				Integer roomDiscountStartDate = roomDiscountStartDateHour+ roomDiscountStartDateMinute + roomDiscountStartDateSecond;
+//				if(roomDiscountStartDateHour==0&&roomDiscountStartDateMinute==0&&roomDiscountStartDateSecond==0){
+//					errorMsgs.add("請輸入折扣開始時間");		
+//				}	
+				Integer roomDiscountStartDate = roomDiscountStartDateHour+ roomDiscountStartDateMinute ;
+				if(roomForSellAuto==true){
+					if(roomDiscountStartDateHour==0&&roomDiscountStartDateMinute==0){
+	
+						errorMsgs.add("請輸入定時上架開始時間");		
+					}
+				}
+				
+				
+				
 				
 		
 				//roomDiscountEndDate
+//				Integer roomDiscountEndDateHour = (new Integer(req.getParameter("roomDiscountEndDatehour").trim()))*60*60*1000;
+//				Integer roomDiscountEndDateMinute = (new Integer(req.getParameter("roomDiscountEndDateminute").trim()))*60*1000;
+//				Integer roomDiscountEndDateSecond = (new Integer(req.getParameter("roomDiscountEndDateSecond").trim()))*1000;
+//				Integer roomDiscountEndDate = roomDiscountEndDateHour+ roomDiscountEndDateMinute + roomDiscountEndDateSecond;
+//				if(roomDiscountStartDate>roomDiscountEndDate){
+//					errorMsgs.add("折扣結束時間得較折扣開始時間晚");		
+//				}
+				
 				Integer roomDiscountEndDateHour = (new Integer(req.getParameter("roomDiscountEndDatehour").trim()))*60*60*1000;
 				Integer roomDiscountEndDateMinute = (new Integer(req.getParameter("roomDiscountEndDateminute").trim()))*60*1000;
-				Integer roomDiscountEndDateSecond = (new Integer(req.getParameter("roomDiscountEndDateSecond").trim()))*1000;
-				Integer roomDiscountEndDate = roomDiscountEndDateHour+ roomDiscountEndDateMinute + roomDiscountEndDateSecond;
-				if(roomDiscountStartDate>roomDiscountEndDate){
-					errorMsgs.add("折扣結束時間得較折扣開始時間晚");		
-				}	
 				
+				Integer roomDiscountEndDate = roomDiscountEndDateHour+ roomDiscountEndDateMinute;
+				if(roomForSellAuto==true){
+					if(roomDiscountStartDate>roomDiscountEndDate){
+						errorMsgs.add("下架時間時間得較開始時間晚");		
+					}	
+				}
+				if(roomDiscountEndDate==0){
+					
+						errorMsgs.add("請輸入下架時間");		
+						
+				}
 				
 		
 				//roomDisccountPercent
-				Double roomDisccountPercent = (new Double(req.getParameter("roomDisccountPercent").trim()));
+				Integer roomDisccountPercent = (new Integer(req.getParameter("roomDisccountPercent").trim()));
 	
 			
 				//roomDiscountHr
@@ -451,6 +676,7 @@ public class RoomServlet extends HttpServlet {
 				roomVO.setRoomForSell(roomForSell);
 				roomVO.setRoomForSellAuto(roomForSellAuto);
 				roomVO.setRoomRemainNo(roomRemainNo);
+				roomVO.setRoomDefaultNo(roomDefaultNo);
 				roomVO.setRoomDiscountStartDate(roomDiscountStartDate);
 				roomVO.setRoomDiscountEndDate(roomDiscountEndDate);
 				roomVO.setRoomDisccountPercent(roomDisccountPercent);
@@ -511,7 +737,7 @@ public class RoomServlet extends HttpServlet {
 				String url = "/frontend_hotel/room/listAllRoom.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 				successView.forward(req, res);				
-				
+				return;
 				/***************************其他可能的錯誤處理**********************************/
 			} catch (Exception e) {
 				System.out.println("沒包到VO直接跳錯了");
@@ -519,6 +745,7 @@ public class RoomServlet extends HttpServlet {
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/frontend_hotel/room/AddRoom.jsp");
 				failureView.forward(req, res);
+				return;
 			}
 		}
 		
@@ -623,4 +850,85 @@ public class RoomServlet extends HttpServlet {
 		return bytearr;		
 	}
 	
+	private static void DynamicPrice(String roomId,int aCutPriceTime,int price,int CutPrice,int BottomPrice,boolean roomOnePrice,int EndTime) {
+		
+				 
+	
+		 /*為本次新增的房型準被一個動態降價的排程*/
+		 Timer timer = new Timer();
+		 Timer down = new Timer();
+		 OnTimer.put(roomId,timer);
+		 
+		 /*為本次新增的房型準被一個List*/
+		 Map<String,Integer> data = new HashMap<String,Integer>();
+		 data.put("price",price);				//此時價錢
+		 data.put("CutPrice",CutPrice);			//單位時間折價	
+		 data.put("BottomPrice",BottomPrice);	//最低價錢
+		 OnData.put(roomId,data);
+		 
+		 
+	     TimerTask taskPrice = new TimerTask(){
+	        
+	         public void run(){
+	         	//排程器要執行的任務	
+	        	 
+	        	 
+	        	 Map<String,Integer> one = OnData.get(roomId);
+	        	 int nowPrice = one.get("price");				//此時價錢
+	        	 int nowCutPrice = one.get("CutPrice"); 		//單位時間折價
+	        	 int nowBottomPrice = one.get("BottomPrice");   //最低價錢
+	         
+	        	 nowPrice-=nowCutPrice; 
+	        	 if(nowPrice< nowBottomPrice){
+	        		 one.put("price",nowBottomPrice);
+	        		 OnTimer.get(roomId).cancel();
+	        	 }else{
+	        		 one.put("price",nowPrice);
+	        	 } 
+	        	 
+	        	System.out.println(one.get("price"));
+	         }
+	     };
+	     
+	     
+	     if(roomOnePrice==false){     
+	     //建立降價排程
+	     timer.scheduleAtFixedRate(taskPrice, aCutPriceTime, aCutPriceTime); 
+	     								//執行delay時間		//每次執行間隔時間(毫秒)
+											//需要一個java.util.Date物件
+	     }
+	     
+	     
+	     TimerTask taskDown = new TimerTask(){
+		        
+	         public void run(){
+	         	//排程器要執行的任務	
+	        	 
+	        	 RoomService roomSvc = new RoomService();
+	        	 RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
+	        	 
+	        	 roomVO.setRoomForSell(false);
+	        	 roomSvc.update(roomVO);
+	        	 
+	        	 
+	        	 OnTimer.remove(roomId);	//清空計時器
+	        	 OnData.remove(roomId); 	//清空資料
+	        	 
+	        	 /*************下架了***************/
+	         }
+	     };
+	     
+	     long downTime = today + EndTime;
+	     Date downDate = new Date(downTime);
+	     down.schedule(taskDown, downDate); 
+	     		
+	}
+	
+	
+	
 }
+
+
+
+
+

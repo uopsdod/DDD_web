@@ -15,3 +15,4 @@ public interface RoomPhotoDAO_interface {
 	public List<String> getRoomAllRoomPhotoId(String aRoomId);
 	public List<RoomPhotoVO> getOneAllRoomPhotoVO(String aRoomId);	
 }
+

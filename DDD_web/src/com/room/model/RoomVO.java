@@ -11,9 +11,10 @@ public class RoomVO implements java.io.Serializable{
 	private Boolean roomForSell;
 	private Boolean roomForSellAuto;
 	private Integer roomRemainNo;
+	private Integer roomDefaultNo;
 	private Integer roomDiscountStartDate;	//毫秒數
 	private Integer roomDiscountEndDate;    //毫秒數
-	private Double roomDisccountPercent;
+	private Integer roomDisccountPercent;
 	private Integer roomDiscountHr;
 	private Boolean roomOnePrice;
 	private String roomFun;
@@ -73,6 +74,12 @@ public class RoomVO implements java.io.Serializable{
 	public void setRoomRemainNo(Integer aRoomRemainNo) {
 		this.roomRemainNo = aRoomRemainNo;
 	}
+	public Integer getRoomDefaultNo() {
+		return roomDefaultNo;
+	}
+	public void setRoomDefaultNo(Integer aRoomDefaultNo) {
+		this.roomDefaultNo = aRoomDefaultNo;
+	}
 	public Integer getRoomDiscountStartDate() {
 		return roomDiscountStartDate;
 	}
@@ -85,10 +92,10 @@ public class RoomVO implements java.io.Serializable{
 	public void setRoomDiscountEndDate(Integer aRoomDiscountEndDate) {
 		this.roomDiscountEndDate = aRoomDiscountEndDate;
 	}
-	public Double getRoomDisccountPercent() {
+	public Integer getRoomDisccountPercent() {
 		return roomDisccountPercent;
 	}
-	public void setRoomDisccountPercent(Double aRoomDisccountPercent) {
+	public void setRoomDisccountPercent(Integer aRoomDisccountPercent) {
 		this.roomDisccountPercent = aRoomDisccountPercent;
 	}
 	public Integer getRoomDiscountHr() {

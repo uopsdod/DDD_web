@@ -16,7 +16,7 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 	
 
 	private static final String INSERT_STMT = 
-		"INSERT INTO room VALUES (room_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		"INSERT INTO room VALUES (room_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = 
 		"SELECT * FROM room order by roomId";
 	private static final String GET_OneHotelALLRoom_STMT = 
@@ -27,7 +27,7 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 		"DELETE FROM room where roomId = ?";
 	private static final String UPDATE = 
 		"UPDATE room set roomName = ?,roomTotalNo = ?,roomPrice = ?,roomForSell = ?,"+
-		"roomForSellAuto = ?,roomRemainNo = ?,roomDiscountStartDate = ?,roomDiscountEndDate = ?,"+
+		"roomForSellAuto = ?,roomRemainNo = ?,roomDefaultNo = ?,roomDiscountStartDate = ?,roomDiscountEndDate = ?,"+
 		"roomDisccountPercent = ?,roomDiscountHr = ?,roomOnePrice = ?,roomFun = ?,roomMeal = ?,"+
 		"roomSleep = ?,roomFacility = ?,roomSweetFacility = ?,roomCapacity = ?,roomOneBed = ?,roomTwoBed = ?"
 		+ "where roomId = ?";
@@ -80,9 +80,10 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 				roomVO.setRoomForSell(changeString(rs.getString("roomForSell")));
 				roomVO.setRoomForSellAuto(changeString(rs.getString("roomForSellAuto")));
 				roomVO.setRoomRemainNo(rs.getInt("roomRemainNo"));
+				roomVO.setRoomDefaultNo(rs.getInt("roomDefaultNo"));
 				roomVO.setRoomDiscountStartDate(rs.getInt("roomDiscountStartDate"));
 				roomVO.setRoomDiscountEndDate(rs.getInt("roomDiscountEndDate"));
-				roomVO.setRoomDisccountPercent(rs.getDouble("roomDisccountPercent"));
+				roomVO.setRoomDisccountPercent(rs.getInt("roomDisccountPercent"));
 				roomVO.setRoomDiscountHr(rs.getInt("roomDiscountHr"));
 				roomVO.setRoomOnePrice(changeString(rs.getString("roomOnePrice")));
 				roomVO.setRoomFun(rs.getString("roomFun"));
@@ -168,19 +169,20 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 			pstmt.setString(5, changeBoolean(aRoomVO.getRoomForSell()));
 			pstmt.setString(6, changeBoolean(aRoomVO.getRoomForSellAuto()));
 			pstmt.setInt(7, aRoomVO.getRoomRemainNo());
-			pstmt.setInt(8, aRoomVO.getRoomDiscountStartDate());
-			pstmt.setInt(9, aRoomVO.getRoomDiscountEndDate());
-			pstmt.setDouble(10, aRoomVO.getRoomDisccountPercent());
-			pstmt.setInt(11, aRoomVO.getRoomDiscountHr());
-			pstmt.setString(12, changeBoolean(aRoomVO.getRoomOnePrice()));
-			pstmt.setString(13, aRoomVO.getRoomFun());
-			pstmt.setString(14, aRoomVO.getRoomMeal());
-			pstmt.setString(15, aRoomVO.getRoomSleep());
-			pstmt.setString(16, aRoomVO.getRoomFacility());
-			pstmt.setString(17, aRoomVO.getRoomSweetFacility());
-			pstmt.setInt(18, aRoomVO.getRoomCapacity());
-			pstmt.setInt(19, aRoomVO.getRoomOneBed());
-			pstmt.setInt(20, aRoomVO.getRoomTwoBed());
+			pstmt.setInt(8, aRoomVO.getRoomDefaultNo());
+			pstmt.setInt(9, aRoomVO.getRoomDiscountStartDate());
+			pstmt.setInt(10, aRoomVO.getRoomDiscountEndDate());
+			pstmt.setDouble(11, aRoomVO.getRoomDisccountPercent());
+			pstmt.setInt(12, aRoomVO.getRoomDiscountHr());
+			pstmt.setString(13, changeBoolean(aRoomVO.getRoomOnePrice()));
+			pstmt.setString(14, aRoomVO.getRoomFun());
+			pstmt.setString(15, aRoomVO.getRoomMeal());
+			pstmt.setString(16, aRoomVO.getRoomSleep());
+			pstmt.setString(17, aRoomVO.getRoomFacility());
+			pstmt.setString(18, aRoomVO.getRoomSweetFacility());
+			pstmt.setInt(19, aRoomVO.getRoomCapacity());
+			pstmt.setInt(20, aRoomVO.getRoomOneBed());
+			pstmt.setInt(21, aRoomVO.getRoomTwoBed());
 		
 			System.out.println("aaaaa");
 
@@ -231,24 +233,26 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 			pstmt.setString(4, changeBoolean(aRoomVO.getRoomForSell()));
 			pstmt.setString(5, changeBoolean(aRoomVO.getRoomForSellAuto()));
 			pstmt.setInt(6, aRoomVO.getRoomRemainNo());
-			pstmt.setInt(7, aRoomVO.getRoomDiscountStartDate());
-			pstmt.setInt(8, aRoomVO.getRoomDiscountEndDate());
-			pstmt.setDouble(9, aRoomVO.getRoomDisccountPercent());
-			pstmt.setInt(10, aRoomVO.getRoomDiscountHr());
-			pstmt.setString(11, changeBoolean(aRoomVO.getRoomOnePrice()));
-			pstmt.setString(12, aRoomVO.getRoomFun());
-			pstmt.setString(13, aRoomVO.getRoomMeal());
-			pstmt.setString(14, aRoomVO.getRoomSleep());
-			pstmt.setString(15, aRoomVO.getRoomFacility());
-			pstmt.setString(16, aRoomVO.getRoomSweetFacility());
-			pstmt.setInt(17, aRoomVO.getRoomCapacity());
-			pstmt.setInt(18, aRoomVO.getRoomOneBed());
-			pstmt.setInt(19, aRoomVO.getRoomTwoBed());
+			pstmt.setInt(7, aRoomVO.getRoomDefaultNo());
+			
+			pstmt.setInt(8, aRoomVO.getRoomDiscountStartDate());
+			pstmt.setInt(9, aRoomVO.getRoomDiscountEndDate());
+			pstmt.setDouble(10, aRoomVO.getRoomDisccountPercent());
+			pstmt.setInt(11, aRoomVO.getRoomDiscountHr());
+			pstmt.setString(12, changeBoolean(aRoomVO.getRoomOnePrice()));
+			pstmt.setString(13, aRoomVO.getRoomFun());
+			pstmt.setString(14, aRoomVO.getRoomMeal());
+			pstmt.setString(15, aRoomVO.getRoomSleep());
+			pstmt.setString(16, aRoomVO.getRoomFacility());
+			pstmt.setString(17, aRoomVO.getRoomSweetFacility());
+			pstmt.setInt(18, aRoomVO.getRoomCapacity());
+			pstmt.setInt(19, aRoomVO.getRoomOneBed());
+			pstmt.setInt(20, aRoomVO.getRoomTwoBed());
 			
 			
 
 			//條件
-			pstmt.setString(20, aRoomVO.getRoomId());
+			pstmt.setString(21, aRoomVO.getRoomId());
 	
 			pstmt.executeUpdate();
 		
@@ -369,9 +373,10 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 				roomVO.setRoomForSell(changeString(rs.getString("roomForSell")));
 				roomVO.setRoomForSellAuto(changeString(rs.getString("roomForSellAuto")));
 				roomVO.setRoomRemainNo(rs.getInt("roomRemainNo"));
+				roomVO.setRoomDefaultNo(rs.getInt("roomDefaultNo"));
 				roomVO.setRoomDiscountStartDate(rs.getInt("roomDiscountStartDate"));
 				roomVO.setRoomDiscountEndDate(rs.getInt("roomDiscountEndDate"));
-				roomVO.setRoomDisccountPercent(rs.getDouble("roomDisccountPercent"));
+				roomVO.setRoomDisccountPercent(rs.getInt("roomDisccountPercent"));
 				roomVO.setRoomDiscountHr(rs.getInt("roomDiscountHr"));
 				roomVO.setRoomOnePrice(changeString(rs.getString("roomOnePrice")));
 				roomVO.setRoomFun(rs.getString("roomFun"));
@@ -451,9 +456,10 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 				roomVO.setRoomForSell(changeString(rs.getString("roomForSell")));
 				roomVO.setRoomForSellAuto(changeString(rs.getString("roomForSellAuto")));
 				roomVO.setRoomRemainNo(rs.getInt("roomRemainNo"));
+				roomVO.setRoomDefaultNo(rs.getInt("roomDefaultNo"));
 				roomVO.setRoomDiscountStartDate(rs.getInt("roomDiscountStartDate"));
 				roomVO.setRoomDiscountEndDate(rs.getInt("roomDiscountEndDate"));
-				roomVO.setRoomDisccountPercent(rs.getDouble("roomDisccountPercent"));
+				roomVO.setRoomDisccountPercent(rs.getInt("roomDisccountPercent"));
 				roomVO.setRoomDiscountHr(rs.getInt("roomDiscountHr"));
 				roomVO.setRoomOnePrice(changeString(rs.getString("roomOnePrice")));
 				roomVO.setRoomFun(rs.getString("roomFun"));
