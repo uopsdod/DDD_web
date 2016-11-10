@@ -294,11 +294,13 @@ public class HotelServlet extends HttpServlet {
 				 * 2.開始查詢資料
 				 ****************************************/
 				// 0.未審核 1.已審核未通過 2.審核通過
+				HotelService hotelSvc = new HotelService();
+				HotelVO hotel = hotelSvc.getOne(hotelId);
 				if (hotelStatus.equals("0")) {
-					HotelService hotelSvc = new HotelService();
+					
 					hotelSvc.update_status(hotelId, "2");
 				}
-
+				Util_psw.sendMail(hotel.getHotelAccount(),"您好在DDD公司的註冊資料通過", "感謝你的註冊");
 				/***************************
 				 * 3.查詢完成,準備轉交(Send the Success view)
 				 ************/
@@ -336,20 +338,23 @@ public class HotelServlet extends HttpServlet {
 				 ****************************************/
 				String hotelId = request.getParameter("hotelId").trim();
 				String hotelStatus = request.getParameter("hotelStatus");
-
+				
 				/***************************
 				 * 2.開始查詢資料
+				 * 
 				 ****************************************/
+				HotelService hotelSvc = new HotelService();
+				HotelVO hotel = hotelSvc.getOne(hotelId);
 				// 0.未審核 1.已審核未通過 2.審核通過
 				if (hotelStatus.equals("0")) {
-					HotelService hotelSvc = new HotelService();
+					 hotelSvc = new HotelService();
 					hotelSvc.update_status(hotelId, "1");
 				}
-
+				Util_psw.sendMail(hotel.getHotelAccount(),"您好在DDD公司的註冊資料尚未通過", "煩請修改資料謝謝您。");
 				/***************************
 				 * 3.查詢完成,準備轉交(Send the Success view)
 				 ************/
-
+				
 				String url = requestURL;
 				RequestDispatcher successView = request.getRequestDispatcher(url);// 成功轉交
 																					// update_emp_input.jsp
@@ -549,10 +554,7 @@ public class HotelServlet extends HttpServlet {
 						hotelStatus, hotelBlackList, hotelRatingTotal, hotelRatingResult, hotelCreditCardNo,
 						hotelCreditCheckNo, hotelCreditDueDate);
 				// 設定傳送郵件:至收信人的Email信箱,Email主旨,Email內容
-				// Util_psw.sendMail(hotelAccount,
-				// hotelOwner+"您好歡迎您加入本公司成為工作夥伴，請查收您的私密資料", "您的帳號為 :
-				// "+hotelAccount+"您的密碼為 : "+hotelPwd_since
-				// +"請等候我們審核您的資料，謝謝您。");
+//				 Util_psw.sendMail(hotelAccount,hotelOwner+"您好歡迎您加入本公司成為工作夥伴，請查收您的私密資料", "您的帳號為 :"+hotelAccount+"您的密碼為 : "+hotelPwd_since+"請等候我們審核您的資料，謝謝您。");
 				/***************************
 				 * 3.新增完成,準備轉交(Send the Success view)
 				 ***********/
