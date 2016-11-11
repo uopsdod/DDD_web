@@ -59,7 +59,7 @@
 		<th>刪除</th>
 	</tr>
 
-	<c:forEach var="ordVO" items="${listOrdsByHotelId}"">
+	<c:forEach var="ordVO" items="${listOrdsByHotelId}">
 		<tr>
 			<td>${ordVO.ordId}</td>
 

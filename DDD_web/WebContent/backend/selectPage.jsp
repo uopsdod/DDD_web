@@ -71,7 +71,7 @@
 
 	<jsp:useBean id="hotelSvc" scope="page" class="com.hotel.model.HotelService" />
 	<li>
-		<form method="post" action="<%=request.getContextPath()%>/backend/hotel/hotel.do">
+		<form method="post" action="<%=request.getContextPath()%>/hotel/hotel.do">
 			選擇部門:(未完工)
 			<select name="hotelId">
 				<c:forEach var="hotelVO" items="${hotelSvc.all}">
