@@ -9,12 +9,7 @@
 	pageContext.setAttribute("ordStatusTrans",ordStatusTrans);
 %>
 
-<%
-	OrdService ordSvc = new OrdService();
-	List<OrdVO> list = ordSvc.getAll();
-	pageContext.setAttribute("list",list);
-%>
-
+<jsp:useBean id="listOrdsByHotelId" scope="request" type="java.util.Set"/>
 <jsp:useBean id="roomSvc" scope="page" class="com.room.model.RoomService" />
 <jsp:useBean id="memSvc" scope="page" class="com.mem.model.MemService" />
 <jsp:useBean id="hotelSvc" scope="page" class="com.hotel.model.HotelService" />
@@ -22,7 +17,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>所有訂單資料 - listAllOrd.jsp</title>
+<title>廠商訂單資料 - listOrdsByHotelId.jsp</title>
 </head>
 <body>
 練習用EL寫法取值
@@ -30,7 +25,7 @@
 <table>
 	<tr>
 		<td>
-			<h3>所有訂單資料 - ListAllOrd.jsp</h3>
+			<h3>廠商訂單資料 - listOrdsByHotelId.jsp</h3>
 			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"> <img src="images/back1.gif"> 回首頁 </a>
 		</td>
 	</tr>
@@ -63,8 +58,8 @@
 		<th>修改</th>
 		<th>刪除</th>
 	</tr>
-	<%@ include file="pages/page1.file" %>
-	<c:forEach var="ordVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+
+	<c:forEach var="ordVO" items="${listOrdsByHotelId}"">
 		<tr>
 			<td>${ordVO.ordId}</td>
 
@@ -131,7 +126,7 @@
 		</tr>
 	</c:forEach>
 </table>
-<%@ include file="pages/page2.file"%>
+
 
 <br>本網頁路徑:<br>
 	request.getServletPath(): <%= request.getServletPath() %> <br>

@@ -6,7 +6,7 @@
 <head>
 <title>Backend Ord Home</title>
 </head>
-<body bgcolor='red'>
+<body bgcolor='DarkSeaGreen'>
 
 <table border='1' cellpadding='5' cellspacing='0' width='400'>
 	<tr align='center' valign='middle'>

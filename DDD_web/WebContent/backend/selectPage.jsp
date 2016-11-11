@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
@@ -61,7 +61,7 @@
 			選擇簡訊驗證碼:
 			<select name="ordId">
 				<c:forEach var="ordVO" items="${ordSvc.all}">	
-					<option value="${ordVO.ordId}">${ordVO.ordMsgNo}
+					<option value="${ordVO.ordId}">${ordVO.ordMsgNo}</option>
 				</c:forEach>
 			</select>	
 			<input type="submit" value="送出">
@@ -93,7 +93,7 @@
 <h3>廠商管理</h3>
 
 <ul>
-	<li><a href="<%=request.getContextPath()%>/backend/hotel/listAllHotel.jsp">List</a> all Hotels.</li>
+	<li><a href="<%=request.getContextPath()%>/backend/hotel/listAllHotel2.jsp">List</a> all Hotels.</li>
 </ul>
 
 

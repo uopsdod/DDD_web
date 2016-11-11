@@ -1,12 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.*, com.ord.model.*, java.text.SimpleDateFormat" %>
-<%@ page import="com.room.model.*,com.hotel.model.*,com.mem.model.*" %>
-<!DOCTYPE html>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, java.text.SimpleDateFormat" %>
+<%@ page import="com.ord.model.*, com.room.model.*,com.hotel.model.*,com.mem.model.*" %>
+
+<%-- 用Script練習 --%>
 
 <%
 	HashMap<String,String> ordStatusTrans = (HashMap<String,String>) application.getAttribute("ordStatusTrans");
 %>
-
 
 <%
 	OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controller),存入req的ordVO物件
@@ -30,6 +30,7 @@
 	HotelVO hotelVO = hotelSvc.getOne(ordVO.getOrdHotelId());
 %>
 
+<!DOCTYPE html>
 <html>
 <head>
 <title>訂單資料 - listOneOrd.jsp</title>
@@ -45,7 +46,6 @@
 			</td>
 		</tr>
 	</table>
-
 
 	<table border='1'>
 		<tr>

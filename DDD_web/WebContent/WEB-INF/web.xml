@@ -17,9 +17,9 @@
     <url-pattern>/backend/emp/addEmp.jsp</url-pattern>
     <url-pattern>/backend/emp_index.jsp</url-pattern>
     <url-pattern>/backend/auth/update_auth.jsp</url-pattern>
-<!--     <url-pattern>/backend/hotel/listAllHotel.jsp</url-pattern> -->
-<!--     <url-pattern>/backend/hotel/getOneHotel.jsp</url-pattern> -->
-<!--     <url-pattern>/backend/hotel/get_need_check.jsp</url-pattern> -->
+    <url-pattern>/backend/hotel/listAllHotel.jsp</url-pattern>
+    <url-pattern>/backend/hotel/getOneHotel.jsp</url-pattern>
+    <url-pattern>/backend/hotel/get_need_check.jsp</url-pattern>
      
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
