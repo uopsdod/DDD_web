@@ -42,8 +42,8 @@ public class HotelServlet extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		
-		session.invalidate();
-
+		session.removeAttribute("account_hotel");
+		session.removeAttribute("hotelVO");
 		String url = "/frontend_hotel/hotel/loginhotel.jsp";
 		RequestDispatcher successView = request.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 		successView.forward(request, response);
@@ -94,7 +94,7 @@ public class HotelServlet extends HttpServlet {
 					errorMsgs.add("密碼錯誤");
 				} else {
 					HttpSession session = request.getSession();
-					session.setAttribute("account", account);
+					session.setAttribute("account_hotel", account);
 					session.setAttribute("hotelVO", hotelVO);
 
 					try {
@@ -103,18 +103,25 @@ public class HotelServlet extends HttpServlet {
 							session.removeAttribute("location"); // *工作2:
 																	// 看看有無來源網頁
 																	// (-->如有來源網頁:則重導至來源網頁)
-							response.sendRedirect(location);
+
+							if (hotelVO.getHotelStatus().equals("0")) {// 判斷狀態當有來源
+								response.sendRedirect(request.getContextPath() + "/frontend_hotel/hotel/Status_0.jsp");
+							} else if (hotelVO.getHotelStatus().equals("1")) {
+								response.sendRedirect(request.getContextPath() + "/frontend_hotel/hotel/Status_1.jsp");
+							} else {
+								response.sendRedirect(location);
+							}
 							return;
 						}
 					} catch (Exception ignored) {
 					}
 
-					if (hotelVO.getHotelStatus().equals("0")) {// 判斷狀態
+					if (hotelVO.getHotelStatus().equals("0")) {// 判斷狀態一般登入時
 						response.sendRedirect(request.getContextPath() + "/frontend_hotel/hotel/Status_0.jsp");
 					} else if (hotelVO.getHotelStatus().equals("1")) {
 						response.sendRedirect(request.getContextPath() + "/frontend_hotel/hotel/Status_1.jsp");
 					} else {
-						response.sendRedirect(request.getContextPath() + "/frontend_hotel/hotel/index.jsp"); // *工作3:
+						response.sendRedirect(request.getContextPath() + "/frontend_hotel/index.jsp"); // *工作3:
 																												// (-->如無來源網頁:則重導至login_success.jsp)
 					}
 				}
@@ -516,7 +523,7 @@ public class HotelServlet extends HttpServlet {
 				hotelVO.setHotelRoad(hotelRoad);
 				hotelVO.setHotelOwner(hotelOwner);
 				hotelVO.setHotelAccount(hotelAccount);
-				hotelVO.setHotelPwd(hotelPwd);
+				
 				hotelVO.setHotelPhone(hotelPhone);
 				hotelVO.setHotelLon(hotelLon);
 				hotelVO.setHotelLat(hotelLat);
@@ -554,7 +561,7 @@ public class HotelServlet extends HttpServlet {
 						hotelStatus, hotelBlackList, hotelRatingTotal, hotelRatingResult, hotelCreditCardNo,
 						hotelCreditCheckNo, hotelCreditDueDate);
 				// 設定傳送郵件:至收信人的Email信箱,Email主旨,Email內容
-//				 Util_psw.sendMail(hotelAccount,hotelOwner+"您好歡迎您加入本公司成為工作夥伴，請查收您的私密資料", "您的帳號為 :"+hotelAccount+"您的密碼為 : "+hotelPwd_since+"請等候我們審核您的資料，謝謝您。");
+				 Util_psw.sendMail(hotelAccount,hotelOwner+"您好歡迎您加入本公司成為工作夥伴，請查收您的私密資料", "您的帳號為 :"+hotelAccount+"您的密碼為 : "+hotelPwd_since+"請等候我們審核您的資料，謝謝您。");
 				/***************************
 				 * 3.新增完成,準備轉交(Send the Success view)
 				 ***********/
