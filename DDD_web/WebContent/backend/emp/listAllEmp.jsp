@@ -16,7 +16,13 @@ List<String> authorityList =(List<String>)session.getAttribute("authorityList");
 session.setAttribute("empvo", empvo);
 session.setAttribute("authorityList",authorityList);
 %>
+<!-- 如果權限沒有人事轉到首頁怕他偷吃步-->
 
+<%
+if(!authorityList.contains("101")){
+	response.sendRedirect(request.getContextPath()+"/backend/emp_index.jsp");
+}
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -206,7 +212,7 @@ body {
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
 					        		<a href="<%=request.getContextPath()%>/backend/emp/addEmp.jsp"><li>新增員工資料</li></a>
-									<a href="<%=request.getContextPath()%>/backend/emp/listAllEmp.jsp""><li>員工資料維護</li></a>
+									<a href="<%=request.getContextPath()%>/backend/emp/listAllEmp.jsp"><li>員工資料維護</li></a>
 					        	</ul>
 					      </div>
 					    </div>

@@ -19,6 +19,14 @@ session.setAttribute("empvo", empvo);
 session.setAttribute("authorityList",authorityList);
 %>
 
+<!-- 如果權限沒有人事轉到首頁怕他偷吃步-->
+
+<%
+if(!authorityList.contains("101")){
+	response.sendRedirect(request.getContextPath()+"/backend/emp_index.jsp");
+}
+%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -319,6 +327,7 @@ body {
 						<td>${HotelVO.hotelName}</td>
 						<td>${HotelVO.hotelTaxId}</td>
 						<td>${HotelVO.hotelAccount}</td>
+						
 						<td>${HotelVO.hotelCity}</td>
 						<td>${HotelVO.hotelCounty}</td>
 						<td>${HotelVO.hotelRoad}</td>
