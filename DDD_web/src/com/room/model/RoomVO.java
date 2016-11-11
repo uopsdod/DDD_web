@@ -8,6 +8,7 @@ public class RoomVO implements java.io.Serializable{
 	private String roomName;
 	private Integer roomTotalNo;
 	private Integer roomPrice;
+	private Integer roomBottomPrice;
 	private Boolean roomForSell;
 	private Boolean roomForSellAuto;
 	private Integer roomRemainNo;
@@ -55,6 +56,12 @@ public class RoomVO implements java.io.Serializable{
 	}
 	public void setRoomPrice(Integer aRoomPrice) {
 		this.roomPrice = aRoomPrice;
+	}
+	public Integer getRoomBottomPrice() {
+		return roomBottomPrice;
+	}
+	public void setRoomBottomPrice(Integer aRoomBottomPrice) {
+		this.roomBottomPrice = aRoomBottomPrice;
 	}
 	public Boolean getRoomForSell() {
 		return roomForSell;

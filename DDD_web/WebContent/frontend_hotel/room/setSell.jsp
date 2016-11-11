@@ -66,11 +66,11 @@ pageContext.setAttribute("roomVO",roomVO);
 							    
 									    <ul class="nav nav-tabs" role="tablist">
 									    	
-									    	<li role="presentation">
+									    	<li role="presentation" class="active">
 									            <a href="#dd3" aria-controls="dd3" role="tab" data-toggle="tab">即時上架</a>
 									        </li>
 									    	
-									        <li role="presentation" class="active">
+									        <li role="presentation" >
 									            <a href="#xx1" aria-controls="xx1" role="tab" data-toggle="tab">定時上架</a>
 									        </li>
 									   		      
@@ -79,50 +79,11 @@ pageContext.setAttribute("roomVO",roomVO);
 							    <!-- 標籤面板：內容區 -->
 								    <div class="tab-content">
 								    
-								        <div role="tabpanel" class="tab-pane active" id="xx1">
-													
-												<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/room/room.do" name="form1"  >	
-													<input type="hidden" name="roomHotelId" size="45" 
-															value="<%= (roomVO==null)? "10001" : roomVO.getRoomHotelId()%>" />
-														
-													<div class="form-group">
-														<label class="col-sm-3 control-label">房型名稱</label>
-														<div class="col-sm-9">
-																<input type="TEXT" name="roomName" size="45" class="form-control"
-																		value="<%= (roomVO==null)? "" : roomVO.getRoomName()%>" />
-														</div>
-													</div>
-							
-													<div class="form-group">
-														<label class="col-sm-3 control-label">房間總數</label>
-														<div class="col-sm-9">
-																<input type="TEXT" name="roomTotalNo" size="10" class="form-control"
-																	value="<%= (roomVO==null)? "" : (roomVO.getRoomTotalNo()==null?"":roomVO.getRoomTotalNo())%>" />
-														</div>
-													</div>
-							
-													<div class="form-group">
-														<label class="col-sm-3 control-label">房間定價</label>
-														<div class="col-sm-9">
-																<input type="TEXT" name="roomPrice" size="45" class="form-control"
-																	value="<%= (roomVO==null)? "" : (roomVO.getRoomPrice()==null?"":roomVO.getRoomPrice())%>" />
-														</div>
-													</div>
-							
-													
-													
-											<input type="hidden" name="roomId" value="<%=roomVO.getRoomId()%>">
-											<input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>"><!--接收原送出修改的來源網頁路徑後,再送給Controller準備轉交之用-->
-											<input type="hidden" name="whichPage" value="<%=request.getParameter("whichPage")%>"> 	
-											<input type="hidden" name="action" value="RoomUpdate">
-											<input type="submit" value="定時上架">	
-										
-										  </form> 
-										 </div>
+								      
 												
 										
-										 
-										 <div role="tabpanel" class="tab-pane" id="dd3">
+										 <!-- 第一頁籤內容   即時上架-->
+										 <div role="tabpanel" class="tab-pane active" id="dd3">
 										 
 										 <form METHOD="post" ACTION="<%=request.getContextPath()%>/room/room.do" name="form2"  enctype="multipart/form-data">        
 										        
@@ -147,7 +108,8 @@ pageContext.setAttribute("roomVO",roomVO);
 													<div class="form-group">
 														<label class="col-sm-3 control-label">房間底價</label>
 														<div class="col-sm-9">
-																<input type="TEXT" name="bottomPrice" size="45" class="form-control" />
+																<input type="TEXT" name="roomBottomPrice" size="45" class="form-control" 
+																value="<%= (roomVO==null)? "" : (roomVO.getRoomBottomPrice()==null?"":roomVO.getRoomBottomPrice())%>"/>
 														</div>
 													</div>
 													
@@ -263,9 +225,192 @@ pageContext.setAttribute("roomVO",roomVO);
 										        
 										        
 										        
-										  </form>      
-										 </div>  <!-- 第三頁籤內容結束 -->
-								    </div>
+										  </form> 
+										       
+										 </div>  <!-- 第一頁籤內容結束 -->
+										 
+										 <!-- 第二頁籤內容  定時上架 -->
+										 <div role="tabpanel" class="tab-pane " id="xx1">
+													
+												<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/room/room.do" name="form1"  >	
+													
+				
+															
+													<div class="form-group">
+														<label class="col-sm-3 control-label">房型名稱</label>
+														<div class="col-sm-9">
+																<input type="TEXT" name="roomName" size="45" class="form-control"
+																		value="<%= (roomVO==null)? "" : roomVO.getRoomName()%>" />
+														</div>
+													</div>
+							
+							
+													<div class="form-group">
+														<label class="col-sm-3 control-label">房間定價</label>
+														<div class="col-sm-9">
+																<input type="TEXT" name="roomPrice" size="45" class="form-control"
+																	value="<%= (roomVO==null)? "" : (roomVO.getRoomPrice()==null?"":roomVO.getRoomPrice())%>" />
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<label class="col-sm-3 control-label">房間底價</label>
+														<div class="col-sm-9">
+																<input type="TEXT" name="roomBottomPrice" size="45" class="form-control" 
+																value="<%= (roomVO==null)? "" : (roomVO.getRoomBottomPrice()==null?"":roomVO.getRoomBottomPrice())%>"/>
+														</div>
+													</div>
+													
+													
+										           
+										           	<div class="form-group">
+													
+														<label class="col-sm-3 control-label">每日預定上架房數</label>
+															<div class="col-sm-9">
+																<table>
+																	<tr>	
+																		<td>
+																		<select class="form-control" size="1" name="roomDefaultNo">
+																			<% for(int i =0;i<=roomVO.getRoomTotalNo();i++){%>
+																				<option value="<%=i%>"    <%=roomVO==null?"":(roomVO.getRoomDefaultNo()==i)?"selected":""%>	><%=i%>	
+																			<% }%>	
+																		</select>
+																		</td>
+																
+																	</tr>
+																</table>
+														
+															</div>
+													</div>
+													
+													
+													<div class="form-group">
+													
+														<label class="col-sm-3 control-label">定時上架時間</label>
+															<div class="col-sm-9">
+															<table>
+																	<tr>	
+																		<td>時<select class="form-control" size="1" name="roomDiscountStartDatehour">
+																			<% for(int i =0;i<24;i++){%>
+																				<option value="<%=i%>"    <%=roomVO==null?"":((roomVO.getRoomDiscountStartDate())/(60*60*1000)==i)?"selected":""%>	><%=i%>	
+																			<% }%>	
+																		</select>
+																		</td>
+																	
+																		<td>分<select class="form-control" size="1" name="roomDiscountStartDateminute">
+																			<% for(int i =0;i<60;i++){%>
+																				<option value="<%=i%>"	  <%=roomVO==null?"":(((roomVO.getRoomDiscountStartDate())%(60*60*1000))/(60*1000)==i)?"selected":""%>	><%=i%>	
+																			<% }%>	
+																		</select>
+																		</td>
+																	
+																	
+																	</tr>
+																</table>
+														
+															</div>
+													</div>
+												
+													
+													
+													<div class="form-group">
+													
+														<label class="col-sm-3 control-label">定時下架時間</label>
+															<div class="col-sm-9">
+															<table>
+																	<tr>	
+																		<td>時<select class="form-control" size="1" name="roomDiscountEndDatehour">
+																			<% for(int i =0;i<24;i++){%>
+																				<option value="<%=i%>"    <%=roomVO==null?"":((roomVO.getRoomDiscountEndDate())/(60*60*1000)==i)?"selected":""%>	><%=i%>	
+																			<% }%>	
+																		</select>
+																		</td>
+																	
+																		<td>分<select class="form-control" size="1" name="roomDiscountEndDateminute">
+																			<% for(int i =0;i<60;i++){%>
+																				<option value="<%=i%>"	  <%=roomVO==null?"":(((roomVO.getRoomDiscountEndDate())%(60*60*1000))/(60*1000)==i)?"selected":""%>	><%=i%>	
+																			<% }%>	
+																		</select>
+																		</td>
+																	
+																	</tr>
+																</table>
+														
+															</div>
+													</div>											             
+										    		
+										    		
+										    		<div class="form-group">
+														<label class="col-sm-3 control-label">是否一價到底</label>
+														<div class="col-sm-9">
+															<div class="col-xs-12 col-sm-3">
+																<input type="radio" name="roomOnePrice"  class="form-control"
+															value="true" <%=(roomVO==null)?"":(roomVO.getRoomOnePrice()==true?"checked":"") %> />
+															</div>
+															<div class="col-xs-12 col-sm-3">
+																<div class="row">
+																<h3>yes</h3>
+																</div>
+															</div>
+															<div class="col-xs-12 col-sm-3">
+																<input type="radio" name="roomOnePrice" class="form-control"
+															value="false" <%=(roomVO==null)?"":(roomVO.getRoomOnePrice()==false?"checked":"") %> />
+															</div>
+															<div class="col-xs-12 col-sm-3">
+																<div class="row">
+																<h3>no</h3>
+																</div>
+															</div>
+															
+														</div>
+													</div>
+										    		
+										    		
+										    		
+										 			<div class="form-group">
+														<label class="col-sm-3 control-label">單位時間折扣</label>
+														<div class="col-sm-9">
+																<select size="1" name="roomDisccountPercent" class="form-control" style="width:100px">
+																<% for(int i =1;i<=30;i++){%>
+																	<option value="<%=i%>"	<%=roomVO==null?"":((roomVO.getRoomDisccountPercent()==i)?"selected":"")%>	><%=i+"%"%>	
+																<%}%>	
+															</select>
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<label class="col-sm-3 control-label">折扣每單位時間30*n(min)</label>
+														<div class="col-sm-9">
+																<select size="1" name="roomDiscountHr" class="form-control" style="width:100px">
+																<% for(int i =1;i<7;i+=1){%>
+																	<option value="<%=i%>"  <%=roomVO==null?"":((roomVO.getRoomDiscountHr()==i)?"selected":"")%>	>	<%=i%>
+																<%}%>
+															</select>
+														</div>
+													</div>
+													
+													
+													
+							
+													
+											
+											 <input type="hidden" name="roomId" value="<%=roomVO.getRoomId()%>">
+											 <input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>"><!--接收原送出修改的來源網頁路徑後,再送給Controller準備轉交之用-->
+											 <input type="hidden" name="whichPage" value="<%=request.getParameter("whichPage")%>">
+										     <input type="hidden" name="hotelId" value="${roomVO.roomHotelId}">
+										     <input type="hidden" name="action" value="OnTimeSellRegular">
+										     <input type="submit" value="定時上架">	
+											
+											
+						
+										
+										  </form> 
+									   </div><!-- 第二頁籤內容結束 -->
+								    </div>   <!-- 標籤面板：內容區結束 -->
+								
+								
+								
+								
 								</div>
 							</div>
 								

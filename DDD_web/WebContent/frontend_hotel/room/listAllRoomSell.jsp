@@ -45,7 +45,8 @@
 					<%
 						RoomService roomSvc = new RoomService();
 	        			Set<RoomVO> roomSet = roomSvc.getOneHotelAllRoom(hotelId); 
-					    pageContext.setAttribute("roomSet",roomSet);
+					    System.out.println(roomSet.size());
+	        			pageContext.setAttribute("roomSet",roomSet);
 					%>
 					
 		<!-- 					*****************************換頁*************************************** -->			
@@ -109,11 +110,18 @@
 								
 								
 								 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/room/room.do">
-									     <input type="submit" class="btn btn-primary" value="上架設定"> 
+									     <input type="submit" class="btn btn-primary" value="上架"> 
 									     <input type="hidden" name="roomId" value="${roomVO.roomId}">
 									     <input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller-->
 									     <input type="hidden" name="whichPage"	value="<%=whichPage%>">               <!--送出當前是第幾頁給Controller-->
 									     <input type="hidden" name="action"	value="setSell">
+								 </FORM>
+								  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/room/room.do">
+									     <input type="submit" class="btn btn-danger" value="下架"> 
+									     <input type="hidden" name="roomId" value="${roomVO.roomId}">
+									     <input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller-->
+									     <input type="hidden" name="whichPage"	value="<%=whichPage%>">               <!--送出當前是第幾頁給Controller-->
+									     <input type="hidden" name="action"	value="DownSell">
 								 </FORM>						
 							</td>
 						</tr>
