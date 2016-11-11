@@ -18,6 +18,13 @@
 	session.setAttribute("empvo", empvo);
 	session.setAttribute("authorityList",authorityList);
 %>
+<!-- 如果權限沒有人事轉到首頁怕他偷吃步-->
+<%
+if(!authorityList.contains("101")){
+	response.sendRedirect(request.getContextPath()+"/backend/emp_index.jsp");
+}
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
