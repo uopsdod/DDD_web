@@ -9,12 +9,6 @@ import javax.servlet.ServletContextListener;
 public class InitializeOrdStatusTransListener implements ServletContextListener {
 
 	@Override
-	public void contextDestroyed(ServletContextEvent event) {
-		// do nothing
-		System.out.println("ServletContextListener通知: contextDestroyed....");
-	}
-
-	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		ServletContext context = event.getServletContext();
 		
@@ -25,8 +19,13 @@ public class InitializeOrdStatusTransListener implements ServletContextListener 
 		ordStatusTrans.put("3","已繳費");
 		ordStatusTrans.put("4","逾時取消");
 			
-		context.setAttribute("ordStatusTrans", ordStatusTrans);
-		
+		context.setAttribute("ordStatusTrans", ordStatusTrans);		
 	}
 
+	@Override
+	public void contextDestroyed(ServletContextEvent event) {
+		// do nothing
+		//System.out.println("ServletContextListener通知: contextDestroyed....");
+	}	
+	
 }

@@ -12,9 +12,7 @@
 
 <%
 	HashMap<String,String> ordStatusTrans = (HashMap<String,String>)(application.getAttribute("ordStatusTrans"));
-
 	pageContext.setAttribute("ordStatusTrans",ordStatusTrans);
-
 %>
 
 
