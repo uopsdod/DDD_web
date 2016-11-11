@@ -9,8 +9,10 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.mem.model.MemVO;
+import com.ord.model.OrdVO;
 
 public class HotelJDBCDAO implements HotelDAO_interface {
 	String driver = "oracle.jdbc.driver.OracleDriver";
@@ -820,6 +822,13 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 		}
 			return hotelVO;
 		}
+	
+	/*下面是韓哥需要的 (應該用不到)*/
+	@Override
+	public Set<OrdVO> getOrdsByHotelId(String aHotelId){
+		Set<OrdVO> set = null;
+		return set;
+	}
 	
 	public static void main(String[] args) {
 		HotelJDBCDAO dao = new HotelJDBCDAO();
