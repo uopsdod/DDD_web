@@ -1,8 +1,10 @@
 package com.hotel.model;
 
 import java.util.List;
+import java.util.Set;
 
 import com.emp.model.EmpVO;
+import com.ord.model.OrdVO;
 
 
 
@@ -177,4 +179,11 @@ public class HotelService {
 	public void update_hotelBlackList(String hotelId, String hotelBlackList) {
 		dao.update_hotelBlackList(hotelId, hotelBlackList);
 	}
+	
+	/* 以下是韓哥需要 */
+	/* (廠商會員)列出該廠商會員的所有訂單 */
+	public Set<OrdVO> getOrdsByHotelId(String aOrdHotelId){
+		return dao.getOrdsByHotelId(aOrdHotelId);
+	}
+	
 }

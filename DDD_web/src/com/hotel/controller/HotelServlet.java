@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,6 +21,7 @@ import com.emp.model.EmpService;
 import com.emp.model.EmpVO;
 import com.hotel.model.HotelService;
 import com.hotel.model.HotelVO;
+import com.ord.model.OrdVO;
 
 import util.AddressToLat;
 import util.Util_psw;
@@ -1055,6 +1057,34 @@ public class HotelServlet extends HttpServlet {
 				RequestDispatcher failureView = request.getRequestDispatcher("/frontend_hotel/hotel/updatesecess.jsp");
 				failureView.forward(request, response);
 			}
+		}
+		
+		/* 下面是韓哥需要的action */
+		if("listOrdsByHotelIdA".equals(action) || "listOrdsByHotelIdB".equals(action) ){
+			List<String> errorMsgs = new LinkedList<String>();
+			request.setAttribute("errorMsgs", errorMsgs);
+			
+			try{
+				String hotelId = request.getParameter("hotelId");
+				HotelService hotelSvc = new HotelService();
+				Set<OrdVO> set = hotelSvc.getOrdsByHotelId(hotelId);
+				request.setAttribute("listOrdsByHotelId", set);
+				
+				String url = null;
+				if("listOrdsByHotelIdA".equals(action)){
+					url = "/backend/hotel/listOrdsByHotelId.jsp";
+				}
+				else{
+					url = "/backend/hotel/listAllHotel2.jsp";
+				}
+				
+				RequestDispatcher successView = request.getRequestDispatcher(url);
+				successView.forward(request, response);
+			}
+			catch(Exception e){
+				throw new ServletException(e);
+			}
+			
 		}
 
 	}

@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -15,6 +17,7 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import com.emp.model.EmpVO;
+import com.ord.model.OrdVO;
 
 public class HotelJNDIDAO implements HotelDAO_interface {
 	private static DataSource ds = null;
@@ -65,6 +68,12 @@ public class HotelJNDIDAO implements HotelDAO_interface {
 	private static final String GET_PHOTO_COV ="SELECT hotelCoverPic from hotel where hotelId=?";//封面
 	private static final Base64.Encoder encoder = Base64.getEncoder();
 	private static final Base64.Encoder encoder1 = Base64.getEncoder();
+	
+	/*下面是韓哥需要的*/
+	private static final String GET_ORDS_BYHOTELID_STMT = "SELECT ordID,ordRoomId,"
+			+"ordMemId,ordHotelId,ordPrice, ordLiveDate, ordDate,ordStatus,ordRatingContent,"
+			+"ordRatingStarNo,ordMsgNo FROM ord where OrdHotelId = ? order by ordID DESC";	
+	
 	@Override
 	public List<HotelVO> getAll() {
 		List<HotelVO> list = new ArrayList<HotelVO>();
@@ -803,5 +812,69 @@ public class HotelJNDIDAO implements HotelDAO_interface {
 			return hotelVO;
 		}
 
+	/*下面是韓哥需要的*/
+	@Override
+	 public Set<OrdVO> getOrdsByHotelId(String aHotelId){
+		
+		Set<OrdVO> set = new LinkedHashSet<OrdVO>();
+		OrdVO ordVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(HotelJNDIDAO.GET_ORDS_BYHOTELID_STMT);
+			pstmt.setString(1, aHotelId);
+			rs = pstmt.executeQuery();
+
+			while(rs.next()){
+				ordVO = new OrdVO();
+				ordVO.setOrdId(rs.getString("ordID"));
+				ordVO.setOrdRoomId(rs.getString("ordRoomId"));
+				ordVO.setOrdMemId(rs.getString("ordMemId"));
+				ordVO.setOrdHotelId(rs.getString("ordHotelId"));
+				ordVO.setOrdPrice(rs.getInt("ordPrice"));
+				ordVO.setOrdLiveDate(rs.getTimestamp("ordLiveDate"));
+				ordVO.setOrdDate(rs.getTimestamp("ordDate"));
+				ordVO.setOrdStatus(rs.getString("ordStatus"));
+				ordVO.setOrdRatingContent(rs.getString("ordRatingContent"));
+				ordVO.setOrdRatingStarNo(rs.getInt("ordRatingStarNo"));
+				ordVO.setOrdMsgNo(rs.getString("ordMsgNo"));
+				//ordVO.setOrdQrPic(rs.getBytes("ordQrPic"));
+				set.add(ordVO);
+			}	
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return set;		
+		
+	 }
 	
 }

@@ -1,5 +1,7 @@
 package com.hotel.model;
+
 import java.util.*;
+import com.ord.model.OrdVO;
 
 public interface HotelDAO_interface {
 	 public List<HotelVO> getAll();
@@ -15,4 +17,7 @@ public interface HotelDAO_interface {
      public HotelVO findByPrimaryKey(String aHotelId);
      public byte[] getPhoto_cov(String aHotelId);
      public byte[] getPhoto_register(String aHotelId);
+
+     /* 下面是韓哥需要的 */
+     public Set<OrdVO> getOrdsByHotelId(String aHotelId);
 }

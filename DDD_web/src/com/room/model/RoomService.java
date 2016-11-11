@@ -46,47 +46,52 @@ public class RoomService {
 			con = ds.getConnection();		
 			con.setAutoCommit(false);	
 		
-			try{
+//			try{
 				
-				dao.insert(aRoomVO,con);	//新增房型資料
+			dao.insert(aRoomVO,con);	//新增房型資料
 				
-				}catch(Exception ae){
-					System.out.println(ae.getMessage());
-					con.rollback();
-					if (con != null) {
-						try {
-							con.close();
-						} catch (Exception te) {
-							System.out.println(te.getMessage());
-							te.printStackTrace(System.err);
-						}
+//				}catch(Exception ae){
+//					System.out.println(ae.getMessage());
+//					con.rollback();
+//					if (con != null) {
+//						try {
+//							con.close();
+//						} catch (Exception te) {
+//							System.out.println(te.getMessage());
+//							te.printStackTrace(System.err);
+//						}
+//					}
+//					System.out.println("房型資料新增有錯");
+//					
+//					
+//					throw new RuntimeException();
+//				}
+			
+				if(aImgbyte.size()!=0){//沒有上傳圖片不進入區塊,不新增圖片
+				
+				RoomPhotoService RoomPhotoSvc = new RoomPhotoService();
+					for(int i=0;i<aImgbyte.size();i++){
+						
+						RoomPhotoSvc.insertRoomPhoto(aRoomVO.getRoomHotelId(),aImgbyte.get(i),con);
+						//新增圖片
 					}
-					System.out.println("房型資料新增有錯");
-					return;		
 				}
-			
-			if(aImgbyte.size()==0){return;}//沒有上傳圖片直接跳出方法,不新增圖片
-			
-			RoomPhotoService RoomPhotoSvc = new RoomPhotoService();
-			for(int i=0;i<aImgbyte.size();i++){
 				
-				RoomPhotoSvc.insertRoomPhoto(aRoomVO.getRoomHotelId(),aImgbyte.get(i),con);
-				//新增圖片
-			}
-					
-			
+			System.out.println("commit");		
 			con.commit();
 		}catch(Exception e){
 			System.out.println(e.getMessage());
 			try{
-				con.rollback();
+				con.rollback();	
 			}catch(Exception se){
 				
-			}	
+			}
+			throw new RuntimeException();
 		}
 		finally{
 			if (con != null) {
 				try {
+					System.out.println("con.close()");
 					con.close();
 				} catch (Exception e) {
 					e.printStackTrace(System.err);

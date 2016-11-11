@@ -20,14 +20,15 @@
 				      <tr style="background-color:#B0C4DE;">
 					<th>房間名稱</th>
 					<th>總房間數</th>
-					<th>剩餘房數</th>		
+					<th>剩餘房數</th>
+					<th>每日預訂上架房數</th>		
 					<th>房間定價</th>
 					<th>上架狀態</th>
 					<th>開啟定時系統</th>	
 					<th>定時上架時間</th>
 					<th>下架時間</th>
 					<th>單位時間折扣百分比</th>
-					<th>折扣單位時間</th>
+					<th>折扣單位時間(30min*n)</th>
 					<th>是否一價到底</th>
 					<th></th>	
 				      </tr>
@@ -44,10 +45,11 @@
 					<%
 						RoomService roomSvc = new RoomService();
 	        			Set<RoomVO> roomSet = roomSvc.getOneHotelAllRoom(hotelId); 
-					    pageContext.setAttribute("roomSet",roomSet);
+					    System.out.println(roomSet.size());
+	        			pageContext.setAttribute("roomSet",roomSet);
 					%>
 					
-					
+		<!-- 					*****************************換頁*************************************** -->			
 					
 					<%  int rowsPerPage = 5; 
 					    int rowNumber=0;      
@@ -81,6 +83,7 @@
 					         }
 					    } 
 					%>
+	<!-- 					*****************************換頁*************************************** -->				
 					<c:forEach var="roomVO" items="${roomSet}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 					
 
@@ -88,7 +91,7 @@
 							<td><a href=""  id="${roomVO.roomId}"  onclick="show()">${roomVO.roomName}</a></td>
 							<td>${roomVO.roomTotalNo}</td>
 							<td>${roomVO.roomRemainNo}</td>
-							
+							<td>${roomVO.roomDefaultNo}</td>
 							
 							<td>${roomVO.roomPrice}</td>
 							<td>${roomVO.roomForSell==true?'上架中':'未上架'}</td>
@@ -100,17 +103,32 @@
 							<td>${(roomVO.roomDiscountStartDate/3600000).intValue()}時 ${((roomVO.roomDiscountStartDate%3600000)/60000).intValue()}分</td>
 							<td>${(roomVO.roomDiscountEndDate/3600000).intValue()}時 ${((roomVO.roomDiscountEndDate%3600000)/60000).intValue()}分</td>															
 							
-							<td>${(roomVO.roomDisccountPercent*100).intValue()}%</td>
+							<td>${roomVO.roomDisccountPercent}%</td>
 							<td>${roomVO.roomDiscountHr}</td>
 							<td>${roomVO.roomOnePrice==true?'是':'否'}</td>
 							<td>
-								<button type="button" class="btn btn-primary">修改</button>						
+								
+								
+								 <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/room/room.do">
+									     <input type="submit" class="btn btn-primary" value="上架"> 
+									     <input type="hidden" name="roomId" value="${roomVO.roomId}">
+									     <input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller-->
+									     <input type="hidden" name="whichPage"	value="<%=whichPage%>">               <!--送出當前是第幾頁給Controller-->
+									     <input type="hidden" name="action"	value="setSell">
+								 </FORM>
+								  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/room/room.do">
+									     <input type="submit" class="btn btn-danger" value="下架"> 
+									     <input type="hidden" name="roomId" value="${roomVO.roomId}">
+									     <input type="hidden" name="requestURL"	value="<%=request.getServletPath()%>"><!--送出本網頁的路徑給Controller-->
+									     <input type="hidden" name="whichPage"	value="<%=whichPage%>">               <!--送出當前是第幾頁給Controller-->
+									     <input type="hidden" name="action"	value="DownSell">
+								 </FORM>						
 							</td>
 						</tr>
 							</tbody>
 					</c:forEach>
 				  </table>
-					
+<!-- 					*****************************換頁*************************************** -->
 						<table border="0" > 
 							 <tr>
 							  <%if (rowsPerPage<rowNumber) {%>
@@ -146,31 +164,7 @@
 						<%}%>
 						<b>●符 合 查 詢 條 件 如 下 所 示: 共<font color=red><%=rowNumber%></font>筆</b>
 				
-
-
-
-<!-- 				<div class="col-xs-12 col-sm-12"> -->
-<!-- 					<div class="col-xs-12 col-sm-3"> -->
-<!-- 						每頁10筆, 共87筆紀錄 -->
-<!-- 					</div> -->
-
-<!-- 					<div class="col-xs-12 col-sm-6 text-center"> -->
-<!-- 						<ul class="pagination" style="margin:0px"> -->
-<!-- 						  <li><a href="#">&laquo;</a></li> -->
-<!-- 						  <li><a href="#">1</a></li> -->
-<!-- 						  <li><a href="#">2</a></li> -->
-<!-- 						  <li class="active"><a href="#">3</a></li> -->
-<!-- 						  <li><a href="#">4</a></li> -->
-<!-- 						  <li><a href="#">5</a></li> -->
-<!-- 						  <li><a href="#">&raquo;</a></li> -->
-<!-- 						</ul> -->
-<!-- 					</div>		 -->
-
-<!-- 					<div class="col-xs-12 col-sm-3"> -->
-
-<!-- 					</div> -->
-<!-- 				</div> -->
-
+<!-- 					*****************************換頁*************************************** -->
 
 
 
