@@ -307,7 +307,7 @@ public class HotelServlet extends HttpServlet {
 					
 					hotelSvc.update_status(hotelId, "2");
 				}
-				Util_psw.sendMail(hotel.getHotelAccount(),"您好在DDD公司的註冊資料通過", "感謝你的註冊"+"http://localhost:8081/AA104G4/frontend_hotel/hotel/loginhotel.jsp");
+				Util_psw.sendMail(hotel.getHotelAccount(),"您好在DDD公司的註冊資料通過", "感謝你的註冊"+"http://localhost:8081/DDD_web/frontend_hotel/hotel/loginhotel.jsp");
 				/***************************
 				 * 3.查詢完成,準備轉交(Send the Success view)
 				 ************/
@@ -357,7 +357,7 @@ public class HotelServlet extends HttpServlet {
 					 hotelSvc = new HotelService();
 					hotelSvc.update_status(hotelId, "1");
 				}
-				Util_psw.sendMail(hotel.getHotelAccount(),"您好在DDD公司的註冊資料尚未通過", "http://localhost:8081/AA104G4/frontend_hotel/hotel/loginhotel.jsp"+"煩請修改資料謝謝您。");
+				Util_psw.sendMail(hotel.getHotelAccount(),"您好在DDD公司的註冊資料尚未通過", "http://localhost:8081/DDD_web/frontend_hotel/hotel/loginhotel.jsp"+"煩請修改資料謝謝您。");
 				/***************************
 				 * 3.查詢完成,準備轉交(Send the Success view)
 				 ************/

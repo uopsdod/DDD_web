@@ -324,5 +324,6 @@ body {
 				</c:forEach>
 			</table>
 			</div>
+			<%@ include file="page2.file"%>
 </body>
 </html>

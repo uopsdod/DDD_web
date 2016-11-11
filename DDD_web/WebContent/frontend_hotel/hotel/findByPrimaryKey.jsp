@@ -214,3 +214,38 @@
 <%@ include file="../footer.jsp" %>
 </body>
 </html>
+<script>
+	if (window.FileReader) { //測試瀏覽器
+		document.getElementById("myFile").onchange = function() {
+
+			for (var i = 0, file; file = this.files[i]; i++) { //var file;
+				var reader = new FileReader();
+				reader.onloadend = (function(file) {
+					return function() {
+						document.getElementById('image_output').innerHTML += '<img src="'+this.result +'" height="50"/> <br/>';
+					}
+				})(file); //自己CALL自己
+				reader.readAsDataURL(file);
+			}
+		}
+	} else {
+		alert("瀏覽器不支援 HTML 5");
+	}
+	
+	if (window.FileReader) { //測試瀏覽器
+		document.getElementById("myFile1").onchange = function() {
+
+			for (var i = 0, file; file = this.files[i]; i++) { //var file;
+				var reader = new FileReader();
+				reader.onloadend = (function(file) {
+					return function() {
+						document.getElementById('image_output1').innerHTML += '<img src="'+this.result +'" height="50"/> <br/>';
+					}
+				})(file); //自己CALL自己
+				reader.readAsDataURL(file);
+			}
+		}
+	} else {
+		alert("瀏覽器不支援 HTML 5");
+	}
+</script>
