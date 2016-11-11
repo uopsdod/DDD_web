@@ -1,6 +1,7 @@
 package android.live2;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,55 +23,89 @@ import javax.websocket.server.ServerEndpoint;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.pushraven.Pushraven;
 
 @ServerEndpoint("/android/live2/MsgCenter")
 public class MsgCenter extends HttpServlet {
-				//  <memId,tokenId>
-	private HashMap<String,String> tokenMap = new HashMap<>();
-				//  <memId,session>	
-	private HashMap<String,Session> sessionMap = new HashMap<>();
-
+				//  <memId,tokenId> // 注意:要加上static，不然實體每次都會消失
+	private static HashMap<String,String> tokenMap = new HashMap<>();
+				//  <memId,session>	// 注意:要加上static，不然實體每次都會消失
+	//private static HashMap<String,Session> sessionMap = new HashMap<>(); 
+	
+	private static BiMap<String, Session> sessionMap = new HashBiMap();
+	
 	private static final Set<Session> connectedSessions = Collections.synchronizedSet(new HashSet<>());
 
 	@OnOpen
 	public void onOpen(Session userSession) throws IOException {
 		connectedSessions.add(userSession);
-		String text = String.format("Session ID = %s, connected", userSession.getId());
+		String text = String.format("MsgCenterL ********** - Session ID = %s, connected", userSession.getId() + "************");
 		System.out.println(text);
-		
-		
 	}
 
 	@OnMessage
 	public void onMessage(Session aUserSession, String aMessage) throws JSONException {
-		// 客戶端傳來FCM - tockenId
-		Gson gson = new GsonBuilder().create();
+		Gson gson = new Gson();
+		PartnerMsg partnerMsg = gson.fromJson(aMessage, PartnerMsg.class);
 		JSONObject jsonObj = new JSONObject(aMessage);
-		String action = jsonObj.getString("action");
-		String memId = jsonObj.getString("memId");
+		System.out.println("Msg Sent here: " + jsonObj);
+		
+		String action = partnerMsg.getAction();
+		String fromMemId = partnerMsg.getFromMemId();
+		String tokenId = partnerMsg.getTokenId();
+		String toMemId = partnerMsg.getToMemId();
+		String message = partnerMsg.getMessage();
+		
+		
+		// 客戶端傳來FCM - tockenId
 		if ("uploadTokenId".equals(action)){
-			System.out.println("jsonObj: " + jsonObj);
-			String token = jsonObj.getString("tokenId");
-			tokenMap.put(memId, token);
+			//System.out.println("客戶端傳來的tokenId,memId: " + jsonObj);
+			tokenMap.put(fromMemId, tokenId);
 			aUserSession.getAsyncRemote().sendText("Server aleary stored your token.");
-			System.out.println("tokenMap.size(): "+tokenMap.size());
+			System.out.println("tokenMap.size(): "+ tokenMap.size());
 			return;
 		}
 		
-		// 客戶第一次進行即時通訊(進行中)
-		if (!sessionMap.containsKey(memId)){
-			sessionMap.put(memId, aUserSession);
+		// 使用者建立與MsgCenter建立WebSocket連線，並把memId和session用map綁定
+		if("bindMemIdWithSession".equals(action) && !sessionMap.containsKey(fromMemId)){
+			sessionMap.put(fromMemId, aUserSession);
+			System.out.println("sessionMap.size(): "+ sessionMap.size());
+			return;
 		}
 		
-		// 一般聊天通訊
-		for (Session session : connectedSessions) {
-			if (session.isOpen())
-				session.getAsyncRemote().sendText(aMessage);
+		
+		// 狀況一: 使用者A主動寄出訊息，使用者B不在訊息室窗頁面
+		
+		// 狀況一: 使用者A主動寄出訊息，使用者B也在訊息室窗頁面
+		if ("chat".equals(action) && sessionMap.containsKey(toMemId)){			
+			sessionMap.get(toMemId).getAsyncRemote().sendText(message);
+		}else{
+			System.out.println(toMemId +  " is not online yet.");
+			String serverKey = "AIzaSyD-c7lq9Moybii1GLLfgRViP1oFrZbYrjA";
+			Pushraven raven = new Pushraven(serverKey);
+			raven.title("MyTitle")
+				.text( fromMemId + " wants to talk to you.")
+				.color("#ff0000")
+				.to(tokenMap.get(toMemId))
+			//  .click_action("OPEN_ACTIVITY_1")
+			//	.registration_ids(myReceivers)  // 搭配Collection<String> myReceivers = new java.util.ArrayList<String>();使用
+				;
+			raven.push();
+			raven.clear(); // clears the notification, equatable with "raven = new Pushraven();"
+			raven.clearAttributes(); // clears FCM protocol paramters excluding targets
+			raven.clearTargets(); // only clears targets
 		}
-		System.out.println("Message received: " + aMessage);
+		
+//		for (Session session : connectedSessions) {
+//			if (session.isOpen())
+//				session.getAsyncRemote().sendText(aMessage);
+//		}
+		//System.out.println("Message received: " + aMessage);
 	}
 
 	@OnError
@@ -79,11 +114,14 @@ public class MsgCenter extends HttpServlet {
 	}
 
 	@OnClose
-	public void onClose(Session userSession, CloseReason reason) {
-		connectedSessions.remove(userSession);
-		String text = String.format("session ID = %s, disconnected; close code = %d", userSession.getId(),
-				reason.getCloseCode().getCode());
-		System.out.println(text);
+	public void onClose(Session aUserSession, CloseReason aReason) {
+		MsgCenter.sessionMap.inverse().remove(aUserSession);
+		System.out.println("sessionMap.size(): "+ sessionMap.size());
+		
+//		connectedSessions.remove(aUserSession);
+//		String text = String.format("session ID = %s, disconnected; close code = %d", aUserSession.getId(),
+//				aReason.getCloseCode().getCode());
+//		System.out.println(text);
 	}
 
 }

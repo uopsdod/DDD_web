@@ -16,8 +16,7 @@ public class OrdDAO implements OrdDAO_interface {
 //	String url = "jdbc:oracle:thin:@localhost:1521:XE";
 //	String userid = "scott";
 //	String passwd = "tiger";
-	
-	
+		
 	private static DataSource ds = null;
 	static {
 		try {

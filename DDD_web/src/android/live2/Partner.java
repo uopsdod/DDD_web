@@ -28,23 +28,21 @@ public class Partner extends HttpServlet {
 	private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
 	private MemDAO_interface dao_mem;
 	private List<MemVO> memVOList;
-	private static Integer reqCount = 0;
 
 
 	@Override
 	public void init() throws ServletException {
 		super.init();
 		dao_mem = new MemJNDIDAO();
-		memVOList = new ArrayList<MemVO>();
-		memVOList = dao_mem.getAll();
-		System.out.println(memVOList);
+//		memVOList = new ArrayList<MemVO>();
+//		memVOList = dao_mem.getAll();
+//		System.out.println(memVOList);
 
 	}
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
-		reqCount++;
 		req.setCharacterEncoding("UTF-8");
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -66,13 +64,12 @@ public class Partner extends HttpServlet {
 //			for (MemVO myVO: tmpMemVOList){
 //				myVO.setMemProfile(null);
 //			}
-			outStr = gson.toJson(this.memVOList);
+			outStr = gson.toJson(dao_mem.getAll());
 			res.setContentType(CONTENT_TYPE);
 			PrintWriter out = res.getWriter();
-			System.out.println("outStr:" + outStr);
+//			System.out.println("outStr:" + outStr);
 			out.println(outStr);
 		}else if("getImage".equals(param)){
-			System.out.println("getImage match");
 			OutputStream os = res.getOutputStream();
 			int memId = jsonObject.get("memId").getAsInt();
 			int imageSize = jsonObject.get("imageSize").getAsInt();
@@ -87,7 +84,6 @@ public class Partner extends HttpServlet {
 			System.out.println("does not match any keys");
 		}
 		
-		System.out.println("reqCount+ " + reqCount);
 	}
 	
 

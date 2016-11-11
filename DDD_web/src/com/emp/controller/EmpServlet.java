@@ -38,11 +38,16 @@ public class EmpServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();;
-		session.invalidate();
+		session.removeAttribute("account");
+		session.removeAttribute("empVO");
+		session.removeAttribute("authorityList");
 		
 		String url = "/backend/emp/login.jsp";
-		RequestDispatcher successView = request.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
-		successView.forward(request, response);	
+		
+			RequestDispatcher successView = request.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
+			successView.forward(request, response);	
+		
+		
 		
 		
 		doPost(request, response);
@@ -150,11 +155,11 @@ public class EmpServlet extends HttpServlet {
 						}	
 					}
 					
-					 
+					
 					String empPwd=Util_psw.random();
 					String empPwdForDB  = Util_psw.key(empPwd) ;
-					Util_psw.sendMail(empAccount, empName+"您好歡迎您加入本公司，請查收您的私密資料", "您的帳號為 : "+empAccount+"您的密碼為 : "+empPwdForDB);
-					// 設定傳送郵件:至收信人的Email信箱,Email主旨,Email內容
+					
+					
 					
 //					if(empPwd.trim().isEmpty()){
 //						errorMsgs.add("密碼不能空白");
@@ -235,7 +240,7 @@ public class EmpServlet extends HttpServlet {
 					 empVO.setEmpProfile(buf);
 					 empVO.setEmpROCId(empROCId);
 					 empVO.setEmpAddress(empAddress);
-					
+
 					 EmpService empSvc = new EmpService();
 						List<EmpVO> account= empSvc.getAll();
 						for (EmpVO aEmp : account) {
@@ -243,8 +248,6 @@ public class EmpServlet extends HttpServlet {
 								errorMsgs.add("此帳戶已存在");
 							}
 						}
-					 
-					 
 					// Send the use back to the form, if there were errors
 					if (!errorMsgs.isEmpty()) {
 						request.setAttribute("empVO", empVO); // 含有輸入格式錯誤的empVO物件,也存入req
@@ -258,9 +261,8 @@ public class EmpServlet extends HttpServlet {
 					
 					empVO = empSvc.addEmp(empName, empAccount, empPwd, empPhone, empHireDate,empFireDate,empStatus,
 							empBirthDate,buf,empROCId,empAddress);
-					
-						Util_psw.sendMail(empAccount, empName+"您好歡迎您加入本公司，請查收您的私密資料", "您的帳號為 : "+empAccount+"您的密碼為 : "+empPwdForDB);
-						// 設定傳送郵件:至收信人的Email信箱,Email主旨,Email內容
+					// 設定傳送郵件:至收信人的Email信箱,Email主旨,Email內容
+					Util_psw.sendMail(empAccount, empName+"您好歡迎您加入本公司，請查收您的私密資料", "您的帳號為 : "+empAccount+"您的密碼為 : "+empPwdForDB);
 					/***************************3.新增完成,準備轉交(Send the Success view)***********/
 					String url = "/backend/emp/listAllEmp.jsp";
 					RequestDispatcher successView = request.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
