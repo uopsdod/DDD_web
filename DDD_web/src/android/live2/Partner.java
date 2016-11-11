@@ -67,7 +67,7 @@ public class Partner extends HttpServlet {
 			outStr = gson.toJson(dao_mem.getAll());
 			res.setContentType(CONTENT_TYPE);
 			PrintWriter out = res.getWriter();
-			System.out.println("outStr:" + outStr);
+//			System.out.println("outStr:" + outStr);
 			out.println(outStr);
 		}else if("getImage".equals(param)){
 			OutputStream os = res.getOutputStream();
