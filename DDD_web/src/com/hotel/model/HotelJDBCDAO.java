@@ -40,10 +40,10 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 			+ ",hotelCity,hotelCounty,hotelRoad,hotelOwner,hotelAccount,hotelPwd,hotelPhone,hotelLon,hotelLat,"
 			+ "hotelIntro,hotelCoverPic,hotelLink,hotelStatus,hotelBlackList,hotelRatingTotal,hotelRatingResult,"
 			+ "hotelCreditCardNo,hotelCreditCheckNo,hotelCreditDueDate from hotel where hotelId = ?";
-	private static final String GET_ALL_VIEW ="select hotelId,hotelType,hotelName,hotelTaxId,hotelRegisterPic,"
+	private static final String GET_ALL_VIEW = "select hotelId,hotelType,hotelName,hotelTaxId,hotelRegisterPic,"
 			+ "hotelCity,hotelCounty,hotelRoad,hotelOwner,hotelPhone from hotel order by hotelId";
-	
-	
+	public static final String CHECK_MEMBER = "SELECT hotelAccount, hotelPwd FROM hotel where hotelAccount = ?";
+
 	@Override
 	public HotelVO findByPrimaryKey(String aHotelId) {
 		HotelVO hotelVO = null;
@@ -58,9 +58,9 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 
 			pstmt.setString(1, aHotelId);
 			rs = pstmt.executeQuery();
-			
+
 			while (rs.next()) {
-				
+
 				hotelVO = new HotelVO();
 				hotelVO.setHotelId(rs.getString("hotelId"));
 				hotelVO.setHotelType(rs.getString("hotelType"));
@@ -87,7 +87,7 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 				hotelVO.setHotelCreditCheckNo(rs.getString("hotelCreditCheckNo"));
 				hotelVO.setHotelCreditDueDate(rs.getString("hotelCreditDueDate"));
 			}
-		}catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("Couldn't load database driver." + e.getMessage());
 
 		} catch (SQLException se) {
@@ -110,7 +110,7 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 			}
 		}
 		return hotelVO;
-		}
+	}
 
 	@Override
 	public List<HotelVO> getAll() {
@@ -267,7 +267,7 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 		}
 		return list;
 	}
-	
+
 	@Override
 	public List<HotelVO> getAll_TO_VIEW() {
 		List<HotelVO> list = new ArrayList<HotelVO>();
@@ -296,7 +296,7 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 				hotelVO.setHotelRoad(rs.getString("hotelRoad"));
 				hotelVO.setHotelOwner(rs.getString("hotelOwner"));
 				hotelVO.setHotelPhone(rs.getString("hotelPhone"));
-				
+
 				list.add(hotelVO);
 			}
 
@@ -332,7 +332,7 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 		}
 		return list;
 	}
-	
+
 	@Override
 	public void insert(HotelVO aHotelVO) {
 		Connection con = null;
@@ -536,6 +536,48 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 		}
 	}
 
+	@Override
+	public HotelVO hotelMemCheck(String aHotelAccount, String aHotelPwd) {
+		HotelVO hotelVO = new HotelVO();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(this.url, this.userid, this.passwd);
+			pstmt = con.prepareStatement(CHECK_MEMBER);
+			pstmt.setString(1, aHotelAccount);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				hotelVO.setHotelAccount(rs.getString("hotelAccount"));
+				hotelVO.setHotelPwd(rs.getString("hotelPwd"));
+			}
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return hotelVO;
+	}
+
 	public static void main(String[] args) {
 		HotelJDBCDAO dao = new HotelJDBCDAO();
 
@@ -659,7 +701,13 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 			System.out.print(aHotel.getHotelCreditDueDate() + ",");
 			System.out.println();
 		}
+		
+		//hotel member check
+//		HotelVO hotelVO = new HotelVO();
+//		String account = "house1@gmail.com";
+//		String password = "123456789";
+//		dao.hotelMemCheck(account, password);
+//		System.out.println(dao.hotelMemCheck(account, password));
 
 	}
-
 }

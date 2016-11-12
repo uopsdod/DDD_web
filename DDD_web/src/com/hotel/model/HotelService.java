@@ -3,6 +3,7 @@ package com.hotel.model;
 import java.util.List;
 
 import com.emp.model.EmpVO;
+import com.mem.model.MemVO;
 
 
 
@@ -111,5 +112,15 @@ public class HotelService {
 	//更新黑名單
 	public void update_hotelBlackList(String hotelId, String hotelBlackList) {
 		dao.update_hotelBlackList(hotelId, hotelBlackList);
+	}
+	
+	public HotelVO hotelMemCheck(String aHotelMemAccount, String aHotelMemPwd){
+		HotelVO hotelVO = dao.hotelMemCheck(aHotelMemAccount, aHotelMemPwd);
+		if(aHotelMemAccount.equals(hotelVO.getHotelAccount()) && aHotelMemPwd.equals(hotelVO.getHotelPwd())){
+			{
+				return hotelVO;
+			}
+		}
+		return null;
 	}
 }

@@ -14,6 +14,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.mem.model.MemVO;
+
 public class HotelDAO implements HotelDAO_interface {
 	private static DataSource ds = null;
 	static {
@@ -50,6 +52,8 @@ public class HotelDAO implements HotelDAO_interface {
 			+ ",hotelCity,hotelCounty,hotelRoad,hotelOwner,hotelAccount,hotelPwd,hotelPhone,hotelLon,hotelLat,"
 			+ "hotelIntro,hotelCoverPic,hotelLink,hotelStatus,hotelBlackList,hotelRatingTotal,hotelRatingResult,"
 			+ "hotelCreditCardNo,hotelCreditCheckNo,hotelCreditDueDate from hotel where hotelId = ?";
+	public static final String CHECK_MEMBER = "SELECT hotelAccount, hotelPwd FROM hotel where hotelAccount = ?";
+	
 	private static final Base64.Encoder encoder = Base64.getEncoder();
 	private static final Base64.Encoder encoder1 = Base64.getEncoder();
 	@Override
@@ -534,5 +538,44 @@ public class HotelDAO implements HotelDAO_interface {
 		return hotelVO;
 	}
 
+	@Override
+	public HotelVO hotelMemCheck(String aHotelAccount, String aHotelPwd) {
+		HotelVO hotelVO = new HotelVO();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(CHECK_MEMBER);
+			pstmt.setString(1, aHotelAccount);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				hotelVO.setHotelAccount(rs.getString("hotelAccount"));
+				hotelVO.setHotelPwd(rs.getString("hotelPwd"));
+			}
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return hotelVO;
+	}
+
+	
 	
 }

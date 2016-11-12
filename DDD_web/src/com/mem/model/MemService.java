@@ -76,4 +76,25 @@ public class MemService {
 		}
 		return null;
 	}
+	
+	public MemVO addNewMem(MemVO memVO){
+		
+		memVO.setMemAccount(memVO.getMemAccount());
+		memVO.setMemPsw(memVO.getMemPsw());
+		memVO.setMemName(memVO.getMemName());
+		memVO.setMemGender(memVO.getMemGender());
+		memVO.setMemTwId(memVO.getMemTwId());
+		memVO.setMemBirthDate(memVO.getMemBirthDate());
+		memVO.setMemPhone(memVO.getMemPhone());
+		memVO.setMemLiveBudget(memVO.getMemLiveBudget());
+		memVO.setMemIntro(memVO.getMemIntro());
+		memVO.setMemProfile(memVO.getMemProfile());
+		memVO.setMemBlackList(memVO.getMemBlackList());
+		memVO.setMemCreditCardNo(memVO.getMemCreditCardNo());
+		memVO.setMemCreditCheckNo(memVO.getMemCreditCheckNo());
+		memVO.setMemCreditDueDate(memVO.getMemCreditDueDate());
+		dao.insert(memVO);
+		
+		return memVO;
+	}
 }
