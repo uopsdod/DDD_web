@@ -12,35 +12,43 @@ public class MemChatVO implements Serializable {
 	private Timestamp memChatDate;
 	private String memChatContent;
 	private byte[] memChatPic;
-	
+	private String memChatStatus;
 	public String getMemChatMemId() {
 		return memChatMemId;
 	}
-	public void setMemChatMemId(String aMemChatMemId) {
-		this.memChatMemId = aMemChatMemId;
+	public void setMemChatMemId(String memChatMemId) {
+		this.memChatMemId = memChatMemId;
 	}
 	public String getMemChatChatId() {
-		return this.memChatChatId;
+		return memChatChatId;
 	}
-	public void setMemChatChatId(String aMemChatChatId) {
-		this.memChatChatId = aMemChatChatId;
+	public void setMemChatChatId(String memChatChatId) {
+		this.memChatChatId = memChatChatId;
 	}
 	public Timestamp getMemChatDate() {
-		return this.memChatDate;
+		return memChatDate;
 	}
-	public void setMemChatDate(Timestamp aMemChatDate) {
-		this.memChatDate = aMemChatDate;
+	public void setMemChatDate(Timestamp memChatDate) {
+		this.memChatDate = memChatDate;
 	}
 	public String getMemChatContent() {
-		return this.memChatContent;
+		return memChatContent;
 	}
-	public void setMemChatContent(String aMemChatContent) {
-		this.memChatContent = aMemChatContent;
+	public void setMemChatContent(String memChatContent) {
+		this.memChatContent = memChatContent;
 	}
 	public byte[] getMemChatPic() {
-		return this.memChatPic;
+		return memChatPic;
 	}
-	public void setMemChatPic(byte[] aMemChatPic) {
-		this.memChatPic = aMemChatPic;
+	public void setMemChatPic(byte[] memChatPic) {
+		this.memChatPic = memChatPic;
 	}
+	public String getMemChatStatus() {
+		return memChatStatus;
+	}
+	public void setMemChatStatus(String memChatStatus) {
+		this.memChatStatus = memChatStatus;
+	}
+	
+	
 }
