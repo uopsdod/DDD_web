@@ -1,4 +1,4 @@
-package com.memrep.modelHibernate;
+package com.memrep.model;
 
 import java.io.Serializable;
 import java.sql.*;

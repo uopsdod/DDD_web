@@ -1,4 +1,4 @@
-package com.memrep.modelHibernate;
+package com.memrep.model;
 
 import java.sql.Connection;
 import java.sql.Date;
