@@ -26,7 +26,7 @@
 	<tr>
 		<td>
 			<h3>廠商訂單資料 - listOrdsByHotelId.jsp</h3>
-			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"> <img src="images/back1.gif"> 回首頁 </a>
+			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"> <img src="/DDD_web/backend/hotel/images/back1.gif"> 回首頁 </a>
 		</td>
 	</tr>
 </table>
