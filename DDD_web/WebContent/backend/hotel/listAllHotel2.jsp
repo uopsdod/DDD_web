@@ -21,7 +21,7 @@
 	<tr>
 		<td>
 			<h3>所有廠商會員 - ListAllHotel2.jsp</h3>
-			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"> <img src="images/back1.gif"/>回首頁</a>	
+			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"> <img src="/DDD_web/backend/hotel/images/back1.gif"/>回首頁</a>	
 		</td>
 	</tr>
 </table>

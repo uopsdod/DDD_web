@@ -93,6 +93,10 @@
     <servlet-name>OrdServlet</servlet-name>
     <servlet-class>com.ord.controller.OrdServlet</servlet-class>
   </servlet>
+    <servlet-mapping>
+    <servlet-name>OrdServlet</servlet-name>
+    <url-pattern>/ord/ord.do</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>OrdServlet</servlet-name>
     <url-pattern>/backend/ord/ord.do</url-pattern>
