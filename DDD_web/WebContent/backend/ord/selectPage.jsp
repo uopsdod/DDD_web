@@ -11,12 +11,11 @@
 <table border='1' cellpadding='5' cellspacing='0' width='400'>
 	<tr align='center' valign='middle'>
 		<td>
-			<h3>這是過期首頁 ! 你可能已經成為盜版軟體的受害者 </h3>
+			<h1>芭樂華愛吃芭樂 <3 </h1>
+			<img src="images/guava.jpg"/> 
 		</td>
 	</tr>
 </table>
-
-<p><b>芭樂華愛吃芭樂 <3 </b></p>
 
 <h3>資料查詢:</h3>
 <%-- 錯誤列表 --%>

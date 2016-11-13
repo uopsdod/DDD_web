@@ -8,7 +8,7 @@
 </head>
 <body>
 
-	<table>
+	<table border='1'>
 		<tr>
 			<td><h3>DDD Ord: Home</h3>( MVC )</td>
 		</tr>

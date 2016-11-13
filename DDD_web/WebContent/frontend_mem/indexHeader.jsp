@@ -16,6 +16,10 @@
     <script src="<%=request.getContextPath()%>/jq/jquery-ui.js"></script>
     <script src="<%=request.getContextPath()%>/jq/jquery-cycle-all.js"></script>
     <script src="<%=request.getContextPath()%>/bs/bootstrap.min.js"></script>
+    
+    
+    
+    
 </head>
 
 <body>
