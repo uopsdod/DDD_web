@@ -833,9 +833,19 @@ public class HotelJNDIDAO implements HotelDAO_interface {
 			while(rs.next()){
 				ordVO = new OrdVO();
 				ordVO.setOrdId(rs.getString("ordID"));
-				ordVO.setOrdRoomId(rs.getString("ordRoomId"));
-				ordVO.setOrdMemId(rs.getString("ordMemId"));
-				ordVO.setOrdHotelId(rs.getString("ordHotelId"));
+
+				com.room.model.RoomVO roomVO = new com.room.model.RoomVO();
+				roomVO.setRoomId(rs.getString("ordRoomId"));
+				ordVO.setOrdRoomVO(roomVO);
+				
+				com.mem.model.MemVO memVO = new com.mem.model.MemVO();
+				memVO.setMemId(rs.getString("ordMemId"));
+				ordVO.setOrdMemVO(memVO);
+
+				com.hotel.model.HotelVO hotelVO = new com.hotel.model.HotelVO();
+				hotelVO.setHotelId(rs.getString("ordHotelId"));
+				ordVO.setOrdHotelVO(hotelVO);					
+				
 				ordVO.setOrdPrice(rs.getInt("ordPrice"));
 				ordVO.setOrdLiveDate(rs.getTimestamp("ordLiveDate"));
 				ordVO.setOrdDate(rs.getTimestamp("ordDate"));
