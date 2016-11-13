@@ -61,7 +61,7 @@ public class PartnerMsgController extends HttpServlet {
 			PrintWriter out = res.getWriter();
 			outStr = gson.toJson(dao_memChat.getAll()); // no no no not get all
 			
-//			System.out.println("outStr:" + outStr);
+			System.out.println("outStr:" + outStr);
 			out.println(outStr);
 		}
 

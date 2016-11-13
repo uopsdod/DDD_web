@@ -21,7 +21,7 @@
 	<tr>
 		<td>
 			<h3>該一般會員所有訂單資料 - listAllByMemId.jsp</h3>
-			<a href="selectPage.jsp"> <img src="images/back1.gif"> 回首頁 </a>
+			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"> <img src="images/back1.gif"> 回首頁 </a>
 		</td>
 	</tr>
 </table>
@@ -50,38 +50,22 @@
 		<th>評價星星數</th>
 		<th>簡訊驗證碼</th>
 		<th>QR Code圖片</th>
-		<th>修改</th>
-		<th>刪除</th>
 	</tr>
 	<%@ include file="pages/page1.file" %>
 	<c:forEach var="ordVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 		<tr>
 			<td>${ordVO.ordId}</td>
-			<td>${ordVO.ordRoomId}</td>
-			<td>${ordVO.ordMemId}</td>
-			<td>${ordVO.ordHotelId}</td>
+			<td>${ordVO.ordRoomVO.roomId}</td>
+			<td>${ordVO.ordMemVO.memId}</td>
+			<td>${ordVO.ordHotelVO.hotelId}</td>
 			<td>${ordVO.ordPrice}</td>
 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdLiveDate())%></td>
 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdDate())%></td>		
-			<td>${ordVO.ordStatus}</td>
+			<td>${ordStatusTrans.get(ordVO.ordStatus)}</td>
 			<td>${ordVO.ordRatingContent}</td>
 			<td>${ordVO.ordRatingStarNo}</td>
 			<td>${ordVO.ordMsgNo}</td>
 			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td>
-			<td>
-				<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
-					<input type="submit" value="修改">
-					<input type="hidden" name="ordId" value="${ordVO.ordId}">
-					<input type="hidden" name="action" value="getOneForUpdate">
-				</form>
-			</td>
-			<td>
-				<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
-					<input type="submit" value="刪除">
-					<input type="hidden" name="ordId" value="${ordVO.ordId}">
-					<input type="hidden" name="action" value="delete">
-				</form>
-			</td>
 		</tr>
 	</c:forEach>
 </table>

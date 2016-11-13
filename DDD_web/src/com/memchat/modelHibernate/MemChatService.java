@@ -1,4 +1,4 @@
-package com.memchat.model;
+package com.memchat.modelHibernate;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -7,14 +7,12 @@ import java.util.List;
 public class MemChatService {
 	private MemChatDAO_interface dao;
 	public MemChatService(){
-		this.dao = (MemChatDAO_interface) new MemChatJNDIDAO();
+		this.dao = new MemChatHibernateDAO();
 	}
 	// aMemChatChatId,aMemChatMemId, aMemChatDate, aMemChatContent, aMemChatPic
 	public void insert(String aMemChatChatId, String aMemChatMemId, Timestamp aMemChatDate, String aMemChatContent, byte[] aMemChatPic, String aMemChatStatus){
 		MemChatVO memChatVO = new MemChatVO();
-		memChatVO.setMemChatChatId(aMemChatChatId);
-		memChatVO.setMemChatMemId(aMemChatMemId);
-		memChatVO.setMemChatDate(aMemChatDate);
+		memChatVO.setMemChatVOPK(new MemChatVOPK(aMemChatMemId, aMemChatChatId, aMemChatDate));		
 		memChatVO.setMemChatContent(aMemChatContent);
 		memChatVO.setMemChatPic(aMemChatPic);
 		memChatVO.setMemChatStatus(aMemChatStatus);
@@ -34,8 +32,8 @@ public class MemChatService {
 	public List<MemChatVO> getAll(){
 		return this.dao.getAll();
 	}
-	public MemChatVO findByPrimaryKey(String aMemChatChatId, String aMemChatMemId, Timestamp aDate){
-		return this.dao.findByPrimaryKey(aMemChatChatId, aMemChatMemId, aDate);
+	public MemChatVO findByPrimaryKey(String aMemChatChatId, String aMemChatMemId, Timestamp aMemChatDate){
+		return this.dao.findByPrimaryKey(new MemChatVOPK(aMemChatMemId, aMemChatChatId, aMemChatDate));
 	}
 	public List<MemChatVO> findByMemChatChatId(String aMemChatChatId){		// 找一個聊天室中所有對話 - 最後再寫
 		return this.dao.findByMemChatChatId(aMemChatChatId);

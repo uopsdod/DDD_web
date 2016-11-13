@@ -5,11 +5,6 @@
 <%-- 用EL練習寫 --%>
 
 <%
-	HashMap<String,String> ordStatusTrans = (HashMap<String,String>)(application.getAttribute("ordStatusTrans"));
-	pageContext.setAttribute("ordStatusTrans",ordStatusTrans);
-%>
-
-<%
 	OrdService ordSvc = new OrdService();
 	List<OrdVO> list = ordSvc.getAll();
 	pageContext.setAttribute("list",list);
@@ -117,6 +112,7 @@
 					<input type="submit" value="修改">
 					<input type="hidden" name="ordId" value="${ordVO.ordId}">
 					<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+					<input type="hidden" name="whichPage" value="<%=whichPage%>">
 					<input type="hidden" name="action" value="getOneForUpdate">
 				</form>
 			</td>
@@ -125,6 +121,7 @@
 					<input type="submit" value="刪除">
 					<input type="hidden" name="ordId" value="${ordVO.ordId}">
 					<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+					<input type="hidden" name="whichPage" value="<%=whichPage%>">
 					<input type="hidden" name="action" value="delete">
 				</form>
 			</td>

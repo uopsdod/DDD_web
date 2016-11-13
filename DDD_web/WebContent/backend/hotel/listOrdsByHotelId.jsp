@@ -4,11 +4,6 @@
 
 <%-- 用EL練習寫 --%>
 
-<%
-	HashMap<String,String> ordStatusTrans = (HashMap<String,String>)(application.getAttribute("ordStatusTrans"));
-	pageContext.setAttribute("ordStatusTrans",ordStatusTrans);
-%>
-
 <jsp:useBean id="listOrdsByHotelId" scope="request" type="java.util.Set"/>
 <jsp:useBean id="roomSvc" scope="page" class="com.room.model.RoomService" />
 <jsp:useBean id="memSvc" scope="page" class="com.mem.model.MemService" />

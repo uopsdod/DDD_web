@@ -1,4 +1,4 @@
-package com.memchat.model;
+package com.memchat.modelJDBC;
 
 import java.sql.Date;
 import java.sql.Timestamp;

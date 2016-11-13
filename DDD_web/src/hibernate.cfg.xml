@@ -34,6 +34,7 @@
 		<mapping resource="com/memrep/model/memRep.hbm.xml" />
 		<mapping resource="com/emp/model/emp.hbm.xml" />
 		<mapping resource="com/chat/model/chat.hbm.xml" />
+<!-- 		<mapping resource="com/memchat/model/memChat.hbm.xml" /> -->
 		
 		
 
