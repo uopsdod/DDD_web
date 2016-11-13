@@ -16,7 +16,13 @@ List<String> authorityList =(List<String>)session.getAttribute("authorityList");
 session.setAttribute("empvo", empvo);
 session.setAttribute("authorityList",authorityList);
 %>
+<!-- 如果權限沒有人事轉到首頁怕他偷吃步-->
 
+<%
+if(!authorityList.contains("101")){
+	response.sendRedirect(request.getContextPath()+"/backend/emp_index.jsp");
+}
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -355,9 +361,29 @@ body {
 					<th>審核狀態</th>
 					<th>黑名單</th>	
 				</tr>
-				<tr>
-				    <td>${hotelvo.hotelStatus}</td>
-					<td>${hotelvo.hotelBlackList}</td>
+				<tr>				
+				<c:choose>
+		            <c:when test="${hotelvo.hotelStatus==0}">
+		                <td>未審核</td>
+		            </c:when>
+		            <c:when test="${hotelvo.hotelStatus==1}">
+		                <td>已審核未通過</td>
+		            </c:when>
+		            <c:otherwise>
+		                <td>通過</td>
+		            </c:otherwise>
+		        </c:choose>
+			    
+			    
+			    <c:choose>
+		            <c:when test="${hotelvo.hotelBlackList==0}">
+		                <td>非黑名單</td>
+		            </c:when>
+		            <c:otherwise>
+		                <td>黑名單</td>
+		            </c:otherwise>
+		        </c:choose>
+					
 				</tr>
 				<tr>
 					<th>評價總人數</th>

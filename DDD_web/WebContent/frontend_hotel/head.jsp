@@ -1,4 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.hotel.model.*"%>
+<%
+session.getAttribute("account_hotel");
+
+HotelVO hotelVO =(HotelVO)session.getAttribute("hotelVO");
+session.setAttribute("hotelVO", hotelVO);
+
+%>
+
+
 <!DOCTYPE html>
 <html lang="">
 	<head>
@@ -10,30 +23,30 @@
 		<link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_hotel/css/0_main.css">
 		<script src="<%=request.getContextPath()%>/frontend_hotel/js/jquery.js"></script>
 		<script src="<%=request.getContextPath()%>/frontend_hotel/js/bootstrap.min.js"></script>
-<%-- 		<script src="<%=request.getContextPath()%>/frontend_hotel/js/0_new.js "></script> --%>
+		<script src="<%=request.getContextPath()%>/frontend_hotel/js/0_new.js "></script>
 		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
-	</head>
+		
 
 <style type="text/css">
+		
+	.vcenter {
+	    display: inline-block;
+	    vertical-align: middle;
+	    float: none;
+	}
 	
-.vcenter {
-    display: inline-block;
-    vertical-align: middle;
-    float: none;
-}
 
 </style>
+</head>
 
-	<body style="background:#FFFAF0">
+<body style="background:#FFFAF0">
 	
-	
-	<%session.setAttribute("hotelId","10001");%>
+<%-- <%session.setAttribute("hotelId","10001");%> --%>
 <!-- 	注意之後要註解掉,因為EL直接從session取出hotelId -->
-	
-	
+
 		<div id="top-bar" >
 			<nav class="navbar navbar-inverse" role="navigation">
 				<div class="navbar-header">
@@ -50,9 +63,9 @@
 				<div class="collapse navbar-collapse navbar-ex1-collapse">			
 					<!-- 右選單 -->
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">大城 您好 !</a></li>
+						<li><a href="#">${hotelVO.hotelName} 您好!</a></li>
 						<li><a href="#"><span class="glyphicon glyphicon-bell"></span> 通知</a></li>
-						<li><a href="#"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
+						<li><a href="<%=request.getContextPath()%>/hotel/hotel.do"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>
 					</ul>
 				</div>
 				<!-- 手機隱藏選單區結束 -->
@@ -130,10 +143,10 @@
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
 					        		<li>
-					        			<a href="<%=request.getContextPath()%>/room/room.do?action=getAllRoom_ForOneHotel_Display&hotelId=${hotelId}">房型資料維護
+<%-- 					        			<a href="<%=request.getContextPath()%>/room/room.do?action=getAllRoom_ForOneHotel_Display&hotelId=${hotelId}">房型資料維護 --%>
 					        		</li>
 					        		<li>
-					        			<a href="<%=request.getContextPath()%>/room/room.do?action=getAllRoomSell_ForOneHotel_Display&hotelId=${hotelId}">上架管理
+<%-- 					        			<a href="<%=request.getContextPath()%>/room/room.do?action=getAllRoomSell_ForOneHotel_Display&hotelId=${hotelId}">上架管理 --%>
 					        		</li>
 					        	</ul>
 					      </div>
@@ -151,8 +164,8 @@
 					    <div id="ccc" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab3">
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
-					        		<li>廠商審核作業</li>
-					        		<li>廠商會員維護</li>
+					        		
+					        		<a href="<%=request.getContextPath()%>/frontend_hotel/hotel/findByPrimaryKey.jsp"><li>廠商會員資料修改</li></a>
 					        	</ul>
 					      </div>
 					    </div>

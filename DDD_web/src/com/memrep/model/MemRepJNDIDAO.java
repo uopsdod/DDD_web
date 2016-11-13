@@ -19,7 +19,6 @@ import javax.sql.DataSource;
 
 import com.ord.model.OrdJDBCDAO;
 import com.ord.model.OrdVO;
-import com.memrep.model.MemRepJNDIDAO;
 
 
 public class MemRepJNDIDAO implements MemRepDAO_interface {

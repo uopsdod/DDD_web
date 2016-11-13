@@ -1,9 +1,36 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.ord.model.*,java.text.SimpleDateFormat"%>
-<!DOCTYPE html>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, java.text.SimpleDateFormat" %>
+<%@ page import="com.ord.model.*, com.room.model.*,com.hotel.model.*,com.mem.model.*" %>
+
+<%-- 用Script練習 --%>
+
 <%
-OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controller),存入req的ordVO物件
+	HashMap<String,String> ordStatusTrans = (HashMap<String,String>) application.getAttribute("ordStatusTrans");
 %>
+
+<%
+	OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controller),存入req的ordVO物件
+%>
+
+<%-- 取出對應room的物件 --%>
+<%
+	RoomService roomSvc = new RoomService();
+	RoomVO roomVO = roomSvc.findByPrimaryKey(ordVO.getOrdRoomId());
+%>
+
+<%-- 取出對應member的物件 --%>
+<%
+	MemService memSvc = new MemService();
+	MemVO memVO = memSvc.getOneMem(ordVO.getOrdMemId()); 
+%>
+
+<%-- 取出對應hotel的物件 --%>
+<%
+	HotelService hotelSvc = new HotelService();
+	HotelVO hotelVO = hotelSvc.getOne(ordVO.getOrdHotelId());
+%>
+
+<!DOCTYPE html>
 <html>
 <head>
 <title>訂單資料 - listOneOrd.jsp</title>
@@ -13,13 +40,12 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controlle
 		<tr>
 			<td>
 				<h3>訂單資料 - ListOneOrd.jsp</h3>
-				<a href="selectPage.jsp">
+				<a href="<%=request.getContextPath()%>/backend/selectPage.jsp">
 					<img src="images/back1.gif" alt="Back Home">回首頁
 				</a>
 			</td>
 		</tr>
 	</table>
-
 
 	<table border='1'>
 		<tr>
@@ -38,18 +64,19 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controlle
 		</tr>
 
 		<tr>
-			<td>${ordVO.ordId}</td>
-			<td>${ordVO.ordRoomId}</td>
-			<td>${ordVO.ordMemId}</td>
-			<td>${ordVO.ordHotelId}</td>
-			<td>${ordVO.ordPrice}</td>
+			<td><%=ordVO.getOrdId()%></td>
+			<td><%=ordVO.getOrdRoomId()%> <br> [<%=roomVO.getRoomName()%>]</td>
+			<td><%=ordVO.getOrdMemId()%> <br> [<%=memVO.getMemName()%>] </td>
+			<td><%=ordVO.getOrdHotelId()%> <br> [<%=hotelVO.getHotelName()%>]</td>
+
+			<td><%=ordVO.getOrdPrice()%></td>
 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdLiveDate())%></td>
 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdDate())%></td>
-			<td>${ordVO.ordStatus}</td>
-			<td>${ordVO.ordRatingContent}</td>
-			<td>${ordVO.ordRatingStarNo}</td>
-			<td>${ordVO.ordMsgNo}</td>
-			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td>
+			<td><%=ordStatusTrans.get(ordVO.getOrdStatus())%></td>
+			<td><%=ordVO.getOrdRatingContent()%></td>
+			<td><%=ordVO.getOrdRatingStarNo()%></td>
+			<td><%=ordVO.getOrdMsgNo()%></td>
+			<td><img src="DBGifReader4?ordId=<%=ordVO.getOrdId()%>"></td>
 		</tr>
 
 	</table>

@@ -17,9 +17,27 @@
     <url-pattern>/backend/emp/addEmp.jsp</url-pattern>
     <url-pattern>/backend/emp_index.jsp</url-pattern>
     <url-pattern>/backend/auth/update_auth.jsp</url-pattern>
-<!--     <url-pattern>/backend/hotel/listAllHotel.jsp</url-pattern> -->
-<!--     <url-pattern>/backend/hotel/getOneHotel.jsp</url-pattern> -->
-<!--     <url-pattern>/backend/hotel/get_need_check.jsp</url-pattern> -->
+    <url-pattern>/backend/hotel/listAllHotel.jsp</url-pattern>
+    <url-pattern>/backend/hotel/getOneHotel.jsp</url-pattern>
+    <url-pattern>/backend/hotel/get_need_check.jsp</url-pattern>
+     
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+  </filter-mapping>
+  
+  <filter>
+    <filter-name>LoginFilter_hotel</filter-name>
+    <filter-class>com.filters.LoginFilter_hotel</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>LoginFilter_hotel</filter-name>
+    <url-pattern>/frontend_hotel/index.jsp</url-pattern>  
+    <url-pattern>/frontend_hotel/hotel/findByPrimaryKey.jsp</url-pattern>
+    <url-pattern>/frontend_hotel/hotel/updatesecess.jsp</url-pattern>
+    <url-pattern>/frontend_hotel/hotel/Status_1.jsp</url-pattern>
      
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
@@ -75,6 +93,10 @@
     <servlet-name>OrdServlet</servlet-name>
     <servlet-class>com.ord.controller.OrdServlet</servlet-class>
   </servlet>
+    <servlet-mapping>
+    <servlet-name>OrdServlet</servlet-name>
+    <url-pattern>/ord/ord.do</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>OrdServlet</servlet-name>
     <url-pattern>/backend/ord/ord.do</url-pattern>
@@ -136,4 +158,8 @@
     <url-pattern>/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
+ 
+  <listener>
+    <listener-class>com.listener.InitializeOrdStatusTransListener</listener-class>
+  </listener>
 </web-app>

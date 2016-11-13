@@ -19,6 +19,14 @@ session.setAttribute("empvo", empvo);
 session.setAttribute("authorityList",authorityList);
 %>
 
+<!-- 如果權限沒有人事轉到首頁怕他偷吃步-->
+
+<%
+if(!authorityList.contains("101")){
+	response.sendRedirect(request.getContextPath()+"/backend/emp_index.jsp");
+}
+%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -293,7 +301,7 @@ body {
 					<th>廠商種類名稱</th>
 					<th>廠商名稱</th>
 					<th>統一編號</th>
-					
+					<th>信箱</th>
 					<th>縣市</th>
 					<th>鄉鎮區</th>
 					<th>路名牌號</th>
@@ -318,6 +326,8 @@ body {
 						<td>${HotelVO.hotelType}</td>
 						<td>${HotelVO.hotelName}</td>
 						<td>${HotelVO.hotelTaxId}</td>
+						<td>${HotelVO.hotelAccount}</td>
+						
 						<td>${HotelVO.hotelCity}</td>
 						<td>${HotelVO.hotelCounty}</td>
 						<td>${HotelVO.hotelRoad}</td>
@@ -380,5 +390,6 @@ body {
 				<div align="center"><a href="<%=request.getContextPath()%>/backend/hotel/listAllHotel.jsp">回廠商首頁</a></div>
 			
 			</div>
+			<%@ include file="page2.file"%>
 </body>
 </html>
