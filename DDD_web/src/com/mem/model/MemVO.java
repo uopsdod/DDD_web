@@ -1,6 +1,10 @@
 package com.mem.model;
 
 import java.sql.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import com.ord.model.OrdVO;
  
 public class MemVO implements java.io.Serializable{
 	private String memId;
@@ -18,6 +22,8 @@ public class MemVO implements java.io.Serializable{
 	private String memCreditCardNo;
 	private String memCreditCheckNo;
 	private String memCreditDueDate;
+	
+	private Set<OrdVO> memOrds = new LinkedHashSet<OrdVO>();
 	
 	public String getMemId() {
 		return this.memId;
@@ -109,4 +115,12 @@ public class MemVO implements java.io.Serializable{
 	public void setMemCreditDueDate(String aMemCreditDueDate) {
 		this.memCreditDueDate = aMemCreditDueDate;
 	}
+	public Set<OrdVO> getMemOrds(){
+		return this.memOrds;
+	}
+	
+	public void setMemOrds(Set<OrdVO> aMemOrds){
+		this.memOrds = aMemOrds;
+	}
+	
 }

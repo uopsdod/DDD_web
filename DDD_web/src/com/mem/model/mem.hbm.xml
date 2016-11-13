@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.mem.model.MemVO" table="mem" >
+        
+        <id name="memId" column="memId">
+            <generator class="sequence" >
+              <param name="sequence">mem_seq</param>
+            </generator>  
+        </id>
+        
+        <property name="memAccount" column="memAccount" />
+        <property name="memPsw" column="memPsw" />
+        <property name="memName" column="memName" />
+        <property name="memGender" column="memGender" />
+        <property name="memTwId" column="memTwId" />
+        <property name="memBirthDate" column="memBirthDate" />
+        <property name="memPhone" column="memPhone" />
+        <property name="memLiveBudget" column="memLiveBudget" />
+        <property name="memIntro" column="memIntro" />
+        <property name="memProfile" column="memProfile" />
+        <property name="memBlackList" column="memBlackList" />
+        <property name="memCreditCardNo" column="memCreditCardNo" />
+        <property name="memCreditCheckNo" column="memCreditCheckNo" />
+        <property name="memCreditDueDate" column="memCreditDueDate" />
+
+		<set name="memOrds" table="ord" lazy="false" cascade="all"  inverse="true"  order-by="ordId asc">			
+			<key>
+				<column name="ordMemId" />
+			</key>
+			<one-to-many class="com.ord.model.OrdVO" />
+		</set>
+
+    </class>
+</hibernate-mapping>
+

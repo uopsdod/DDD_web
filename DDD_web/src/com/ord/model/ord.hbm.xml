@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ord.model.OrdVO" table="ord" >
+        
+        <id name="ordId" column="ordId">
+            <generator class="com.ord.model.OrdIdGenarator"/>
+        </id>
+        
+        <property name="ordPrice" column="ordPrice" />
+        <property name="ordLiveDate" column="ordLiveDate" />
+        <property name="ordDate" column="ordDate" />
+        <property name="ordStatus" column="ordStatus" />
+
+        <property name="ordRatingContent" column="ordRatingContent" />
+        <property name="ordRatingStarNo" column="ordRatingStarNo" />                
+        <property name="ordQrPic" column="ordQrPic" />        
+        <property name="ordMsgNo" column="ordMsgNo" />        
+        
+        <many-to-one name="ordRoomVO" class="com.room.model.RoomVO" lazy="false">
+            <column name="ordRoomId" />
+        </many-to-one>
+        
+        <many-to-one name="ordMemVO" class="com.mem.model.MemVO" lazy="false">
+            <column name="ordMemId" />
+        </many-to-one>
+      
+        <many-to-one name="ordHotelVO" class="com.hotel.model.HotelVO" lazy="false">
+            <column name="ordHotelId" />
+        </many-to-one>              
+        
+    </class>
+</hibernate-mapping>
+

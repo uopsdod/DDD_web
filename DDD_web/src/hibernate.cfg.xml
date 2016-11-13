@@ -25,8 +25,13 @@
 		<property name="hibernate.current_session_context_class">thread</property>
 
 		<!--Java物件與資料庫表格的映射檔 -->
-		<mapping resource="com/emp/model/emp2.hbm.xml" />
-		<mapping resource="com/dept/model/dept2.hbm.xml" />
+<!-- 		<mapping resource="com/emp/model/emp2.hbm.xml" /> -->
+<!-- 		<mapping resource="com/dept/model/dept2.hbm.xml" /> -->
+		<mapping resource="com/ord/model/ord.hbm.xml" />
+		
+		<mapping resource="com/room/model/room.hbm.xml" />
+		<mapping resource="com/mem/model/mem.hbm.xml" />
+		<mapping resource="com/hotel/model/hotel.hbm.xml" />
 
 	</session-factory>
 	

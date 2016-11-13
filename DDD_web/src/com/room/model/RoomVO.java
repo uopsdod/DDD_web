@@ -1,6 +1,8 @@
 package com.room.model;
 
 import java.sql.Date;
+import java.util.*;
+import com.ord.model.OrdVO;
 
 public class RoomVO implements java.io.Serializable{
 	private String roomId;
@@ -26,6 +28,8 @@ public class RoomVO implements java.io.Serializable{
 	private Integer roomCapacity;
 	private Integer roomOneBed;
 	private Integer roomTwoBed;
+	
+	private Set<OrdVO> roomOrds = new HashSet<OrdVO>();
 	
 	public String getRoomId() {
 		return roomId;
@@ -164,6 +168,14 @@ public class RoomVO implements java.io.Serializable{
 	}
 	public void setRoomTwoBed(Integer aRoomTwoBed) {
 		this.roomTwoBed = aRoomTwoBed;
+	}
+	
+	public Set<OrdVO> getRoomOrds(){
+		return this.roomOrds;
+	}
+	
+	public void setRoomOrds(Set<OrdVO> aRoomOrds){
+		this.roomOrds = aRoomOrds;
 	}
 	
 }
