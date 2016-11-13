@@ -51,15 +51,20 @@ public class PartnerMsgController extends HttpServlet {
 			jsonIn.append(line);
 		}
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(),JsonObject.class);
-		String action = jsonObject.get("action").getAsString();
+		String action = jsonObject.get("action").getAsString().trim();
+		String memId = jsonObject.get("memId").getAsString().trim();  
+		String toMemId = jsonObject.get("toMemId").getAsString().trim();
 		System.out.println("action: " + action);
+		System.out.println("memId: " + memId);
+		System.out.println("toMemId: " + toMemId);
 		
 		if ("getAll".equals(action)) {
 			System.out.println("PartnerMsgController getAll match");
 			String outStr = "";
 			res.setContentType(CONTENT_TYPE);
 			PrintWriter out = res.getWriter();
-			outStr = gson.toJson(dao_memChat.getAll()); // no no no not get all
+			//outStr = gson.toJson(dao_memChat.getAll()); // no no no not get all
+			outStr = gson.toJson(dao_memChat.getOldMsgBtwnTwoMems(memId, toMemId));
 			
 			System.out.println("outStr:" + outStr);
 			out.println(outStr);

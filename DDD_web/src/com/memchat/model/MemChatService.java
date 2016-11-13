@@ -40,4 +40,7 @@ public class MemChatService {
 	public List<MemChatVO> findByMemChatChatId(String aMemChatChatId){		// 找一個聊天室中所有對話 - 最後再寫
 		return this.dao.findByMemChatChatId(aMemChatChatId);
 	}
+	public List<MemChatVO> getOldMsgBtwnTwoMems(String aMemChatMemId01, String aMemChatMemId02){
+		return this.dao.getOldMsgBtwnTwoMems(aMemChatMemId01, aMemChatMemId02);
+	}
 }

@@ -16,6 +16,7 @@ public interface MemChatDAO_interface {
 	public List<MemChatVO> getAll();
 	public MemChatVO findByPrimaryKey(String aMemChatChatId, String aMemChatMemId, Timestamp aDate);
 	public List<MemChatVO> findByMemChatChatId(String aMemChatChatId); // 找一個聊天室中所有對話 - 最後再寫
+	public List<MemChatVO> getOldMsgBtwnTwoMems(String aMemChatMemId01, String aMemChatMemId02);
 	//萬用查詢
 	public List<MemChatVO> getAll(Map<String, String[]> map); 
 }

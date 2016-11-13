@@ -285,6 +285,12 @@ public class MemChatJDBCDAO implements MemChatDAO_interface {
 		return null;
 	}
 
+	@Override
+	public List<MemChatVO> getOldMsgBtwnTwoMems(String aMemChatMemId01, String aMemChatMemId02) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 
