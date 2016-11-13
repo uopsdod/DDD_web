@@ -246,7 +246,7 @@ public class Testing_yo extends HttpServlet {
 //	session.getTransaction().commit();
 	
 	//ChatHibernateDAO 測試:
-	ChatService dao_chat = new ChatService();
+//	ChatService dao_chat = new ChatService();
 	// 查單筆測試:
 //	out.println("<b>ChatHibernateDAO-getOneChat- OK: </b>");
 //	out.println(dao_chat.getOneChat("10000001")+ "<br>"); 	
@@ -258,11 +258,11 @@ public class Testing_yo extends HttpServlet {
 //		out.println(myVO.getChatId() + "<br>");
 //	}
 	// 萬用查詢測試:
-	out.println("<b>ChatHibernateDAO-getAll(aMap)- OK: </b><br>");
-	List<ChatVO> myList = dao_chat.getAll(req.getParameterMap());
-	for (ChatVO myVO: myList){
-		out.println(myVO.getChatId() + "<br>");
-	}	
+//	out.println("<b>ChatHibernateDAO-getAll(aMap)- OK: </b><br>");
+//	List<ChatVO> myList = dao_chat.getAll(req.getParameterMap());
+//	for (ChatVO myVO: myList){
+//		out.println(myVO.getChatId() + "<br>");
+//	}	
 	// 新增測試:
 //	ChatVO chatVO = new ChatVO();
 //	dao_chat.insert(chatVO);
@@ -270,6 +270,10 @@ public class Testing_yo extends HttpServlet {
 	// 刪除測試:
 //	ChatVO chatVO = new ChatVO();	
 //	dao_chat.delete("10000004"); // Constraint - 要先新增一筆沒人用的才能刪掉
+    
+    // MemChatHibernateDAO 測試:
+	MemChatService dao_memChat = new MemChatService();
+	MemChatVO memChatVO = dao_memChat.getAll().get(0);
 	
   }
 }

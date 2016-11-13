@@ -1,4 +1,4 @@
-package com.memrep.modelHibernate;
+package com.memchat.modelHibernate;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -29,20 +30,17 @@ import util.CompositeQuery_anyDB_Hibernate;
 import util.HibernateUtil;
 
 
-public class MemRepHibernateDAO implements MemRepDAO_interface {
+public class MemChatHibernateDAO implements MemChatDAO_interface {
 
-	// 全部欄位名(複製用):
-	// memrepId memrepOrdId memrepMemId memrepHotelId memrepEmpId memrepContent memrepStatus memrepDate memrepReviewDate 
-	
-	private static final String GET_ALL_MEMREPSTATUS = "SELECT memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus, memrepDate, memrepReviewDate FROM memrep WHERE memrepStatus = ? ORDER BY memrepId";	
-	private static final String GET_ALL_STMT = "from MemRepVO order by memRepId";
+	private static final String GET_ALL_STMT = "from MemChatVO";
+	private static final String DELETE_STMT = "FROM MemChatVO WHERE memChatChatId= ? AND memChatMemId = ? AND TO_CHAR(memChatDate, 'YYYYMMDD HH24:MI:SSxFF3') = TO_CHAR(?, 'YYYYMMDD HH24:MI:SSxFF3')";
 
 	@Override
-	public void insert(MemRepVO aMemrepVO) {
+	public void insert(MemChatVO aMemChatVO) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			session.saveOrUpdate(aMemrepVO);
+			session.saveOrUpdate(aMemChatVO);
 			session.getTransaction().commit();
 		} catch (RuntimeException ex) {
 			session.getTransaction().rollback();
@@ -51,38 +49,42 @@ public class MemRepHibernateDAO implements MemRepDAO_interface {
 	}
 
 	@Override
-	public void update(MemRepVO aMemrepVO) {
+	public void update(MemChatVO aMemChatVO) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			session.saveOrUpdate(aMemrepVO);
+			session.saveOrUpdate(aMemChatVO);
 			session.getTransaction().commit();
 		} catch (RuntimeException ex) {
 			session.getTransaction().rollback();
 			throw ex;
-		}		
+		}	
 	}
 
 	@Override
-	public void delete(String aMemrepId) {
+	public void delete(String aMemChatChatId, String aMemChatMemId, Timestamp aMemChatDate) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
 
 //        【此時多方(宜)可採用HQL刪除】
-//			Query query = session.createQuery("delete MemRepVO where memRepId=?");
-//			query.setParameter(0, aMemrepId);
+//			Query query = session.createQuery(DELETE_STMT);
+//			query.setParameter(0, aMemChatChatId);
+//			query.setParameter(1, aMemChatMemId);
+//			query.setParameter(2, aDate);
 //			System.out.println("刪除的筆數=" + query.executeUpdate());
 
 //        【或此時多方(也)可採用去除關聯關係後，再刪除的方式】
-//			MemRepVO memRepVO = new MemRepVO();
-//			memRepVO.setMemRepId(aMemrepId);
-//			session.delete(memRepVO);
+//			MemChatVO memChatVO = new MemChatVO();
+//			memChatVO.setMemChatChatId(aMemChatChatId);
+//			memChatVO.setMemChatMemId(aMemChatMemId);
+//			memChatVO.setMemChatDate(aMemChatDate);
+//			session.delete(memChatVO);
 
 //        【此時多方不可(不宜)採用cascade聯級刪除】
-//        【多方memRep.hbm.xml如果設為 cascade="all"或 cascade="delete"將會刪除所有相關資料-包括所屬部門與同部門的其它員工將會一併被刪除】
-			MemRepVO memRepVO = (MemRepVO) session.get(MemRepVO.class, aMemrepId);
-			session.delete(memRepVO);
+//        【多方memChat.hbm.xml如果設為 cascade="all"或 cascade="delete"將會刪除所有相關資料-包括所屬部門與同部門的其它員工將會一併被刪除】
+//			MemChatVO memChatVO = (MemChatVO) session.get(MemChatVO.class, aMemrepId); // ????
+//			session.delete(memChatVO);
 
 			session.getTransaction().commit();
 		} catch (RuntimeException ex) {
@@ -92,8 +94,8 @@ public class MemRepHibernateDAO implements MemRepDAO_interface {
 	}
 
 	@Override
-	public List<MemRepVO> getAll() {
-		List<MemRepVO> memRepVOList = null;
+	public List<MemChatVO> getAll() {
+		List<MemChatVO> memRepVOList = null;
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
@@ -108,37 +110,43 @@ public class MemRepHibernateDAO implements MemRepDAO_interface {
 	}
 
 	@Override
-	public MemRepVO findByPrimaryKey(String aMemrepId) {
-		MemRepVO memRepVO = null;
+	public MemChatVO findByPrimaryKey(MemChatVOPK aMemChatVOPK) {
+		MemChatVO memChatVO = null;
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			memRepVO = (MemRepVO) session.get(MemRepVO.class, aMemrepId);
+			memChatVO = (MemChatVO) session.get(MemChatVO.class, aMemChatVOPK);
 			session.getTransaction().commit();
 		} catch (RuntimeException ex) {
 			session.getTransaction().rollback();
 			throw ex;
 		}
-		return memRepVO;
+		return memChatVO;
 	}
 
 	@Override
-	public List<MemRepVO> getAll(Map<String, String[]> aMap) {
-		List<MemRepVO> tmpList = null;
-		Class myVOClass = MemRepVO.class; // 這邊相依各DAO的VO
-	    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-	    Criteria query = null;
-	    try{
-		    session.beginTransaction();	    	
-		    query = session.createCriteria(myVOClass); 
-			CompositeQuery_anyDB_Hibernate.getAll(query, aMap, myVOClass); 
-			tmpList = query.list();
-			session.getTransaction().commit();
-	    }catch(RuntimeException ex){
-	    	session.getTransaction().rollback();
-	    	throw ex;
-	    }
+	public List<MemChatVO> getAll(Map<String, String[]> aMap) {
+		List<MemChatVO> tmpList = null;
+//		Class myVOClass = MemRepVO.class; // 這邊相依各DAO的VO
+//	    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//	    Criteria query = null;
+//	    try{
+//		    session.beginTransaction();	    	
+//		    query = session.createCriteria(myVOClass); 
+//			CompositeQuery_anyDB_Hibernate.getAll(query, aMap, myVOClass); 
+//			tmpList = query.list();
+//			session.getTransaction().commit();
+//	    }catch(RuntimeException ex){
+//	    	session.getTransaction().rollback();
+//	    	throw ex;
+//	    }
 		return tmpList;
+	}
+
+	@Override
+	public List<MemChatVO> findByMemChatChatId(String aMemChatChatId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 //	@Override
