@@ -29,7 +29,7 @@ public class RoomVO implements java.io.Serializable{
 	private Integer roomOneBed;
 	private Integer roomTwoBed;
 	
-	private Set<OrdVO> roomOrds = new HashSet<OrdVO>();
+//	private Set<OrdVO> roomOrds = new HashSet<OrdVO>();
 	
 	public String getRoomId() {
 		return roomId;
@@ -170,12 +170,12 @@ public class RoomVO implements java.io.Serializable{
 		this.roomTwoBed = aRoomTwoBed;
 	}
 	
-	public Set<OrdVO> getRoomOrds(){
-		return this.roomOrds;
-	}
-	
-	public void setRoomOrds(Set<OrdVO> aRoomOrds){
-		this.roomOrds = aRoomOrds;
-	}
+//	public Set<OrdVO> getRoomOrds(){
+//		return this.roomOrds;
+//	}
+//	
+//	public void setRoomOrds(Set<OrdVO> aRoomOrds){
+//		this.roomOrds = aRoomOrds;
+//	}
 	
 }

@@ -53,6 +53,10 @@ public class OrdService {
 		ordVO.setOrdQrPic(aOrdQrPic);
 		ordVO.setOrdMsgNo(aOrdMsgNo);
 		
+		Timestamp currentTime = new Timestamp(new java.util.Date().getTime());
+		ordVO.setOrdDate(currentTime);
+		
+		
 		dao.insert(ordVO);
 		
 		return ordVO;
@@ -121,12 +125,12 @@ public class OrdService {
 	}
 	
 	/* (一般會員)列出該一般會員的所有訂單 QRCode 驗證碼 */
-//	public List<OrdVO> getAllByOrdMemId(String aOrdMemId){
-//		return dao.getAllByOrdMemId(aOrdMemId); 
-//	}
+	public List<OrdVO> getAllByOrdMemId(String aOrdMemId){
+		return dao.getAllByOrdMemId(aOrdMemId); 
+	}
 	
 	/* (廠商會員)列出該廠商會員的所有訂單 */
-//	public List<OrdVO> getAllByOrdHotelId(String aOrdHotelId){
-//		return dao.getAllByOrdHotelId(aOrdHotelId);
-//	}
+	public List<OrdVO> getAllByOrdHotelId(String aOrdHotelId){
+		return dao.getAllByOrdHotelId(aOrdHotelId);
+	}
 }

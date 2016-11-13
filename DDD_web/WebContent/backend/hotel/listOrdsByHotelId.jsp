@@ -67,7 +67,7 @@
 			
 			<td>
 				<c:forEach var="roomVO" items="${roomSvc.all}">
-					<c:if test="${ordVO.ordRoomId==roomVO.roomId}">
+					<c:if test="${ordVO.ordRoomVO.roomId==roomVO.roomId}">
 						${roomVO.roomId} <br>
 						[${roomVO.roomName}]
 					</c:if>
@@ -77,7 +77,7 @@
 			<%-- <td>${ordVO.ordMemId}</td> --%>
 			<td>
 				<c:forEach var="memVO" items="${memSvc.all}">
-					<c:if test="${ordVO.ordMemId==memVO.memId}">
+					<c:if test="${ordVO.ordMemVO.memId==memVO.memId}">
 						${memVO.memId} <br>
 						[${memVO.memName}]
 					</c:if>
@@ -87,7 +87,7 @@
 			<%-- <td>${ordVO.ordHotelId}</td> --%>
 			<td>
 				<c:forEach var="hotelVO" items="${hotelSvc.all}">
-					<c:if test="${ordVO.ordHotelId==hotelVO.hotelId}">
+					<c:if test="${ordVO.ordHotelVO.hotelId==hotelVO.hotelId}">
 						${hotelVO.hotelId} <br>
 						[${hotelVO.hotelName}]
 					</c:if>

@@ -14,20 +14,18 @@
 
 <%-- 取出對應room的物件 --%>
 <%
-	RoomService roomSvc = new RoomService();
-	RoomVO roomVO = roomSvc.findByPrimaryKey(ordVO.getOrdRoomId());
+	RoomVO roomVO = ordVO.getOrdRoomVO();
 %>
 
 <%-- 取出對應member的物件 --%>
 <%
-	MemService memSvc = new MemService();
-	MemVO memVO = memSvc.getOneMem(ordVO.getOrdMemId()); 
+
+	MemVO memVO = ordVO.getOrdMemVO(); 
 %>
 
 <%-- 取出對應hotel的物件 --%>
 <%
-	HotelService hotelSvc = new HotelService();
-	HotelVO hotelVO = hotelSvc.getOne(ordVO.getOrdHotelId());
+	HotelVO hotelVO = ordVO.getOrdHotelVO();
 %>
 
 <!DOCTYPE html>
@@ -65,9 +63,9 @@
 
 		<tr>
 			<td><%=ordVO.getOrdId()%></td>
-			<td><%=ordVO.getOrdRoomId()%> <br> [<%=roomVO.getRoomName()%>]</td>
-			<td><%=ordVO.getOrdMemId()%> <br> [<%=memVO.getMemName()%>] </td>
-			<td><%=ordVO.getOrdHotelId()%> <br> [<%=hotelVO.getHotelName()%>]</td>
+			<td><%=roomVO.getRoomId()%> <br> [<%=roomVO.getRoomName()%>]</td>
+			<td><%=memVO.getMemId()%> <br> [<%=memVO.getMemName()%>] </td>
+			<td><%=hotelVO.getHotelId()%> <br> [<%=hotelVO.getHotelName()%>]</td>
 
 			<td><%=ordVO.getOrdPrice()%></td>
 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdLiveDate())%></td>
