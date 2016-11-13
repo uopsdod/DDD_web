@@ -7,7 +7,7 @@ import javax.sql.DataSource;
 
 import java.sql.*;
 
-public class RoomJDBCDAO implements RoomDAO_interface{
+public class RoomHibernateDAO implements RoomDAO_interface{
 	
 	
 
@@ -516,7 +516,7 @@ public static void main(String[] args) {
 		
 		
 		
-		RoomJDBCDAO dao = new RoomJDBCDAO();
+		RoomHibernateDAO dao = new RoomHibernateDAO();
 
 		// 新增
 		/*

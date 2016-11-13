@@ -1,4 +1,4 @@
-package com.room.model;
+package com.room.HibernateModel;
 
 import java.sql.Date;
 import java.util.*;

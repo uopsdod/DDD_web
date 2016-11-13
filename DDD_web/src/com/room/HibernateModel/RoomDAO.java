@@ -1,4 +1,4 @@
-package com.room.model;
+package com.room.HibernateModel;
 
 import java.util.*;
 
@@ -7,7 +7,7 @@ import javax.sql.DataSource;
 
 import java.sql.*;
 
-public class RoomJDBCDAO implements RoomDAO_interface{
+public class RoomDAO implements RoomDAO_interface{
 	
 	
 
@@ -516,7 +516,7 @@ public static void main(String[] args) {
 		
 		
 		
-		RoomJDBCDAO dao = new RoomJDBCDAO();
+		RoomDAO dao = new RoomDAO();
 
 		// 新增
 		/*

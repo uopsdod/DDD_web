@@ -1,0 +1,20 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*"%>
+<%
+	String[] city = {"桃園市","基隆市","台北市","新北市","新竹縣","新竹市","苗栗縣","台中市","彰化縣","雲林縣","嘉義縣","嘉義市","嘉義市","台南市","高雄市","屏東縣","台東縣","花蓮縣","宜蘭縣"};
+	pageContext.setAttribute("city",city);
+	
+	String[] Taoyuan = {"桃園區","中壢區","平鎮區","龍潭區","楊梅區","新屋區","觀音區","龜山區","八德區","大溪區","大園區","蘆竹區","桃園區","復興區"};
+	pageContext.setAttribute("Taoyuan",Taoyuan);
+	
+	String[] Taipie = {"中正區","大同區","中山區","松山區","大安區","萬華區","信義區","士林區","北投區","內湖區","南港區","文山區"};
+	pageContext.setAttribute("Taipie",Taipie);
+	
+
+	String[] Xinbei = {"八里區","三芝區","三重區","三峽區","土城區","中和區","五股區","平溪區","永和區","石門區","石碇區","汐止區","坪林區","林口區","板橋區","金山區","泰山區","烏來區","貢寮區","淡水區","深坑區","新店區","新莊區","瑞芳區","萬里區","樹林區","雙溪區","蘆洲區","鶯歌區"};
+	pageContext.setAttribute("Xinbei",Xinbei);
+	
+
+%>
+
+
