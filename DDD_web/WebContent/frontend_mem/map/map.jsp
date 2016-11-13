@@ -73,7 +73,7 @@
 																<select  name="city" id="city" class="form-control" style="width:100px" id="city">
 			
 														  			<% for(int i =0;i<city.length;i++){%>
-																		<option value="<%=city[i]%>"  <%=item==null?"":((item.get("city")==city[i])?"selected":"")%>><%=city[i]%>	
+																		<option value="<%=city[i]%>"  <%=item==null?"":((item.get("city").equals(city[i]))?"selected":"")%>><%=city[i]%>	
 																	<%}%>				
 																</select>
 															
@@ -87,9 +87,15 @@
 															
 																<select  name="zone" id="zone" class="form-control" style="width:100px">
 			
+														  			
+														  		
 														  			<% for(int i =0;i<Taoyuan.length;i++){%>
 																		<option value="<%=Taoyuan[i]%>" <%=hotelVO==null?"":((hotelVO.getHotelCounty()==Taoyuan[i])?"selected":"")%>  ><%=Taoyuan[i]%>	
 																	<%}%>				
+																
+																
+																
+																
 																</select>
 															
 														</div>

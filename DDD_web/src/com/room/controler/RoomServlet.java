@@ -26,7 +26,7 @@ public class RoomServlet extends HttpServlet {
 	
 	
 	
-	static Map<String,Map> OnData = new HashMap<String,Map>();	//存有各room的降價排程
+	public static Map<String,Map> OnData = new HashMap<String,Map>();	//存有各room的降價排程
 	static Map<String,Timer> OnTimer = new HashMap<String,Timer>(); //存有各room的即時價格
 	static Map<String,Timer> DownTimer = new HashMap<String,Timer>(); //存有各room的即時價格
 
