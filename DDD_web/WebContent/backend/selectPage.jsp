@@ -97,5 +97,31 @@
 </ul>
 
 
+<h3>[自己的方法](一般會員)列出所有訂單</h3>
+
+		<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
+			選擇一般會員編號:
+			<select name="ordMemId">
+				<c:forEach var="ordVO" items="${ordSvc.all}">	
+					<option value="${ordVO.ordMemVO.memId}">${ordVO.ordMemVO.memId}
+				</c:forEach>
+			</select>	
+			<input type="submit" value="送出">
+			<input type="hidden" name="action" value="listAllByMemId">		
+		</form>
+
+<h3>[自己的方法](廠商會員)列出所有訂單</h3>
+
+		<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
+			選擇廠商會員編號:
+			<select name="ordHotelId">
+				<c:forEach var="ordVO" items="${ordSvc.all}">	
+					<option value="${ordVO.ordHotelVO.hotelId}">${ordVO.ordHotelVO.hotelId}
+				</c:forEach>
+			</select>	
+			<input type="submit" value="送出">
+			<input type="hidden" name="action" value="listAllByHotelId">		
+		</form>
+
 </body>
 </html>

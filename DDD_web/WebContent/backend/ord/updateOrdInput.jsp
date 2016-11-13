@@ -155,8 +155,15 @@
 	<input type="hidden" name="action" value="update">
 	<input type="hidden" name="ordId" value="<%=ordVO.getOrdId()%>">
 	<input type="hidden" name="ordDate" value="<%=ordVO.getOrdDate().getTime()%>">
+	<input type="hidden" name="requestURL" value="<%=request.getAttribute("requestURL")%>"/>
+	<input type="hidden" name="whichPage" value="<%=request.getAttribute("whichPage")%>"/>
+	
 	<input type="submit" value="送出修改">
 </form>
+	
+	request.getAttribute("requestURL"): <%= request.getAttribute("requestURL") %>
+	
+	request.getAttribute("whichPage"): <%= request.getAttribute("whichPage")%>
 	
 </body>
 </html>
