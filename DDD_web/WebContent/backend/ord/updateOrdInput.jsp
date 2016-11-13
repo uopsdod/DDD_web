@@ -48,7 +48,7 @@
 			<td>
 				<select name="ordRoomId">
 					<c:forEach var="roomVO" items="${roomSvc.all}">
-						<option value="${roomVO.roomId}" ${(ordVO.ordRoomId==roomVO.roomId)?'selected':''}>${roomVO.roomName}</option>
+						<option value="${roomVO.roomId}" ${(ordVO.ordRoomVO.roomId==roomVO.roomId)?'selected':''}>${roomVO.roomName}</option>
 					</c:forEach>
 				</select>
 			</td>
@@ -60,7 +60,7 @@
 			<td>
 				<select name="ordMemId">
 					<c:forEach var="memVO" items="${memSvc.all}">
-						<option value="${memVO.memId}" ${(ordVO.ordMemId==memVO.memId)? 'selected':''}>${memVO.memName}</option>
+						<option value="${memVO.memId}" ${(ordVO.ordMemVO.memId==memVO.memId)? 'selected':''}>${memVO.memName}</option>
 					</c:forEach>
 				</select>
 			</td>
@@ -72,7 +72,7 @@
 			<td>
 				<select name="ordHotelId">
 					<c:forEach var="hotelVO" items="${hotelSvc.all}">
-						<option value="${hotelVO.hotelId}" ${(ordVO.ordHotelId==hotelVO.hotelId)?'selected':''}>${hotelVO.hotelName}</option>
+						<option value="${hotelVO.hotelId}" ${(ordVO.ordHotelVO.hotelId==hotelVO.hotelId)?'selected':''}>${hotelVO.hotelName}</option>
 					</c:forEach>
 				</select>
 			</td>
