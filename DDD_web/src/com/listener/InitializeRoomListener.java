@@ -72,7 +72,7 @@ public class InitializeRoomListener implements ServletContextListener {
 			         public void run(){
 			         	//排程器要執行的任務	
 			        	 
-			        	 System.out.println("每分鐘排程啟動");
+//			        	 System.out.println("每分鐘排程啟動");
 			        	 
 			        	 if(Go==0){
 			        		 caler2 = new GregorianCalendar();				
@@ -89,8 +89,8 @@ public class InitializeRoomListener implements ServletContextListener {
 			        	 
 			        	 
 			        	 
-			        	 System.out.println(count);
-			        	 System.out.println(RoomRegularTime);
+//			        	 System.out.println(count);
+//			        	 System.out.println(RoomRegularTime);
 			       
 			        	 
 			        	 List<String> nowList = (List<String>)RoomRegularTime.get(count);

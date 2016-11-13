@@ -29,35 +29,7 @@ public class RoomServlet extends HttpServlet {
 	static Map<String,Map> OnData = new HashMap<String,Map>();	//存有各room的降價排程
 	static Map<String,Timer> OnTimer = new HashMap<String,Timer>(); //存有各room的即時價格
 	static Map<String,Timer> DownTimer = new HashMap<String,Timer>(); //存有各room的即時價格
-//	static long today = 0; 
-//	
-//	public void init(){
-//		
-//		
-//		Calendar begin = new GregorianCalendar(2016,11,2,0,0,0);
-//		Date beginDate = begin.getTime();
-//	
-//		Timer timer = new Timer();
-//		
-//		 TimerTask task = new TimerTask(){
-//		        
-//	         public void run(){
-//	         	//排程器要執行的任務	
-//	        	 
-//	        	Calendar caler = new GregorianCalendar();
-//	     		long times = caler.get(Calendar.HOUR_OF_DAY)*60*60*1000 - 
-//	         	caler.get(Calendar.MINUTE)*60*1000 -  
-//	         	caler.get(Calendar.SECOND)*1000;
-//	     		today = caler.getTime().getTime()-times;
-//	     	
-//	        	System.out.println(today);
-//	         }
-//	     };
-//		
-//		timer.scheduleAtFixedRate(task, beginDate, 24*60*60*1000); 
-//		
-//		
-//	}	
+
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
