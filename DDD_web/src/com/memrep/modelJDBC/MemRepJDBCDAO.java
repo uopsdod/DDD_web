@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
-import com.ord.model.OrdJDBCDAO;
+import com.ord.model.OrdService;
 import com.ord.model.OrdVO;
 
 public class MemRepJDBCDAO implements MemRepDAO_interface {
@@ -45,8 +45,8 @@ public class MemRepJDBCDAO implements MemRepDAO_interface {
 		try(Connection con = DriverManager.getConnection(MemRepJDBCDAO.url,MemRepJDBCDAO.account,MemRepJDBCDAO.password);
 			PreparedStatement pstmt = con.prepareStatement(MemRepJDBCDAO.INSERT);) {
 			String memRepOrdId = aMemrepVO.getMemRepOrdId();
-			OrdJDBCDAO dao_ord = new OrdJDBCDAO();
-			OrdVO myOrdVO = dao_ord.findByPrimaryKey(memRepOrdId);
+			OrdService dao_ord = new OrdService();
+			OrdVO myOrdVO = dao_ord.getOneOrd(memRepOrdId);
 			String memRepMemId = myOrdVO.getOrdMemId();
 			String memRepHotelId = myOrdVO.getOrdHotelId();
 	

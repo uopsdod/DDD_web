@@ -50,7 +50,6 @@ import com.memrep.model.MemRepService;
 //import com.memrep.model.MemRepHibernateDAO;
 //import com.memrep.model.MemRepService;
 import com.memrep.model.MemRepVO;
-import com.ord.model.OrdJNDIDAO;
 import com.ord.model.OrdService;
 
 import util.CompositeQuery_anyDB_Hibernate;
@@ -179,9 +178,9 @@ public class Testing_yo extends HttpServlet {
 //	String yyyyMM = sdf.format(d);
 //	String ordid = yyyyMM + "1003";
 //	memRepVO.setMemRepOrdId(ordid); // NOT NULL
-//	OrdJNDIDAO dao_ord = new OrdJNDIDAO();
-//	String memId = dao_ord.findByPrimaryKey(ordid).getOrdMemId();
-//	String hotelId = dao_ord.findByPrimaryKey(ordid).getOrdHotelId();
+//	OrdServce dao_ord = new OrdServce();
+//	String memId = dao_ord.getOneOrd(ordid).getOrdMemId();
+//	String hotelId = dao_ord.getOneOrd(ordid).getOrdHotelId();
 //	MemJNDIDAO dao_mem = new MemJNDIDAO();
 //	memRepVO.setMemRepMemVO(dao_mem.findByPrimaryKey(memId)); // NOT NULL
 //	memRepVO.setMemRepHotelId(hotelId); // NOT NULL

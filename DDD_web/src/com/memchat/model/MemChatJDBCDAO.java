@@ -14,7 +14,7 @@ import java.util.Map;
 import java.io.*;
 
 import com.memchat.model.MemChatVO;
-import com.ord.model.OrdJDBCDAO;
+import com.ord.model.OrdService;
 import com.ord.model.OrdVO;
 import com.chat.model.ChatJDBCDAO;
 import com.chat.model.ChatVO;
@@ -226,7 +226,7 @@ public class MemChatJDBCDAO implements MemChatDAO_interface {
 //		java.sql.Timestamp ts = new java.sql.Timestamp(myVO.getMemChatDate().getTime());
 //		System.out.println("\n"+ts);
 		
-		OrdJDBCDAO dao_ord = new OrdJDBCDAO();
+		OrdService dao_ord = new OrdService();
 		OrdVO myVO = dao_ord.getAll().get(0);
 		java.sql.Date date = new java.sql.Date(myVO.getOrdDate().getTime());
 		System.out.println("\n"+date);

@@ -23,7 +23,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.mem.model.MemVO;
-import com.ord.model.OrdJDBCDAO;
 import com.ord.model.OrdVO;
 
 import util.CompositeQuery_anyDB_Hibernate;
