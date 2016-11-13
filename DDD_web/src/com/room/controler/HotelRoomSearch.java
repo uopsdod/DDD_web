@@ -34,8 +34,10 @@ public class HotelRoomSearch extends HttpServlet {
 		
 		
 		
-		
-		
+		String city = req.getParameter("city");
+		System.out.println(city);
+		String zone = req.getParameter("zone");
+		System.out.println(zone);
 		
 		
 		
