@@ -10,14 +10,14 @@ public class MemChatService {
 		this.dao = new MemChatJNDIDAO();
 	}
 	// aMemChatChatId,aMemChatMemId, aMemChatDate, aMemChatContent, aMemChatPic
-	public void insert(String aMemChatChatId, String aMemChatMemId, Timestamp aMemChatDate, String aMemChatContent, byte[] aMemChatPic){
+	public void insert(String aMemChatChatId, String aMemChatMemId, Timestamp aMemChatDate, String aMemChatContent, byte[] aMemChatPic, String aMemChatStatus){
 		MemChatVO memChatVO = new MemChatVO();
 		memChatVO.setMemChatChatId(aMemChatChatId);
 		memChatVO.setMemChatMemId(aMemChatMemId);
 		memChatVO.setMemChatDate(aMemChatDate);
 		memChatVO.setMemChatContent(aMemChatContent);
 		memChatVO.setMemChatPic(aMemChatPic);
-		
+		memChatVO.setMemChatStatus(aMemChatStatus);
 		this.dao.insert(memChatVO);
 	}
 	

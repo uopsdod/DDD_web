@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.naming.Context;
@@ -18,9 +19,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import javax.sql.DataSource;
 
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.metadata.ClassMetadata;
+
 import com.chat.model.ChatDAO_interface;
 import com.chat.model.ChatJNDIDAO;
 import com.chat.model.ChatService;
+import com.emp.model.EmpVO;
 import com.livecond.model.LiveCondDAO_interface;
 import com.livecond.model.LiveCondJDNIDAO;
 import com.livecond.model.LiveCondService;
@@ -38,14 +45,20 @@ import com.memlivecond.model.MemLiveCondDAO_interface;
 import com.memlivecond.model.MemLiveCondJDBCDAO;
 import com.memlivecond.model.MemLiveCondService;
 import com.memrep.model.MemRepDAO_interface;
+import com.memrep.model.MemRepHibernateDAO;
+import com.memrep.model.MemRepService;
 //import com.memrep.model.MemRepHibernateDAO;
 //import com.memrep.model.MemRepService;
 import com.memrep.model.MemRepVO;
 import com.ord.model.OrdJNDIDAO;
 import com.ord.model.OrdService;
 
+import util.CompositeQuery_anyDB_Hibernate;
+import util.HibernateUtil;
+
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
+import com.hotel.model.HotelVO;
 
 @WebServlet("/Testing_yo")
 public class Testing_yo extends HttpServlet {
@@ -83,14 +96,20 @@ public class Testing_yo extends HttpServlet {
 //	out.println(daoServ2.findByPrimaryKey("102", "10000001")+"<br>");
 //	out.println("---------------------------------------------<br>");	
 //	
-//	MemChatDAO_interface dao3 = new MemChatJNDIDAO();
-//	MemChatVO myMemChatVO = dao3.getAll().get(0);
-//	out.println("<b>MemChatJNDIDAO-OK: </b>");
-//	out.println(dao3.findByPrimaryKey(myMemChatVO.getMemChatChatId(), myMemChatVO.getMemChatMemId(), myMemChatVO.getMemChatDate())+"<br>");
-//	MemChatService daoServ3 = new MemChatService();
-//	out.println("<b>MemChatService-OK: </b>");
-//	out.println(daoServ3.findByPrimaryKey(myMemChatVO.getMemChatChatId(), myMemChatVO.getMemChatMemId(), myMemChatVO.getMemChatDate())+"<br>");
-//	out.println("---------------------------------------------<br>");	
+	
+    MemChatDAO_interface dao3 = new MemChatJNDIDAO();
+	MemChatVO myMemChatVO = dao3.getAll().get(0);
+	out.println("<b>MemChatJNDIDAO-OK: </b>");
+	out.println(dao3.findByPrimaryKey(myMemChatVO.getMemChatChatId(), myMemChatVO.getMemChatMemId(), myMemChatVO.getMemChatDate())+"<br>");
+	MemChatService daoServ3 = new MemChatService();
+	out.println("<b>MemChatService-OK: </b>");
+	out.println(daoServ3.findByPrimaryKey(myMemChatVO.getMemChatChatId(), myMemChatVO.getMemChatMemId(), myMemChatVO.getMemChatDate())+"<br>");
+	List<MemChatVO> list = daoServ3.getAll();
+	for (MemChatVO myVO: list){
+		out.println(myVO.getMemChatChatId() + " ");
+		out.println(myVO.getMemChatStatus() + " ");		
+	}
+	out.println("---------------------------------------------<br>");	
 //	
 //	LiveCondDAO_interface dao4 = new LiveCondJDNIDAO();
 //	out.println("<b>LiveCondJDNIDAO-OK: </b>");
@@ -143,8 +162,8 @@ public class Testing_yo extends HttpServlet {
 //	out.println("---------------------------------------------<br>");
     
     /*************************************** HibernateDAO  *********************************************/
-//    MemRepDAO_interface dao9 = new MemRepHibernateDAO();
-//    // 查詢單筆測試:
+//    MemRepService dao9 = new MemRepService();
+    // 查詢單筆測試:
 //	out.println("<b>MemRepHibernateDAO-findByPrimaryKey- OK: </b>");
 //	out.println(dao9.findByPrimaryKey("1000000001").getMemRepContent() + "<br>");  
 //	out.println(dao9.findByPrimaryKey("1000000001").getMemRepMemVO().getMemName() + "<br>");
@@ -183,6 +202,49 @@ public class Testing_yo extends HttpServlet {
 //    	out.println(myVO.getMemRepId() + ": " + myVO.getMemRepContent() + "<br>");
 //    }
 //    out.println("---------------------------------------------<br>");
+    // 萬用查詢測試:
+//	out.println("<b>MemRepHibernateDAO-萬用查詢- OK: </b><br>");
+//	
+//	List<MemRepVO> list = dao9.getAll(req.getParameterMap());
+//	for (MemRepVO myVO: list){
+//		out.println(myVO.getMemRepContent() + "<br>");
+//	}
+//	out.println("---------------------------------------------<br>");
+    
+	// metadata
+//	SessionFactory sessionFactory  = HibernateUtil.getSessionFactory();
+//	Map myMap = sessionFactory.getAllClassMetadata();
+//	Set<String> keys = myMap.keySet();
+//	for (String key: keys){
+//		out.println( key + " - " + myMap.get(key) + "<br>");
+//	}
+//	out.println("---------------------------------------------<br>");
+//	ClassMetadata classMetadata = sessionFactory.getClassMetadata(HotelVO.class);
+//	org.hibernate.type.Type[] types = classMetadata.getPropertyTypes();
+//	for (org.hibernate.type.Type myType: types){
+//		out.println(myType.getName() + "<br>");
+//	}
+//	out.println("---------------------------------------------<br>");
+//	String[] names = classMetadata.getPropertyNames();
+//	for (String name: names){
+//		out.println(name + "<br>");
+//	}
+//	out.println("---------------------------------------------<br>");
+	
+//	Class myVOClass = MemVO.class;
+//    SessionFactory sessionFactory  = HibernateUtil.getSessionFactory();
+//    Session session = sessionFactory.getCurrentSession();
+//    session.beginTransaction();
+//    Criteria query = sessionFactory.getCurrentSession().createCriteria(myVOClass);
+//    Map<String, String[]> map3 = req.getParameterMap();
+//	CompositeQuery_anyDB_Hibernate.getAll(query, map3, myVOClass);
+//	List<MemVO> list = query.list();
+//	for (MemVO myVO : list){
+//		out.println(myVO.getMemName() + "<br>");
+//	}
+//	out.println("---------------------------------------------<br>");
+//	session.getTransaction().commit();
+	
 	
   }
 }

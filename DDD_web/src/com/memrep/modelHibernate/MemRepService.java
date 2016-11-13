@@ -1,4 +1,4 @@
-package com.memrep.model;
+package com.memrep.modelHibernate;
 
 import java.util.List;
 import java.util.Map;

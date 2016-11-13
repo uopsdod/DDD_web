@@ -13,5 +13,5 @@ public interface MemRepDAO_interface {
 //	public List<MemRepVO> getAllByMemRepStatus(String aMemRepStatus); //0.未審核 1.已審核未通過 2.已審核已通過
 	public MemRepVO findByPrimaryKey(String aMemrepId);	
 	//萬用查詢
-//	public List<MemRepVO> getAll(Map<String, String[]> map); 
+	public List<MemRepVO> getAll(Map<String, String[]> map); 
 }
