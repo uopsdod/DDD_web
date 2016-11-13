@@ -7,7 +7,7 @@ import java.util.List;
 public class MemChatService {
 	private MemChatDAO_interface dao;
 	public MemChatService(){
-		this.dao = new MemChatJNDIDAO();
+		this.dao = (MemChatDAO_interface) new MemChatJNDIDAO();
 	}
 	// aMemChatChatId,aMemChatMemId, aMemChatDate, aMemChatContent, aMemChatPic
 	public void insert(String aMemChatChatId, String aMemChatMemId, Timestamp aMemChatDate, String aMemChatContent, byte[] aMemChatPic, String aMemChatStatus){

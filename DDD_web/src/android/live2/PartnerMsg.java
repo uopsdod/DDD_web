@@ -23,6 +23,7 @@ public class PartnerMsg extends MemChatVO{
 //    private java.sql.Timestamp memChatDate;
 //    private String memChatContent;
 //    private byte[] memChatPic;
+//    private String memChatStatus;
     // End of MemChatVO
 
     public PartnerMsg(){
