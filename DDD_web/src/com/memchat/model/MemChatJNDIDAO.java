@@ -30,13 +30,13 @@ public class MemChatJNDIDAO implements MemChatDAO_interface {
 	}
 	// 全部欄位名(複製用):
 	// memChatMemId memChatChatId memChatDate memChatContent memChatPic
-	private static final String INSERT = "INSERT INTO memChat (memChatChatId,memChatMemId, memChatDate, memChatContent, memChatPic, memChatStatus) VALUES (?,?,?,?,?,?)";
+	private static final String INSERT = "INSERT INTO memChat (memChatChatId,memChatMemId, memChatDate, memChatContent, memChatPic, memChatStatus, memChatToMemId) VALUES (?,?,?,?,?,?,?)";
 	private static final String UPDATE = "";
 	private static final String DELETE = "DELETE FROM memChat WHERE memChatChatId= ? AND memChatMemId = ? AND TO_CHAR(memChatDate, 'YYYYMMDD HH24:MI:SSxFF3') = TO_CHAR(?, 'YYYYMMDD HH24:MI:SSxFF3')";
 	
-	private static final String GET_ALL = "SELECT memChatChatId, memChatMemId, memChatDate, memChatContent, memChatPic, memChatStatus FROM memChat ORDER BY memChatChatId";
-	private static final String GET_ONE = "SELECT memChatChatId, memChatMemId, memChatDate, memChatContent, memChatPic, memChatStatus FROM memChat WHERE memChatChatId= ? AND memChatMemId = ? AND TO_CHAR(memChatDate, 'YYYYMMDD HH24:MI:SSxFF3') = TO_CHAR(?, 'YYYYMMDD HH24:MI:SSxFF3')";
-	private static final String GET_ALL_MEMCHATCHATID = "SELECT memChatChatId, memChatMemId, memChatDate, memChatContent, memChatPic, memChatStatus FROM memChat WHERE memChatChatId= ? ORDER BY memChatChatId";
+	private static final String GET_ALL = "SELECT memChatChatId, memChatMemId, memChatDate, memChatContent, memChatPic, memChatStatus, memChatToMemId FROM memChat ORDER BY memChatChatId";
+	private static final String GET_ONE = "SELECT memChatChatId, memChatMemId, memChatDate, memChatContent, memChatPic, memChatStatus, memChatToMemId FROM memChat WHERE memChatChatId= ? AND memChatMemId = ? AND TO_CHAR(memChatDate, 'YYYYMMDD HH24:MI:SSxFF3') = TO_CHAR(?, 'YYYYMMDD HH24:MI:SSxFF3')";
+	private static final String GET_ALL_MEMCHATCHATID = "SELECT memChatChatId, memChatMemId, memChatDate, memChatContent, memChatPic, memChatStatus, memChatToMemId FROM memChat WHERE memChatChatId= ? ORDER BY memChatChatId";
 	
 
 
@@ -51,6 +51,7 @@ public class MemChatJNDIDAO implements MemChatDAO_interface {
 			pstmt.setString(4, aMemChatVO.getMemChatContent());
 			pstmt.setBytes(5, aMemChatVO.getMemChatPic());
 			pstmt.setString(6, aMemChatVO.getMemChatStatus());
+			pstmt.setString(7, aMemChatVO.getMemChatToMemId());
 			
 			int result = pstmt.executeUpdate();
 			System.out.println("number of rows inserted: " + result);	
@@ -94,6 +95,7 @@ public class MemChatJNDIDAO implements MemChatDAO_interface {
 					memChatVO.setMemChatContent(rs.getString("memChatContent"));
 					memChatVO.setMemChatPic(rs.getBytes("memChatPic"));
 					memChatVO.setMemChatStatus(rs.getString("memChatStatus"));
+					memChatVO.setMemChatToMemId(rs.getString("memChatToMemId"));
 
 					memChatVOList.add(memChatVO);
 				}// end while
@@ -132,6 +134,8 @@ public class MemChatJNDIDAO implements MemChatDAO_interface {
 					memChatVO.setMemChatContent(rs.getString("memChatContent"));
 					memChatVO.setMemChatPic(rs.getBytes("memChatPic"));
 					memChatVO.setMemChatStatus(rs.getString("memChatStatus"));
+					memChatVO.setMemChatToMemId(rs.getString("memChatToMemId"));
+					
 				}else{
 					System.out.println("no matched data");
 				}
@@ -166,6 +170,7 @@ public class MemChatJNDIDAO implements MemChatDAO_interface {
 					memChatVO.setMemChatContent(rs.getString("memChatContent"));
 					memChatVO.setMemChatPic(rs.getBytes("memChatPic"));
 					memChatVO.setMemChatStatus(rs.getString("memChatStatus"));
+					memChatVO.setMemChatToMemId(rs.getString("memChatToMemId"));
 					
 					memChatVOList.add(memChatVO);
 				};
@@ -209,6 +214,7 @@ public class MemChatJNDIDAO implements MemChatDAO_interface {
 				memChatVO.setMemChatContent(rs.getString("memChatContent"));
 				memChatVO.setMemChatPic(rs.getBytes("memChatPic"));
 				memChatVO.setMemChatStatus(rs.getString("memChatStatus"));
+				memChatVO.setMemChatToMemId(rs.getString("memChatToMemId"));
 
 				
 				list.add(memChatVO); // Store the row in the List

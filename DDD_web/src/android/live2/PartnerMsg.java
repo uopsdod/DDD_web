@@ -16,7 +16,6 @@ import java.security.Timestamp;
 public class PartnerMsg extends MemChatVO{
     String action;
     String tokenId;
-    String toMemId;
     // MemChatVO
 //    private String memChatChatId; // NOT NULL
 //    private String memChatMemId; // NOT NULL
@@ -36,7 +35,6 @@ public class PartnerMsg extends MemChatVO{
     public PartnerMsg(String action, String tokenId, String toMemId) {
         this.action = action;
         this.tokenId = tokenId;
-        this.toMemId = toMemId;
     }
 
     public String getAction() {
@@ -53,13 +51,5 @@ public class PartnerMsg extends MemChatVO{
 
     public void setTokenId(String tokenId) {
         this.tokenId = tokenId;
-    }
-
-    public String getToMemId() {
-        return toMemId;
-    }
-
-    public void setToMemId(String toMemId) {
-        this.toMemId = toMemId;
     }
 }

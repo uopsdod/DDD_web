@@ -61,7 +61,7 @@ public class MsgCenter extends HttpServlet {
 		String action = partnerMsg.getAction();
 		String fromMemId = partnerMsg.getMemChatMemId();
 		String tokenId = partnerMsg.getTokenId();
-		String toMemId = partnerMsg.getToMemId();
+		String toMemId = partnerMsg.getMemChatToMemId();
 		String message = partnerMsg.getMemChatContent();
 		
 		System.out.println("fromMemId: " + fromMemId);
