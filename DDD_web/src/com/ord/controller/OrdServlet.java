@@ -45,7 +45,7 @@ public class OrdServlet extends HttpServlet {
 				}					
 				
 				if(!errorMsgs.isEmpty()){
-					RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/selectPage.jsp");
+					RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/selectPage.jsp");
 					failureView.forward(aReq, aRes);
 					return;
 				}
@@ -61,7 +61,7 @@ public class OrdServlet extends HttpServlet {
 				}
 				
 				if(!errorMsgs.isEmpty()){
-					RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/selectPage.jsp");
+					RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/selectPage.jsp");
 					failureView.forward(aReq, aRes);
 					return;
 				}
@@ -74,7 +74,7 @@ public class OrdServlet extends HttpServlet {
 			}
 			catch(Exception e){
 				errorMsgs.add("無法取得資料:" + e.getMessage());
-				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/selectPage.jsp");
+				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/selectPage.jsp");
 				failureView.forward(aReq, aRes);				
 			}
 		}
@@ -584,7 +584,7 @@ public class OrdServlet extends HttpServlet {
 			}
 			catch(Exception e){
 				errorMsgs.add("無法取得修改資料(listAllByMemId): " + e.getMessage());
-				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/selectPage.jsp");
+				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/selectPage.jsp");
 				failureView.forward(aReq,aRes);
 			}
 			
@@ -610,7 +610,7 @@ public class OrdServlet extends HttpServlet {
 			}
 			catch(Exception e){
 				errorMsgs.add("無法取得修改資料(listAllByHotelId): " + e.getMessage());
-				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/selectPage.jsp");
+				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/selectPage.jsp");
 				failureView.forward(aReq,aRes);
 			}
 			
