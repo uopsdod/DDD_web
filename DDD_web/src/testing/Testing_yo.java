@@ -25,8 +25,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.metadata.ClassMetadata;
 
 import com.chat.model.ChatDAO_interface;
-import com.chat.model.ChatJNDIDAO;
 import com.chat.model.ChatService;
+import com.chat.model.ChatVO;
+import com.chat.modelJDBC.ChatJNDIDAO;
 import com.emp.model.EmpVO;
 import com.livecond.model.LiveCondDAO_interface;
 import com.livecond.model.LiveCondJDNIDAO;
@@ -96,19 +97,19 @@ public class Testing_yo extends HttpServlet {
 //	out.println("---------------------------------------------<br>");	
 //	
 	
-    MemChatDAO_interface dao3 = new MemChatJNDIDAO();
-	MemChatVO myMemChatVO = dao3.getAll().get(0);
-	out.println("<b>MemChatJNDIDAO-OK: </b>");
-	out.println(dao3.findByPrimaryKey(myMemChatVO.getMemChatChatId(), myMemChatVO.getMemChatMemId(), myMemChatVO.getMemChatDate())+"<br>");
-	MemChatService daoServ3 = new MemChatService();
-	out.println("<b>MemChatService-OK: </b>");
-	out.println(daoServ3.findByPrimaryKey(myMemChatVO.getMemChatChatId(), myMemChatVO.getMemChatMemId(), myMemChatVO.getMemChatDate())+"<br>");
-	List<MemChatVO> list = daoServ3.getAll();
-	for (MemChatVO myVO: list){
-		out.println(myVO.getMemChatChatId() + " ");
-		out.println(myVO.getMemChatStatus() + " ");		
-	}
-	out.println("---------------------------------------------<br>");	
+//    MemChatDAO_interface dao3 = new MemChatJNDIDAO();
+//	MemChatVO myMemChatVO = dao3.getAll().get(0);
+//	out.println("<b>MemChatJNDIDAO-OK: </b>");
+//	out.println(dao3.findByPrimaryKey(myMemChatVO.getMemChatChatId(), myMemChatVO.getMemChatMemId(), myMemChatVO.getMemChatDate())+"<br>");
+//	MemChatService daoServ3 = new MemChatService();
+//	out.println("<b>MemChatService-OK: </b>");
+//	out.println(daoServ3.findByPrimaryKey(myMemChatVO.getMemChatChatId(), myMemChatVO.getMemChatMemId(), myMemChatVO.getMemChatDate())+"<br>");
+//	List<MemChatVO> list = daoServ3.getAll();
+//	for (MemChatVO myVO: list){
+//		out.println(myVO.getMemChatChatId() + " ");
+//		out.println(myVO.getMemChatStatus() + " ");		
+//	}
+//	out.println("---------------------------------------------<br>");	
 //	
 //	LiveCondDAO_interface dao4 = new LiveCondJDNIDAO();
 //	out.println("<b>LiveCondJDNIDAO-OK: </b>");
@@ -244,6 +245,31 @@ public class Testing_yo extends HttpServlet {
 //	out.println("---------------------------------------------<br>");
 //	session.getTransaction().commit();
 	
+	//ChatHibernateDAO 測試:
+	ChatService dao_chat = new ChatService();
+	// 查單筆測試:
+//	out.println("<b>ChatHibernateDAO-getOneChat- OK: </b>");
+//	out.println(dao_chat.getOneChat("10000001")+ "<br>"); 	
+//	out.println("<b>ChatHibernateDAO-insert- OK: </b>");
+	// 查全部測試:
+//	out.println("<b>ChatHibernateDAO-getAll- OK: </b><br>");
+//	List<ChatVO> myList = dao_chat.getAll();
+//	for (ChatVO myVO: myList){
+//		out.println(myVO.getChatId() + "<br>");
+//	}
+	// 萬用查詢測試:
+	out.println("<b>ChatHibernateDAO-getAll(aMap)- OK: </b><br>");
+	List<ChatVO> myList = dao_chat.getAll(req.getParameterMap());
+	for (ChatVO myVO: myList){
+		out.println(myVO.getChatId() + "<br>");
+	}	
+	// 新增測試:
+//	ChatVO chatVO = new ChatVO();
+//	dao_chat.insert(chatVO);
+//	out.println("<br>");
+	// 刪除測試:
+//	ChatVO chatVO = new ChatVO();	
+//	dao_chat.delete("10000004"); // Constraint - 要先新增一筆沒人用的才能刪掉
 	
   }
 }
