@@ -45,16 +45,21 @@ public class CompositeQuery_anyDB_Hibernate {
 				String[] names = classMetadata.getPropertyNames();
 				// 取得VO類別的所有實體變數資料型態
 				org.hibernate.type.Type[] types = classMetadata.getPropertyTypes();
-				
+				// System.out.println("PK: " + classMetadata.getIdentifierPropertyName()); // debugging
 				// 開始找:
 				for (int i = 0; i < names.length; i++){
 					// 比對現在colName對到的colName，得到其index，再藉由此index，找出其對應的dataType
+					//System.out.println(colName + " vs " + names[i]); // debugging
 					if (colName.equals(names[i])){
 						// 把query放進去增加限制條件
 						// 並將現在確定的colName,colValue,以及其對應的dataType放入方法內
 						queryAddRestrictions(aQuery, types[i].getName(), colName, value);
-						System.out.println(colName + ": " + types[i].getName());
+						//System.out.println(colName + ": " + types[i].getName()); // debugging
 						break;
+					// 處理主鍵部分 - classMetadata.getPropertyNames()不會包含主鍵	
+					}else if(colName.equals(classMetadata.getIdentifierPropertyName())){
+						queryAddRestrictions(aQuery, classMetadata.getIdentifierType().getName(), colName, value);
+						//System.out.println(colName + ": " + classMetadata.getIdentifierType().getName()); // debugging
 					}
 				}// end for
 			}// end if

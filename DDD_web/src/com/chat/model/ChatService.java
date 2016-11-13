@@ -1,11 +1,12 @@
 package com.chat.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class ChatService {
 	private ChatDAO_interface dao;
 	public ChatService(){
-		this.dao = new ChatJNDIDAO();
+		this.dao = new ChatHibernateDAO();
 	}
 	// aChatId aChatName
 	public void insert(String aChatId, String aChatName){
@@ -29,7 +30,13 @@ public class ChatService {
 	public List<ChatVO> getAll(){
 		return this.dao.getAll();
 	}
-	public ChatVO findByPrimaryKey(String aChatId){
+	
+	public List<ChatVO> getAll(Map<String, String[]> aMap){
+		return this.dao.getAll(aMap);
+	}
+	public ChatVO getOneChat(String aChatId){
 		return this.dao.findByPrimaryKey(aChatId);
 	}
+	
+	
 }

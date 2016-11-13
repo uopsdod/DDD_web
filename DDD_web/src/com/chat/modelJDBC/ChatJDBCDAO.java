@@ -1,4 +1,4 @@
-package com.chat.model;
+package com.chat.modelJDBC;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,6 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import com.chat.model.ChatDAO_interface;
+import com.chat.model.ChatVO;
 
 public class ChatJDBCDAO implements ChatDAO_interface {
 	private static String driver = "oracle.jdbc.driver.OracleDriver";
@@ -206,6 +210,14 @@ public class ChatJDBCDAO implements ChatDAO_interface {
 					aChatVO.getChatId(),
 					aChatVO.getChatName());
 		}			
+	}
+
+
+
+	@Override
+	public List<ChatVO> getAll(Map<String, String[]> aMap) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

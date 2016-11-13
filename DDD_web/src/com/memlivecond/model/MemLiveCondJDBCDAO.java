@@ -13,8 +13,8 @@ import java.util.List;
 import java.io.*;
 
 import com.memchat.model.MemChatVO;
-import com.chat.model.ChatJDBCDAO;
 import com.chat.model.ChatVO;
+import com.chat.modelJDBC.ChatJDBCDAO;
 import com.memchat.model.MemChatDAO_interface;
 
 

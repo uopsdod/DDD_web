@@ -1,4 +1,4 @@
-package com.chat.model;
+package com.chat.modelJDBC;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,11 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import com.chat.model.ChatDAO_interface;
+import com.chat.model.ChatVO;
 
 public class ChatJNDIDAO implements ChatDAO_interface {
 	private static DataSource ds = null;
@@ -147,6 +151,14 @@ public class ChatJNDIDAO implements ChatDAO_interface {
 				}
 			}// end try-catch-finally	
 		return chatVO;
+	}
+
+
+
+	@Override
+	public List<ChatVO> getAll(Map<String, String[]> aMap) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
