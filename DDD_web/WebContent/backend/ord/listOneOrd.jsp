@@ -12,22 +12,6 @@
 	OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controller),存入req的ordVO物件
 %>
 
-<%-- 取出對應room的物件 --%>
-<%
-	RoomVO roomVO = ordVO.getOrdRoomVO();
-%>
-
-<%-- 取出對應member的物件 --%>
-<%
-
-	MemVO memVO = ordVO.getOrdMemVO(); 
-%>
-
-<%-- 取出對應hotel的物件 --%>
-<%
-	HotelVO hotelVO = ordVO.getOrdHotelVO();
-%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,11 +46,10 @@
 		</tr>
 
 		<tr>
-			<td><%=ordVO.getOrdId()%></td>
-			<td><%=roomVO.getRoomId()%> <br> [<%=roomVO.getRoomName()%>]</td>
-			<td><%=memVO.getMemId()%> <br> [<%=memVO.getMemName()%>] </td>
-			<td><%=hotelVO.getHotelId()%> <br> [<%=hotelVO.getHotelName()%>]</td>
-
+			<td><%=ordVO.getOrdId()%></td>			
+			<td> ${ordVO.ordRoomVO.roomId} <br> ${ordVO.ordRoomVO.roomName} </td>			
+			<td> ${ordVO.ordMemVO.memId} <br> ${ordVO.ordMemVO.memName} </td>
+			<td> ${ordVO.ordHotelVO.hotelId} <br> ${ordVO.ordHotelVO.hotelName} </td>
 			<td><%=ordVO.getOrdPrice()%></td>
 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdLiveDate())%></td>
 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdDate())%></td>

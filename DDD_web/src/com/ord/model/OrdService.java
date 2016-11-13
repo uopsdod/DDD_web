@@ -106,7 +106,8 @@ public class OrdService {
 		
 		dao.update(ordVO);
 		
-		return ordVO;
+		//這樣才有找外來鍵的其他資訊的超能力
+		return dao.findByPrimaryKey(aOrdId);
 	}
 	
 	/* (練習用)刪除 */
