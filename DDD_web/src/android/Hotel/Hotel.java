@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.hotel.model.HotelJDBCDAO;
+import com.hotel.model.HotelService;
+import com.hotel.model.HotelVO;
 import com.mem.model.MemVO;
 
 
@@ -73,10 +76,10 @@ public class Hotel extends HttpServlet {
 		}else if(action.equals("getImage")){
 			
 			OutputStream os = rp.getOutputStream();
-			HotelJDBCDAO dao = new HotelJDBCDAO();
+			HotelService dao = new HotelService();
 			String id = jsonObject.get("id").getAsString();
 			int imageSize = jsonObject.get("imageSize").getAsInt();
-			byte[] image = dao.findByPrimaryKey(id).getHotelCoverPic();
+			byte[] image = dao.getOne(id).getHotelCoverPic();
 			if (image != null) {
 				image = ImageUtil.shrink(image, imageSize);
 				rp.setContentType("image/jpeg");
@@ -85,6 +88,17 @@ public class Hotel extends HttpServlet {
 			os.write(image);
 			System.out.println("image"+image);
 			
+		}else if(action.equals("hotelMemCheck")){
+			String hotelUserName = jsonObject.get("userName").getAsString();
+			String hotelPassword = jsonObject.get("password").getAsString();
+			HotelService hotelServ = new HotelService();
+			HotelVO hotelVO = hotelServ.hotelMemCheck(hotelUserName, hotelPassword);
+			
+			outStr = gson.toJson(hotelVO);
+			System.out.println(outStr);
+			rp.setContentType(CONTENT_TYPE);
+			PrintWriter out = rp.getWriter();
+			out.println(outStr);
 		}
 		
 		// ��hotelVO�নJSON�r��A�^��

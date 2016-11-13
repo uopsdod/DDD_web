@@ -198,9 +198,19 @@ public class OrdServlet extends HttpServlet {
 				*/
 				
 				ordVO = new OrdVO();
-				ordVO.setOrdRoomId(ordRoomId);
-				ordVO.setOrdMemId(ordMemId);
-				ordVO.setOrdHotelId(ordHotelId);
+				
+				com.room.model.RoomVO roomVO = new com.room.model.RoomVO();
+				roomVO.setRoomId(ordRoomId);
+				ordVO.setOrdRoomVO(roomVO);
+				
+				com.mem.model.MemVO memVO = new com.mem.model.MemVO();
+				memVO.setMemId(ordMemId);
+				ordVO.setOrdMemVO(memVO);
+
+				com.hotel.model.HotelVO hotelVO = new com.hotel.model.HotelVO();
+				hotelVO.setHotelId(ordHotelId);
+				ordVO.setOrdHotelVO(hotelVO);
+				
 				ordVO.setOrdPrice(ordPrice);
 				ordVO.setOrdLiveDate(ordLiveDateTs);
 				ordVO.setOrdDate(ordDateTs);
@@ -323,9 +333,17 @@ public class OrdServlet extends HttpServlet {
 				*/				
 								
 				ordVO = new OrdVO();
-				ordVO.setOrdRoomId(ordRoomId);
-				ordVO.setOrdMemId(ordMemId);
-				ordVO.setOrdHotelId(ordHotelId);
+				com.room.model.RoomVO roomVO = new com.room.model.RoomVO();
+				roomVO.setRoomId(ordRoomId);
+				ordVO.setOrdRoomVO(roomVO);
+				
+				com.mem.model.MemVO memVO = new com.mem.model.MemVO();
+				memVO.setMemId(ordMemId);
+				ordVO.setOrdMemVO(memVO);
+
+				com.hotel.model.HotelVO hotelVO = new com.hotel.model.HotelVO();
+				hotelVO.setHotelId(ordHotelId);
+				ordVO.setOrdHotelVO(hotelVO);
 				ordVO.setOrdPrice(ordPrice);
 				ordVO.setOrdLiveDate(ordLiveDateTs);
 				ordVO.setOrdStatus(ordStatus);
@@ -392,6 +410,8 @@ public class OrdServlet extends HttpServlet {
 				String ordMemId = aReq.getParameter("ordMemId");				
 				aReq.setAttribute("ordMemId",ordMemId);
 				
+				//System.out.println("ordMemId is "+ordMemId);
+				
 				/* 3.準備至轉交 */
 				String url ="/backend/ord/listAllByMemId.jsp";
 				RequestDispatcher successView = aReq.getRequestDispatcher(url);
@@ -415,6 +435,8 @@ public class OrdServlet extends HttpServlet {
 				/* 1.接收請求參數 */
 				String ordHotelId = aReq.getParameter("ordHotelId");			
 				aReq.setAttribute("ordHotelId",ordHotelId);
+				
+				//System.out.println("ordHotelId is "+ordHotelId);
 				
 				/* 3.準備至轉交 */
 				String url ="/backend/ord/listAllByHotelId.jsp";

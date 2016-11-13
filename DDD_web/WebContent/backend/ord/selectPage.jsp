@@ -6,7 +6,7 @@
 <head>
 <title>Backend Ord Home</title>
 </head>
-<body bgcolor='red'>
+<body bgcolor='DarkSeaGreen'>
 
 <table border='1' cellpadding='5' cellspacing='0' width='400'>
 	<tr align='center' valign='middle'>
@@ -84,7 +84,7 @@
 			選擇一般會員編號:
 			<select name="ordMemId">
 				<c:forEach var="ordVO" items="${ordSvc.all}">	
-					<option value="${ordVO.ordMemId}">${ordVO.ordMemId}
+					<option value="${ordVO.ordMemVO.memId}">${ordVO.ordMemVO.memId}
 				</c:forEach>
 			</select>	
 			<input type="submit" value="送出">
@@ -97,7 +97,7 @@
 			選擇廠商會員編號:
 			<select name="ordHotelId">
 				<c:forEach var="ordVO" items="${ordSvc.all}">	
-					<option value="${ordVO.ordHotelId}">${ordVO.ordHotelId}
+					<option value="${ordVO.ordHotelVO.hotelId}">${ordVO.ordHotelVO.hotelId}
 				</c:forEach>
 			</select>	
 			<input type="submit" value="送出">

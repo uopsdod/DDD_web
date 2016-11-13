@@ -33,9 +33,18 @@ public class OrdService {
 		
 		OrdVO ordVO = new OrdVO();
 		
-		ordVO.setOrdRoomId(aOrdRoomId);
-		ordVO.setOrdMemId(aOrdMemId);
-		ordVO.setOrdHotelId(aOrdHotelId);
+		com.room.model.RoomVO roomVO = new com.room.model.RoomVO();
+		roomVO.setRoomId(aOrdRoomId);
+		ordVO.setOrdRoomVO(roomVO);
+		
+		com.mem.model.MemVO memVO = new com.mem.model.MemVO();
+		memVO.setMemId(aOrdMemId);
+		ordVO.setOrdMemVO(memVO);
+
+		com.hotel.model.HotelVO hotelVO = new com.hotel.model.HotelVO();
+		hotelVO.setHotelId(aOrdHotelId);
+		ordVO.setOrdHotelVO(hotelVO);
+		
 		ordVO.setOrdPrice(aOrdPrice);
 		ordVO.setOrdLiveDate(aOrdLiveDate);
 		ordVO.setOrdStatus(aOrdStatus);
@@ -43,6 +52,10 @@ public class OrdService {
 		ordVO.setOrdRatingStarNo(aOrdRatingStarNo);
 		ordVO.setOrdQrPic(aOrdQrPic);
 		ordVO.setOrdMsgNo(aOrdMsgNo);
+		
+		Timestamp currentTime = new Timestamp(new java.util.Date().getTime());
+		ordVO.setOrdDate(currentTime);
+		
 		
 		dao.insert(ordVO);
 		
@@ -68,10 +81,19 @@ public class OrdService {
 	/* (一般會員)新增評論及星星數 & (系統)修改訂單狀態 */
 	public OrdVO updateOrd(String aOrdRoomId,String aOrdMemId,String aOrdHotelId,Integer aOrdPrice,Timestamp aOrdLiveDate,String aOrdStatus,String aOrdRatingContent,Integer aOrdRatingStarNo,byte[] aOrdQrPic,String aOrdMsgNo,String aOrdId,Timestamp aOrdDate){
 		OrdVO ordVO = new OrdVO();
+
+		com.room.model.RoomVO roomVO = new com.room.model.RoomVO();
+		roomVO.setRoomId(aOrdRoomId);
+		ordVO.setOrdRoomVO(roomVO);
 		
-		ordVO.setOrdRoomId(aOrdRoomId);
-		ordVO.setOrdMemId(aOrdMemId);
-		ordVO.setOrdHotelId(aOrdHotelId);
+		com.mem.model.MemVO memVO = new com.mem.model.MemVO();
+		memVO.setMemId(aOrdMemId);
+		ordVO.setOrdMemVO(memVO);
+
+		com.hotel.model.HotelVO hotelVO = new com.hotel.model.HotelVO();
+		hotelVO.setHotelId(aOrdHotelId);
+		ordVO.setOrdHotelVO(hotelVO);
+		
 		ordVO.setOrdPrice(aOrdPrice);
 		ordVO.setOrdLiveDate(aOrdLiveDate);
 		ordVO.setOrdStatus(aOrdStatus);
@@ -88,8 +110,8 @@ public class OrdService {
 	}
 	
 	/* (練習用)刪除 */
-	public int deleteOrd(String aOrdId){
-		return dao.delete(aOrdId);
+	public void deleteOrd(String aOrdId){
+		dao.delete(aOrdId);
 	}
 	
 	/* (管理員)依訂單編號查詢 */

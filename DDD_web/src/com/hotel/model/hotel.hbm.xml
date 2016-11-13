@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.hotel.model.HotelVO" table="hotel">
+
+		<id name="hotelId" column="hotelId">
+			<generator class="sequence">
+				<param name="sequence">hotel_seq</param>
+			</generator>
+		</id>
+
+		<property name="hotelType" column="hotelType" />
+		<property name="hotelName" column="hotelName" />
+		<property name="hotelTaxId" column="hotelTaxId" />
+		<property name="hotelRegisterPic" column="hotelRegisterPic" />
+		<property name="hotelCity" column="hotelCity" />
+		<property name="hotelCounty" column="hotelCounty" />
+		<property name="hotelRoad" column="hotelRoad" />
+		<property name="hotelOwner" column="hotelOwner" />
+		<property name="hotelAccount" column="hotelAccount" />
+		<property name="hotelPwd" column="hotelPwd" />
+		<property name="hotelPhone" column="hotelPhone" />
+		<property name="hotelLon" column="hotelLon" />
+		<property name="hotelLat" column="hotelLat" />
+		<property name="hotelIntro" column="hotelIntro" />
+		<property name="hotelCoverPic" column="hotelCoverPic" />
+		<property name="hotelLink" column="hotelLink" />
+		<property name="hotelStatus" column="hotelStatus" />
+		<property name="hotelBlackList" column="hotelBlackList" />
+		<property name="hotelRatingTotal" column="hotelRatingTotal" />
+		<property name="hotelRatingResult" column="hotelRatingResult" />
+		<property name="hotelCreditCardNo" column="hotelCreditCardNo" />
+		<property name="hotelCreditCheckNo" column="hotelCreditCheckNo" />
+		<property name="hotelCreditDueDate" column="hotelCreditDueDate" />
+
+		<set name="hotelOrds" table="ord" lazy="false" cascade="all"  inverse="true"  order-by="ordId asc">			
+			<key>
+				<column name="ordHotelId" />
+			</key>
+			<one-to-many class="com.ord.model.OrdVO" />
+		</set>
+
+	</class>
+</hibernate-mapping>

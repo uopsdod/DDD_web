@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.ord.model.*, java.text.SimpleDateFormat" %>
 <%
@@ -18,10 +18,9 @@
 	<tr>
 		<td>
 			<h3>訂單資料修改 - updateOrdInput.jsp</h3>
-			<a href="selectPage.jsp"><img src="images/back1.gif" alt="">回首頁</a>
+			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"><img src="images/back1.gif" alt="">回首頁</a>
 		</td>
 	</tr>
-
 </table>
 
 <h3>資料修改:</h3>
@@ -87,6 +86,7 @@
 			</td>
 		</tr>
 
+		<%-- TimeStamp轉換成Date --%>
 		<%java.sql.Date dateSQL = new java.sql.Date(ordVO.getOrdLiveDate().getTime());%>
 		<tr>
 			<td>入住日期:</td>
@@ -104,19 +104,19 @@
 			<td>訂單狀態名稱:</td>
 			<td>				
 				<select name="ordStatus">
-  					<option value="0">已下單</option>
-  					<option value="1">主動取消</option>
-  					<option value="2">已入住</option>
-  					<option value="3">已繳費</option>
-  					<option value="4">逾時取消</option>
-				</select>
+ 					<option value="0" <%= ("0".equals(ordVO.getOrdStatus()))? "selected" : "" %> >已下單</option>
+  					<option value="1" <%= ("1".equals(ordVO.getOrdStatus()))? "selected" : "" %> >主動取消</option>
+  					<option value="2" <%= ("2".equals(ordVO.getOrdStatus()))? "selected" : "" %> >已入住</option>
+  					<option value="3" <%= ("3".equals(ordVO.getOrdStatus()))? "selected" : "" %> >已繳費</option>
+  					<option value="4" <%= ("4".equals(ordVO.getOrdStatus()))? "selected" : "" %> >逾時取消</option>
+				</select>	
 			</td>
 		</tr>
 
 		<tr>
 			<td>評價內容:</td>
 			<td>
-				<input type="text" name="ordRatingContent" value="<%=ordVO.getOrdRatingContent()%>">
+				<textarea name="ordRatingContent"><%=ordVO.getOrdRatingContent()%></textarea>
 			</td>
 		</tr>
 
@@ -124,11 +124,12 @@
 			<td>評價星星數:</td>
 			<td>
 				<select name="ordRatingStarNo">
-  					<option value="1">1顆星</option>
-  					<option value="2">2顆星</option>
-  					<option value="3">3顆星</option>
-  					<option value="4">4顆星</option>
-  					<option value="5">5顆星</option>				
+    				<option value="0" <%= ("0".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >0顆星</option>
+  					<option value="1" <%= ("1".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >1顆星</option>
+  					<option value="2" <%= ("2".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >2顆星</option>
+  					<option value="3" <%= ("3".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >3顆星</option>
+  					<option value="4" <%= ("4".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >4顆星</option>
+    				<option value="5" <%= ("5".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >5顆星</option>					
 				</select>			
 			</td>
 		</tr>

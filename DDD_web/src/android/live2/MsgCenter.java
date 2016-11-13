@@ -50,18 +50,21 @@ public class MsgCenter extends HttpServlet {
 
 	@OnMessage
 	public void onMessage(Session aUserSession, String aMessage) throws JSONException {
-		Gson gson = new Gson();
+		//Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
+                .create();
 		PartnerMsg partnerMsg = gson.fromJson(aMessage, PartnerMsg.class);
 		JSONObject jsonObj = new JSONObject(aMessage);
 		System.out.println("Msg Sent here: " + jsonObj);
 		
 		String action = partnerMsg.getAction();
-		String fromMemId = partnerMsg.getFromMemId();
+		String fromMemId = partnerMsg.getMemChatMemId();
 		String tokenId = partnerMsg.getTokenId();
 		String toMemId = partnerMsg.getToMemId();
-		String message = partnerMsg.getMessage();
+		String message = partnerMsg.getMemChatContent();
 		
-		
+		System.out.println("fromMemId: " + fromMemId);
 		// 客戶端傳來FCM - tockenId
 		if ("uploadTokenId".equals(action)){
 			//System.out.println("客戶端傳來的tokenId,memId: " + jsonObj);
@@ -70,6 +73,7 @@ public class MsgCenter extends HttpServlet {
 			System.out.println("tokenMap.size(): "+ tokenMap.size());
 			return;
 		}
+		
 		
 		// 使用者建立與MsgCenter建立WebSocket連線，並把memId和session用map綁定
 		if("bindMemIdWithSession".equals(action) && !sessionMap.containsKey(fromMemId)){
@@ -88,6 +92,7 @@ public class MsgCenter extends HttpServlet {
 			System.out.println(toMemId +  " is not online yet.");
 			String serverKey = "AIzaSyD-c7lq9Moybii1GLLfgRViP1oFrZbYrjA";
 			Pushraven raven = new Pushraven(serverKey);
+			// notification 設定:
 			raven.title("MyTitle")
 				.text( fromMemId + " wants to talk to you.")
 				.color("#ff0000")
@@ -95,6 +100,22 @@ public class MsgCenter extends HttpServlet {
 			//  .click_action("OPEN_ACTIVITY_1")
 			//	.registration_ids(myReceivers)  // 搭配Collection<String> myReceivers = new java.util.ArrayList<String>();使用
 				;
+			
+			// data設定
+			String fcmKey = "fcm";
+			String fcmValue = "fcm";
+			String fromMemIdKey = "fromMemId";
+			String fromMemIdValue = fromMemId;
+
+			StringBuilder sb = new StringBuilder();
+			sb.append("{")
+//			  .append("\"" + ticketKey + "\""+":").append("\""+ticketValue+"\"").append(",")
+			  .append("\"" + fromMemIdKey + "\""+":").append("\""+fromMemIdValue+"\"").append(",")
+			  .append("\"" + fcmKey + "\""+":").append("\""+fcmValue+"\"")
+			  .append("}");
+			
+			raven.addRequestAttribute("data", sb);
+			
 			raven.push();
 			raven.clear(); // clears the notification, equatable with "raven = new Pushraven();"
 			raven.clearAttributes(); // clears FCM protocol paramters excluding targets

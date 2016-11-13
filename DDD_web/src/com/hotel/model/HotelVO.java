@@ -1,5 +1,7 @@
 package com.hotel.model;
 
+import java.util.*;
+import com.ord.model.OrdVO;
 
 public class HotelVO implements java.io.Serializable{
 
@@ -44,6 +46,7 @@ public class HotelVO implements java.io.Serializable{
 	private String hotelCreditCheckNo;
 	private String hotelCreditDueDate;
 	
+	private Set<OrdVO> hotelOrds = new LinkedHashSet<OrdVO>();
 	
 	public String getHotelId() {
 		return this.hotelId;
@@ -190,6 +193,12 @@ public class HotelVO implements java.io.Serializable{
 		this.hotelCreditDueDate = aHotelCreditDueDate;
 	}
 	
+	public Set<OrdVO> getHotelOrds(){
+		return this.hotelOrds;
+	}
 	
+	public void setHotelOrds(Set<OrdVO> aHotelOrds){
+		this.hotelOrds = aHotelOrds;
+	}
 	
 }

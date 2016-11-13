@@ -1,11 +1,22 @@
 package com.ord.model;
+
+import com.room.model.*;
+import com.mem.model.*;
+import com.hotel.model.*;
+
 import java.sql.Timestamp;
 
 public class OrdVO implements java.io.Serializable {
 	private String ordId;
-	private String ordRoomId;
-	private String ordMemId;
-	private String ordHotelId;
+//	private String ordRoomId;
+	private RoomVO ordRoomVO;
+	
+//	private String ordMemId;
+	private MemVO ordMemVO;
+	
+//	private String ordHotelId;
+	private HotelVO ordHotelVO;
+	
 	private Integer ordPrice;
 	private Timestamp ordLiveDate;
 	private Timestamp ordDate;
@@ -21,23 +32,24 @@ public class OrdVO implements java.io.Serializable {
 	public void setOrdId(String aOrdId) {
 		this.ordId = aOrdId;
 	}
-	public String getOrdRoomId() {
-		return this.ordRoomId;
+	public RoomVO getOrdRoomVO() {
+		return this.ordRoomVO;
 	}
-	public void setOrdRoomId(String aOrdRoomId) {
-		this.ordRoomId = aOrdRoomId;
+	
+	public void setOrdRoomVO(RoomVO aOrdRoomVO) {
+		this.ordRoomVO = aOrdRoomVO;
 	}
-	public String getOrdMemId() {
-		return this.ordMemId;
+	public MemVO getOrdMemVO() {
+		return this.ordMemVO;
 	}
-	public void setOrdMemId(String aOrdMemId) {
-		this.ordMemId = aOrdMemId;
+	public void setOrdMemVO(MemVO aOrdMemVO) {
+		this.ordMemVO = aOrdMemVO;
 	}
-	public String getOrdHotelId() {
-		return this.ordHotelId;
+	public HotelVO getOrdHotelVO() {
+		return this.ordHotelVO;
 	}
-	public void setOrdHotelId(String aOrdHotelId) {
-		this.ordHotelId = aOrdHotelId;
+	public void setOrdHotelVO(HotelVO aOrdHotelVO) {
+		this.ordHotelVO = aOrdHotelVO;
 	}
 	public Integer getOrdPrice() {
 		return this.ordPrice;
@@ -87,4 +99,18 @@ public class OrdVO implements java.io.Serializable {
 	public void setOrdMsgNo(String aOrdMsgNo) {
 		this.ordMsgNo = aOrdMsgNo;
 	}
+	
+	/* 過渡方法  */
+	public String getOrdHotelId(){
+		return this.ordHotelVO.getHotelId();
+	}
+	
+	public String getOrdRoomId(){
+		return this.ordRoomVO.getRoomId();
+	}
+	
+	public String getOrdMemId(){
+		return this.ordMemVO.getMemId();
+	}
+	
 }

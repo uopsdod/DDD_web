@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.memrep.model.MemRepVO" table="memrep" >
+        
+        <id name="memRepId" column="memRepId">
+<!--             <generator class="sequence" > -->
+<!--               <param name="sequence">memRep_seq</param> -->
+<!--             </generator>   -->
+            <generator class="com.memrep.model.MemRepIdGenerator"/>
+        </id>
+        
+        <property name="memRepContent" column="memRepContent" />
+        <property name="memRepStatus" column="memRepStatus" />
+        <property name="memRepDate" column="memRepDate" />
+        <property name="memRepReviewDate" column="memRepReviewDate" />
+        
+        <many-to-one name="memRepMemVO" class="com.mem.model.MemVO" lazy="false">
+            <column name="memRepMemId" />
+        </many-to-one>
+        
+        <many-to-one name="memRepHotelVO" class="com.hotel.model.HotelVO" lazy="false">
+            <column name="memRepHotelId" />
+        </many-to-one>
+        
+        <many-to-one name="memRepOrdVO" class="com.ord.model.OrdVO" lazy="false">
+            <column name="memRepOrdId" />
+        </many-to-one>
+        
+        <many-to-one name="memRepEmpVO" class="com.emp.model.EmpVO" lazy="false">
+            <column name="memRepEmpId" />
+        </many-to-one>        
+        
+<!-- 	private String memRepId; -->
+<!-- 	private String memRepContent; -->
+<!-- 	private String memRepStatus; // 0.未審核 1.已審核未通過 2.已審核已通過 -->
+<!-- 	private Date memRepDate; -->
+<!-- 	private Date memRepReviewDate;	 -->
+	
+<!-- 	private MemVO memRepMemVO; // Not Null -->
+<!-- 	private String memRepHotelId; // Not Null -->
+<!-- 	private String memRepOrdId; // Not Null -->
+<!-- 	private String memRepEmpId; -->
+        
+        
+    </class>
+</hibernate-mapping>
+

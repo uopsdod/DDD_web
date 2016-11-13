@@ -1,520 +1,224 @@
 package com.ord.model;
 
+/*
+ Hibernate is providing a factory.getCurrentSession() method for retrieving the current session. A
+ new session is opened for the first time of calling this method, and closed when the transaction is
+ finished, no matter commit or rollback. But what does it mean by the “current session”? We need to
+ tell Hibernate that it should be the session bound with the current thread.
+
+ <hibernate-configuration>
+ <session-factory>
+ ...
+ <property name="current_session_context_class">thread</property>
+ ...
+ </session-factory>
+ </hibernate-configuration>
+
+ */
+
+import org.hibernate.*;
+import util.HibernateUtil;
+
+import java.text.SimpleDateFormat;
 import java.util.*;
-import java.sql.*;
-import java.io.*;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
-
 
 public class OrdDAO implements OrdDAO_interface {
-//	String driver = "oracle.jdbc.driver.OracleDriver";
-//	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-//	String userid = "scott";
-//	String passwd = "tiger";
-		
-	private static DataSource ds = null;
-	static {
+
+	private static final String GET_ALL_STMT = "from OrdVO order by ordId desc";
+	private static final String GET_ALL_ORDMEMID_STMT = "from OrdVO where ordMemId=:ordMemId order by ordId desc";
+	private static final String GET_ALL_ORDHOTELID_STMT = "from OrdVO where ordHotelId=:ordHotelId order by ordId desc";
+	
+	@Override
+	public void insert(OrdVO aOrdVO) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
-		}
-		catch(NamingException e){
-			e.printStackTrace();
+			session.beginTransaction();
+			session.saveOrUpdate(aOrdVO);
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
 		}
 	}
-	
-	/* 
-	 * = INSERT_STMT 對應 =
-	 * 01    ordID
-	 * 02-01 ordRoomId
-	 * 03-02 ordMemId
-	 * 04-03 ordHotelId
-	 * 05-04 ordPrice
-	 * 06-05 ordLiveDate
-	 * 07    ordDate
-	 * 08-06 ordStatus
-	 * 09-07 ordRatingContent
-	 * 10-08 ordRatingStarNo
-	 * 11-09 ordQrPic
-	 * 12-10 ordMsgNo
-	*/
 
-	/* (一般會員)新增一筆訂單 */
-	private static final String INSERT_STMT = 
-		"INSERT INTO ord (ordID,ordRoomId,ordMemId,ordHotelId,ordPrice,ordLiveDate,ordDate,ordStatus,ordRatingContent,ordRatingStarNo,ordQrPic,ordMsgNo)"
-		+ "VALUES (CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL), ?, ?, ?, ?, ?, sysdate, ?, ?, ?, ?, ?)";
-
-	/* 
-	 * = UPDATE 對應 =
-	 * 02-01 ordRoomId
-	 * 03-02 ordMemId
-	 * 04-03 ordHotelId
-	 * 05-04 ordPrice
-	 * 06-05 ordLiveDate
-	 * 07    ordDate
-	 * 08-06 ordStatus
-	 * 09-07 ordRatingContent
-	 * 10-08 ordRatingStarNo
-	 * 11-09 ordQrPic
-	 * 12-10 ordMsgNo
-	 * 01-11 ordID
-	*/	
-	
-	/* (一般會員)新增評論及星星數 & (系統)修改訂單狀態 */
-	private static final String UPDATE = 
-		"UPDATE ord set ordRoomId=?,ordMemId=?,ordHotelId=?,ordPrice=?,ordLiveDate=?,ordStatus=?,ordRatingContent=?,ordRatingStarNo=?,ordQrPic=?,ordMsgNo=? where ordId = ?";	
-
-	/* (練習用)刪除 */
-	private static final String DELETE = 
-		"DELETE FROM ord where ordId = ?";
-
-	/* (管理員)依訂單編號查詢 單筆資料要抓圖 */
-	private static final String GET_ONE_STMT = 
-		"SELECT ordID,ordRoomId,ordMemId,ordHotelId,ordPrice, ordLiveDate, ordDate,ordStatus,ordRatingContent,ordRatingStarNo,ordMsgNo, ordQrPic FROM ord where ordId = ?";
-	
-	/* (管理員)查詢所有訂單內容 評論及星星數 */
-	private static final String GET_ALL_STMT = 
-		"SELECT ordID,ordRoomId,ordMemId,ordHotelId,ordPrice, ordLiveDate, ordDate,ordStatus,ordRatingContent,ordRatingStarNo,ordMsgNo FROM ord order by ordID DESC";
-
-	/* (一般會員)列出該一般會員的所有訂單 QRCode 驗證碼 */
-	private static final String GET_ALL_ORDMEMID_STMT = 
-		"SELECT ordID,ordRoomId,ordMemId,ordHotelId,ordPrice, ordLiveDate, ordDate,ordStatus,ordRatingContent,ordRatingStarNo,ordMsgNo FROM ord where OrdMemId = ? order by ordID DESC";	
-	
-	/* (廠商會員)列出該廠商會員的所有訂單 */
-	private static final String GET_ALL_ORDHOTELID_STMT = 
-		"SELECT ordID,ordRoomId,ordMemId,ordHotelId,ordPrice, ordLiveDate, ordDate,ordStatus,ordRatingContent,ordRatingStarNo,ordMsgNo FROM ord where OrdHotelId = ? order by ordID DESC";		
-	
-	
-	
 	@Override
-	public int insert(OrdVO aOrdVO){
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		int updateCount = 0;
-		
-		/* 
-		 * = INSERT_STMT 對應 =
-		 * 01    ordID
-		 * 02-01 ordRoomId
-		 * 03-02 ordMemId
-		 * 04-03 ordHotelId
-		 * 05-04 ordPrice
-		 * 06-05 ordLiveDate
-		 * 07    ordDate
-		 * 08-06 ordStatus
-		 * 09-07 ordRatingContent
-		 * 10-08 ordRatingStarNo
-		 * 11-09 ordQrPic
-		 * 12-10 ordMsgNo
-		*/
-		
-		try{
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(OrdDAO.INSERT_STMT);
-			
-			pstmt.setString(1, aOrdVO.getOrdRoomId());
-			pstmt.setString(2, aOrdVO.getOrdMemId());
-			pstmt.setString(3, aOrdVO.getOrdHotelId());
-			pstmt.setInt(4, aOrdVO.getOrdPrice());
-			pstmt.setTimestamp(5, aOrdVO.getOrdLiveDate());	
-			pstmt.setString(6, aOrdVO.getOrdStatus());
-			pstmt.setString(7, aOrdVO.getOrdRatingContent());
-			pstmt.setInt(8, aOrdVO.getOrdRatingStarNo());
-			pstmt.setBytes(9, aOrdVO.getOrdQrPic());
-			pstmt.setString(10, aOrdVO.getOrdMsgNo());
-			updateCount = pstmt.executeUpdate();
+	public void update(OrdVO aOrdVO) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			session.saveOrUpdate(aOrdVO);
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
 		}
-		catch(SQLException se){
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-		}
-		finally{
-			if(pstmt!=null){
-				try{
-					pstmt.close();
-				}
-				catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-			}
-			if(con!=null){
-				try{
-					con.close();
-				}
-				catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-		return updateCount;
 	}
-	
+
 	@Override
-	public int update(OrdVO aOrdVO){
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		int updateCount = 0;
-		
-		/* 
-		 * = UPDATE 對應 =
-		 * 02-01 ordRoomId
-		 * 03-02 ordMemId
-		 * 04-03 ordHotelId
-		 * 05-04 ordPrice
-		 * 06-05 ordLiveDate
-		 * 07    ordDate
-		 * 08-06 ordStatus
-		 * 09-07 ordRatingContent
-		 * 10-08 ordRatingStarNo
-		 * 11-09 ordQrPic
-		 * 12-10 ordMsgNo
-		 * 01-11 ordID
-		*/			
-		
-		try{
-			con = ds.getConnection();			
-			pstmt = con.prepareStatement(OrdDAO.UPDATE);
-			
-			pstmt.setString(1, aOrdVO.getOrdRoomId());
-			pstmt.setString(2, aOrdVO.getOrdMemId());
-			pstmt.setString(3, aOrdVO.getOrdHotelId());
-			pstmt.setInt(4, aOrdVO.getOrdPrice());
-			pstmt.setTimestamp(5, aOrdVO.getOrdLiveDate());	
-			pstmt.setString(6, aOrdVO.getOrdStatus());
-			pstmt.setString(7, aOrdVO.getOrdRatingContent());
-			pstmt.setInt(8, aOrdVO.getOrdRatingStarNo());
-			pstmt.setBytes(9, aOrdVO.getOrdQrPic());
-			pstmt.setString(10, aOrdVO.getOrdMsgNo());
-			pstmt.setString(11, aOrdVO.getOrdId());
-			updateCount = pstmt.executeUpdate();
+	public void delete(String aOrdId) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+
+//        【此時多方(宜)可採用HQL刪除】
+//			Query query = session.createQuery("delete EmpVO where empno=?");
+//			query.setParameter(0, empno);
+//			System.out.println("刪除的筆數=" + query.executeUpdate());
+
+//        【或此時多方(也)可採用去除關聯關係後，再刪除的方式】
+			OrdVO ordVO = new OrdVO();
+			ordVO.setOrdId(aOrdId);
+			session.delete(ordVO);
+
+//        【此時多方不可(不宜)採用cascade聯級刪除】
+//        【多方emp2.hbm.xml如果設為 cascade="all"或 cascade="delete"將會刪除所有相關資料-包括所屬部門與同部門的其它員工將會一併被刪除】
+//			EmpVO empVO = (EmpVO) session.get(EmpVO.class, empno);
+//			session.delete(empVO);
+
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
 		}
-		catch(SQLException se){
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-		}
-		finally{
-			if(pstmt != null){
-				try{
-					pstmt.close();
-				}
-				catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(con != null){
-				try{
-					con.close();
-				}
-				catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-		return updateCount;
 	}
-	
+
 	@Override
-	public int delete(String aOrdId){
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		int updateCount = 0;
-		
-		try{
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(OrdDAO.DELETE);
-			
-			pstmt.setString(1,aOrdId);
-			updateCount = pstmt.executeUpdate();
-		}
-		catch(SQLException se){
-			throw new RuntimeException("A database error occured. "+se.getMessage());
-		}
-		finally{
-			if(pstmt != null){
-				try{
-					pstmt.close();
-				}
-				catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(con != null){
-				try{
-					con.close();
-				}
-				catch(Exception e){
-					e.printStackTrace(System.err);
-				}	
-			}
-		}
-		return updateCount;
-	}
-	
-	@Override
-	public OrdVO findByPrimaryKey(String aOrdId){
+	public OrdVO findByPrimaryKey(String aOrdId) {
 		OrdVO ordVO = null;
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		try{
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(OrdDAO.GET_ONE_STMT);
-			
-			pstmt.setString(1, aOrdId);
-			
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()){
-				ordVO = new OrdVO();
-				ordVO.setOrdId(rs.getString("ordID"));
-				ordVO.setOrdRoomId(rs.getString("ordRoomId"));
-				ordVO.setOrdMemId(rs.getString("ordMemId"));
-				ordVO.setOrdHotelId(rs.getString("ordHotelId"));
-				ordVO.setOrdPrice(rs.getInt("ordPrice"));
-				ordVO.setOrdLiveDate(rs.getTimestamp("ordLiveDate"));
-				ordVO.setOrdDate(rs.getTimestamp("ordDate"));
-				ordVO.setOrdStatus(rs.getString("ordStatus"));
-				ordVO.setOrdRatingContent(rs.getString("ordRatingContent"));
-				ordVO.setOrdRatingStarNo(rs.getInt("ordRatingStarNo"));
-				ordVO.setOrdMsgNo(rs.getString("ordMsgNo"));
-				ordVO.setOrdQrPic(rs.getBytes("ordQrPic")); //需要要圖片
-			}
-		}
-		
-		catch(SQLException se){
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-		}
-		finally{
-			if(rs != null){
-				try{
-					rs.close();
-				}
-				catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(pstmt != null){
-				try{
-					pstmt.close();
-				}
-				catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(con != null){
-				try{
-					con.close();
-				}
-				catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-			}
-			
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			ordVO = (OrdVO) session.get(OrdVO.class, aOrdId);
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
 		}
 		return ordVO;
 	}
-	
-	@Override
-	public List<OrdVO> getAll(){
-		List<OrdVO> list = new ArrayList<OrdVO>();
-		OrdVO ordVO = null;
-		
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 
-		
-		try{
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(OrdDAO.GET_ALL_STMT);
-			
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()){
-				ordVO = new OrdVO();
-				ordVO.setOrdId(rs.getString("ordID"));
-				ordVO.setOrdRoomId(rs.getString("ordRoomId"));
-				ordVO.setOrdMemId(rs.getString("ordMemId"));
-				ordVO.setOrdHotelId(rs.getString("ordHotelId"));
-				ordVO.setOrdPrice(rs.getInt("ordPrice"));
-				ordVO.setOrdLiveDate(rs.getTimestamp("ordLiveDate"));
-				ordVO.setOrdDate(rs.getTimestamp("ordDate"));
-				ordVO.setOrdStatus(rs.getString("ordStatus"));
-				ordVO.setOrdRatingContent(rs.getString("ordRatingContent"));
-				ordVO.setOrdRatingStarNo(rs.getInt("ordRatingStarNo"));
-				ordVO.setOrdMsgNo(rs.getString("ordMsgNo"));
-				//ordVO.setOrdQrPic(rs.getBytes("ordQrPic"));
-				list.add(ordVO);
-			}			
-		}
-		catch(SQLException se){
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-		}
-		finally{
-			if(rs != null){
-				try{
-					rs.close();
-				}
-				catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(pstmt != null){
-				try{
-					pstmt.close();
-				}
-				catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(con != null){
-				try{
-					con.close();
-				}
-				catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-			}
-			
+	@Override
+	public List<OrdVO> getAll() {
+		List<OrdVO> list = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery(OrdDAO.GET_ALL_STMT);
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
 		}
 		return list;
 	}
-	
-	/* 列出該一般會員的所有訂單 */
-	public List<OrdVO> getAllByOrdMemId(String aOrdMemId){
-		List<OrdVO> list = new ArrayList<OrdVO>();
-		OrdVO ordVO = null;
-		
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
 
+	@Override
+	public List<OrdVO> getAllByOrdMemId(String aOrdMemId){
+
+		List<OrdVO> list = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery(OrdDAO.GET_ALL_ORDMEMID_STMT);
+			query.setParameter("ordMemId", aOrdMemId);
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
+		}
+		return list;		
 		
-		try{
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(OrdDAO.GET_ALL_ORDMEMID_STMT);
-			
-			pstmt.setString(1, aOrdMemId);
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()){
-				ordVO = new OrdVO();
-				ordVO.setOrdId(rs.getString("ordID"));
-				ordVO.setOrdRoomId(rs.getString("ordRoomId"));
-				ordVO.setOrdMemId(rs.getString("ordMemId"));
-				ordVO.setOrdHotelId(rs.getString("ordHotelId"));
-				ordVO.setOrdPrice(rs.getInt("ordPrice"));
-				ordVO.setOrdLiveDate(rs.getTimestamp("ordLiveDate"));
-				ordVO.setOrdDate(rs.getTimestamp("ordDate"));
-				ordVO.setOrdStatus(rs.getString("ordStatus"));
-				ordVO.setOrdRatingContent(rs.getString("ordRatingContent"));
-				ordVO.setOrdRatingStarNo(rs.getInt("ordRatingStarNo"));
-				ordVO.setOrdMsgNo(rs.getString("ordMsgNo"));
-				//ordVO.setOrdQrPic(rs.getBytes("ordQrPic"));
-				list.add(ordVO);
-			}			
-		}
-		catch(SQLException se){
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-		}
-		finally{
-			if(rs != null){
-				try{
-					rs.close();
-				}
-				catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(pstmt != null){
-				try{
-					pstmt.close();
-				}
-				catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(con != null){
-				try{
-					con.close();
-				}
-				catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-			}
-			
+	}
+	
+	@Override
+	public List<OrdVO> getAllByOrdHotelId(String aOrdHotelId){
+		List<OrdVO> list = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery(OrdDAO.GET_ALL_ORDHOTELID_STMT);
+			query.setParameter("ordHotelId", aOrdHotelId);
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
 		}
 		return list;		
 	}
 	
-	/* 列出該廠商會員的所有訂單 */
-	public List<OrdVO> getAllByOrdHotelId(String aOrdHotelId){
-		List<OrdVO> list = new ArrayList<OrdVO>();
-		OrdVO ordVO = null;
-		
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		try{
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(OrdDAO.GET_ALL_ORDHOTELID_STMT);
-			
-			pstmt.setString(1, aOrdHotelId);
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()){
-				ordVO = new OrdVO();
-				ordVO.setOrdId(rs.getString("ordID"));
-				ordVO.setOrdRoomId(rs.getString("ordRoomId"));
-				ordVO.setOrdMemId(rs.getString("ordMemId"));
-				ordVO.setOrdHotelId(rs.getString("ordHotelId"));
-				ordVO.setOrdPrice(rs.getInt("ordPrice"));
-				ordVO.setOrdLiveDate(rs.getTimestamp("ordLiveDate"));
-				ordVO.setOrdDate(rs.getTimestamp("ordDate"));
-				ordVO.setOrdStatus(rs.getString("ordStatus"));
-				ordVO.setOrdRatingContent(rs.getString("ordRatingContent"));
-				ordVO.setOrdRatingStarNo(rs.getInt("ordRatingStarNo"));
-				ordVO.setOrdMsgNo(rs.getString("ordMsgNo"));
-				//ordVO.setOrdQrPic(rs.getBytes("ordQrPic"));
-				list.add(ordVO);
-			}			
-		}
-		catch(SQLException se){
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-		}
-		finally{
-			if(rs != null){
-				try{
-					rs.close();
-				}
-				catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(pstmt != null){
-				try{
-					pstmt.close();
-				}
-				catch(SQLException se){
-					se.printStackTrace(System.err);
-				}
-			}
-			if(con != null){
-				try{
-					con.close();
-				}
-				catch(Exception e){
-					e.printStackTrace(System.err);
-				}
-			}
-			
-		}
-		return list;			
+	public static void main(String[] args) {
+
+		OrdDAO dao = new OrdDAO();
+
+//		//● 新增
+//		com.dept.model.DeptVO deptVO = new com.dept.model.DeptVO(); // 部門POJO
+//		deptVO.setDeptno(10);
+
+//		EmpVO empVO1 = new EmpVO();
+//		empVO1.setEname("吳永志1");
+//		empVO1.setJob("MANAGER");
+//		empVO1.setHiredate(java.sql.Date.valueOf("2005-01-01"));
+//		empVO1.setSal(new Double(50000));
+//		empVO1.setComm(new Double(500));
+//		empVO1.setDeptVO(deptVO);
+//		dao.insert(empVO1);
+
+
+
+		//● 修改
+//		EmpVO empVO2 = new EmpVO();
+//		empVO2.setEmpno(7001);
+//		empVO2.setEname("吳永志2");
+//		empVO2.setJob("MANAGER2");
+//		empVO2.setHiredate(java.sql.Date.valueOf("2002-01-01"));
+//		empVO2.setSal(new Double(20000));
+//		empVO2.setComm(new Double(200));
+//		empVO2.setDeptVO(deptVO);
+//		dao.update(empVO2);
+
+
+
+		//● 刪除(小心cascade - 多方emp2.hbm.xml如果設為 cascade="all"或
+		// cascade="delete"將會刪除所有相關資料-包括所屬部門與同部門的其它員工將會一併被刪除)
+//		dao.delete(7014);
+
+
+
+		//● 查詢-findByPrimaryKey (多方emp2.hbm.xml必須設為lazy="false")(優!)
+//		EmpVO empVO3 = dao.findByPrimaryKey(7001);
+//		System.out.print(empVO3.getEmpno() + ",");
+//		System.out.print(empVO3.getEname() + ",");
+//		System.out.print(empVO3.getJob() + ",");
+//		System.out.print(empVO3.getHiredate() + ",");
+//		System.out.print(empVO3.getSal() + ",");
+//		System.out.print(empVO3.getComm() + ",");
+//		// 注意以下三行的寫法 (優!)
+//		System.out.print(empVO3.getDeptVO().getDeptno() + ",");
+//		System.out.print(empVO3.getDeptVO().getDname() + ",");
+//		System.out.print(empVO3.getDeptVO().getLoc());
+//		System.out.println("\n---------------------");
+
+
+
+		//● 查詢-getAll (多方emp2.hbm.xml必須設為lazy="false")(優!)
+//		List<OrdVO> list = dao.getAll();
+//		for (OrdVO aOrd : list) {
+//			System.out.print(aOrd.getOrdId() +",");
+//			System.out.print(aOrd.getOrdRoomId()+",");
+//			System.out.print(aOrd.getOrdMemId()+",");
+//			System.out.print(aOrd.getOrdHotelId()+",");
+//			System.out.print(aOrd.getOrdPrice() +",");			
+//			//String S = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(myTimestamp);	
+//			System.out.print(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(aOrd.getOrdLiveDate()) +",");
+//			System.out.print(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(aOrd.getOrdDate()) +",");
+//			System.out.print(aOrd.getOrdStatus()+",");
+//			System.out.print(aOrd.getOrdRatingContent()+",");
+//			System.out.print(aOrd.getOrdRatingStarNo() +",");
+//			System.out.print(aOrd.getOrdMsgNo());
+//			System.out.println();
+//		}
 	}
-		
 }

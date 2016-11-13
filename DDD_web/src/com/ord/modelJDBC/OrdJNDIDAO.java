@@ -1,4 +1,4 @@
-package com.ord.model;
+package com.ord.modelJDBC;
 
 import java.util.*;
 import java.sql.*;

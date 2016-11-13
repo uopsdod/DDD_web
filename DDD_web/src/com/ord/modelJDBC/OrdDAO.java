@@ -1,15 +1,32 @@
-package com.ord.model;
+package com.ord.modelJDBC;
 
 import java.util.*;
 import java.sql.*;
 import java.io.*;
-import java.text.SimpleDateFormat;
 
-public class OrdJDBCDAO implements OrdDAO_interface {
-	String driver = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "scott";
-	String passwd = "tiger";
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+
+
+public class OrdDAO implements OrdDAO_interface {
+//	String driver = "oracle.jdbc.driver.OracleDriver";
+//	String url = "jdbc:oracle:thin:@localhost:1521:XE";
+//	String userid = "scott";
+//	String passwd = "tiger";
+		
+	private static DataSource ds = null;
+	static {
+		try {
+			Context ctx = new InitialContext();
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+		}
+		catch(NamingException e){
+			e.printStackTrace();
+		}
+	}
 	
 	/* 
 	 * = INSERT_STMT 對應 =
@@ -73,6 +90,7 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 		"SELECT ordID,ordRoomId,ordMemId,ordHotelId,ordPrice, ordLiveDate, ordDate,ordStatus,ordRatingContent,ordRatingStarNo,ordMsgNo FROM ord where OrdHotelId = ? order by ordID DESC";		
 	
 	
+	
 	@Override
 	public int insert(OrdVO aOrdVO){
 		Connection con = null;
@@ -96,9 +114,9 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 		*/
 		
 		try{
-			Class.forName(this.driver);
-			con = DriverManager.getConnection(this.url,this.userid,this.passwd);
-			pstmt = con.prepareStatement(OrdJDBCDAO.INSERT_STMT);
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(OrdDAO.INSERT_STMT);
+			
 			pstmt.setString(1, aOrdVO.getOrdRoomId());
 			pstmt.setString(2, aOrdVO.getOrdMemId());
 			pstmt.setString(3, aOrdVO.getOrdHotelId());
@@ -111,9 +129,6 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 			pstmt.setString(10, aOrdVO.getOrdMsgNo());
 			updateCount = pstmt.executeUpdate();
 		}
-		catch(ClassNotFoundException e){
-			throw new RuntimeException("Could not load database driver. "+ e.getMessage());
-		}
 		catch(SQLException se){
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 		}
@@ -122,8 +137,8 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 				try{
 					pstmt.close();
 				}
-				catch(SQLException se){
-					se.printStackTrace(System.err);
+				catch(Exception e){
+					e.printStackTrace(System.err);
 				}
 			}
 			if(con!=null){
@@ -143,7 +158,7 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		int updateCount = 0;
-
+		
 		/* 
 		 * = UPDATE 對應 =
 		 * 02-01 ordRoomId
@@ -158,13 +173,12 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 		 * 11-09 ordQrPic
 		 * 12-10 ordMsgNo
 		 * 01-11 ordID
-		*/				
+		*/			
 		
 		try{
-						
-			Class.forName(this.driver);
-			con = DriverManager.getConnection(this.url,this.userid,this.passwd);
-			pstmt = con.prepareStatement(OrdJDBCDAO.UPDATE);
+			con = ds.getConnection();			
+			pstmt = con.prepareStatement(OrdDAO.UPDATE);
+			
 			pstmt.setString(1, aOrdVO.getOrdRoomId());
 			pstmt.setString(2, aOrdVO.getOrdMemId());
 			pstmt.setString(3, aOrdVO.getOrdHotelId());
@@ -177,9 +191,6 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 			pstmt.setString(10, aOrdVO.getOrdMsgNo());
 			pstmt.setString(11, aOrdVO.getOrdId());
 			updateCount = pstmt.executeUpdate();
-		}
-		catch(ClassNotFoundException e){
-			throw new RuntimeException("Could not load database driver. "+ e.getMessage());
 		}
 		catch(SQLException se){
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -212,14 +223,11 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 		int updateCount = 0;
 		
 		try{
-			Class.forName(this.driver);
-			con = DriverManager.getConnection(this.url,this.userid,this.passwd);
-			pstmt = con.prepareStatement(OrdJDBCDAO.DELETE);
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(OrdDAO.DELETE);
+			
 			pstmt.setString(1,aOrdId);
 			updateCount = pstmt.executeUpdate();
-		}
-		catch(ClassNotFoundException e){
-			throw new RuntimeException("Could not load database driver. "+e.getMessage());
 		}
 		catch(SQLException se){
 			throw new RuntimeException("A database error occured. "+se.getMessage());
@@ -253,27 +261,12 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 		ResultSet rs = null;
 		
 		try{
-			Class.forName(this.driver);
-			con = DriverManager.getConnection(this.url,this.userid,this.passwd);
-			pstmt = con.prepareStatement(OrdJDBCDAO.GET_ONE_STMT);
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(OrdDAO.GET_ONE_STMT);
+			
 			pstmt.setString(1, aOrdId);
 			
 			rs = pstmt.executeQuery();
-
-			/* 
-			 * 01    ordID
-			 * 02-01 ordRoomId
-			 * 03-02 ordMemId
-			 * 04-03 ordHotelId
-			 * 05-04 ordPrice
-			 * 06-05 ordLiveDate
-			 * 07    ordDate
-			 * 08-06 ordStatus
-			 * 09-07 ordRatingContent
-			 * 10-08 ordRatingStarNo
-			 * 11-09 ordQrPic
-			 * 12-10 ordMsgNo
-			*/				
 			
 			while(rs.next()){
 				ordVO = new OrdVO();
@@ -292,9 +285,6 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 			}
 		}
 		
-		catch(ClassNotFoundException e){
-			throw new RuntimeException("Could not load database driver. " + e.getMessage());
-		}
 		catch(SQLException se){
 			throw new RuntimeException("A database error occured. " + se.getMessage());
 		}
@@ -339,25 +329,10 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 
 		
 		try{
-			Class.forName(this.driver);
-			con = DriverManager.getConnection(this.url,this.userid,this.passwd);
-			pstmt = con.prepareStatement(OrdJDBCDAO.GET_ALL_STMT);		
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(OrdDAO.GET_ALL_STMT);
+			
 			rs = pstmt.executeQuery();
-
-			/* 
-			 * 01    ordID
-			 * 02-01 ordRoomId
-			 * 03-02 ordMemId
-			 * 04-03 ordHotelId
-			 * 05-04 ordPrice
-			 * 06-05 ordLiveDate
-			 * 07    ordDate
-			 * 08-06 ordStatus
-			 * 09-07 ordRatingContent
-			 * 10-08 ordRatingStarNo
-			 * 11-09 ordQrPic
-			 * 12-10 ordMsgNo
-			*/			
 			
 			while(rs.next()){
 				ordVO = new OrdVO();
@@ -375,9 +350,6 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 				//ordVO.setOrdQrPic(rs.getBytes("ordQrPic"));
 				list.add(ordVO);
 			}			
-		}
-		catch(ClassNotFoundException e){
-			throw new RuntimeException("Could not load database driver. "+ e.getMessage());
 		}
 		catch(SQLException se){
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -423,26 +395,11 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 
 		
 		try{
-			Class.forName(this.driver);
-			con = DriverManager.getConnection(this.url,this.userid,this.passwd);
-			pstmt = con.prepareStatement(OrdJDBCDAO.GET_ALL_ORDMEMID_STMT);		
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(OrdDAO.GET_ALL_ORDMEMID_STMT);
+			
 			pstmt.setString(1, aOrdMemId);
 			rs = pstmt.executeQuery();
-
-			/* 
-			 * 01    ordID
-			 * 02-01 ordRoomId
-			 * 03-02 ordMemId
-			 * 04-03 ordHotelId
-			 * 05-04 ordPrice
-			 * 06-05 ordLiveDate
-			 * 07    ordDate
-			 * 08-06 ordStatus
-			 * 09-07 ordRatingContent
-			 * 10-08 ordRatingStarNo
-			 * 11-09 ordQrPic
-			 * 12-10 ordMsgNo
-			*/			
 			
 			while(rs.next()){
 				ordVO = new OrdVO();
@@ -460,9 +417,6 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 				//ordVO.setOrdQrPic(rs.getBytes("ordQrPic"));
 				list.add(ordVO);
 			}			
-		}
-		catch(ClassNotFoundException e){
-			throw new RuntimeException("Could not load database driver. "+ e.getMessage());
 		}
 		catch(SQLException se){
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -507,26 +461,11 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 		ResultSet rs = null;
 		
 		try{
-			Class.forName(this.driver);
-			con = DriverManager.getConnection(this.url,this.userid,this.passwd);
-			pstmt = con.prepareStatement(OrdJDBCDAO.GET_ALL_ORDHOTELID_STMT);		
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(OrdDAO.GET_ALL_ORDHOTELID_STMT);
+			
 			pstmt.setString(1, aOrdHotelId);
 			rs = pstmt.executeQuery();
-
-			/* 
-			 * 01    ordID
-			 * 02-01 ordRoomId
-			 * 03-02 ordMemId
-			 * 04-03 ordHotelId
-			 * 05-04 ordPrice
-			 * 06-05 ordLiveDate
-			 * 07    ordDate
-			 * 08-06 ordStatus
-			 * 09-07 ordRatingContent
-			 * 10-08 ordRatingStarNo
-			 * 11-09 ordQrPic
-			 * 12-10 ordMsgNo
-			*/			
 			
 			while(rs.next()){
 				ordVO = new OrdVO();
@@ -544,9 +483,6 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 				//ordVO.setOrdQrPic(rs.getBytes("ordQrPic"));
 				list.add(ordVO);
 			}			
-		}
-		catch(ClassNotFoundException e){
-			throw new RuntimeException("Could not load database driver. "+ e.getMessage());
 		}
 		catch(SQLException se){
 			throw new RuntimeException("A database error occured. " + se.getMessage());
@@ -580,166 +516,5 @@ public class OrdJDBCDAO implements OrdDAO_interface {
 		}
 		return list;			
 	}
-	
-	public static void main(String[] args) throws Exception {
-		OrdJDBCDAO dao = new OrdJDBCDAO();
-						
-		//測試圖片		
-//		File pic = new File("C:/Users/cuser/Desktop/QRCode.png");
-//		if(pic.exists()){
-//			System.out.println("Panda Here.");
-//		}
-//		else{
-//			System.out.println("Panda Not Here.");
-//		}
-//		
-//		InputStream fin = new FileInputStream(pic);
-//		byte[] byteAry = new byte[fin.available()];
-//		fin.read(byteAry);
-//		fin.close();
 		
-		/* 給它指定日期 */
-//		java.util.Date aliveDate= new java.util.Date();
-	    
-		/* 
-		 * = INSERT_STMT 對應 =
-		 * 01    ordID
-		 * 02-01 ordRoomId
-		 * 03-02 ordMemId
-		 * 04-03 ordHotelId
-		 * 05-04 ordPrice
-		 * 06-05 ordLiveDate
-		 * 07    ordDate
-		 * 08-06 ordStatus
-		 * 09-07 ordRatingContent
-		 * 10-08 ordRatingStarNo
-		 * 11-09 ordQrPic
-		 * 12-10 ordMsgNo
-		*/
-		
-		//新增		
-		//OrdVO ordVO1 = new OrdVO();	    
-//		ordVO1.setOrdRoomId("1000001");
-//		ordVO1.setOrdMemId("10000002");
-//		ordVO1.setOrdHotelId("10001");
-//		ordVO1.setOrdPrice(777);
-//		ordVO1.setOrdLiveDate(new Timestamp(aliveDate.getTime()));
-//		
-//		ordVO1.setOrdStatus("0");
-//		ordVO1.setOrdRatingContent("阿華吃芭樂");
-//		ordVO1.setOrdRatingStarNo(4);
-//		ordVO1.setOrdQrPic(byteAry);
-//		ordVO1.setOrdMsgNo("ZZZZ");
-//		dao.insert(ordVO1);
-		
-		//修改
-//		OrdVO ordVO2 = new OrdVO();
-//		ordVO2.setOrdId("2016111003");
-//		ordVO2.setOrdRoomId("1000001");
-//		ordVO2.setOrdMemId("10000001");
-//		ordVO2.setOrdHotelId("10001");
-//		ordVO2.setOrdPrice(8686);
-//		ordVO2.setOrdLiveDate(new Timestamp(aliveDate.getTime()));
-//		
-//		ordVO2.setOrdStatus("0");
-//		ordVO2.setOrdRatingContent("柚子吃便當");
-//		ordVO2.setOrdRatingStarNo(4);
-//		ordVO2.setOrdQrPic(byteAry);
-//		ordVO2.setOrdMsgNo("ABAB");
-//		int updateCount_update = dao.update(ordVO2);
-//		System.out.println(updateCount_update);
-		
-		//刪除
-//		int updateCount_delete = dao.delete("2016111032");
-//		System.out.println(updateCount_delete);
-		
-		//查詢
-//		OrdVO ordVO3 = dao.findByPrimaryKey("2016111001");	
-//		System.out.print(ordVO3.getOrdId() +",");
-//		System.out.print(ordVO3.getOrdRoomId()+",");
-//		System.out.print(ordVO3.getOrdMemId()+",");
-//		System.out.print(ordVO3.getOrdHotelId()+",");
-//		System.out.print(ordVO3.getOrdPrice() +",");			
-//		//String S = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(myTimestamp);	
-//		System.out.print(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO3.getOrdLiveDate()) +",");
-//		System.out.print(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO3.getOrdDate()) +",");
-//		System.out.print(ordVO3.getOrdStatus()+",");
-//		System.out.print(ordVO3.getOrdRatingContent()+",");
-//		System.out.print(ordVO3.getOrdRatingStarNo() +",");
-//		System.out.print(ordVO3.getOrdMsgNo());
-//		System.out.println();	
-		
-		
-		/* 
-		 * = INSERT_STMT 對應 =
-		 * 01    ordID
-		 * 02-01 ordRoomId
-		 * 03-02 ordMemId
-		 * 04-03 ordHotelId
-		 * 05-04 ordPrice
-		 * 06-05 ordLiveDate
-		 * 07    ordDate
-		 * 08-06 ordStatus
-		 * 09-07 ordRatingContent
-		 * 10-08 ordRatingStarNo
-		 * 11-09 ordQrPic
-		 * 12-10 ordMsgNo
-		*/			
-		
-		//列出所有		
-//		List<OrdVO> list0 = dao.getAll();
-//		for(OrdVO aOrd : list0){
-//			System.out.print(aOrd.getOrdId() +",");
-//			System.out.print(aOrd.getOrdRoomId()+",");
-//			System.out.print(aOrd.getOrdMemId()+",");
-//			System.out.print(aOrd.getOrdHotelId()+",");
-//			System.out.print(aOrd.getOrdPrice() +",");			
-//			//String S = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(myTimestamp);	
-//			System.out.print(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(aOrd.getOrdLiveDate()) +",");
-//			System.out.print(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(aOrd.getOrdDate()) +",");
-//			System.out.print(aOrd.getOrdStatus()+",");
-//			System.out.print(aOrd.getOrdRatingContent()+",");
-//			System.out.print(aOrd.getOrdRatingStarNo() +",");
-//			System.out.print(aOrd.getOrdMsgNo());
-//			System.out.println();
-//		}
-		
-		//依一般會員ID查詢		
-//		List<OrdVO> list1 = dao.getAllByOrdMemId("10000001");
-//		for(OrdVO aOrd : list1){
-//			System.out.print(aOrd.getOrdId() +",");
-//			System.out.print(aOrd.getOrdRoomId()+",");
-//			System.out.print(aOrd.getOrdMemId()+",");
-//			System.out.print(aOrd.getOrdHotelId()+",");
-//			System.out.print(aOrd.getOrdPrice() +",");			
-//			//String S = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(myTimestamp);	
-//			System.out.print(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(aOrd.getOrdLiveDate()) +",");
-//			System.out.print(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(aOrd.getOrdDate()) +",");
-//			System.out.print(aOrd.getOrdStatus()+",");
-//			System.out.print(aOrd.getOrdRatingContent()+",");
-//			System.out.print(aOrd.getOrdRatingStarNo() +",");
-//			System.out.print(aOrd.getOrdMsgNo());
-//			System.out.println();
-//		}
-		
-		//依廠商會員ID查詢		
-//		List<OrdVO> list2 = dao.getAllByOrdHotelId("10001");
-//		for(OrdVO aOrd : list2){
-//		System.out.print(aOrd.getOrdId() +",");
-//		System.out.print(aOrd.getOrdRoomId()+",");
-//		System.out.print(aOrd.getOrdMemId()+",");
-//		System.out.print(aOrd.getOrdHotelId()+",");
-//		System.out.print(aOrd.getOrdPrice() +",");			
-//		//String S = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(myTimestamp);	
-//		System.out.print(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(aOrd.getOrdLiveDate()) +",");
-//		System.out.print(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(aOrd.getOrdDate()) +",");
-//		System.out.print(aOrd.getOrdStatus()+",");
-//		System.out.print(aOrd.getOrdRatingContent()+",");
-//		System.out.print(aOrd.getOrdRatingStarNo() +",");
-//		System.out.print(aOrd.getOrdMsgNo());
-//		System.out.println();
-//		}		
-		
-	}
-	
 }
