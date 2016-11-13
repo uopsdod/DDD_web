@@ -1273,7 +1273,7 @@ public class RoomServlet extends HttpServlet {
 	     down.schedule(taskDown, DateTask); 
 	     		
 	}
-	public static void RegularOnTime(String roomId){
+	public static void RegularOnTime(String roomId){ 
 		
 		RoomService roomSvc = new RoomService();
 		RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
