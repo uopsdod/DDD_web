@@ -35,7 +35,7 @@ public class MemRepService {
 //	public List<MemRepVO> getAllByMemRepStatus(String aMemRepStatus){//0.未審核 1.已審核未通過 2.已審核已通過
 //		return this.dao.getAllByMemRepStatus(aMemRepStatus);
 //	}
-	public MemRepVO findByPrimaryKey(String aMemrepId){
+	public MemRepVO getOneMemRep(String aMemrepId){
 		return this.dao.findByPrimaryKey(aMemrepId);
 	}
 	
