@@ -410,6 +410,8 @@ public class OrdServlet extends HttpServlet {
 				String ordMemId = aReq.getParameter("ordMemId");				
 				aReq.setAttribute("ordMemId",ordMemId);
 				
+				//System.out.println("ordMemId is "+ordMemId);
+				
 				/* 3.準備至轉交 */
 				String url ="/backend/ord/listAllByMemId.jsp";
 				RequestDispatcher successView = aReq.getRequestDispatcher(url);
@@ -433,6 +435,8 @@ public class OrdServlet extends HttpServlet {
 				/* 1.接收請求參數 */
 				String ordHotelId = aReq.getParameter("ordHotelId");			
 				aReq.setAttribute("ordHotelId",ordHotelId);
+				
+				//System.out.println("ordHotelId is "+ordHotelId);
 				
 				/* 3.準備至轉交 */
 				String url ="/backend/ord/listAllByHotelId.jsp";

@@ -24,8 +24,10 @@ import java.util.*;
 
 public class OrdDAO implements OrdDAO_interface {
 
-	private static final String GET_ALL_STMT = "from OrdVO order by ordId";
-
+	private static final String GET_ALL_STMT = "from OrdVO order by ordId desc";
+	private static final String GET_ALL_ORDMEMID_STMT = "from OrdVO where ordMemId=:ordMemId order by ordId desc";
+	private static final String GET_ALL_ORDHOTELID_STMT = "from OrdVO where ordHotelId=:ordHotelId order by ordId desc";
+	
 	@Override
 	public void insert(OrdVO aOrdVO) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -101,7 +103,7 @@ public class OrdDAO implements OrdDAO_interface {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
-			Query query = session.createQuery(GET_ALL_STMT);
+			Query query = session.createQuery(OrdDAO.GET_ALL_STMT);
 			list = query.list();
 			session.getTransaction().commit();
 		} catch (RuntimeException ex) {
@@ -111,6 +113,42 @@ public class OrdDAO implements OrdDAO_interface {
 		return list;
 	}
 
+	@Override
+	public List<OrdVO> getAllByOrdMemId(String aOrdMemId){
+
+		List<OrdVO> list = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery(OrdDAO.GET_ALL_ORDMEMID_STMT);
+			query.setParameter("ordMemId", aOrdMemId);
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
+		}
+		return list;		
+		
+	}
+	
+	@Override
+	public List<OrdVO> getAllByOrdHotelId(String aOrdHotelId){
+		List<OrdVO> list = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery(OrdDAO.GET_ALL_ORDHOTELID_STMT);
+			query.setParameter("ordHotelId", aOrdHotelId);
+			list = query.list();
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
+		}
+		return list;		
+	}
+	
 	public static void main(String[] args) {
 
 		OrdDAO dao = new OrdDAO();
