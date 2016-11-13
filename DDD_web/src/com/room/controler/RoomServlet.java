@@ -3,15 +3,9 @@ package com.room.controler;
 import java.util.*;
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.LinkedList;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -19,8 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
-import java.util.Set;
 
 import com.room.model.RoomService;
 import com.room.model.RoomVO;
@@ -209,7 +201,7 @@ public class RoomServlet extends HttpServlet {
 				/***************************2.開始查詢資料****************************************/
 				RoomService roomSvc = new RoomService();
 				RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
-								
+													
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
 				req.setAttribute("roomVO", roomVO);         // 資料庫取出的empVO物件,存入req
 				String url = "/frontend_hotel/room/setSell.jsp";
@@ -220,12 +212,67 @@ public class RoomServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/frontend_hotel/room/listRoomSell.jsp");
+						.getRequestDispatcher("/frontend_hotel/room/listAllRoomSell.jsp");
 				failureView.forward(req, res);
 				return;
 			}
 		}
-		
+		if ("RegularCancel".equals(action)) { // 來自listAllRoom.jsp的請求
+
+			System.out.println("aaaaa");	
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***************************1.接收請求參數****************************************/
+				String roomId = req.getParameter("roomId");
+				
+				RoomService roomSvc = new RoomService();
+				RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
+				
+				
+				if(roomVO.getRoomForSellAuto()==false){	//若未開啟定時系統直接返回
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/frontend_hotel/room/listAllRoomSell.jsp");
+					failureView.forward(req, res);
+					return;					
+				}				
+				
+				int beforeStartDate = roomVO.getRoomDiscountStartDate();				
+				
+				//從定時系統的上架map移除此房型的資料
+				ServletContext box = getServletContext();
+				Map<Integer,List> RoomRegularTime = (Map<Integer,List>)box.getAttribute("RoomRegularTime");
+				
+				
+				if(RoomRegularTime.get(beforeStartDate)!=null){	//刪除重複定時的原room在map的時刻
+				  List<String> beforeList = RoomRegularTime.get(beforeStartDate);
+				  beforeList.remove(roomId);	
+				  if(beforeList.size()==0){	//當該時刻的list已經沒有roomId時,就從map中刪除該list
+					  RoomRegularTime.remove(beforeStartDate); 
+				  }
+				}				
+					
+				roomVO.setRoomForSellAuto(false);
+				roomSvc.update(roomVO);
+				
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/frontend_hotel/room/listAllRoomSell.jsp");
+				failureView.forward(req, res);
+				return;	
+
+				/***************************其他可能的錯誤處理**********************************/
+			} catch (Exception e) {
+				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/frontend_hotel/room/listAllRoomSell.jsp");
+				failureView.forward(req, res);
+				return;	
+			}
+		}
 		
 		if ("DownSell".equals(action)) { // 來自select_page.jsp的請求
 
@@ -541,7 +588,9 @@ public class RoomServlet extends HttpServlet {
 				
 				RoomService roomSvc = new RoomService();
 				RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
-
+				
+				int beforeStartDate = roomVO.getRoomDiscountStartDate();
+				
 				roomVO.setRoomPrice(roomPrice);
 			
 				roomVO.setRoomBottomPrice(roomBottomPrice);
@@ -563,6 +612,31 @@ public class RoomServlet extends HttpServlet {
 				}
 						
 				roomSvc.update(roomVO);
+				
+				
+				//放入定時系統的上架map
+				ServletContext box = getServletContext();
+				Map<Integer,List> RoomRegularTime = (Map<Integer,List>)box.getAttribute("RoomRegularTime");
+				
+				
+				if(RoomRegularTime.get(beforeStartDate)!=null){	//刪除重複定時的原room在map的時刻
+				  List<String> beforeList = RoomRegularTime.get(beforeStartDate);
+				  beforeList.remove(roomId);	
+				  if(beforeList.size()==0){	//當該時刻的list已經沒有roomId時,就從map中刪除該list
+					  RoomRegularTime.remove(beforeStartDate); 
+				  }
+				}				
+				if(RoomRegularTime.get(roomVO.getRoomDiscountStartDate())==null){
+	    			List<String> now = new LinkedList<String>();
+	    			now.add(roomVO.getRoomId());
+	    			RoomRegularTime.put(roomVO.getRoomDiscountStartDate(),now);	
+	    			
+	    		}else{
+	    			List now =RoomRegularTime.get(roomVO.getRoomDiscountStartDate());
+	    			now.add(roomVO.getRoomId());
+	    			RoomRegularTime.put(roomVO.getRoomDiscountStartDate(),now);	
+	    		}  		
+				
 				
 //				//建立房型的降價機制,與下架機制
 //				Float cutPrice = roomPrice*roomDisccountPercent*0.01f;
@@ -1227,7 +1301,121 @@ public class RoomServlet extends HttpServlet {
 	     down.schedule(taskDown, DateTask); 
 	     		
 	}
-	
+	public static void RegularOnTime(String roomId){
+		
+		RoomService roomSvc = new RoomService();
+		RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
+		if(roomVO.getRoomForSell()==true){
+		   return;
+		}
+		
+		System.out.println(roomId + "上架囉~");
+		
+		
+		 /*為本次新增的房型準被一個動態降價的排程*/
+		 Timer timer = new Timer();
+		 Timer down = new Timer();
+		 OnTimer.put(roomId,timer);
+		 DownTimer.put(roomId,down);
+		 
+		 int price = roomVO.getRoomPrice();
+		 int roomDisccountPercent = roomVO.getRoomDisccountPercent();
+		 
+		 Float cutPrice = price*roomDisccountPercent*0.01f;
+		 int cutPriceInt = cutPrice.intValue();
+		 int BottomPrice = roomVO.getRoomBottomPrice();
+		 int EndTime = roomVO.getRoomDiscountEndDate();
+		 
+		 //將預訂上架房數設為當日上架房數
+		 roomVO.setRoomRemainNo(roomVO.getRoomDefaultNo());
+		 //將該房型設為上架
+		 roomVO.setRoomForSell(true); 
+		 roomSvc.update(roomVO);
+		 
+		 
+		 /*為本次新增的房型準被一個List*/
+		 Map<String,Integer> data = new HashMap<String,Integer>();
+		 data.put("price",price);				//此時價錢
+		 data.put("CutPrice",cutPriceInt);		//單位時間折價	
+		 data.put("BottomPrice",BottomPrice);	//最低價錢
+		 OnData.put(roomId,data);
+		
+		
+		 
+	     TimerTask taskPrice = new TimerTask(){
+	        
+	         public void run(){
+	         	//排程器要執行的任務	
+	        	 
+	        	
+	        	 Map<String,Integer> one = OnData.get(roomId);
+	     
+	        	 
+	        	 int nowPrice = one.get("price");				//此時價錢
+	        	 int nowCutPrice = one.get("CutPrice"); 		//單位時間折價
+	        	 int nowBottomPrice = one.get("BottomPrice");   //最低價錢
+	         
+	        	 nowPrice-=nowCutPrice; 
+	        	 if(nowPrice< nowBottomPrice){	//達到底價時取消排程,並且讓價格設定為底價
+	        		 one.put("price",nowBottomPrice);
+	        		 OnTimer.get(roomId).cancel();
+	        	 }else{
+	        		 one.put("price",nowPrice); //未達底價時繼續降價
+	        	 } 
+	        	 
+	        	System.out.println(one.get("price"));
+	         }
+	     };
+	     
+	     
+	     if(roomVO.getRoomOnePrice()==false){     
+	     //建立降價排程
+//	     timer.scheduleAtFixedRate(taskPrice, aCutPriceTime, aCutPriceTime); 
+	     timer.scheduleAtFixedRate(taskPrice, 10000, 10000); 
+	     								//執行delay時間		//每次執行間隔時間(毫秒)
+											//需要一個java.util.Date物件
+	     }
+	     
+	     
+	     TimerTask taskDown = new TimerTask(){
+		        
+	         public void run(){
+	         	//排程器要執行的任務	
+	        	 
+	        	 RoomService roomSvc = new RoomService();
+	        	 RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
+	        	 
+	        	 roomVO.setRoomForSell(false);
+	        	 roomSvc.update(roomVO);
+	        	 
+	        	 
+	        	 OnTimer.get(roomId).cancel();	//降價排程取消
+	        	 OnTimer.remove(roomId);	//清空計時器
+	        	 OnData.remove(roomId); 	//清空資料
+	        	 System.out.println("下架了");
+	        	 
+	        	 /*************下架了***************/
+	         }
+	     };
+	     
+	     Calendar caler = new GregorianCalendar();
+	     int year = caler.get(Calendar.YEAR);
+	     int month = caler.get(Calendar.MONTH);
+	     int date = caler.get(Calendar.DATE);
+	     Calendar TodayTime = new GregorianCalendar(year,month,date,0,0,0);	//取出今日0:0:00的Date物件
+	     long todayDate = TodayTime.getTime().getTime()+EndTime; 	
+	     Date DateTask = new Date(todayDate); 
+	        	     
+	     down.schedule(taskDown, DateTask); 
+		
+		
+		
+		
+		
+		
+		
+		
+	}
 	
 	
 }
