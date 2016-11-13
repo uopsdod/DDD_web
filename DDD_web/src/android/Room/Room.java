@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mem.model.MemVO;
@@ -21,8 +23,10 @@ import com.room.model.RoomJDBCDAO;
 import com.room.model.RoomService;
 import com.room.model.RoomVO;
 import com.roomphoto.model.RoomPhotoJDBCDAO;
+import com.roomphoto.model.RoomPhotoService;
+import com.roomphoto.model.RoomPhotoVO;
 
-import android.Hotel.HotelJDBCDAO;
+import com.hotel.model.HotelJDBCDAO;
 import android.Hotel.ImageUtil;
 import javafx.scene.effect.Light.Spot;
 @SuppressWarnings("serial")
@@ -54,7 +58,7 @@ public class Room extends HttpServlet {
 			
 			System.out.println("1231321231321321313213132132");
 			String id = jsonObject.get("id").getAsString();
-			RoomJDBCDAO dao = new RoomJDBCDAO();
+			RoomService dao = new RoomService();
 			RoomVO hotelVO = dao.findByPrimaryKey(id);
 			outStr = gson.toJson(hotelVO);
 			rp.setContentType(CONTENT_TYPE);
@@ -63,6 +67,20 @@ public class Room extends HttpServlet {
 			System.out.println(outStr);
 			System.out.println("id123123132131313132 " + id);
 			
+		}else if(action.equals("getOneAllPhotoId")){
+			
+			String id = jsonObject.get("id").getAsString();
+			RoomPhotoService dao = new RoomPhotoService();
+			List<String> list = dao.getRoomAllRoomPhotoId(id);
+//			JSONArray array = new JSONArray();
+//			for(String roomPhotoId: list){
+//				array.put(roomPhotoId);
+//			} 
+//			Object aaa = (Object) array;
+			outStr = gson.toJson(list);
+			rp.setContentType(CONTENT_TYPE);
+			PrintWriter out = rp.getWriter();
+			out.println(outStr);
 		}else if(action.equals("getAll")){  // 取得當前飯店內的所有房型
 			
 			String id = jsonObject.get("id").getAsString();
@@ -78,18 +96,40 @@ public class Room extends HttpServlet {
 		}else if(action.equals("getImage")){
 
 			OutputStream os = rp.getOutputStream();
-			RoomPhotoJDBCDAO dao = new RoomPhotoJDBCDAO();
+			RoomPhotoService dao = new RoomPhotoService();
 			String id = jsonObject.get("id").getAsString();
 			int imageSize = jsonObject.get("imageSize").getAsInt();
 			System.out.println("id : " + id);
-//			byte[] image = dao.getRoomAllRoomPhotoId(id);
-//			if (image != null) {
-//				image = ImageUtil.shrink(image, imageSize);
-//				rp.setContentType("image/jpeg");
-//				rp.setContentLength(image.length);
-//			}
-//			os.write(image);
-//			System.out.println("image"+image);
+			List<String> list = dao.getRoomAllRoomPhotoId(id);
+			String roomPhotoId = list.get(0);
+			RoomPhotoVO roomPhotoVO = dao.getOneRoomPhoto(roomPhotoId);
+			byte[] image = roomPhotoVO.getRoomPhotoPic();
+			if (image != null) {
+				image = ImageUtil.shrink(image, imageSize);
+				rp.setContentType("image/jpeg");
+				rp.setContentLength(image.length);
+			}
+			os.write(image);
+			System.out.println("image"+image);
+		}else if(action.equals("getAllImage")){
+			
+			byte[] image = null;
+			OutputStream os = rp.getOutputStream();
+			RoomPhotoService dao = new RoomPhotoService();
+			String id = jsonObject.get("id").getAsString();
+			int imageSize = jsonObject.get("imageSize").getAsInt();
+			System.out.println("id : " + id);
+			RoomPhotoVO roomPhotoVO = dao.getOneRoomPhoto(id);
+			
+				image = roomPhotoVO.getRoomPhotoPic();
+				if (image != null) {
+					image = ImageUtil.shrink(image, imageSize);
+					rp.setContentType("image/jpeg");
+					rp.setContentLength(image.length);
+				}
+				os.write(image);
+				System.out.println("image"+image);
+		
 		}
 		
 		// ��hotelVO�নJSON�r��A�^��

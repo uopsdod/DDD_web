@@ -28,11 +28,14 @@
 <!-- 		<mapping resource="com/emp/model/emp2.hbm.xml" /> -->
 <!-- 		<mapping resource="com/dept/model/dept2.hbm.xml" /> -->
 		<mapping resource="com/ord/model/ord.hbm.xml" />
-		
 		<mapping resource="com/room/model/room.hbm.xml" />
 		<mapping resource="com/mem/model/mem.hbm.xml" />
 		<mapping resource="com/hotel/model/hotel.hbm.xml" />
+		<mapping resource="com/memrep/model/memRep.hbm.xml" />
+		<mapping resource="com/emp/model/emp.hbm.xml" />
+
 
 	</session-factory>
 	
 </hibernate-configuration>
+

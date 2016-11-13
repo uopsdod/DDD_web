@@ -19,9 +19,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import com.mem.model.MemDAO;
-import com.mem.model.MemJDBCDAO;
-import com.mem.model.MemVO;
+//import com.mem.model.MemDAO;
+//import com.mem.model.MemJDBCDAO;
+//import com.mem.model.MemVO;
 
 public class CompositeQuery_anyTable_JNDI {
 	private static DataSource ds  = null;
@@ -126,18 +126,18 @@ public class CompositeQuery_anyTable_JNDI {
 
 		// 配合 req.getParameterMap()方法 回傳
 		// java.util.Map<java.lang.String,java.lang.String[]> 之測試
-		MemJDBCDAO dao_mem = new MemJDBCDAO();
-		MemVO memVO = dao_mem.getAll().get(0);
-		Map<String, String[]> map = new TreeMap<String, String[]>();
-		map.put("memName", new String[]{memVO.getMemName()});
-		map.put("memAccount", new String[]{memVO.getMemAccount()});
-		map.put("memBirthDate", new String[]{memVO.getMemBirthDate().toString()});
-		map.put("memLiveBudget", new String[]{memVO.getMemLiveBudget().toString()});
-		
-		map.put("action", new String[] { "getXXX" }); // 注意Map裡面會含有action的key
-
-		String finalSQL = "select * from mem " + CompositeQuery_anyTable_JNDI.get_WhereCondition(map, "mem");
-		System.out.println("●●finalSQL = " + finalSQL);
+//		MemJDBCDAO dao_mem = new MemJDBCDAO();
+//		MemVO memVO = dao_mem.getAll().get(0);
+//		Map<String, String[]> map = new TreeMap<String, String[]>();
+//		map.put("memName", new String[]{memVO.getMemName()});
+//		map.put("memAccount", new String[]{memVO.getMemAccount()});
+//		map.put("memBirthDate", new String[]{memVO.getMemBirthDate().toString()});
+//		map.put("memLiveBudget", new String[]{memVO.getMemLiveBudget().toString()});
+//		
+//		map.put("action", new String[] { "getXXX" }); // 注意Map裡面會含有action的key
+//
+//		String finalSQL = "select * from mem " + CompositeQuery_anyTable_JNDI.get_WhereCondition(map, "mem");
+//		System.out.println("●●finalSQL = " + finalSQL);
 
 	}
 }
