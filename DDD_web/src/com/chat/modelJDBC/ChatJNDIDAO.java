@@ -16,6 +16,7 @@ import javax.sql.DataSource;
 
 import com.chat.model.ChatDAO_interface;
 import com.chat.model.ChatVO;
+import com.memchat.model.MemChatVO;
 
 public class ChatJNDIDAO implements ChatDAO_interface {
 	private static DataSource ds = null;
@@ -159,6 +160,14 @@ public class ChatJNDIDAO implements ChatDAO_interface {
 	public List<ChatVO> getAll(Map<String, String[]> aMap) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+
+	@Override
+	public void insertWithMemChats(ChatVO chatVO, List<MemChatVO> list) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

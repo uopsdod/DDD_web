@@ -5,7 +5,9 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -275,11 +277,28 @@ public class Testing_yo extends HttpServlet {
 //	MemChatService dao_memChat = new MemChatService();
 //	MemChatVO memChatVO = dao_memChat.getAll().get(0);
     // 新方法-getNewestMsgEachChatId
-	MemChatService dao_memChat = new MemChatService();
-	List<MemChatVO> myList = dao_memChat.getNewestMsgEachChatId("10000001");
-	for (MemChatVO myVO: myList){
-		out.println(myVO.getMemChatContent() + "<br>");
-	}
+//	MemChatService dao_memChat = new MemChatService();
+//	List<MemChatVO> myList = dao_memChat.getNewestMsgEachChatId("10000001");
+//	for (MemChatVO myVO: myList){
+//		out.println(myVO.getMemChatContent() + "<br>");
+//	}
+    
+    // 測試ChatService - insertWithMemChats
+    ChatService dao_chat = new ChatService();
+    ChatVO chatVO = new ChatVO(); // 不設定第二個欄位
+    List<MemChatVO> list = new ArrayList<>();
+	Timestamp ts = new Timestamp(new java.util.Date().getTime());
+	MemChatVO memChatVO = new MemChatVO();
+//	memChatVO.setMemChatChatId(chatId); // 此行註解掉
+	memChatVO.setMemChatMemId("10000003");
+	memChatVO.setMemChatDate(ts);
+	memChatVO.setMemChatContent("Aloha");
+	memChatVO.setMemChatPic(null);
+	memChatVO.setMemChatStatus("0");
+	memChatVO.setMemChatToMemId("10000004");
+	list.add(memChatVO);
+	dao_chat.insertWithMemChats(chatVO, list);
+    
 	
   }
 }

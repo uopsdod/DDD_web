@@ -2,10 +2,12 @@ package android.live2;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -24,6 +26,8 @@ import javax.websocket.server.ServerEndpoint;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.chat.model.ChatService;
+import com.chat.model.ChatVO;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
@@ -105,7 +109,15 @@ public class MsgCenter extends HttpServlet {
 			memChatVO.setMemChatStatus(status);
 			memChatVO.setMemChatToMemId(toMemId);
 			
-			dao_memChat.insert(memChatVO); //之後要判斷，如果是全新聊天室，要先新增聊天室後再新增訊息
+			if (chatId != null) {
+				dao_memChat.insert(memChatVO); //之後要判斷，如果是全新聊天室，要先新增聊天室後再新增訊息				
+			}else{
+				ChatService dao_chat = new ChatService();
+				ChatVO chatVO = new ChatVO();
+			    List<MemChatVO> list = new ArrayList<>();
+			    list.add(memChatVO);
+				dao_chat.insertWithMemChats(chatVO, list);
+			}
 			// end of 存入資料庫
 			
 			// 將資料傳給對方

@@ -3,6 +3,8 @@ package com.chat.model;
 import java.util.List;
 import java.util.Map;
 
+import com.memchat.model.MemChatVO;
+
 public class ChatService {
 	private ChatDAO_interface dao;
 	public ChatService(){
@@ -37,6 +39,8 @@ public class ChatService {
 	public ChatVO getOneChat(String aChatId){
 		return this.dao.findByPrimaryKey(aChatId);
 	}
-	
+	public void insertWithMemChats(ChatVO aChatVO , List<MemChatVO> aList){
+		this.dao.insertWithMemChats(aChatVO, aList);
+	}
 	
 }
