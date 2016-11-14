@@ -105,7 +105,7 @@ public class MsgCenter extends HttpServlet {
 			memChatVO.setMemChatStatus(status);
 			memChatVO.setMemChatToMemId(toMemId);
 			
-			dao_memChat.insert(memChatVO);
+			dao_memChat.insert(memChatVO); //之後要判斷，如果是全新聊天室，要先新增聊天室後再新增訊息
 			// end of 存入資料庫
 			
 			// 將資料傳給對方

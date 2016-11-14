@@ -40,7 +40,8 @@ public class MemChatJNDIDAO implements MemChatDAO_interface {
 	
 	private static final String GET_ALL_MSGBTWNTWOMEMS = "SELECT * FROM memchat WHERE memChatMemId IN (?,?) AND memChatToMemId IN (?,?) ORDER BY memChatDate";
 	private static final String GET_CHAT_IDBTWNTWOMEMS = "SELECT distinct memChatChatId FROM memchat WHERE memChatMemId IN (?,?) AND memChatToMemId IN (?,?)";
-
+	private static final String GET_NEWESTMSG_CHATID = "SELECT * FROM memChat JOIN (SELECT memChatChatId as chatId_b, MAX(memChatDate) as date_b FROM memChat GROUP BY memChatChatId) ON memChatChatId = chatId_b AND memChatDate = date_b WHERE memChatMemId = ? OR memChatToMemId = ? ORDER BY memChatDate DESC";
+	
 	@Override
 	public void insert(MemChatVO aMemChatVO) {
 		try(Connection con = ds.getConnection();
@@ -302,6 +303,43 @@ public class MemChatJNDIDAO implements MemChatDAO_interface {
 				}
 			}// end try-catch-finally	
 		return chatId;
+	}
+
+	@Override
+	public List<MemChatVO> getNewestMsgEachChatId(String aMemChatMemId) {
+		// GET_ALL_MSGBTWNTWOMEMS
+		List<MemChatVO> memChatVOList = new ArrayList<>();
+		ResultSet rs = null;
+		try(Connection con = ds.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(MemChatJNDIDAO.GET_NEWESTMSG_CHATID);) {
+				pstmt.setString(1, aMemChatMemId);
+				pstmt.setString(2, aMemChatMemId);
+				rs = pstmt.executeQuery();
+				while (rs.next()){
+					MemChatVO memChatVO = new MemChatVO();
+					
+					memChatVO.setMemChatChatId(rs.getString("memChatChatId"));
+					memChatVO.setMemChatMemId(rs.getString("memChatMemId"));
+					memChatVO.setMemChatDate(rs.getTimestamp("memChatDate"));
+					memChatVO.setMemChatContent(rs.getString("memChatContent"));
+					memChatVO.setMemChatPic(rs.getBytes("memChatPic"));
+					memChatVO.setMemChatStatus(rs.getString("memChatStatus"));
+					memChatVO.setMemChatToMemId(rs.getString("memChatToMemId"));
+					
+					memChatVOList.add(memChatVO);
+				};
+			} catch (SQLException se) {
+				throw new RuntimeException("A database error occured. "+ se.getMessage());
+			} finally {
+				if (rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+			}// end try-catch-finally	
+		return memChatVOList;
 	}
 
 

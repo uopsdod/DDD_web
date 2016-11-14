@@ -297,6 +297,12 @@ public class MemChatJDBCDAO implements MemChatDAO_interface {
 		return null;
 	}
 
+	@Override
+	public List<MemChatVO> getNewestMsgEachChatId(String aMemChatMemId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 

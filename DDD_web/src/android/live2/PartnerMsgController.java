@@ -51,9 +51,9 @@ public class PartnerMsgController extends HttpServlet {
 			jsonIn.append(line);
 		}
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(),JsonObject.class);
-		String action = jsonObject.get("action").getAsString().trim();
-		String memId = jsonObject.get("memId").getAsString().trim();  
-		String toMemId = jsonObject.get("toMemId").getAsString().trim();
+		String action = (jsonObject.get("action") != null)?jsonObject.get("action").getAsString():null;
+		String memId = (jsonObject.get("memId") != null)?jsonObject.get("memId").getAsString():null;
+		String toMemId = (jsonObject.get("toMemId") != null)?jsonObject.get("toMemId").getAsString():null;  // backup: String toMemId = jsonObject.get("toMemId").getAsString();
 		System.out.println("action: " + action);
 		System.out.println("memId: " + memId);
 		System.out.println("toMemId: " + toMemId);
@@ -68,6 +68,20 @@ public class PartnerMsgController extends HttpServlet {
 			
 			System.out.println("outStr:" + outStr);
 			out.println(outStr);
+			return;
+		}
+		
+		if ("getAll_history".equals(action)){
+			System.out.println("PartnerMsgController getAll_history match");
+			String outStr = "";
+			res.setContentType(CONTENT_TYPE);
+			PrintWriter out = res.getWriter();
+			//outStr = gson.toJson(dao_memChat.getAll()); // no no no not get all
+			outStr = gson.toJson(dao_memChat.getNewestMsgEachChatId(memId));
+			
+			System.out.println("outStr:" + outStr);
+			out.println(outStr);
+			return;
 		}
 
 	}
