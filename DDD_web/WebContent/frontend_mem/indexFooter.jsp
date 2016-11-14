@@ -1,24 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*"%>
-<!DOCTYPE html>
-<html>
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/css/0_css.css">
-    <script src="<%=request.getContextPath()%>/frontend_mem/js/0_new.js"></script>
-    <title>Dua Dee Dou:晚鳥有優惠</title>
-    <link rel="shortcut icon" href="<%=request.getContextPath()%>/frontend_mem/images/index.jpg">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/bs/bootstrap.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/bs/bootstrap-theme.min.css">
-   
-    <script src="<%=request.getContextPath()%>/jq/jquery-3.1.1.min.js"></script>
-    <script src="<%=request.getContextPath()%>/jq/jquery-ui.js"></script>
-    <script src="<%=request.getContextPath()%>/jq/jquery-cycle-all.js"></script>
-    <script src="<%=request.getContextPath()%>/bs/bootstrap.min.js"></script>
-</head>
-
-<body>
    
     <footer id="footerPosition">
         <div id="the_footer" class="col-md-12">

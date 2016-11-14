@@ -24,7 +24,6 @@ if(!authorityList.contains("101")){
 	response.sendRedirect(request.getContextPath()+"/backend/emp_index.jsp");
 }
 %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -174,7 +173,7 @@ body {
 					    <div id="bbb" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab2">
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
-					        		<li>一般會員維護</li>
+					        		<a href="<%=request.getContextPath()%>/backend/mem/listAllMem.jsp"><li>一般會員維護</li></a>
 					        		<li>對話紀錄維護</li>
 					        	</ul>
 					      </div>
