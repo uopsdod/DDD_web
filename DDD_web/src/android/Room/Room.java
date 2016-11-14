@@ -90,8 +90,16 @@ public class Room extends HttpServlet {
 		}else if(action.equals("getAll")){  // 取得當前飯店內的所有房型
 			
 			String id = jsonObject.get("id").getAsString();
+			Map<String, Map> one = RoomServlet.OnData;
+			Map<String, Integer> two = one.get(id);
+			int price = two.get("price");
 			RoomService dao = new RoomService();
+			RoomVO roomVO = dao.findByPrimaryKey(id);
+			
 			Set<RoomVO> set = dao.getOneHotelAllRoom(id);
+			for(RoomVO newSet : set){
+				newSet.setRoomPrice(price);
+			}
 			
 			outStr = gson.toJson(set);
 			rp.setContentType(CONTENT_TYPE);
