@@ -11,7 +11,7 @@
 	pageContext.setAttribute("list", list);
     	
 %>
-
+//查看詳情還沒做
 <<style>
 	#listinfor{
 		 font-family:Tahoma, Verdana, 微軟正黑體;
