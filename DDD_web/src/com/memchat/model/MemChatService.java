@@ -10,7 +10,7 @@ public class MemChatService {
 		this.dao = (MemChatDAO_interface) new MemChatJNDIDAO();
 	}
 	// aMemChatChatId,aMemChatMemId, aMemChatDate, aMemChatContent, aMemChatPic
-	public void insert(String aMemChatChatId, String aMemChatMemId, Timestamp aMemChatDate, String aMemChatContent, byte[] aMemChatPic, String aMemChatStatus){
+	public void insert(String aMemChatChatId, String aMemChatMemId, Timestamp aMemChatDate, String aMemChatContent, byte[] aMemChatPic, String aMemChatStatus, String aMemChatToMemId){
 		MemChatVO memChatVO = new MemChatVO();
 		memChatVO.setMemChatChatId(aMemChatChatId);
 		memChatVO.setMemChatMemId(aMemChatMemId);
@@ -18,6 +18,8 @@ public class MemChatService {
 		memChatVO.setMemChatContent(aMemChatContent);
 		memChatVO.setMemChatPic(aMemChatPic);
 		memChatVO.setMemChatStatus(aMemChatStatus);
+		memChatVO.setMemChatToMemId(aMemChatToMemId);
+		
 		this.dao.insert(memChatVO);
 	}
 	

@@ -1,6 +1,7 @@
 package android.live2;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,10 +29,13 @@ import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.memchat.model.MemChatService;
+import com.memchat.model.MemChatVO;
 import com.pushraven.Pushraven;
 
 @ServerEndpoint("/android/live2/MsgCenter")
 public class MsgCenter extends HttpServlet {
+	private static final String SERVERKEY = "AIzaSyD-c7lq9Moybii1GLLfgRViP1oFrZbYrjA";
 				//  <memId,tokenId> // 注意:要加上static，不然實體每次都會消失
 	private static HashMap<String,String> tokenMap = new HashMap<>();
 				//  <memId,session>	// 注意:要加上static，不然實體每次都會消失
@@ -82,15 +86,31 @@ public class MsgCenter extends HttpServlet {
 			return;
 		}
 		
+		// 存入資料庫:
+		MemChatService dao_memChat = new MemChatService();
+		String chatId = dao_memChat.getOldMsgBtwnTwoMems(fromMemId,toMemId).get(0).getMemChatChatId();
+		Timestamp ts = new Timestamp(new java.util.Date().getTime());
+		String status = "0";
 		
-		// 狀況一: 使用者A主動寄出訊息，使用者B不在訊息室窗頁面
+		MemChatVO memChatVO = new MemChatVO();
+		memChatVO.setMemChatChatId(chatId);
+		memChatVO.setMemChatMemId(fromMemId);
+		memChatVO.setMemChatDate(ts);
+		memChatVO.setMemChatContent(message);
+		memChatVO.setMemChatPic(null);
+		memChatVO.setMemChatStatus(status);
+		memChatVO.setMemChatToMemId(toMemId);
+		
+		dao_memChat.insert(memChatVO);
+		// end of 存入資料庫
 		
 		// 狀況一: 使用者A主動寄出訊息，使用者B也在訊息室窗頁面
 		if ("chat".equals(action) && sessionMap.containsKey(toMemId)){			
 			sessionMap.get(toMemId).getAsyncRemote().sendText(jsonObj.toString());
+		// 狀況二: 使用者A主動寄出訊息，使用者B不在訊息室窗頁面	
 		}else{
 			System.out.println(toMemId +  " is not online yet.");
-			String serverKey = "AIzaSyD-c7lq9Moybii1GLLfgRViP1oFrZbYrjA";
+			String serverKey = MsgCenter.SERVERKEY;
 			Pushraven raven = new Pushraven(serverKey);
 			// notification 設定:
 			raven.title("MyTitle")
