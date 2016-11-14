@@ -35,7 +35,7 @@ public class HotelServJNDIDAO implements HotelServDAO_interface{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try{
-			
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(HotelServJNDIDAO.INSERT_STMT);
 			
 			pstmt.setString(1, aHotelServVO.getHotelServServId());
@@ -75,7 +75,7 @@ public class HotelServJNDIDAO implements HotelServDAO_interface{
 		PreparedStatement pstmt = null;
 		
 		try{
-			
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(HotelServJNDIDAO.DELETE);
 			
 			pstmt.setString(1, aHotelServServId);
