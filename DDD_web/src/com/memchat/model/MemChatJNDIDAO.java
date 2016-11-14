@@ -40,7 +40,6 @@ public class MemChatJNDIDAO implements MemChatDAO_interface {
 	
 	private static final String GET_ALL_MSGBTWNTWOMEMS = "SELECT * FROM memchat WHERE memChatMemId IN (?,?) AND memChatToMemId IN (?,?) ORDER BY memChatDate";
 
-
 	@Override
 	public void insert(MemChatVO aMemChatVO) {
 		try(Connection con = ds.getConnection();
