@@ -92,6 +92,8 @@ public class OrdServlet extends HttpServlet {
 			aReq.setAttribute("errorMsgs", errorMsgs);
 			
 			String requestURL = aReq.getParameter("requestURL");
+			
+			/* 要放才會過.... */
 			aReq.setAttribute("requestURL",requestURL);
 			
 			try{
@@ -349,6 +351,15 @@ public class OrdServlet extends HttpServlet {
 				if(requestURL.equals("/backend/hotel/listOrdsByHotelId.jsp")||requestURL.equals("/backend/hotel/listAllHotel2.jsp")){
 					aReq.setAttribute("listOrdsByHotelId", hotelSvc.getOrdsByHotelId(ordVO.getOrdHotelVO().getHotelId()));
 				}
+				
+				
+				if(requestURL.equals("/backend/ord/listOrdsByCompositeQuery.jsp")){
+					HttpSession session = aReq.getSession();
+					Map<String, String[]> map = (Map<String,String[]>)session.getAttribute("map");
+					List<OrdVO> list = ordSvc.getAll(map);
+					aReq.setAttribute("listOrdsByCompositeQuery", list);
+				}
+				
 //				String url = requestURL +"?whichPage="+whichPage+"&ordID="+ ordId ;
 				String url = requestURL;
 				RequestDispatcher successView = aReq.getRequestDispatcher(url);
@@ -566,6 +577,14 @@ public class OrdServlet extends HttpServlet {
 				if(requestURL.equals("/backend/hotel/listOrdsByHotelId.jsp")||requestURL.equals("/backend/hotel/listAllHotel2.jsp")){
 					aReq.setAttribute("listOrdsByHotelId", hotelSvc.getOrdsByHotelId(ordVO.getOrdHotelVO().getHotelId()));
 				}
+				
+				if(requestURL.equals("/backend/ord/listOrdsByCompositeQuery.jsp")){
+					HttpSession session = aReq.getSession();
+					Map<String, String[]> map = (Map<String,String[]>)session.getAttribute("map");
+					List<OrdVO> list = ordSvc.getAll(map);
+					aReq.setAttribute("listOrdsByCompositeQuery", list);
+				}				
+						
 //				String url = requestURL +"?whichPage="+whichPage  ;
 				String url = requestURL;
 				RequestDispatcher successView = aReq.getRequestDispatcher(url);
@@ -583,7 +602,18 @@ public class OrdServlet extends HttpServlet {
 			aReq.setAttribute("errorMsgs", errorMsgs);
 			
 			try{
-				Map<String, String[]> map = aReq.getParameterMap();
+//				Map<String, String[]> map = aReq.getParameterMap();
+				HttpSession session = aReq.getSession();
+				Map<String,String[]> map = (Map<String,String[]>)session.getAttribute("map");
+				if(aReq.getParameter("whichPage")==null){
+					HashMap<String, String[]> map1 = (HashMap<String, String[]>) aReq.getParameterMap();
+					HashMap<String, String[]> map2 = new HashMap<String,String[]>();
+					map2 = (HashMap<String, String[]>) map1.clone();
+					session.setAttribute("map", map2);
+					map = (HashMap<String, String[]>) aReq.getParameterMap();
+				}
+				
+				/* ======================= */
 				
 				OrdService ordSvc = new OrdService();
 				List<OrdVO> list = ordSvc.getAll(map);

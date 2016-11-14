@@ -52,7 +52,7 @@
 	</tr>
 
 	<c:forEach var="ordVO" items="${listOrdsByHotelId}">
-		<tr>
+		<tr ${(ordVO.ordId==param.ordId)? 'bgcolor=#CCCCFF':''}>
 			<td>${ordVO.ordId}</td>
 
 			<td> ${ordVO.ordRoomVO.roomId} <br> ${ordVO.ordRoomVO.roomName} </td>			

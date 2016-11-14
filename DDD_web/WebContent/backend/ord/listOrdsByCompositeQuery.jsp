@@ -39,9 +39,9 @@
 		<th>刪除</th>
 	</tr>
 
-
-	<c:forEach var="ordVO" items="${listOrdsByCompositeQuery}">
-		<tr align="center" valign='middle'>
+	<%@ include file="pages/page1_ByCompositeQuery.file" %>
+	<c:forEach var="ordVO" items="${listOrdsByCompositeQuery}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+		<tr align="center" valign='middle' ${(ordVO.ordId==param.ordId)? 'bgcolor=#CCCCFF':''}>
 			<td>${ordVO.ordId}</td>
 			<td>${ordVO.ordRoomVO.roomId}</td>
 			<td>${ordVO.ordMemVO.memId}</td>
@@ -61,27 +61,32 @@
 <%-- 			<td>${ordVO.ordMsgNo}</td> --%>
 <%-- 			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td> --%>
 
-<!-- 			<td> -->
-<%-- 				<form method="post" action="<%=request.getContextPath()%>/ord/ord.do"> --%>
-<!-- 					<input type="submit" value="修改"> -->
-<%-- 					<input type="hidden" name="ordId" value="${ordVO.ordId}"> --%>
-<%-- 					<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"> --%>
-<%-- 					<input type="hidden" name="whichPage" value="<%=whichPage%>"> --%>
-<!-- 					<input type="hidden" name="action" value="getOneForUpdate"> -->
-<!-- 				</form> -->
-<!-- 			</td> -->
-<!-- 			<td> -->
-<%-- 				<form method="post" action="<%=request.getContextPath()%>/ord/ord.do"> --%>
-<!-- 					<input type="submit" value="刪除"> -->
-<%-- 					<input type="hidden" name="ordId" value="${ordVO.ordId}"> --%>
-<%-- 					<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"> --%>
-<%-- 					<input type="hidden" name="whichPage" value="<%=whichPage%>"> --%>
-<!-- 					<input type="hidden" name="action" value="delete"> -->
-<!-- 				</form> -->
-<!-- 			</td> -->
+			<td>
+				<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
+					<input type="submit" value="修改">
+					<input type="hidden" name="ordId" value="${ordVO.ordId}">
+					<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+					<input type="hidden" name="whichPage" value="<%=whichPage%>">
+					<input type="hidden" name="action" value="getOneForUpdate">
+				</form>
+			</td>
+			<td>
+				<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
+					<input type="submit" value="刪除">
+					<input type="hidden" name="ordId" value="${ordVO.ordId}">
+					<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
+					<input type="hidden" name="whichPage" value="<%=whichPage%>">
+					<input type="hidden" name="action" value="delete">
+				</form>
+			</td>
 		</tr>
 	</c:forEach>
 </table>
+<%@ include file="pages/page2_ByCompositeQuery.file" %>
+
+<br>本網頁路徑:<br>
+	request.getServletPath(): <%= request.getServletPath() %> <br>
+	request.getRequestURI():  <%= request.getRequestURI() %>
 
 </body>
 </html>
