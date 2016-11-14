@@ -103,7 +103,7 @@
   </servlet>
   <servlet-mapping>
 	<servlet-name>DBGifReader4</servlet-name>
-	<url-pattern>/backend/ord/DBGifReader4</url-pattern>
+	<url-pattern>/ord/DBGifReader4</url-pattern>
   </servlet-mapping>	
   
   <servlet>

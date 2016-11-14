@@ -7,7 +7,6 @@
 <title>DDD Ord: Home</title>
 </head>
 <body>
-
 	<table border='1'>
 		<tr>
 			<td><h3>DDD Ord: Home</h3>( MVC )</td>
@@ -15,7 +14,6 @@
 	</table>
 
 	<p>This is the Home page for DDD Ord: Home</p>
-
 
 <h3>資料查詢</h3>
 <!-- 錯誤表列 -->
@@ -92,29 +90,29 @@
 			輸入訂單編號:
 			<input type="text" name="ordId"><br>
 			輸入房型編號:
-			<input type="text" name="ordRoomId"><br>
+			<input type="text" name="ordRoomId" readonly> (暫時不能用) <br>
 			輸入一般會員編號:
-			<input type="text" name="ordMemId"><br>
+			<input type="text" name="ordMemId" readonly> (暫時不能用) <br>
 			輸入廠商會員編號:
-			<input type="text" name="ordhotelId"><br>
+			<input type="text" name="ordHotelId" readonly> (暫時不能用) <br>
 			輸入訂單金額:
 			<input type="number" name="ordPrice"><br>
+			輸入簡訊驗證碼:
+			<input type="text" name="ordMsgNo"><br>
+			
 			輸入訂單狀態名稱:
 			<select name="ordStatus">
+				<option value="">請選擇</option>
   				<option value="0">已下單</option>
   				<option value="1">主動取消</option>
   				<option value="2">已入住</option>
   				<option value="3">已繳費</option>
   				<option value="4">逾時取消</option>
 			</select><br>
-			輸入入住日期:
-			<input type="date" name="ordLiveDate"><br>
-			輸入下訂日期:
-			<input type="date" name="ordDate"><br>
-			輸入簡訊驗證碼:
-			<input type="text" name="ordMsgNo"><br>
+
 			輸入評價星星數:
 				<select name="ordRatingStarNo">
+						<option value="">請選擇</option>
 	  					<option value="0">0顆星</option>
 	  					<option value="1">1顆星</option>
 	  					<option value="2">2顆星</option>
@@ -145,7 +143,7 @@
 
 <h3>[自己的方法](一般會員)列出所有訂單</h3>
 
-		<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
+		<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
 			選擇一般會員編號:
 			<select name="ordMemId">
 				<c:forEach var="ordVO" items="${ordSvc.all}">	
@@ -158,7 +156,7 @@
 
 <h3>[自己的方法](廠商會員)列出所有訂單</h3>
 
-		<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
+		<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
 			選擇廠商會員編號:
 			<select name="ordHotelId">
 				<c:forEach var="ordVO" items="${ordSvc.all}">	

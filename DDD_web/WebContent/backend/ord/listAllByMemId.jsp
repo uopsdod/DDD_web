@@ -21,7 +21,7 @@
 	<tr>
 		<td>
 			<h3>該一般會員所有訂單資料 - listAllByMemId.jsp</h3>
-			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"> <img src="images/back1.gif"> 回首頁 </a>
+			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"> <img src="<%=request.getContextPath()%>/backend/ord/images/back1.gif"> 回首頁 </a>
 		</td>
 	</tr>
 </table>

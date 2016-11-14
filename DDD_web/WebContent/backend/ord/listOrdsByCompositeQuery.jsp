@@ -7,7 +7,6 @@
 
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=BIG5">
 <title>複合查詢 - ListOrdsByCompositeQuery</title>
 </head>
 <body>
@@ -16,7 +15,7 @@
 	<tr>
 		<td>
 			<h3>複合查詢 訂單 - ListOrdsByCompositeQuery.jsp</h3>
-			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"> <img src="images/back1.gif"> 回首頁 </a>
+			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"> <img src="<%=request.getContextPath()%>/backend/ord/images/back1.gif"> 回首頁 </a>
 		</td>
 	</tr>
 </table>
