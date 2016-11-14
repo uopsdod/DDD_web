@@ -1,6 +1,7 @@
 package com.wish.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class WishService {
 	private WishDAO_interface dao;
@@ -32,4 +33,16 @@ public class WishService {
 	public List<WishVO> getAll(){
 		return dao.getAll();
 	}
+
+	//--------------------------------------貴新增
+	public List<Map> getOneWishOfmemNO(String wishMemId) {
+		
+		return dao.getOneWishOfmemNO(wishMemId);		
+	}
+	
+
+	public void delete(String wishMemId,String WishRoomId) {
+		dao.delete_one(wishMemId, WishRoomId);
+	}
+
 }

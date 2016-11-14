@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletException;
@@ -19,6 +20,7 @@ import org.json.JSONArray;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mem.model.MemVO;
+import com.room.controler.RoomServlet;
 import com.room.model.RoomJDBCDAO;
 import com.room.model.RoomService;
 import com.room.model.RoomVO;
@@ -58,8 +60,12 @@ public class Room extends HttpServlet {
 			
 			System.out.println("1231321231321321313213132132");
 			String id = jsonObject.get("id").getAsString();
+			Map<String, Map> one = RoomServlet.OnData;
+			Map<String, Integer> two = one.get(id);
+			int price = two.get("price");
 			RoomService dao = new RoomService();
 			RoomVO hotelVO = dao.findByPrimaryKey(id);
+			hotelVO.setRoomPrice(price);
 			outStr = gson.toJson(hotelVO);
 			rp.setContentType(CONTENT_TYPE);
 			PrintWriter out = rp.getWriter();

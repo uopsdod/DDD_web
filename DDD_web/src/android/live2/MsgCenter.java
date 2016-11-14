@@ -56,7 +56,7 @@ public class MsgCenter extends HttpServlet {
                 .create();
 		PartnerMsg partnerMsg = gson.fromJson(aMessage, PartnerMsg.class);
 		JSONObject jsonObj = new JSONObject(aMessage);
-		System.out.println("Msg Sent here: " + jsonObj);
+		System.out.println("Msg Sent here: " + jsonObj); 
 		
 		String action = partnerMsg.getAction();
 		String fromMemId = partnerMsg.getMemChatMemId();
@@ -87,7 +87,7 @@ public class MsgCenter extends HttpServlet {
 		
 		// 狀況一: 使用者A主動寄出訊息，使用者B也在訊息室窗頁面
 		if ("chat".equals(action) && sessionMap.containsKey(toMemId)){			
-			sessionMap.get(toMemId).getAsyncRemote().sendText(message);
+			sessionMap.get(toMemId).getAsyncRemote().sendText(jsonObj.toString());
 		}else{
 			System.out.println(toMemId +  " is not online yet.");
 			String serverKey = "AIzaSyD-c7lq9Moybii1GLLfgRViP1oFrZbYrjA";
