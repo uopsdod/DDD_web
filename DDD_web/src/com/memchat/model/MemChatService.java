@@ -48,4 +48,7 @@ public class MemChatService {
 	public String getChatIdBtwenTwoMems(String aMemChatMemId01, String aMemChatMemId02){ // 找兩個會員間的歷史對話聊天室編號
 		return this.dao.getChatIdBtwenTwoMems(aMemChatMemId01, aMemChatMemId02);
 	}
+	public List<MemChatVO> getNewestMsgEachChatId(String aMemChatMemId){
+		return this.dao.getNewestMsgEachChatId(aMemChatMemId);
+	}
 }
