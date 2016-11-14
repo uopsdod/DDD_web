@@ -272,8 +272,14 @@ public class Testing_yo extends HttpServlet {
 //	dao_chat.delete("10000004"); // Constraint - 要先新增一筆沒人用的才能刪掉
     
     // MemChatHibernateDAO 測試:
+//	MemChatService dao_memChat = new MemChatService();
+//	MemChatVO memChatVO = dao_memChat.getAll().get(0);
+    // 新方法-getNewestMsgEachChatId
 	MemChatService dao_memChat = new MemChatService();
-	MemChatVO memChatVO = dao_memChat.getAll().get(0);
+	List<MemChatVO> myList = dao_memChat.getNewestMsgEachChatId("10000001");
+	for (MemChatVO myVO: myList){
+		out.println(myVO.getMemChatContent() + "<br>");
+	}
 	
   }
 }

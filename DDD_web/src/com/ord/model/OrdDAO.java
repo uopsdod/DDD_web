@@ -21,6 +21,11 @@ import util.HibernateUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.sql.*;
+
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.Criteria;
 
 public class OrdDAO implements OrdDAO_interface {
 
@@ -113,6 +118,72 @@ public class OrdDAO implements OrdDAO_interface {
 		return list;
 	}
 
+	public static Criteria getACriteriaForAntDB(Criteria aQuery, String aColumnName, String aValue){
+	
+		/* 數字(Integer) */
+//		ordPrice
+//		ordRatingStarNo
+		
+		if("ordPrice".equals(aColumnName) || "ordRatingStarNo".equals(aColumnName)){
+			aQuery.add(Restrictions.eq(aColumnName, new Integer(aValue)));
+		}
+
+		/* 字串 */
+//		ordId
+//		ordRoomId
+//		ordMemId
+//		ordHotelId
+//		ordStatus
+//		ordMsgNo
+		
+		else if("ordId".equals(aColumnName) || "ordRoomId".equals(aColumnName) || "ordMemId".equals(aColumnName) ||
+				"ordHotelId".equals(aColumnName) || "ordStatus".equals(aColumnName) || "ordMsgNo".equals(aColumnName) ){
+			aQuery.add(Restrictions.like(aColumnName, "%"+ aValue +"%"));
+		}
+		
+		return aQuery;	
+	}
+	
+	
+	@Override
+	public List<OrdVO> getAll(Map<String, String[]> aMap){
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
+		List<OrdVO> list = null;
+		
+		try{
+			Criteria query = session.createCriteria(OrdVO.class);
+			Set<String> keys = aMap.keySet();
+			int count = 0;
+			
+			for(String key : keys){
+				String value = aMap.get(key)[0];
+				if(value!=null && value.trim().length()!=0 && !"action".equals(key)){
+					count++;
+					query = getACriteriaForAntDB(query,key,value);
+					System.out.println("有送出複合查詢資料的欄位數 count = " + count);
+				}
+			}
+			
+			query.addOrder(Order.desc("ordId"));
+			
+			list = query.list();
+			
+			tx.commit();
+			
+		}
+		catch (RuntimeException ex) {
+			if(tx != null){
+				tx.rollback();
+			}
+			throw ex;
+		}
+				
+		return list;		
+
+	}
+	
 	@Override
 	public List<OrdVO> getAllByOrdMemId(String aOrdMemId){
 

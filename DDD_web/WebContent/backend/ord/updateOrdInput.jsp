@@ -18,7 +18,7 @@
 	<tr>
 		<td>
 			<h3>訂單資料修改 - updateOrdInput.jsp</h3>
-			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"><img src="images/back1.gif" alt="">回首頁</a>
+			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"><img src="<%=request.getContextPath()%>/backend/ord/images/back1.gif" alt="">回首頁</a>
 		</td>
 	</tr>
 </table>
@@ -35,7 +35,7 @@
 </c:if>
 
 
-<form method="post" action="ord.do" name="form1" enctype="multipart/form-data">
+<form method="post" action="<%=request.getContextPath()%>/ord/ord.do" name="form1" enctype="multipart/form-data">
 	<table>
 		<tr>
 			<td>訂單編號:</td>
@@ -146,8 +146,6 @@
 			<th>QR Code圖片</th>
 			<td>
 				<img src="DBGifReader4?ordId=${ordVO.ordId}">
-				<br>
-				<input type="file" name="ordQrPic"/>
 			</td>
 		</tr>
 	</table>

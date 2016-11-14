@@ -35,7 +35,7 @@ public class HotelServDAO implements HotelServDAO_interface{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try{
-			
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(HotelServDAO.INSERT_STMT);
 			
 			pstmt.setString(1, aHotelServVO.getHotelServServId());
@@ -71,7 +71,7 @@ public class HotelServDAO implements HotelServDAO_interface{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try{
-			
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(HotelServDAO.GET_All_ByHotelId_STMT);
 			pstmt.setString(1, aHotelId);
 			rs = pstmt.executeQuery();
@@ -116,7 +116,7 @@ public class HotelServDAO implements HotelServDAO_interface{
 		PreparedStatement pstmt = null;
 		
 		try{
-			
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(HotelServDAO.DELETE);
 			
 			pstmt.setString(1, aHotelServServId);
@@ -150,7 +150,7 @@ public class HotelServDAO implements HotelServDAO_interface{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try{
-			
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(HotelServDAO.GET_ONE_STMT);
 			pstmt.setString(1, aHotelServServId);
 			pstmt.setString(2, aHotelServHotelId);
@@ -189,7 +189,7 @@ public class HotelServDAO implements HotelServDAO_interface{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try{
-			
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(HotelServDAO.GET_ALL_STMT);
 			rs = pstmt.executeQuery();
 			while(rs.next()){
