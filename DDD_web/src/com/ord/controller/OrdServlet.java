@@ -93,8 +93,10 @@ public class OrdServlet extends HttpServlet {
 			
 			String requestURL = aReq.getParameter("requestURL");
 			
-			/* 要放才會過.... */
-			aReq.setAttribute("requestURL",requestURL);
+//System.out.println("Debug:" + requestURL);
+
+/* 要放才會過.... (fixed) */
+//aReq.setAttribute("requestURL",requestURL);
 			
 			try{
 				/* 1.接收請求參數 */
@@ -680,8 +682,24 @@ public class OrdServlet extends HttpServlet {
 				failureView.forward(aReq,aRes);
 			}
 			
-		}		
+		}
 		
+		if("getOneFrom04".equals(action)){
+			try{
+				/* 1.接收請求參數 - 輸入格式的錯誤處理 */
+				String ordId = aReq.getParameter("ordId");
+				OrdService ordSvc = new OrdService(); 	
+				OrdVO ordVO = ordSvc.getOneOrd(ordId);	
+				
+				aReq.setAttribute("ordVO", ordVO);
+				RequestDispatcher successView = aReq.getRequestDispatcher("/backend/ord/listAllOrd.jsp");
+				successView.forward(aReq,aRes);								
+			}
+			catch(Exception e){
+				throw new ServletException(e);
+			}
+			
+		}
 	}
 	
 }
