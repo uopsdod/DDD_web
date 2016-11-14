@@ -20,6 +20,8 @@
     <url-pattern>/backend/hotel/listAllHotel.jsp</url-pattern>
     <url-pattern>/backend/hotel/getOneHotel.jsp</url-pattern>
     <url-pattern>/backend/hotel/get_need_check.jsp</url-pattern>
+    <url-pattern>/backend/mem/listAllMem.jsp</url-pattern>
+    <url-pattern>/backend/mem/getonemem.jsp</url-pattern>
      
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
@@ -48,7 +50,7 @@
   
   <filter>
     <filter-name>LoginFilter_mem</filter-name>
-    <filter-class>filter.LoginFilter_mem</filter-class>
+    <filter-class>com.filters.LoginFilter_mem</filter-class>
   </filter>
   <filter-mapping>
     <filter-name>LoginFilter_mem</filter-name>

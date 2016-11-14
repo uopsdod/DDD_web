@@ -11,6 +11,7 @@
 	String empId = (String) request.getAttribute("empId");
 	System.out.println(empId);
 %>
+<!-- 如果權限沒有人事轉到首頁怕他偷吃步-->
 
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

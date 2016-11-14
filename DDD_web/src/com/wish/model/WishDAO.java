@@ -15,12 +15,12 @@ import java.sql.*;
 
 public class WishDAO implements WishDAO_interface {
 	private static DataSource ds = null;
-	static{
-		try{
+	static {
+		try {
 			Context ctx = new InitialContext();
-			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
-		}catch(NamingException e){
-			e.printStackTrace(System.err);
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+		} catch (NamingException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -110,6 +110,7 @@ public class WishDAO implements WishDAO_interface {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(WishDAO.GET_ONE_STMT);
 			pstmt.setString(1, aWishMemId);
 			pstmt.setString(2, aWishRoomId);
@@ -149,6 +150,7 @@ public class WishDAO implements WishDAO_interface {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(WishDAO.GET_ALL_STMT);
 			rs = pstmt.executeQuery();
 
