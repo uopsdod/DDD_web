@@ -47,12 +47,12 @@ public class HotelRoomSearch extends HttpServlet {
 		
 		
 		Map map = new HashMap();
-		map.put("hotelCity", city);
-		map.put("hotelCounty", zone);
-		map.put("hotelRatingResult", hotelRatingResult);
+		map.put("HOTELCITY", city);
+		map.put("HOTELCOUNTY", zone);
+		map.put("HOTELRATINGRESULT", hotelRatingResult);
 		
-		
-		
+		String SQL = CompositeQuery.GetSQLString(map);
+		System.out.println(SQL);
 		
 //		RoomService roomSvc = new RoomService();
 //		RoomVO roomVO = null;
