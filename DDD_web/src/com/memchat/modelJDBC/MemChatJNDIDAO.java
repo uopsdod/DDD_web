@@ -38,8 +38,8 @@ public class MemChatJNDIDAO implements MemChatDAO_interface {
 	private static final String GET_ONE = "SELECT memChatChatId, memChatMemId, memChatDate, memChatContent, memChatPic, memChatStatus, memChatToMemId FROM memChat WHERE memChatChatId= ? AND memChatMemId = ? AND TO_CHAR(memChatDate, 'YYYYMMDD HH24:MI:SSxFF3') = TO_CHAR(?, 'YYYYMMDD HH24:MI:SSxFF3')";
 	private static final String GET_ALL_MEMCHATCHATID = "SELECT memChatChatId, memChatMemId, memChatDate, memChatContent, memChatPic, memChatStatus, memChatToMemId FROM memChat WHERE memChatChatId= ? ORDER BY memChatChatId";
 	
-	private static final String GET_ALL_MSGBTWNTWOMEMS = "SELECT * FROM memchat WHERE memChatMemId IN (?,?) AND memChatToMemId IN (?,?);";
-
+	private static final String GET_ALL_MSGBTWNTWOMEMS = "SELECT * FROM memchat WHERE memChatMemId IN (?,?) AND memChatToMemId IN (?,?) ORDER BY memChatDate";
+	private static final String GET_CHAT_IDBTWNTWOMEMS = "SELECT distinct memChatChatId FROM memchat WHERE memChatMemId IN (?,?) AND memChatToMemId IN (?,?)";
 
 	@Override
 	public void insert(MemChatVO aMemChatVO) {
@@ -246,6 +246,8 @@ public class MemChatJNDIDAO implements MemChatDAO_interface {
 			PreparedStatement pstmt = con.prepareStatement(MemChatJNDIDAO.GET_ALL_MSGBTWNTWOMEMS);) {
 				pstmt.setString(1, aMemChatMemId01);
 				pstmt.setString(2, aMemChatMemId02);
+				pstmt.setString(3, aMemChatMemId01);
+				pstmt.setString(4, aMemChatMemId02);
 				rs = pstmt.executeQuery();
 				while (rs.next()){
 					MemChatVO memChatVO = new MemChatVO();
@@ -272,6 +274,34 @@ public class MemChatJNDIDAO implements MemChatDAO_interface {
 				}
 			}// end try-catch-finally	
 		return memChatVOList;
+	}
+
+	@Override
+	public String getChatIdBtwenTwoMems(String aMemChatMemId01, String aMemChatMemId02) {
+		String chatId = null;
+		ResultSet rs = null;
+		try(Connection con = ds.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(MemChatJNDIDAO.GET_CHAT_IDBTWNTWOMEMS);) {
+				pstmt.setString(1, aMemChatMemId01);
+				pstmt.setString(2, aMemChatMemId02);
+				pstmt.setString(3, aMemChatMemId01);
+				pstmt.setString(4, aMemChatMemId02);
+				rs = pstmt.executeQuery();
+				while (rs.next()){
+					chatId = rs.getString("memchatChatId");
+				};
+			} catch (SQLException se) {
+				throw new RuntimeException("A database error occured. "+ se.getMessage());
+			} finally {
+				if (rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+			}// end try-catch-finally	
+		return chatId;
 	}
 
 

@@ -91,7 +91,8 @@ public class MsgCenter extends HttpServlet {
 		// 使用者要傳送訊息給對方
 		if ("chat".equals(action)){
 			// 存入資料庫:
-			String chatId = dao_memChat.getOldMsgBtwnTwoMems(fromMemId,toMemId).get(0).getMemChatChatId();
+			//String chatId = dao_memChat.getOldMsgBtwnTwoMems(fromMemId,toMemId).get(0).getMemChatChatId();
+			String chatId = dao_memChat.getChatIdBtwenTwoMems(fromMemId, toMemId);
 			Timestamp ts = new Timestamp(new java.util.Date().getTime());
 			String status = "0";
 			

@@ -42,7 +42,10 @@ public class MemChatService {
 	public List<MemChatVO> findByMemChatChatId(String aMemChatChatId){		// 找一個聊天室中所有對話 - 最後再寫
 		return this.dao.findByMemChatChatId(aMemChatChatId);
 	}
-	public List<MemChatVO> getOldMsgBtwnTwoMems(String aMemChatMemId01, String aMemChatMemId02){
+	public List<MemChatVO> getOldMsgBtwnTwoMems(String aMemChatMemId01, String aMemChatMemId02){ //找兩個會員間的歷史對話
 		return this.dao.getOldMsgBtwnTwoMems(aMemChatMemId01, aMemChatMemId02);
+	}
+	public String getChatIdBtwenTwoMems(String aMemChatMemId01, String aMemChatMemId02){ // 找兩個會員間的歷史對話聊天室編號
+		return this.dao.getChatIdBtwenTwoMems(aMemChatMemId01, aMemChatMemId02);
 	}
 }
