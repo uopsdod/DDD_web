@@ -14,6 +14,7 @@ public class HotelServJDBCDAO implements HotelServDAO_interface{
 	String userid = "plzdongo";
 	String passwd = "Tom800712";
 	
+	private static String GET_All_ByHotelId_STMT = "SElECT hotelServServId,hotelServHotelId FROM HotelServ  where hotelServHotelId = ? order by hotelServServId";
 	private static String INSERT_STMT = "INSERT INTO HotelServ (hotelServServId,hotelServHotelId) VALUES (?,?)";
 	private static String GET_ONE_STMT = "SELECT hotelServServId,hotelServHotelId FROM HotelServ where hotelServServId=? AND hotelServHotelId=?";
 	private static String GET_ALL_STMT = "SElECT hotelServServId,hotelServHotelId FROM HotelServ order by hotelServServId";
@@ -60,7 +61,9 @@ public class HotelServJDBCDAO implements HotelServDAO_interface{
 		// TODO Auto-generated method stub
 		
 	}
-
+	@Override
+	public List<HotelServVO> findByHotelId(String aHotelId){return null;};
+	
 	@Override
 	public void delete(String aHotelServServId, String aHotelServHotelId) {
 		Connection con = null;

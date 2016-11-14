@@ -8,4 +8,5 @@ public interface HotelServDAO_interface {
 	public void delete(String aHotelServServId, String aHotelServHotelId);
 	public HotelServVO findByPrimaryKey(String aHotelServServId, String aHotelServHotelId);
 	public List<HotelServVO> getAll();
+	public List<HotelServVO> findByHotelId(String aHotelId);
 }

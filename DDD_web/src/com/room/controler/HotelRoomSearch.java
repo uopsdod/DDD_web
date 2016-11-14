@@ -7,6 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.room.model.RoomService;
+import com.room.model.RoomVO;
+
+import java.util.*;
 /**
  * Servlet implementation class HotelRoomSearch
  */
@@ -38,6 +42,38 @@ public class HotelRoomSearch extends HttpServlet {
 		System.out.println(city);
 		String zone = req.getParameter("zone");
 		System.out.println(zone);
+		String hotelRatingResult = req.getParameter("hotelRatingResult");
+		System.out.println(hotelRatingResult);
+		
+		
+		Map map = new HashMap();
+		map.put("HOTELCITY", city);
+		map.put("HOTELCOUNTY", zone);
+		map.put("HOTELRATINGRESULT", hotelRatingResult);
+		
+		String SQL = CompositeQuery.GetSQLString(map);
+		System.out.println(SQL);
+		
+//		RoomService roomSvc = new RoomService();
+//		RoomVO roomVO = null;
+//		
+//		Set<String> keys= RoomServlet.OnData.keySet();
+//		for(String key:keys){			
+//			roomVO = roomSvc.findByPrimaryKey(key);	
+//			
+//		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		

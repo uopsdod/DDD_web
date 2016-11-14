@@ -32,4 +32,9 @@ public class HotelServService {
 	public List<HotelServVO> getAll(){
 		return dao.getAll();
 	}
+	
+	public List<HotelServVO> getAllByHotelId(String aHotelId){
+		
+		return dao.findByHotelId(aHotelId);
+	}
 }
