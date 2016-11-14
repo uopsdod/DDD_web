@@ -172,9 +172,9 @@
 																	<div class="form-group col-sm-6">
 																			<label class="col-sm-2 control-label">評分</label>
 																			
-																					<select  name="hotelRationTotal" class="form-control" style="width:100px">			
-																					<% for(int i =1;i<11;i++){%>
-																						<option value="<%=i%>"	<%=item==null?"":(item.get("RatiionTotal").equals(i+"")?"selected":"")%>	><%=i%>	
+																					<select  name="hotelRatingResult" class="form-control" style="width:100px">			
+																					<% for(int i =0;i<6;i++){%>
+																						<option value="<%=i%>"	<%=item==null?"":(item.get("hotelRatingResult").equals(i+"")?"selected":"")%>	><%=i%>	
 																					<%}%>
 																					</select>
 																		
