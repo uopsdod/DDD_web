@@ -9,7 +9,9 @@
 	WishService wishsvc = new WishService();
 	List<Map> list =wishsvc.getOneWishOfmemNO(memVO.getMemId());
 	pageContext.setAttribute("list", list);
+    	
 %>
+
 <<style>
 	#listinfor{
 		 font-family:Tahoma, Verdana, 微軟正黑體;
@@ -28,7 +30,7 @@
 	                <h1 id="WishH2">- 我的願望清單          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
 	             	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/wish/wish.do">
 		                <c:forEach var="wish" items="${list}">		
-			                <hr style="border-top:3px solid lightgray">				
+			                <hr style="border-top:3px solid lightgray">			
 			                <img src='data:image/jpeg;base64,${wish.roomPhotoPic}' width="500" height="300" class="wishImg">
 			                <div class="roomName">${wish.hotelName}/${wish.roomName}</div>
 			                <div class="star">評價${wish.hotelRatingResult} *****</div>
@@ -36,7 +38,7 @@
 			                <div class="sale"><u>優惠期間8:00~9:00</u></div>
 			                <br><br><br><br>
 			                <div class="toNight">今晚價</div>
-			                <div class="price"><u>TWD ${wish.roomPrice}</u></div>
+			                <div class="price"><u>TWD ${wish.roomPrice*wish.roomDisccountPercent}</u></div>
 			                <br>
 			                <button id="buttnOnimg" >查看詳情</button>
 			                <input type="hidden" name="action" value="delect"> 
