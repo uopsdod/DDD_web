@@ -145,7 +145,9 @@
 		<tr>
 			<th>QR Code圖片</th>
 			<td>
-				<img src="DBGifReader4?ordId=${ordVO.ordId}">
+			
+				<%--有圖的話 <img src="DBGifReader4?ordId=${ordVO.ordId}"> --%>
+				<%= (ordVO == null)? "" : "<img src=\"DBGifReader4?ordId="+ ordVO.getOrdId()  +"\">" %>
 				<br>
 				<input type="file" name="ordQrPic"/>
 			</td>

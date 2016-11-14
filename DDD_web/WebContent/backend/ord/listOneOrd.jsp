@@ -9,7 +9,7 @@
 %>
 
 <%
-	OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controller),存入req的ordVO物件
+	OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 %>
 
 <!DOCTYPE html>

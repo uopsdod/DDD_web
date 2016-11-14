@@ -10,10 +10,6 @@
 	pageContext.setAttribute("list",list);
 %>
 
-<jsp:useBean id="roomSvc" scope="page" class="com.room.model.RoomService" />
-<jsp:useBean id="memSvc" scope="page" class="com.mem.model.MemService" />
-<jsp:useBean id="hotelSvc" scope="page" class="com.hotel.model.HotelService" />
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,39 +56,12 @@
 	</tr>
 	<%@ include file="pages/page1.file" %>
 	<c:forEach var="ordVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-		<tr>
+		<tr align="center" valign='middle' ${(ordVO.ordId==param.ordId)?'bgcolor=#CCCCFF':''}><!--將修改的那頁換底色-->
 			<td>${ordVO.ordId}</td>
 
-			<%-- <td>${ordVO.ordRoomId}</td> --%>
-			
-			<td>
-				<c:forEach var="roomVO" items="${roomSvc.all}">
-					<c:if test="${ordVO.ordRoomVO.roomId==roomVO.roomId}">
-						${roomVO.roomId} <br>
-						[${roomVO.roomName}]
-					</c:if>
-				</c:forEach>
-			</td>
-
-			<%-- <td>${ordVO.ordMemId}</td> --%>
-			<td>
-				<c:forEach var="memVO" items="${memSvc.all}">
-					<c:if test="${ordVO.ordMemVO.memId==memVO.memId}">
-						${memVO.memId} <br>
-						[${memVO.memName}]
-					</c:if>
-				</c:forEach>
-			</td>
-
-			<%-- <td>${ordVO.ordHotelId}</td> --%>
-			<td>
-				<c:forEach var="hotelVO" items="${hotelSvc.all}">
-					<c:if test="${ordVO.ordHotelVO.hotelId==hotelVO.hotelId}">
-						${hotelVO.hotelId} <br>
-						[${hotelVO.hotelName}]
-					</c:if>
-				</c:forEach>
-			</td>
+			<td>${ordVO.ordRoomVO.roomId}</td>
+			<td>${ordVO.ordMemVO.memId}</td>
+			<td>${ordVO.ordHotelVO.hotelId}</td>
 
 			<td>${ordVO.ordPrice}</td>
 <%-- 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdLiveDate())%></td> --%>
@@ -108,7 +77,7 @@
 <%-- 			<td>${ordVO.ordMsgNo}</td> --%>
 <%-- 			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td> --%>
 			<td>
-				<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
+				<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
 					<input type="submit" value="修改">
 					<input type="hidden" name="ordId" value="${ordVO.ordId}">
 					<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
@@ -117,7 +86,7 @@
 				</form>
 			</td>
 			<td>
-				<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
+				<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
 					<input type="submit" value="刪除">
 					<input type="hidden" name="ordId" value="${ordVO.ordId}">
 					<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">

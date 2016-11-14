@@ -36,7 +36,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 			</ul>
 		</c:if>
 
-		<form method="post" action="ord.do" name="form1" enctype="multipart/form-data">
+		<form method="post" action="<%=request.getContextPath()%>/ord/ord.do" name="form1" enctype="multipart/form-data">
 			<table>
 				<jsp:useBean id="roomSvc" scope="page" class="com.room.model.RoomService"/>
 				<tr>
