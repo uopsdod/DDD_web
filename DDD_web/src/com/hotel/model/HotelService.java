@@ -179,7 +179,16 @@ public class HotelService {
 	public void update_hotelBlackList(String hotelId, String hotelBlackList) {
 		dao.update_hotelBlackList(hotelId, hotelBlackList);
 	}
-
+	
+	
+	//嘉鴻你的意思是這樣嗎
+		public List<HotelVO> getListBySql(String sql){
+					
+			return dao.getListBySql(sql);		
+		}
+	
+	
+	
 	/* 以下是韓哥需要 */
 	/* (廠商會員)列出該廠商會員的所有訂單 */
 	public Set<OrdVO> getOrdsByHotelId(String aOrdHotelId) {
