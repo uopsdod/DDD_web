@@ -18,7 +18,7 @@ public class HotelServJNDIDAO implements HotelServDAO_interface{
 	static{
 		try{
 			Context ctx = new InitialContext();
-			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
 		}catch(NamingException e){
 			e.printStackTrace(System.err);
 		}
