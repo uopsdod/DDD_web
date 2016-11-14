@@ -1,0 +1,302 @@
+#LogoImg {
+    /*logo*/
+    display: inline-block;
+    /*左至右 */
+    /*padding-right: 1170px;
+    padding-left: 200px;*/
+    width: 220px;
+    margin-top: 0px
+}
+
+.btn {
+    /*右上導覽列*/
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    background-color: Transparent;
+    /*按鈕去被*/
+    margin-bottom: 2px;
+    border: 0px;
+    margin-top: 22px
+}
+
+#top_header {
+    background: gray;
+    /*border: 4px solid red;*/
+    /* 外框線*/
+    */ padding: 1px;
+    width: 100%;
+    height: 70px;
+    position: relative;
+    z-index: 1;
+}
+
+#top_header1 {
+    background: gray;
+    /*border: 4px solid red;*/
+    /* 外框線*/
+    */ padding: 1px;
+    display: none;
+    width: 100%;
+    height: 70px;
+    position: fixed;
+    z-index: 1;
+}
+
+footer #list {
+    /* 列表設定*/
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    color: #ffffff;
+}
+
+#listHouse a {
+    text-decoration: none;
+    color: white;
+}
+
+#listHouse h3 {
+    color: white;
+}
+
+#the_footer {
+    /*第一個FOOTER設定*/
+    /*clear:both; /*清除浮動元件*/
+    */ border-top: 1px solid #aaa;
+    background: #5B5B5B;
+    padding: 8px;
+    margin-top: 50px;
+}
+
+#the_footer1 {
+    /*第二個FOOTER設定*/
+    clear: both;
+    /*清除浮動元件*/
+    border-top: 1px solid #aaa;
+    background: #3C3C3C;
+    padding: 8px;
+}
+
+.app {
+    border: 0px;
+    background: #5B5B5B;
+}
+
+#the_footer1 h4 {
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    color: #ffffff;
+}
+
+#the_footer1 h3 {
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    color: #ffffff;
+}
+
+#the_footer1 img {
+    /*間距設定*/
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
+
+#footerPosition {
+    /* 設定footer的高度 */
+    height: 0px;
+    box-sizing: border-box;
+    /* 設定footer絕對位置在底部 */
+    position: relative;
+    bottom: 0;
+    /* 展開footer寬度 */
+    width: 100%;
+}
+
+#myphoto {
+
+    border:5px solid white;
+    position: relative;
+    z-index: 0;
+    border-radius: 50%;
+    margin-top: 6%;
+    left: 45%
+}
+
+#membackimg {
+
+    position: absolute;
+    opacity: 0.8;
+    z-index: -2;
+}
+
+.memtext {
+    position: absolute;
+    z-index: 0;
+    margin-top: 4%;
+    left: 47%;
+    color: #ffffff;
+    font-size: 22px;
+    font-family: Tahoma, Verdana, 微軟正黑體;
+}
+
+.tab {
+    font-size: 16px;
+    color: #0283df;
+    font-family: Tahoma, Verdana, 微軟正黑體;
+}
+
+#h2setting {
+    font-size: 40px;
+    font-family: Tahoma, Verdana, 微軟正黑體;
+}
+
+.input--haruki {
+    margin: 4em 1em 1em;
+}
+
+.input__field--haruki {
+    padding: 0.4em 0.25em;
+    width: 100%;
+    background: transparent;
+    color: #AFB5BB;
+    font-size: 1.55em;
+}
+
+.input__label--haruki {
+    position: absolute;
+    width: 100%;
+    text-align: left;
+    pointer-events: none;
+}
+
+.input__label-content--haruki {
+    transition: transform 0.3s;
+}
+
+.input__label--haruki::before,
+.input__label--haruki::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 4px;
+    background: #6a7989;
+    transition: transform 0.3s;
+}
+
+.input__label--haruki::before {
+    top: 0;
+}
+
+.input__label--haruki::after {
+    bottom: 0;
+}
+
+.input__field--haruki:focus + .input__label--haruki .input__label-content--haruki,
+.input--filled .input__label-content--haruki {
+    transform: translate3d(0, -90%, 0);
+}
+
+.input__field--haruki:focus + .input__label--haruki::before,
+.input--filled .input__label--haruki::before {
+    transform: translate3d(0, -0.5em, 0);
+}
+
+.input__field--haruki:focus + .input__label--haruki::after,
+.input--filled .input__label--haruki::after {
+    transform: translate3d(0, 0.5em, 0);
+}
+
+.content h1 {
+    opacity: 0.8;
+    font-family: Tahoma, Verdana, 微軟正黑體;
+}
+
+#files {
+    margin-top: 5%;
+    text-align: center;
+}
+
+.monkeyb-cust-file {
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+    background-color: #0283df;
+    color: #fff;
+    text-align: center;
+    -web-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    padding: 10px 10px;
+    font-size: 20px;
+    font-family: Arial, Microsoft JhengHei;
+}
+
+.monkeyb-cust-file input {
+    position: absolute;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+#buttnOnimg {
+    opacity: 0.9;
+    text-align: center;
+    z-index: 0;
+    background: #0283df;
+    color: #ffffff;
+    position: relative;
+    margin-top: 15px;
+    left: 49%;
+    z-index: 0;
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    border: 0px;
+    border-radius: 10px;
+    padding: 3px;
+    font-size: 16px;
+}
+#buttnOnimg1 {
+    margin-top: 2%;
+    opacity: 0.9;
+    background: #dc6eab;
+    color: #ffffff;
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    border: 0px;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 20px;
+}
+
+#buttnOnimg2 {
+    margin-top: 2%;
+    opacity: 0.9;
+    background: #0283df;
+    color: #ffffff;
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    border: 0px;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 20px;
+}
+
+.abgne-menu-20140101-1 {
+    margin-top: 15px;
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    font-size: 18px
+}
+
+.abgne-menu-20140101-1 input[type="radio"] {
+    display: none;
+}
+
+.abgne-menu-20140101-1 input[type="radio"] + label {
+    -webkit-border-radius: 5px;
+    display: inline-block;
+    background-color: #ccc;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.abgne-menu-20140101-1 input[type="radio"]:checked + label {
+    -webkit-border-radius: 5px;
+    background-color: #f00;
+    color: #fff;
+}

@@ -20,6 +20,8 @@
     <url-pattern>/backend/hotel/listAllHotel.jsp</url-pattern>
     <url-pattern>/backend/hotel/getOneHotel.jsp</url-pattern>
     <url-pattern>/backend/hotel/get_need_check.jsp</url-pattern>
+    <url-pattern>/backend/mem/listAllMem.jsp</url-pattern>
+    <url-pattern>/backend/mem/getonemem.jsp</url-pattern>
      
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
@@ -39,6 +41,21 @@
     <url-pattern>/frontend_hotel/hotel/updatesecess.jsp</url-pattern>
     <url-pattern>/frontend_hotel/hotel/Status_1.jsp</url-pattern>
      
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+  </filter-mapping>
+  
+  <filter>
+    <filter-name>LoginFilter_mem</filter-name>
+    <filter-class>com.filters.LoginFilter_mem</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>LoginFilter_mem</filter-name>
+    <url-pattern>/frontend_mem/mem/member.jsp</url-pattern>
+    <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
@@ -71,6 +88,24 @@
   <servlet-mapping>
     <servlet-name>HotelServlet</servlet-name>
     <url-pattern>/hotel/hotel.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>MemServlet</servlet-name>
+    <servlet-class>com.mem.controller.MemServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MemServlet</servlet-name>
+    <url-pattern>/mem/mem.do</url-pattern>
+  </servlet-mapping>
+  
+    <servlet>
+    <servlet-name>WishServlet</servlet-name>
+    <servlet-class>com.wish.controller.WishServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WishServlet</servlet-name>
+    <url-pattern>/wish/wish.do</url-pattern>
   </servlet-mapping>
   
   <servlet>

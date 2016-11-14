@@ -1,6 +1,7 @@
 package android.live2;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,16 +29,18 @@ import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.memchat.model.MemChatService;
+import com.memchat.model.MemChatVO;
 import com.pushraven.Pushraven;
 
 @ServerEndpoint("/android/live2/MsgCenter")
 public class MsgCenter extends HttpServlet {
+	private static final String SERVERKEY = "AIzaSyD-c7lq9Moybii1GLLfgRViP1oFrZbYrjA";
 				//  <memId,tokenId> // 注意:要加上static，不然實體每次都會消失
 	private static HashMap<String,String> tokenMap = new HashMap<>();
 				//  <memId,session>	// 注意:要加上static，不然實體每次都會消失
-	//private static HashMap<String,Session> sessionMap = new HashMap<>(); 
-	
 	private static BiMap<String, Session> sessionMap = new HashBiMap();
+	private MemChatService dao_memChat;
 	
 	private static final Set<Session> connectedSessions = Collections.synchronizedSet(new HashSet<>());
 
@@ -46,6 +49,7 @@ public class MsgCenter extends HttpServlet {
 		connectedSessions.add(userSession);
 		String text = String.format("MsgCenterL ********** - Session ID = %s, connected", userSession.getId() + "************");
 		System.out.println(text);
+		this.dao_memChat = new MemChatService();
 	}
 
 	@OnMessage
@@ -82,51 +86,60 @@ public class MsgCenter extends HttpServlet {
 			return;
 		}
 		
-		
-		// 狀況一: 使用者A主動寄出訊息，使用者B不在訊息室窗頁面
-		
-		// 狀況一: 使用者A主動寄出訊息，使用者B也在訊息室窗頁面
-		if ("chat".equals(action) && sessionMap.containsKey(toMemId)){			
-			sessionMap.get(toMemId).getAsyncRemote().sendText(jsonObj.toString());
-		}else{
-			System.out.println(toMemId +  " is not online yet.");
-			String serverKey = "AIzaSyD-c7lq9Moybii1GLLfgRViP1oFrZbYrjA";
-			Pushraven raven = new Pushraven(serverKey);
-			// notification 設定:
-			raven.title("MyTitle")
-				.text( fromMemId + " wants to talk to you.")
-				.color("#ff0000")
-				.to(tokenMap.get(toMemId))
-			//  .click_action("OPEN_ACTIVITY_1")
-			//	.registration_ids(myReceivers)  // 搭配Collection<String> myReceivers = new java.util.ArrayList<String>();使用
-				;
-			
-			// data設定
-			String fcmKey = "fcm";
-			String fcmValue = "fcm";
-			String fromMemIdKey = "fromMemId";
-			String fromMemIdValue = fromMemId;
 
-			StringBuilder sb = new StringBuilder();
-			sb.append("{")
-//			  .append("\"" + ticketKey + "\""+":").append("\""+ticketValue+"\"").append(",")
-			  .append("\"" + fromMemIdKey + "\""+":").append("\""+fromMemIdValue+"\"").append(",")
-			  .append("\"" + fcmKey + "\""+":").append("\""+fcmValue+"\"")
-			  .append("}");
-			
-			raven.addRequestAttribute("data", sb);
-			
-			raven.push();
-			raven.clear(); // clears the notification, equatable with "raven = new Pushraven();"
-			raven.clearAttributes(); // clears FCM protocol paramters excluding targets
-			raven.clearTargets(); // only clears targets
-		}
 		
-//		for (Session session : connectedSessions) {
-//			if (session.isOpen())
-//				session.getAsyncRemote().sendText(aMessage);
-//		}
-		//System.out.println("Message received: " + aMessage);
+		// 使用者要傳送訊息給對方
+		if ("chat".equals(action)){
+			// 存入資料庫:
+			//String chatId = dao_memChat.getOldMsgBtwnTwoMems(fromMemId,toMemId).get(0).getMemChatChatId();
+			String chatId = dao_memChat.getChatIdBtwenTwoMems(fromMemId, toMemId);
+			Timestamp ts = new Timestamp(new java.util.Date().getTime());
+			String status = "0";
+			
+			MemChatVO memChatVO = new MemChatVO();
+			memChatVO.setMemChatChatId(chatId);
+			memChatVO.setMemChatMemId(fromMemId);
+			memChatVO.setMemChatDate(ts);
+			memChatVO.setMemChatContent(message);
+			memChatVO.setMemChatPic(null);
+			memChatVO.setMemChatStatus(status);
+			memChatVO.setMemChatToMemId(toMemId);
+			
+			dao_memChat.insert(memChatVO); //之後要判斷，如果是全新聊天室，要先新增聊天室後再新增訊息
+			// end of 存入資料庫
+			
+			// 將資料傳給對方
+			// 狀況一: 使用者A主動寄出訊息，使用者B也在訊息室窗頁面
+			if (sessionMap.containsKey(toMemId)){			
+				sessionMap.get(toMemId).getAsyncRemote().sendText(jsonObj.toString());
+			// 狀況二: 使用者A主動寄出訊息，使用者B不在訊息室窗頁面，使用者B仍然是登入狀態	
+			}else if(tokenMap.containsKey(toMemId)){
+				System.out.println(toMemId +  " is not online yet.");
+				Pushraven raven = new Pushraven(MsgCenter.SERVERKEY);
+				// notification 設定:
+				raven.title("MyTitle")
+					.text( fromMemId + " wants to talk to you.")
+					.color("#ff0000")
+					.to(tokenMap.get(toMemId))
+				//  .click_action("OPEN_ACTIVITY_1")
+				//	.registration_ids(myReceivers)  // 搭配Collection<String> myReceivers = new java.util.ArrayList<String>();使用
+					;
+				
+				// data設定
+				HashMap<String,String> dataMap = new HashMap();
+				dataMap.put("fcm", "fcm");
+				dataMap.put("fromMemId", fromMemId);
+				StringBuilder data = convertMapToJson(dataMap); 
+				raven.addRequestAttribute("data", data); // 這邊一定要用StringBuilder,不然跳脫字元\會被當成字串印出來
+							
+				raven.push();
+				raven.clear(); // clears the notification, equatable with "raven = new Pushraven();"
+				raven.clearAttributes(); // clears FCM protocol paramters excluding targets
+				raven.clearTargets(); // only clears targets
+			}// end if - 將資料傳給對方
+			return;
+		}// end if "chat"
+
 	}
 
 	@OnError
@@ -138,11 +151,34 @@ public class MsgCenter extends HttpServlet {
 	public void onClose(Session aUserSession, CloseReason aReason) {
 		MsgCenter.sessionMap.inverse().remove(aUserSession);
 		System.out.println("sessionMap.size(): "+ sessionMap.size());
-		
-//		connectedSessions.remove(aUserSession);
-//		String text = String.format("session ID = %s, disconnected; close code = %d", aUserSession.getId(),
-//				aReason.getCloseCode().getCode());
-//		System.out.println(text);
 	}
 
+	
+	
+	private StringBuilder convertMapToJson(HashMap aDataMap){
+		StringBuilder sb = new StringBuilder();
+		Set<String> keys = aDataMap.keySet();
+		sb.append("{");
+		for (String key: keys){
+			sb.append("\"" + key + "\""+":").append("\""+aDataMap.get(key)+"\"").append(",");
+		}
+		sb = new StringBuilder(sb.substring(0, sb.length()-1));
+		sb.append("}");
+		System.out.println("convertMapToJson: " + sb.toString());
+		return sb;
+		
+//		String fcmKey = "fcm";
+//		String fcmValue = "fcm";
+//		String fromMemIdKey = "fromMemId";
+//		String fromMemIdValue = fromMemId;
+//
+//		StringBuilder sb = new StringBuilder();
+//		sb.append("{")
+////		  .append("\"" + ticketKey + "\""+":").append("\""+ticketValue+"\"").append(",")
+//		  .append("\"" + fromMemIdKey + "\""+":").append("\""+fromMemIdValue+"\"").append(",")
+//		  .append("\"" + fcmKey + "\""+":").append("\""+fcmValue+"\"")
+//		  .append("}");
+//		
+//		raven.addRequestAttribute("data", sb);
+	}
 }

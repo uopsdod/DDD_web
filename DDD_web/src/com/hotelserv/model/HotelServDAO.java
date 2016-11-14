@@ -18,12 +18,13 @@ public class HotelServDAO implements HotelServDAO_interface{
 	static{
 		try{
 			Context ctx = new InitialContext();
-			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
 		}catch(NamingException e){
 			e.printStackTrace(System.err);
 		}
 	}
 	
+	private static String GET_All_ByHotelId_STMT = "SElECT hotelServServId,hotelServHotelId FROM HotelServ  where hotelServHotelId = ? order by hotelServServId";
 	private static String INSERT_STMT = "INSERT INTO HotelServ (hotelServServId,hotelServHotelId) VALUES (?,?)";
 	private static String GET_ONE_STMT = "SELECT hotelServServId,hotelServHotelId FROM HotelServ where hotelServServId=? AND hotelServHotelId=?";
 	private static String GET_ALL_STMT = "SElECT hotelServServId,hotelServHotelId FROM HotelServ order by hotelServServId";
@@ -34,7 +35,7 @@ public class HotelServDAO implements HotelServDAO_interface{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try{
-			
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(HotelServDAO.INSERT_STMT);
 			
 			pstmt.setString(1, aHotelServVO.getHotelServServId());
@@ -61,7 +62,48 @@ public class HotelServDAO implements HotelServDAO_interface{
 		
 		
 	}
-
+	
+	
+	@Override
+	public List<HotelServVO> findByHotelId(String aHotelId) {
+		List<HotelServVO> list = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try{
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(HotelServDAO.GET_All_ByHotelId_STMT);
+			pstmt.setString(1, aHotelId);
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				HotelServVO hotelServVO = new HotelServVO();
+				hotelServVO.setHotelServServId(rs.getString("hotelServServId"));
+				hotelServVO.setHotelServHotelId(rs.getString("hotelServHotelId"));
+				list.add(hotelServVO);
+			}
+		}catch(SQLException se){
+			throw new RuntimeException("A database error occured." + se.getMessage());
+		}finally{
+			if(pstmt != null){
+				try{
+					pstmt.close();
+				}catch(SQLException se){
+					se.printStackTrace(System.err);
+				}
+			}
+			if(con != null){
+				try{
+					con.close();
+				}catch(Exception e){
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+	
+	
+	
 	@Override
 	public void update(HotelServVO aHotelServVO) {
 		// TODO Auto-generated method stub
@@ -74,7 +116,7 @@ public class HotelServDAO implements HotelServDAO_interface{
 		PreparedStatement pstmt = null;
 		
 		try{
-			
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(HotelServDAO.DELETE);
 			
 			pstmt.setString(1, aHotelServServId);
@@ -108,7 +150,7 @@ public class HotelServDAO implements HotelServDAO_interface{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try{
-			
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(HotelServDAO.GET_ONE_STMT);
 			pstmt.setString(1, aHotelServServId);
 			pstmt.setString(2, aHotelServHotelId);
@@ -147,7 +189,7 @@ public class HotelServDAO implements HotelServDAO_interface{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try{
-			
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(HotelServDAO.GET_ALL_STMT);
 			rs = pstmt.executeQuery();
 			while(rs.next()){

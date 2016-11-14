@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.sql.DataSource;
 import javax.servlet.http.Part;
 
+
 import com.roomphoto.model.RoomPhotoService;
 
 public class RoomService {
@@ -33,6 +34,9 @@ public class RoomService {
 		return dao.getAll();
 	}
 	
+	public List<RoomVO> getListBySQL(String SQL) {
+		return dao.getListBySQL(SQL);
+	}
 	
 	
 	public void insert(RoomVO aRoomVO,List<byte[]> aImgbyte){

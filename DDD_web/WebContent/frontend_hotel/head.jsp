@@ -8,6 +8,7 @@ session.getAttribute("account_hotel");
 
 HotelVO hotelVO =(HotelVO)session.getAttribute("hotelVO");
 session.setAttribute("hotelVO", hotelVO);
+// session.setAttribute("hotelId", hotelVO.getHotelId());
 session.setAttribute("hotelId","10002");
 %>
 
@@ -143,10 +144,10 @@ session.setAttribute("hotelId","10002");
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
 					        		<li>
-<%-- 					        			<a href="<%=request.getContextPath()%>/room/room.do?action=getAllRoom_ForOneHotel_Display&hotelId=${hotelId}">房型資料維護 --%>
+					        			<a href="<%=request.getContextPath()%>/room/room.do?action=getAllRoom_ForOneHotel_Display&hotelId=${hotelId}">房型資料維護
 					        		</li>
 					        		<li>
-<%-- 					        			<a href="<%=request.getContextPath()%>/room/room.do?action=getAllRoomSell_ForOneHotel_Display&hotelId=${hotelId}">上架管理 --%>
+					        			<a href="<%=request.getContextPath()%>/room/room.do?action=getAllRoomSell_ForOneHotel_Display&hotelId=${hotelId}">上架管理
 					        		</li>
 					        	</ul>
 					      </div>
