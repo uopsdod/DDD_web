@@ -1,5 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page import="com.mem.model.*"%>
+<%@ page import="java.text.*"%>
 <%@ page import="java.util.*"%>
+
+<%
+session.getAttribute("account_mem");
+MemVO memVO =(MemVO)session.getAttribute("memVO");
+session.setAttribute("memVO", memVO);
+%>
+
+
 <!DOCTYPE html>
 <html>
 
@@ -16,16 +28,12 @@
     <script src="<%=request.getContextPath()%>/jq/jquery-ui.js"></script>
     <script src="<%=request.getContextPath()%>/jq/jquery-cycle-all.js"></script>
     <script src="<%=request.getContextPath()%>/bs/bootstrap.min.js"></script>
-    
-    
-    
-    
 </head>
 
 <body>
     <header id="top_header">
         <div class="col-md-6 col-md-offset-1 ">
-            <a href="index.html"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg"></a>
+            <a href="<%=request.getContextPath()%>/frontend_mem/index.jsp"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg"></a>
         </div>
         <div class="col-md-4 col-md-offset-1 ">
             <div class="dropdown" style='display: inline-block;'>
@@ -62,18 +70,6 @@
             </div>
             <div class="dropdown" style='display: inline-block;'>
                 <button class="btn text-muted" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                    會員中心
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="registerOfmember.html">註冊</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="loginOfmember.html">登入</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">忘記密碼</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">查看願望清單</a></li>
-                </ul>
-            </div>
-            <div class="dropdown" style='display: inline-block;'>
-                <button class="btn text-muted" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                     幫助
                     <span class="caret"></span>
                 </button>
@@ -82,6 +78,39 @@
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">連絡我們</a></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">訂房需知</a></li>
                 </ul>
+            </div>
+            <div class="dropdown" style='display: inline-block;'>
+                <c:choose>
+            <c:when test="${memVO.memName==null}">
+                <button class="btn text-muted" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    會員中心
+                    <span class="caret"></span>
+                </button>      		                
+		     </c:when>		  
+		     <c:otherwise>
+		        <button class="btn text-muted" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                   ${memVO.memName}您好!
+                    <span class="caret"></span>
+                </button>  
+		      </c:otherwise>
+		    </c:choose> 
+		    <c:choose>
+		     	<c:when test="${memVO.memName==null}">
+                	<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/mem/registerOfmember.jsp">註冊</a></li>
+                    	<li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/mem/loginOfmember.jsp">登入</a></li>
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/mem/member.jsp">會員中心</a></li>
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/wish/wishList.jsp">查看願望清單</a></li>
+                	</ul>
+           		</c:when>
+           		<c:otherwise>
+           			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">	                
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/mem/mem.do">登出</a></li>
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/mem/member.jsp">會員中心</a></li>
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/wish/wishList.jsp">查看願望清單</a></li>
+                	</ul>
+           		</c:otherwise>
+           </c:choose>
             </div>
             
         </div>
@@ -123,19 +152,7 @@
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">夥伴登入</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">問題回報</a></li>
                     </ul>
-                </div>
-                <div class="dropdown" style='display: inline-block;'>
-                    <button class="btn text-muted" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                        會員中心
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">註冊</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">登入</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">忘記密碼</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">查看願望清單</a></li>
-                    </ul>
-                </div>
+                </div>               
                 <div class="dropdown" style='display: inline-block;'>
                     <button class="btn text-muted" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                         幫助
@@ -147,10 +164,41 @@
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">訂房需知</a></li>
                     </ul>
                 </div>
+                <div class="dropdown" style='display: inline-block;'>
+                    <c:choose>
+            <c:when test="${memVO.memName==null}">
+                <button class="btn text-muted" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    會員中心
+                    <span class="caret"></span>
+                </button>      		                
+		     </c:when>		  
+		     <c:otherwise>
+		        <button class="btn text-muted" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                   ${memVO.memName}您好!
+                    <span class="caret"></span>
+                </button>  
+		      </c:otherwise>
+		    </c:choose> 
+		    <c:choose>
+		     	<c:when test="${memVO.memName==null}">
+                	<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/mem/registerOfmember.jsp">註冊</a></li>
+                    	<li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/mem/loginOfmember.jsp">登入</a></li>
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/mem/member.jsp">會員中心</a></li>
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/wish/wishList.jsp">查看願望清單</a></li>
+                	</ul>
+           		</c:when>
+           		<c:otherwise>
+           			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">	                
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/mem/mem.do">登出</a></li>
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/mem/member.jsp">會員中心</a></li>
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/wish/wishList.jsp">查看願望清單</a></li>
+                	</ul>
+           		</c:otherwise>
+           </c:choose>
+                </div>
             </div>
         </div>
     </header>
    
-</body>
 
-</html>

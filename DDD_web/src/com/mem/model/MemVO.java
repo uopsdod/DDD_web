@@ -7,6 +7,15 @@ import java.util.Set;
 import com.ord.model.OrdVO;
  
 public class MemVO implements java.io.Serializable{
+	private static final long serialVersionUID = 1L;
+	private String bs64;
+	public String getBs64() {
+		return this.bs64;
+	}
+	public void setBs64(String aBs64) {
+		this.bs64 = aBs64;
+	}
+	//----------------------------上面貴新增
 	private String memId;
 	private String memAccount;
 	private String memPsw;

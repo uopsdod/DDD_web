@@ -46,6 +46,21 @@
     <dispatcher>ASYNC</dispatcher>
   </filter-mapping>
   
+  <filter>
+    <filter-name>LoginFilter_mem</filter-name>
+    <filter-class>filter.LoginFilter_mem</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>LoginFilter_mem</filter-name>
+    <url-pattern>/frontend_mem/mem/member.jsp</url-pattern>
+    <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+    <dispatcher>ASYNC</dispatcher>
+  </filter-mapping>
+  
   <servlet>
     <servlet-name>EmpServlet</servlet-name>
     <servlet-class>com.emp.controller.EmpServlet</servlet-class>
@@ -71,6 +86,24 @@
   <servlet-mapping>
     <servlet-name>HotelServlet</servlet-name>
     <url-pattern>/hotel/hotel.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>MemServlet</servlet-name>
+    <servlet-class>com.mem.controller.MemServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MemServlet</servlet-name>
+    <url-pattern>/mem/mem.do</url-pattern>
+  </servlet-mapping>
+  
+    <servlet>
+    <servlet-name>WishServlet</servlet-name>
+    <servlet-class>com.wish.controller.WishServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WishServlet</servlet-name>
+    <url-pattern>/wish/wish.do</url-pattern>
   </servlet-mapping>
   
   <servlet>
