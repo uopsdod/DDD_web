@@ -78,12 +78,12 @@ public class HotelRoomSearch extends HttpServlet {
 				//System.out.println(str +" :  " + hotelServVO.getHotelServServId());
 				
 				ServVO servVO =servSvc.getOneServ(hotelServVO.getHotelServServId());
-	
 				System.out.println(str + " : " + servVO.getServName());
 				
 			}
+			
 			Map RoomMap = new HashMap();
-			RoomMap.put("ROOMHOTELID",str );
+			RoomMap.put("ROOMHOTELID",str );			
 			String RoomSQL = RoomCompositeQuery.GetSQLString(RoomMap);	//取得SQL指令
 			List<RoomVO> roomVOlist = roomSvc.getListBySQL(RoomSQL);
 			for(RoomVO roomVO:roomVOlist){
