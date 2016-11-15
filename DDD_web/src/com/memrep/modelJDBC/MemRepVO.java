@@ -18,10 +18,10 @@ public class MemRepVO implements Serializable {
 	private Date memRepDate;
 	private Date memRepReviewDate;	
 	
-	private MemVO memRepMemVO; // Not Null
-	private HotelVO memRepHotelVO; // Not Null
-	private OrdVO memRepOrdVO; // Not Null
-	private EmpVO memRepEmpVO;
+	private String memRepMemId; // Not Null
+	private String memRepHotelId; // Not Null
+	private String memRepOrdId; // Not Null
+	private String memRepEmpId;
 	public String getMemRepId() {
 		return memRepId;
 	}
@@ -52,57 +52,31 @@ public class MemRepVO implements Serializable {
 	public void setMemRepReviewDate(Date memRepReviewDate) {
 		this.memRepReviewDate = memRepReviewDate;
 	}
-	public MemVO getMemRepMemVO() {
-		return memRepMemVO;
+	public String getMemRepMemId() {
+		return memRepMemId;
 	}
-	public void setMemRepMemVO(MemVO memRepMemVO) {
-		this.memRepMemVO = memRepMemVO;
+	public void setMemRepMemId(String memRepMemId) {
+		this.memRepMemId = memRepMemId;
 	}
-	public HotelVO getMemRepHotelVO() {
-		return memRepHotelVO;
+	public String getMemRepHotelId() {
+		return memRepHotelId;
 	}
-	public void setMemRepHotelVO(HotelVO memRepHotelVO) {
-		this.memRepHotelVO = memRepHotelVO;
-	}
-	public OrdVO getMemRepOrdVO() {
-		return memRepOrdVO;
-	}
-	public void setMemRepOrdVO(OrdVO memRepOrdVO) {
-		this.memRepOrdVO = memRepOrdVO;
-	}
-	public EmpVO getMemRepEmpVO() {
-		return memRepEmpVO;
-	}
-	public void setMemRepEmpVO(EmpVO memRepEmpVO) {
-		this.memRepEmpVO = memRepEmpVO;
-	}
-	
-	// 過度方法:
-	public String getMemRepEmpId() {
-		return this.getMemRepEmpVO().getEmpId();
-	}
-	public void setMemRepEmpId(String aMemRepEmpId) {
-		EmpVO empVO = new EmpVO();
-		empVO.setEmpId(aMemRepEmpId);
-		this.setMemRepEmpVO(empVO);
+	public void setMemRepHotelId(String memRepHotelId) {
+		this.memRepHotelId = memRepHotelId;
 	}
 	public String getMemRepOrdId() {
-		return this.getMemRepOrdVO().getOrdId();
+		return memRepOrdId;
 	}
 	public void setMemRepOrdId(String memRepOrdId) {
-		OrdVO ordVO = new OrdVO();
-		ordVO.setOrdId(memRepOrdId);
-		this.setMemRepOrdVO(ordVO);
+		this.memRepOrdId = memRepOrdId;
 	}
-	
-	
-	
+	public String getMemRepEmpId() {
+		return memRepEmpId;
+	}
+	public void setMemRepEmpId(String memRepEmpId) {
+		this.memRepEmpId = memRepEmpId;
+	}
 
-//  備用:
-//	private String memRepMemId; // Not Null
-//	private String memRepHotelId; // Not Null
-//	private String memRepOrdId; // Not Null
-//	private String memRepEmpId;
 	
 	
 }
