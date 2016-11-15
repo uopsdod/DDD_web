@@ -12,7 +12,7 @@
 %>
 
 <%
-session.getAttribute("account");
+session.getAttribute("account"); 
 EmpVO empvo =(EmpVO)session.getAttribute("empVO");
 List<String> authorityList =(List<String>)session.getAttribute("authorityList");
 session.setAttribute("empvo", empvo);
