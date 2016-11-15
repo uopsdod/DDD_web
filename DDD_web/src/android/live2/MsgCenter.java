@@ -109,8 +109,10 @@ public class MsgCenter extends HttpServlet {
 			memChatVO.setMemChatStatus(status);
 			memChatVO.setMemChatToMemId(toMemId);
 			
+			// 之前已有對話視窗，用原本的就好
 			if (chatId != null) {
-				dao_memChat.insert(memChatVO); //之後要判斷，如果是全新聊天室，要先新增聊天室後再新增訊息				
+				dao_memChat.insert(memChatVO);
+			// 第一次聊天，先新增聊天室後再新增訊息(使用交易控管)	
 			}else{
 				ChatService dao_chat = new ChatService();
 				ChatVO chatVO = new ChatVO();
@@ -148,7 +150,9 @@ public class MsgCenter extends HttpServlet {
 				raven.clear(); // clears the notification, equatable with "raven = new Pushraven();"
 				raven.clearAttributes(); // clears FCM protocol paramters excluding targets
 				raven.clearTargets(); // only clears targets
-			}// end if - 將資料傳給對方
+			}else{// end if - 將資料傳給對方
+				System.out.println(toMemId +  " is not online and not logged in yet.");
+			}
 			return;
 		}// end if "chat"
 
