@@ -47,6 +47,7 @@
       " - $" + $( "#slider-range-price" ).slider( "values", 1 ) );
       
   } );
+   
   </script>
   
   <style type="text/css">
@@ -65,9 +66,92 @@
 		});
 	});
 </script>	
+<script type="text/javascript">
 
 
 
+
+	
+function getInfo(){	
+  var xhr = new XMLHttpRequest();
+  //設定好回呼函數 
+  xhr.onreadystatechange = function (){
+    if( xhr.readyState == 4 ){
+      if(xhr.status == 200){      
+        alert(xhr.responseText);
+      }else{
+        alert( xhr.status);
+      }//xhr.status == 200
+    }//xhr.readyState == 4
+  }//onreadystatechange
+  
+  //建立好Post連接
+  var url = "<%=request.getContextPath()%>/HotelRoomSearch";
+ // var data_info = "memId=" + document.getElementById("memId").value;
+  
+ 
+ var city = "city=" + document.getElementById("city").value;	//建立市的key-value
+ var zone = "zone=" + document.getElementById("zone").value;	//建立區的key-value
+ var hotelRatingResult  = "hotelRatingResult=" + document.getElementById("hotelRatingResult").value; //建立評分的key-value
+
+ var roomCapacity = "roomCapacity=";   //建立幾人房的key-value
+ var roomCapacityArray  = document.getElementById("roomCapacity").childNodes;
+ for (var i=0; i<roomCapacityArray.length; i++)
+ {
+    if (roomCapacityArray[i].selected)
+    {
+       roomCapacity += roomCapacityArray[i].value; 
+       break;
+    }
+ }
+ 
+ var servItemStr = ""; 		//旅館設施checkBox
+ var servItem  = document.getElementsByName("servItem");
+ for (var i=0; i<servItem.length; i++)
+ {
+    if (servItem[i].checked)
+    {	
+    	servItemStr += "servItem="+servItem[i].value + "&"; 
+       
+    }
+ }
+ 
+ servItemStr = servItemStr.slice(0,servItemStr.length-1);
+ 
+
+ 
+ var amountprice = "Price=" + document.getElementById("amount-price").value;
+
+ 
+ var data; 
+ if(servItemStr==""){
+	 data = city+"&"+zone+"&"+hotelRatingResult+"&"+roomCapacity+"&"+amountprice;
+ }else{
+	 data = city+"&"+zone+"&"+hotelRatingResult+"&"+roomCapacity+"&"+amountprice+"&"+servItemStr;
+ }
+ 
+ 
+ 
+ console.log(data);
+ 
+ 
+ 
+ 
+ 
+
+  xhr.open("Post",url,true);
+  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  xhr.send(data);
+  
+  
+  //送出請求
+
+}//function 
+
+
+//var roomImgArray = JSON.parse(jsonStr);
+
+</script>
 </head>
 
    <!--  ------------------------------------------------------------------- -->
@@ -130,7 +214,7 @@
 																	 		 	<% String[] roomCapName ={"單人房","雙人房","四人房","六人房","八人房"};%>
 																		
 																			
-																				<select  name="roomCapacity" class="form-control" style="width:100px">	
+																				<select id="roomCapacity" name="roomCapacity" class="form-control" style="width:100px">	
 																	  			<% for(int i =0;i<5;i++){%>
 																					<option value="<%=roomCap[i]%>"	<%=item==null?"":(item.get("roomCapacity").equals(roomCap[i])?"selected":"")%>	><%=roomCapName[i]%>	
 																				<%}%>	  			
@@ -176,7 +260,7 @@
 																	<div class="form-group col-sm-6">
 																			<label class="col-sm-2 control-label">評分</label>
 																			
-																					<select  name="hotelRatingResult" class="form-control" style="width:100px">			
+																					<select id="hotelRatingResult" name="hotelRatingResult" class="form-control" style="width:100px">			
 																					<% for(int i =0;i<6;i++){%>
 																						<option value="<%=i%>"	<%=item==null?"":(item.get("hotelRatingResult").equals(i+"")?"selected":"")%>	><%=i%>	
 																					<%}%>
@@ -197,7 +281,7 @@
 																		
 																		
 																		<div class="panel " style="margin:0px;background:#dff0d8;padding:30px;height:80px;"  >	
-																			<input type="submit" class="btn btn-success"  value="搜尋"  style="margin-top:-10px">
+																			<input type="button" onclick="getInfo()" class="btn btn-success"  value="搜尋"  style="margin-top:-10px">
 																			<input type="button"  id="c-mapBar" class="btn btn-info"  value="進階細項"  style="margin-top:-10px">
 																		</div>
 																		
@@ -208,7 +292,7 @@
 																			<c:forEach var="servVO" items="${servSvc.all}"  >					
 																							
 																					<div class="form-group col-sm-3">
-																				<input type="checkbox" name="servItem" value="${servVO.servName}">${servVO.servName}
+																				<input type="checkbox" name="servItem" class="servItem" value="${servVO.servName}">${servVO.servName}
 																					</div>
 																								 
 																			</c:forEach>					
@@ -382,3 +466,4 @@
 
 
 </script>
+
