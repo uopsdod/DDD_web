@@ -3,6 +3,9 @@
 <%@ page import="com.room.model.*"%>
 <%@ page import="com.hotel.model.*"%>
 <%@ page import="com.serv.model.*"%>
+<%@ page import="org.json.JSONArray"%>
+<%@ page import="org.json.JSONException"%>
+<%@ page import="org.json.JSONObject"%>
 
 	<%@ include file="../indexHeader.jsp"%>
 	<%@ include file="City.file" %>
@@ -42,6 +45,7 @@
     });
     $( "#amount-price" ).val( "$" + $( "#slider-range-price" ).slider( "values", 0 ) +
       " - $" + $( "#slider-range-price" ).slider( "values", 1 ) );
+      
   } );
   </script>
   
@@ -180,22 +184,12 @@
 																		
 																	</div>
 																	
-																	
-																	
-																	
-<!-- 																	<div class="form-group col-sm-6"> -->
-<!-- 																		<label class="col-sm-2 control-label">房間定價</label> -->
-<!-- 																		<div class="row"> -->
-<!-- 																			<div class="col-sm-3" style="margin-left:-15px;width:120px" > -->
-<!-- 																					<input type="TEXT" name="roomPrice"  class="form-control" -->
-<%-- 																								value="<%= (item==null)? "" : (item.get("roomPrice")==null?"":item.get("roomPrice"))%>" /> --%>
-<!-- 																			</div> -->
-<!-- 																		</div> -->
-<!-- 																	</div> -->
+			
+
 																	<div class="form-group col-sm-12" style="padding:30px">
 																		<p >
 																		  <label for="amount-price">Price range:</label>
-																		  <input type="text" id="amount-price" readonly style="border:0; color:#f6931f; font-weight:bold;">
+																		  <input type="text" name="Price"  id="amount-price" readonly style="border:0; color:#f6931f; font-weight:bold;">
 																		</p>
 																		 
 																		<div id="slider-range-price"></div>
@@ -240,6 +234,10 @@
 																										
 												
 													<!----------------------房型陳列---------------------------------->
+													
+													
+		
+													
 													
 													<div class="col-xs-12 col-sm-6">
 														<div class="item">

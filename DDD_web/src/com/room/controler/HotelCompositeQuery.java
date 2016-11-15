@@ -40,7 +40,7 @@ public class HotelCompositeQuery {
 				else
 					whereCondition.append(" and " + aCondition);
 
-				System.out.println("有送出查詢資料的欄位數count = " + count);
+				//System.out.println("有送出查詢資料的欄位數count = " + count);
 			}
 		}
 		
@@ -53,7 +53,7 @@ public class HotelCompositeQuery {
 		String finalSQL = "select * from hotel "
 				          + HotelCompositeQuery.get_WhereCondition(Data)
 				          + "order by hotelId";
-		System.out.println("●●finalSQL = " + finalSQL);
+//		System.out.println("●●finalSQL = " + finalSQL);
 		return finalSQL;
 	}
 	
