@@ -73,8 +73,8 @@
 							aria-labelledby="tab1">
 							<div class="panel-body">
 								<ul style="list-style-type: none">
-									<li>今日訂單維護</li>
-									<li>歷史訂單維護</li>
+									<li><a href="<%=request.getContextPath()%>/backend/ord/listAllOrd.jsp">所有訂單查詢</a></li>
+									<li><a href="<%=request.getContextPath()%>/backend/selectPage.jsp">訂單條件搜尋</a></li>
 								</ul>
 							</div>
 						</div>

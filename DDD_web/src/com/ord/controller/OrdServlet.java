@@ -1,19 +1,13 @@
 package com.ord.controller;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.io.*;
 import java.sql.Timestamp;
 import java.util.*;
-
-import javax.imageio.ImageIO;
 import javax.servlet.*;
 import javax.servlet.http.*;
-
 import com.hotel.model.HotelService;
 import com.ord.model.*;
 import javax.servlet.annotation.MultipartConfig;
-
 import util.QRCodeImgGenerator;
 
 
@@ -491,11 +485,7 @@ public class OrdServlet extends HttpServlet {
 				
 				String QRUrl = "https://github.com/uopsdod/DDD_web"; 
 				
-				BufferedImage QRImg = QRCodeImgGenerator.writeQRCode(QRUrl);
-
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				ImageIO.write(QRImg, "jpg", baos);
-				byte[] ordQrPic = baos.toByteArray();
+				byte[] ordQrPic = QRCodeImgGenerator.writeQRCode(QRUrl);
 				
 				/* 
 				 * = INSERT_STMT 對應 =
@@ -687,6 +677,7 @@ public class OrdServlet extends HttpServlet {
 		if("getOneFrom04".equals(action)){
 			try{
 				/* 1.接收請求參數 - 輸入格式的錯誤處理 */
+				String requestURL = aReq.getParameter("requestURL");
 				String ordId = aReq.getParameter("ordId");
 				OrdService ordSvc = new OrdService(); 	
 				OrdVO ordVO = ordSvc.getOneOrd(ordId);	
