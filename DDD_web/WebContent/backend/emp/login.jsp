@@ -13,39 +13,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>管理後端</title>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/login.css">
+<script src="<%=request.getContextPath()%>/backend/emp/js/login.js"></script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/bootstrap.min.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/0_main.css">
+
 <script src="<%=request.getContextPath()%>/backend/emp/js/jquery.js"></script>
 <script src="<%=request.getContextPath()%>/backend/emp/js/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/backend/emp/js/0_new.js "></script>
 <style type="text/css">
-body {
-	font-family: Tahoma, Verdana, 微軟正黑體;
-	font-size: 13px;
-}
 
-#LoginButton {
-	opacity: 0.7;
-	z-index: 1;
-	background: #0283df;
-	color: #ffffff;
-	position: relative;
-	font-weight: bold;
-	font-family: Tahoma, Verdana, 微軟正黑體;
-	border: 0px;
-	border-radius: 10px;
-	padding: 4px;
-	font-size: 12px;
-}
-
-.vcenter {
-	display: inline-block;
-	vertical-align: middle;
-	float: none;
-}
 </style>
 </head>
-<body>
+<body style="background-image: url('<%=request.getContextPath()%>/frontend_mem/images/back7.jpg');">
 	
 	<div id="top-bar">
 		<nav class="navbar navbar-inverse" role="navigation">
@@ -68,61 +48,57 @@ body {
 						登入</a></li>
 			</ul>
 		</div>
-		<!-- 手機隱藏選單區結束 --> </nav>
 	</div>
-	<!-- 		bar 開始 -->
 	
-		<!-- 				bar結束 -->
 	<%-- 錯誤表列 --%>
-	<div class="col-xs-12 col-sm-12 tablediv text-center" > 
+	<div class="col-xs-12 col-sm-12 tablediv text-center"  id="loginbg"> 		
+	<div class="bg">
+		<img src="<%=request.getContextPath()%>/frontend_mem/GIF/loadgif.gif" width="500px" height="400px">
+	</div>
+	<img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg" class="animsition">	
+	<form action="<%=request.getContextPath()%>/emp/emp.do" method="post">
+		<BR><BR><BR>
 		<c:if test="${not empty errorMsgs}">
-			<font color='red'>請修正以下錯誤:
-				<ul>
+			<font color='red' id="fonterror">			
 					<c:forEach var="message" items="${errorMsgs}">
-						<li>${message}</li>
-					</c:forEach>
-				</ul>
+						${message}
+					</c:forEach>			
 			</font>
 		</c:if>
-	<H1 align="center">DDD後端平台登入</H1>
-	<form action="<%=request.getContextPath()%>/emp/emp.do" method="post">
+			<H1 id="dddtitle">DDD 後端平台登入<img src="<%=request.getContextPath()%>/backend/emp/img/loginbacka.png" width="45px" height="40px" id="keyimg"></H1>
 			<input type="hidden" name="action" value="login">
-			<table border=1 align="center">
+			
+			<table  align="center">
 				<tr>
-					<td colspan=2>
-						<p align=center>
-							<b>登入</b>:<br> 
-					</td>
+<!-- 					<td colspan=2> -->
+<!-- 						<p align=center> -->
+<!-- 							<b>登入</b>:<br>  -->
+<!-- 					</td> -->
 				</tr>
-
 				<tr>
-					<td>
-						<p align=right>
-							<b>account:</b>
-					</td>
+<!-- 					<td> -->
+<!-- 						<p align=right> -->
+<!-- 							<b id ="acount">帳號:</b> -->
+<!-- 					</td> -->
 					<td>
 						<p>
-							<input type=text name="account" value="" size=15>
+							<input type=text name="account" value="" size=15 id="UserName" placeholder="UserName">
 					</td>
 				</tr>
 
 				<tr>
-					<td>
-						<p align=right>
-							<b>password:</b>
-					</td>
+<!-- 					<td> -->
+<!-- 						<p align=right> -->
+<!-- 							<b>密碼:</b> -->
+<!-- 					</td> -->
 					<td>
 						<p>
-							<input type=password name="password" value="" size=15>
+							<input type=password name="password" value="" size=15 id="UserName" placeholder="Password">
 					</td>
 				</tr>
-
-
 				<tr>
-					<td colspan=2 align=center>
-							
-							<input type=submit value="  ok   ">
-						
+					<td colspan=2 align=center>							
+							<button class="LoginButton">Login</button>					
 					</td>
 				</tr>
 			</table>

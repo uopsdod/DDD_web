@@ -21,6 +21,8 @@ if(!authorityList.contains("101")){
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/update_emp_input.css">
+<script src="<%=request.getContextPath()%>/backend/emp/js/update_emp_input.js"></script>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>管理後端</title>
@@ -30,31 +32,6 @@ if(!authorityList.contains("101")){
 <script src="<%=request.getContextPath()%>/backend/emp/js/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/backend/emp/js/0_new.js "></script>
 <style type="text/css">
-.vcenter {
-    display: inline-block;
-    vertical-align: middle;
-    float: none;
-}
-#empName{
-	color:white;
-}
-.UserName {
-	font-size: 14px;
-	margin-top: 5px;
-	margin-right: 20px;
-	padding: 5px 15px;
-	background: #ccc;
-	border: 0 none;
-	cursor: pointer;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-}
-#empName{
-	color:white;
-}
-body {
-	font-family: Tahoma, Verdana, 微軟正黑體;
-}
 
 </style>
 </head>
@@ -254,36 +231,32 @@ body {
 					</div>
 				</div>
 
+	
 
-
-
-	<h3>資料修改:</h3>
-	<%-- 錯誤表列 --%>
-	<c:if test="${not empty errorMsgs}">
-		<font color='red'>請修正以下錯誤:
-			<ul>
+<div class="col-xs-12 col-sm-10 tablediv" align="center"> 
+	<FORM METHOD="post" ACTION="emp.do" name="form1" enctype="multipart/form-data">
+	<h2 align="center">修改員工資料<a href="<%=request.getContextPath()%>/backend/emp/listAllEmp.jsp"><img src="<%=request.getContextPath()%>/backend/emp/img/update.png" width="80px" height="80px" ></h2></a><br>
+		<hr  size="10" width="55%"  align="center" style="border-top: 3px solid #000000"><br>
+		<c:if test="${not empty errorMsgs}">
+		<font color='red'>			
 				<c:forEach var="message" items="${errorMsgs}">
-					<li>${message}</li>
-				</c:forEach>
-			</ul>
+					${message}<br>
+				</c:forEach>			
 		</font>
 	</c:if>
-
-
-	<FORM METHOD="post" ACTION="emp.do" name="form1" enctype="multipart/form-data">
-		<table border="0">
+		<table border="0" align="center" id="">
 			<tr>
-				<td>員工編號:<font color=red><b>*</b></font></td>
-				<td><%=empVO.getEmpId()%></td>
+				<td class="titletext">員工編號:<font color=red><b>*</b></font></td>
+				<td class="titletext"><%=empVO.getEmpId()%></td>
 			</tr>
 			
 			<tr>
-				<td>員工姓名:</td>
+				<td class="titletext">員工姓名:</td>
 				<td><input type="TEXT" name="empName" size="45" class="UserName"
 					value="<%=empVO.getEmpName()%>" /></td>
 			</tr>
 			<tr>
-				<td>信箱:</td>
+				<td class="titletext">信箱:</td>
 				<td><input type="TEXT" name="empAccount" size="45" class="UserName"
 					value="<%=empVO.getEmpAccount()%>" /></td>
 			</tr>
@@ -294,27 +267,25 @@ body {
 <%-- 					value="<%=empVO.getEmpPwd()%>" /></td> --%>
 <!-- 			</tr> -->
 
-			<tr>
-				<td>連絡電話:</td>
+			<tr >
+				<td class="titletext">連絡電話:</td>
 				<td><input type="TEXT" name="empPhone" size="45" class="UserName"
 					value="<%=empVO.getEmpPhone()%>" /></td>
-			</tr>
-			
-			
-				<td>到職日:</td>
+			</tr>			
+				<td class="titletext">到職日:</td>
 				<td><input type="TEXT" name="empHireDate" size="45" class="UserName"
 					value="<%=empVO.getEmpHireDate()%>" /></td>
 			</tr>
 		
 
 			<tr>
-				<td>離職日:</td>
+				<td class="titletext">離職日:</td>
 				<td><input type="TEXT" name="empFireDate" size="45" class="UserName"
 					value="<%=empVO.getEmpFireDate()%>" /></td>
 			</tr>
 
 			<tr>
-				<td>狀態碼:</td>
+				<td class="titletext">狀態碼:</td>
 				<td><input type="TEXT" name="empStatus" size="45" class="UserName"
 					value="<%=empVO.getEmpStatus()%>" /></td>
 			</tr>
@@ -322,30 +293,36 @@ body {
 
 
 			<tr>
-				<td>生日:</td>
+				<td class="titletext">生日:</td>
 				<td><input type="TEXT" name="empBirthDate" size="45" class="UserName"
 					value="<%=empVO.getEmpBirthDate()%>" /></td>
 			</tr>
 
 			<tr>
-				<td>身分證字號:</td>
+				<td class="titletext">身分證字號:</td>
 				<td><input type="TEXT" name="empROCId" size="45" class="UserName"
 					value="<%=empVO.getEmpROCId()%>" /></td>
 			</tr>
 
 			<tr>
-				<td>住址:</td>
+				<td class="titletext">住址:</td>
 				<td><input type="TEXT" name="empAddress" size="45" class="UserName"
 					value="<%=empVO.getEmpAddress()%>" /></td>
 			</tr>
 			
 			<tr>
-				<td>大頭照:</td>
-				<td><input type="file" name="upfile1"  id="myFile" />
-				<p>
+				<td class="titletext">大頭照:</td>
+				<td>
+					<div class="monkeyb-cust-file" >
+                       <img />
+                       <span>Select File</span>
+                       <input type="file" id="myFile" name="upfile1">  
+		           </div>  
+				
 					<output id="image_output"></output>
-				</p>
+			
 						 <input type="hidden" name=empProfile value="<%=empVO.getEmpProfile()%>">
+						 
 				</td>
 			</tr>
 			
@@ -355,8 +332,10 @@ body {
 		<input type="hidden" name="empId" value="<%=empVO.getEmpId()%>">
 		<input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>"><!--接收原送出修改的來源網頁路徑後,再送給Controller準備轉交之用-->
 		<input type="hidden" name="whichPage" value="<%=request.getParameter("whichPage")%>">  <!--只用於:istAllEmp.jsp--> 
-		<input type="submit" value="確認修改">
+		<input type="submit" value="確認修改" class="LoginButton">
+		
 	</FORM>
+	</div>
 </body>
 </html>
 <script>
