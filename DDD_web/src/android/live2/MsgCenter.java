@@ -44,6 +44,7 @@ public class MsgCenter extends HttpServlet {
 	private static HashMap<String,String> tokenMap = new HashMap<>();
 				//  <memId,session>	// 注意:要加上static，不然實體每次都會消失
 	private static BiMap<String, Session> sessionMap = new HashBiMap();
+	private static HashMap<String,String> chatIdMap = new HashMap<>();
 	private MemChatService dao_memChat;
 	
 	private static final Set<Session> connectedSessions = Collections.synchronizedSet(new HashSet<>());
@@ -87,6 +88,9 @@ public class MsgCenter extends HttpServlet {
 		if("bindMemIdWithSession".equals(action) && !sessionMap.containsKey(fromMemId)){
 			sessionMap.put(fromMemId, aUserSession);
 			System.out.println("sessionMap.size(): "+ sessionMap.size());
+			String chatId = dao_memChat.getChatIdBtwenTwoMems(fromMemId, toMemId);
+			System.out.println("bindMemIdWithSession - chat id: "+ chatId);
+			this.chatIdMap.put(fromMemId, chatId);
 			return;
 		}
 		
@@ -119,12 +123,13 @@ public class MsgCenter extends HttpServlet {
 			    List<MemChatVO> list = new ArrayList<>();
 			    list.add(memChatVO);
 				dao_chat.insertWithMemChats(chatVO, list);
+				this.chatIdMap.put(fromMemId, chatId);
 			}
 			// end of 存入資料庫
 			
 			// 將資料傳給對方
-			// 狀況一: 使用者A主動寄出訊息，使用者B也在訊息室窗頁面
-			if (sessionMap.containsKey(toMemId)){			
+			// 狀況一: 使用者A主動寄出訊息，使用者B有session，且也在同一個訊息室窗頁面
+			if (sessionMap.containsKey(toMemId) && this.chatIdMap.get(fromMemId).equals(this.chatIdMap.get(toMemId))){			
 				sessionMap.get(toMemId).getAsyncRemote().sendText(jsonObj.toString());
 			// 狀況二: 使用者A主動寄出訊息，使用者B不在訊息室窗頁面，使用者B仍然是登入狀態	
 			}else if(tokenMap.containsKey(toMemId)){
