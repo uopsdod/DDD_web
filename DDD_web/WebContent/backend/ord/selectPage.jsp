@@ -12,7 +12,7 @@
 	<tr align='center' valign='middle'>
 		<td>
 			<h1>芭樂華愛吃芭樂 <3 </h1>
-			<img src="images/guava.jpg"/> 
+			<img src="<%=request.getContextPath()%>/backend/ord/images/guava.jpg" width='400'/> 
 		</td>
 	</tr>
 </table>

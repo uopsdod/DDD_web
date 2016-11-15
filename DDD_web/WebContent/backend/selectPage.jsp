@@ -7,7 +7,6 @@
 <title>DDD Ord: Home</title>
 </head>
 <body>
-
 	<table border='1'>
 		<tr>
 			<td><h3>DDD Ord: Home</h3>( MVC )</td>
@@ -15,7 +14,6 @@
 	</table>
 
 	<p>This is the Home page for DDD Ord: Home</p>
-
 
 <h3>資料查詢</h3>
 <!-- 錯誤表列 -->
@@ -33,7 +31,7 @@
 	<li><a href="<%=request.getContextPath()%>/backend/ord/listAllOrd.jsp">List</a> all Ords. </li><br><br>
 
 	<li>
-		<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
+		<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
 			<b>輸入帳單編號(像是2016111001)</b>
 			<input type="text" name="ordId">
 			<input type="submit" value="送出">
@@ -44,7 +42,7 @@
 	<jsp:useBean id="ordSvc" scope="page" class="com.ord.model.OrdService"/>
 
 	<li>
-		<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
+		<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
 			選擇訂單編號:
 			<select name="ordId">
 				<c:forEach var="ordVO" items="${ordSvc.all}">	
@@ -57,7 +55,7 @@
 	</li>
 
 	<li>
-		<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
+		<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
 			選擇簡訊驗證碼:
 			<select name="ordId">
 				<c:forEach var="ordVO" items="${ordSvc.all}">	
@@ -84,6 +82,52 @@
 	</li>
 </ul>
 
+<%-- 萬用複合查詢 以下欄位可隨意增減 --%>
+<ul>
+	<li>
+		<form method="post" action="<%=request.getContextPath()%>/ord/ord.do" name="form1">
+			萬用複合查詢:<br>
+			輸入訂單編號:
+			<input type="text" name="ordId"><br>
+			輸入房型編號:
+			<input type="text" name="ordRoomId" readonly> (暫時不能用) <br>
+			輸入一般會員編號:
+			<input type="text" name="ordMemId" readonly> (暫時不能用) <br>
+			輸入廠商會員編號:
+			<input type="text" name="ordHotelId" readonly> (暫時不能用) <br>
+			輸入訂單金額:
+			<input type="number" name="ordPrice"><br>
+			輸入簡訊驗證碼:
+			<input type="text" name="ordMsgNo"><br>
+			
+			輸入訂單狀態名稱:
+			<select name="ordStatus">
+				<option value="">請選擇</option>
+  				<option value="0">已下單</option>
+  				<option value="1">主動取消</option>
+  				<option value="2">已入住</option>
+  				<option value="3">已繳費</option>
+  				<option value="4">逾時取消</option>
+			</select><br>
+
+			輸入評價星星數:
+				<select name="ordRatingStarNo">
+						<option value="">請選擇</option>
+	  					<option value="0">0顆星</option>
+	  					<option value="1">1顆星</option>
+	  					<option value="2">2顆星</option>
+	  					<option value="3">3顆星</option>
+	  					<option value="4">4顆星</option>
+	    				<option value="5">5顆星</option>				
+				</select><br>
+
+			<input type="submit" name="送出">
+			<input type="hidden" name="action" value="listOrdsByCompositeQuery">
+		</form>
+	</li>
+</ul>
+
+
 <h3>訂單管理</h3>
 
 <ul>
@@ -99,7 +143,7 @@
 
 <h3>[自己的方法](一般會員)列出所有訂單</h3>
 
-		<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
+		<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
 			選擇一般會員編號:
 			<select name="ordMemId">
 				<c:forEach var="ordVO" items="${ordSvc.all}">	
@@ -112,7 +156,7 @@
 
 <h3>[自己的方法](廠商會員)列出所有訂單</h3>
 
-		<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
+		<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
 			選擇廠商會員編號:
 			<select name="ordHotelId">
 				<c:forEach var="ordVO" items="${ordSvc.all}">	

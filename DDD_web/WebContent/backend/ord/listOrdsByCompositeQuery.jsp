@@ -1,41 +1,25 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.*, com.ord.model.*, java.text.SimpleDateFormat" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.text.SimpleDateFormat, com.ord.model.OrdVO" %>
+<!DOCTYPE html PUBLIC>
 
-<%-- 用EL練習寫 --%>
+<jsp:useBean id="listOrdsByCompositeQuery" scope="request" type="java.util.List" />
 
-<%
-	OrdService ordSvc = new OrdService();
-	List<OrdVO> list = ordSvc.getAll();
-	pageContext.setAttribute("list",list);
-%>
-
-<!DOCTYPE html>
 <html>
 <head>
-<title>所有訂單資料 - listAllOrd.jsp</title>
+<title>複合查詢 - ListOrdsByCompositeQuery</title>
 </head>
 <body>
-練習用EL寫法取值
 
-<table>
+<table border='1'>
 	<tr>
 		<td>
-			<h3>所有訂單資料 - ListAllOrd.jsp</h3>
+			<h3>複合查詢 訂單 - ListOrdsByCompositeQuery.jsp</h3>
 			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"> <img src="<%=request.getContextPath()%>/backend/ord/images/back1.gif"> 回首頁 </a>
 		</td>
 	</tr>
 </table>
 
-<%-- 錯誤表列 --%>
-<c:if test="${not empty errorMsgs}">
-	請修正以下錯誤:
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li>${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
 
 <table border='1'>
 	<tr>
@@ -54,11 +38,11 @@
 		<th>修改</th>
 		<th>刪除</th>
 	</tr>
-	<%@ include file="pages/page1.file" %>
-	<c:forEach var="ordVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-		<tr align="center" valign='middle' ${(ordVO.ordId==param.ordId)?'bgcolor=#CCCCFF':''}><!--將修改的那頁換底色-->
-			<td><a href="<%=request.getContextPath()%>/ord/ord.do?ordId=${ordVO.ordId}&action=getOneFrom04">${ordVO.ordId}</a></td>
 
+	<%@ include file="pages/page1_ByCompositeQuery.file" %>
+	<c:forEach var="ordVO" items="${listOrdsByCompositeQuery}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+		<tr align="center" valign='middle' ${(ordVO.ordId==param.ordId)? 'bgcolor=#CCCCFF':''}>
+			<td>${ordVO.ordId}</td>
 			<td>${ordVO.ordRoomVO.roomId}</td>
 			<td>${ordVO.ordMemVO.memId}</td>
 			<td>${ordVO.ordHotelVO.hotelId}</td>
@@ -76,6 +60,7 @@
 <%-- 			<td>${ordVO.ordRatingStarNo}</td> --%>
 <%-- 			<td>${ordVO.ordMsgNo}</td> --%>
 <%-- 			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td> --%>
+
 			<td>
 				<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
 					<input type="submit" value="修改">
@@ -97,15 +82,11 @@
 		</tr>
 	</c:forEach>
 </table>
-<%@ include file="pages/page2.file"%>
+<%@ include file="pages/page2_ByCompositeQuery.file" %>
 
 <br>本網頁路徑:<br>
 	request.getServletPath(): <%= request.getServletPath() %> <br>
 	request.getRequestURI():  <%= request.getRequestURI() %>
-	
-<%if(request.getAttribute("ordVO")!=null){ %>	
-<jsp:include page="listOneOrd.jsp"/>
-<%} %>
-	
+
 </body>
 </html>

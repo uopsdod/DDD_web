@@ -5,6 +5,8 @@ import java.util.*;
 import javax.naming.Context;
 import javax.sql.DataSource;
 
+
+
 import java.sql.*;
 
 public class RoomJDBCDAO implements RoomDAO_interface{
@@ -366,8 +368,7 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 				roomVO.setRoomName(rs.getString("roomName"));
 				roomVO.setRoomTotalNo(rs.getInt("roomTotalNo"));
 				roomVO.setRoomPrice(rs.getInt("roomPrice"));
-				roomVO.setRoomBottomPrice(rs.getInt("roomBottomPrice"));
-				
+				roomVO.setRoomBottomPrice(rs.getInt("roomBottomPrice"));				
 				roomVO.setRoomForSell(changeString(rs.getString("roomForSell")));
 				roomVO.setRoomForSellAuto(changeString(rs.getString("roomForSellAuto")));
 				roomVO.setRoomRemainNo(rs.getInt("roomRemainNo"));
@@ -451,8 +452,7 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 				roomVO.setRoomName(rs.getString("roomName"));
 				roomVO.setRoomTotalNo(rs.getInt("roomTotalNo"));
 				roomVO.setRoomPrice(rs.getInt("roomPrice"));
-				roomVO.setRoomBottomPrice(rs.getInt("roomBottomPrice"));
-				
+				roomVO.setRoomBottomPrice(rs.getInt("roomBottomPrice"));				
 				roomVO.setRoomForSell(changeString(rs.getString("roomForSell")));
 				roomVO.setRoomForSellAuto(changeString(rs.getString("roomForSellAuto")));
 				roomVO.setRoomRemainNo(rs.getInt("roomRemainNo"));
@@ -508,7 +508,98 @@ public class RoomJDBCDAO implements RoomDAO_interface{
 		return list;
 	}
 
+public List<RoomVO> getListBySQL(String SQL){
+		
+		List<RoomVO> list = new ArrayList<RoomVO>();
+		RoomVO roomVO = null;
+
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			Context ctx = new javax.naming.InitialContext();	//連線池
+			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
+			con = ds.getConnection();	
+			pstmt = con.prepareStatement(SQL);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+			
+				// empVO 也稱為 Domain objects
+				roomVO = new RoomVO();
+				
+				roomVO.setRoomId(rs.getString("roomId"));
+		
+				roomVO.setRoomHotelId(rs.getString("roomHotelId"));
+		
+				roomVO.setRoomName(rs.getString("roomName"));
+		
+				roomVO.setRoomTotalNo(rs.getInt("roomTotalNo"));
+				
+				roomVO.setRoomPrice(rs.getInt("roomPrice"));
+		
+				roomVO.setRoomBottomPrice(rs.getInt("roomBottomPrice"));
+				
+			
+				roomVO.setRoomForSell(changeString(rs.getString("roomForSell")));
+				roomVO.setRoomForSellAuto(changeString(rs.getString("roomForSellAuto")));
+				roomVO.setRoomRemainNo(rs.getInt("roomRemainNo"));
+				roomVO.setRoomDefaultNo(rs.getInt("roomDefaultNo"));
+				roomVO.setRoomDiscountStartDate(rs.getInt("roomDiscountStartDate"));
 	
+				roomVO.setRoomDiscountEndDate(rs.getInt("roomDiscountEndDate"));
+				roomVO.setRoomDisccountPercent(rs.getInt("roomDisccountPercent"));
+				roomVO.setRoomDiscountHr(rs.getInt("roomDiscountHr"));
+				roomVO.setRoomOnePrice(changeString(rs.getString("roomOnePrice")));
+				roomVO.setRoomFun(rs.getString("roomFun"));
+				roomVO.setRoomMeal(rs.getString("roomMeal"));
+	
+				
+				roomVO.setRoomSleep(rs.getString("roomSleep"));
+				roomVO.setRoomFacility(rs.getString("roomFacility"));
+				roomVO.setRoomSweetFacility(rs.getString("roomSweetFacility"));
+				roomVO.setRoomCapacity(rs.getInt("roomCapacity"));
+				roomVO.setRoomOneBed(rs.getInt("roomOneBed"));
+				roomVO.setRoomTwoBed(rs.getInt("roomTwoBed"));
+				list.add(roomVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		}  catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} catch (Exception e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
+		}finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;		
+	}
 	
 	
 public static void main(String[] args) {

@@ -5,9 +5,6 @@
 <%-- 用EL練習寫 --%>
 
 <jsp:useBean id="listOrdsByHotelId" scope="request" type="java.util.Set"/>
-<jsp:useBean id="roomSvc" scope="page" class="com.room.model.RoomService" />
-<jsp:useBean id="memSvc" scope="page" class="com.mem.model.MemService" />
-<jsp:useBean id="hotelSvc" scope="page" class="com.hotel.model.HotelService" />
 
 <!DOCTYPE html>
 <html>
@@ -21,7 +18,7 @@
 	<tr>
 		<td>
 			<h3>廠商訂單資料 - listOrdsByHotelId.jsp</h3>
-			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"> <img src="/DDD_web/backend/hotel/images/back1.gif"> 回首頁 </a>
+			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"> <img src="<%=request.getContextPath()%>/backend/hotel/images/back1.gif"> 回首頁 </a>
 		</td>
 	</tr>
 </table>
@@ -55,39 +52,12 @@
 	</tr>
 
 	<c:forEach var="ordVO" items="${listOrdsByHotelId}">
-		<tr>
+		<tr ${(ordVO.ordId==param.ordId)? 'bgcolor=#CCCCFF':''}>
 			<td>${ordVO.ordId}</td>
 
-			<%-- <td>${ordVO.ordRoomId}</td> --%>
-			
-			<td>
-				<c:forEach var="roomVO" items="${roomSvc.all}">
-					<c:if test="${ordVO.ordRoomVO.roomId==roomVO.roomId}">
-						${roomVO.roomId} <br>
-						[${roomVO.roomName}]
-					</c:if>
-				</c:forEach>
-			</td>
-
-			<%-- <td>${ordVO.ordMemId}</td> --%>
-			<td>
-				<c:forEach var="memVO" items="${memSvc.all}">
-					<c:if test="${ordVO.ordMemVO.memId==memVO.memId}">
-						${memVO.memId} <br>
-						[${memVO.memName}]
-					</c:if>
-				</c:forEach>
-			</td>
-
-			<%-- <td>${ordVO.ordHotelId}</td> --%>
-			<td>
-				<c:forEach var="hotelVO" items="${hotelSvc.all}">
-					<c:if test="${ordVO.ordHotelVO.hotelId==hotelVO.hotelId}">
-						${hotelVO.hotelId} <br>
-						[${hotelVO.hotelName}]
-					</c:if>
-				</c:forEach>
-			</td>
+			<td> ${ordVO.ordRoomVO.roomId} <br> ${ordVO.ordRoomVO.roomName} </td>			
+			<td> ${ordVO.ordMemVO.memId} <br> ${ordVO.ordMemVO.memName} </td>
+			<td> ${ordVO.ordHotelVO.hotelId} <br> ${ordVO.ordHotelVO.hotelName} </td>
 
 			<td>${ordVO.ordPrice}</td>
 <%-- 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdLiveDate())%></td> --%>
@@ -103,7 +73,7 @@
 <%-- 			<td>${ordVO.ordMsgNo}</td> --%>
 <%-- 			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td> --%>
 			<td>
-				<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
+				<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
 					<input type="submit" value="修改">
 					<input type="hidden" name="ordId" value="${ordVO.ordId}">
 					<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
@@ -111,7 +81,7 @@
 				</form>
 			</td>
 			<td>
-				<form method="post" action="<%=request.getContextPath()%>/backend/ord/ord.do">
+				<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
 					<input type="submit" value="刪除">
 					<input type="hidden" name="ordId" value="${ordVO.ordId}">
 					<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">

@@ -9,7 +9,7 @@
 %>
 
 <%
-	OrdVO ordVO = (OrdVO) request.getAttribute("ordVO"); //OrdServlet.java(Controller),存入req的ordVO物件
+	OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 %>
 
 <!DOCTYPE html>
@@ -23,7 +23,7 @@
 			<td>
 				<h3>訂單資料 - ListOneOrd.jsp</h3>
 				<a href="<%=request.getContextPath()%>/backend/selectPage.jsp">
-					<img src="images/back1.gif" alt="Back Home">回首頁
+					<img src="<%=request.getContextPath()%>/backend/ord/images/back1.gif" alt="Back Home">回首頁
 				</a>
 			</td>
 		</tr>

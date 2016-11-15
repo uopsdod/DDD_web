@@ -20,7 +20,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 					<h3>訂單資料新增 - addOrd.jsp</h3>
 				</td>
 				<td>
-					<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"><img src="images/tomcat.gif"> 回首頁</a>
+					<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"><img src="<%=request.getContextPath()%>/backend/ord/images/tomcat.gif"> 回首頁</a>
 				</td>
 			</tr>
 		</table>
@@ -36,7 +36,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 			</ul>
 		</c:if>
 
-		<form method="post" action="ord.do" name="form1" enctype="multipart/form-data">
+		<form method="post" action="<%=request.getContextPath()%>/ord/ord.do" name="form1" enctype="multipart/form-data">
 			<table>
 				<jsp:useBean id="roomSvc" scope="page" class="com.room.model.RoomService"/>
 				<tr>
@@ -140,13 +140,12 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 						</select>			
 					</td>
 				</tr>
-
-				<tr>
-					<td>QR Code圖片:</td>
-					<td>
-						<input type="file" name="ordQrPic"/>
-					</td>
-				</tr>
+<!-- 				<tr> -->
+<!-- 					<td>QR Code圖片:</td> -->
+<!-- 					<td> -->
+<!-- 						<input type="file" name="ordQrPic"/> -->
+<!-- 					</td> -->
+<!-- 				</tr> -->
 				<tr>
 					<td>簡訊驗證碼:</td>
 					<td>

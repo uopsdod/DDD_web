@@ -101,16 +101,16 @@ public class OrdVO implements java.io.Serializable {
 	}
 	
 	/* 過渡方法  */
-	public String getOrdHotelId(){
-		return this.ordHotelVO.getHotelId();
-	}
-	
-	public String getOrdRoomId(){
-		return this.ordRoomVO.getRoomId();
-	}
-	
-	public String getOrdMemId(){
-		return this.ordMemVO.getMemId();
-	}
+//	public String getOrdHotelId(){
+//		return this.ordHotelVO.getHotelId();
+//	}
+//	
+//	public String getOrdRoomId(){
+//		return this.ordRoomVO.getRoomId();
+//	}
+//	
+//	public String getOrdMemId(){
+//		return this.ordMemVO.getMemId();
+//	}
 	
 }
