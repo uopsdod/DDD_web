@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -66,6 +67,7 @@ public class Room extends HttpServlet {
 			RoomService dao = new RoomService();
 			RoomVO hotelVO = dao.findByPrimaryKey(id);
 			hotelVO.setRoomPrice(price);
+			System.out.println("======================" + price);
 			outStr = gson.toJson(hotelVO);
 			rp.setContentType(CONTENT_TYPE);
 			PrintWriter out = rp.getWriter();
@@ -89,25 +91,55 @@ public class Room extends HttpServlet {
 			out.println(outStr);
 		}else if(action.equals("getAll")){  // 取得當前飯店內的所有房型
 			
+			
 			String id = jsonObject.get("id").getAsString();
+			Iterator it = null;
 			System.out.println("------------id------------------  :"+id);
 	
 			
 			RoomService dao = new RoomService();
-			RoomVO roomVO = dao.findByPrimaryKey(id);
 			
 			Set<RoomVO> set = dao.getOneHotelAllRoom(id);
 			
-//			for(RoomVO newSet : set){
-//				Map<String, Map> one = RoomServlet.OnData;
-//				Map<String, Integer> two = one.get(newSet.getRoomId());
+			for(it = set.iterator();it.hasNext();){
+				RoomVO roomId =  (RoomVO) it.next();
+//				String roomIdd = roomId.getRoomId();
+//				RoomVO roomVO = dao.findByPrimaryKey(roomIdd);
+
+				
+				
+				if(roomId.getRoomForSell() != false){
+					Map<String, Map> one = RoomServlet.OnData;
+					Map<String, Integer> two = one.get(roomId.getRoomId());					
+					Integer price = two.get("price");
+					System.out.println("-----------------------" +  two.get("price"));
+					roomId.setRoomPrice(price);
+				}else{
+					it.remove();
+					System.out.println("沒有上架任何房間!!!");
+				}
+	
+				
+				
 //				System.out.println("------------id------------------  :"+ newSet.getRoomId());
-//				System.out.println("========================" + two.get("price"));
-//				int price = two.get("price"));
-//				newSet.setRoomPrice(price);
-//			}
+//				if(one.get(newSet.getRoomId()) != null || !one.get(newSet.getRoomId()).equals(null)){
+//					Map<String, Integer> two = one.get(newSet.getRoomId());
+//					System.out.println("========================" + two.get("price"));
+//					int price = two.get("price");
+//					newSet.setRoomPrice(price);
+//				}else{
+//					System.out.println("沒有上架任何房間!!!");
+//				}			
+				
+				
+				
+			}
+			
 			
 			outStr = gson.toJson(set);
+			for(RoomVO newSet : set){
+				System.out.println("++++++++++++++++++++++++++++++" +  newSet);
+			}
 			rp.setContentType(CONTENT_TYPE);
 			PrintWriter out = rp.getWriter();
 			out.println(outStr);
