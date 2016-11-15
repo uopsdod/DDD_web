@@ -55,9 +55,12 @@ public class HotelRoomSearch extends HttpServlet {
 //			
 //		}
 		
+		System.out.println("aaaaa");
+		
 		String city = req.getParameter("city"); //取得輸入的城市
 		String zone = req.getParameter("zone"); //取得輸入的區
 		String hotelRatingResult = req.getParameter("hotelRatingResult"); //取得旅館評分數
+		String roomCapacity = req.getParameter("roomCapacity");
 		
 		
 		String price = req.getParameter("Price");		//價錢range處理
@@ -106,7 +109,8 @@ public class HotelRoomSearch extends HttpServlet {
 	
 				
 				//hotel查詢上架房型條件
-				Map RoomMap = new HashMap();
+				Map RoomMap = new HashMap();	
+				RoomMap.put("ROOMCAPACITY",roomCapacity );
 				RoomMap.put("ROOMHOTELID",hotelId );
 				RoomMap.put("ROOMFORSELL","1" );
 				String RoomSQL = RoomCompositeQuery.GetSQLString(RoomMap);	//取得SQL指令
@@ -127,9 +131,10 @@ public class HotelRoomSearch extends HttpServlet {
 						if(min<=thisRoomPrice&&thisRoomPrice<=max){
 							
 							try {
+								
 								Room.put("price", thisRoomPrice);
 								Room.put("roomId", roomVO.getRoomId());
-	
+									
 							} catch (JSONException e) {}
 					
 						}else{continue;}	//如果本間價格不滿足,直接跳下一間房型
@@ -196,19 +201,9 @@ public class HotelRoomSearch extends HttpServlet {
 		}//if 有沒有hotel
 		
 		
-//		PrintWriter out = res.getWriter();
-//		out.write(array.toString());	//輸出所搜尋到符合條件的旅館資料
-		
-		
-		req.setAttribute("array", array);
-		
-		RequestDispatcher failureView = req
-				.getRequestDispatcher("/frontend_mem/map/map.jsp");
-		failureView.forward(req, res);
-		return;
-		
-		
-		
+		PrintWriter out = res.getWriter();
+		out.write(array.toString());	//輸出所搜尋到符合條件的旅館資料
+				
 		
 	}//doPost
 
