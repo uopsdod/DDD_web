@@ -57,7 +57,7 @@
 	<%@ include file="pages/page1.file" %>
 	<c:forEach var="ordVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 		<tr align="center" valign='middle' ${(ordVO.ordId==param.ordId)?'bgcolor=#CCCCFF':''}><!--將修改的那頁換底色-->
-			<td>${ordVO.ordId}</td>
+			<td><a href="<%=request.getContextPath()%>/ord/ord.do?ordId=${ordVO.ordId}&action=getOneFrom04">${ordVO.ordId}</a></td>
 
 			<td>${ordVO.ordRoomVO.roomId}</td>
 			<td>${ordVO.ordMemVO.memId}</td>
@@ -102,5 +102,10 @@
 <br>本網頁路徑:<br>
 	request.getServletPath(): <%= request.getServletPath() %> <br>
 	request.getRequestURI():  <%= request.getRequestURI() %>
+	
+<%if(request.getAttribute("ordVO")!=null){ %>	
+<jsp:include page="listOneOrd.jsp"/>
+<%} %>
+	
 </body>
 </html>

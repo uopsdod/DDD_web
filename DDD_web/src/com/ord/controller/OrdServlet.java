@@ -92,7 +92,11 @@ public class OrdServlet extends HttpServlet {
 			aReq.setAttribute("errorMsgs", errorMsgs);
 			
 			String requestURL = aReq.getParameter("requestURL");
-			aReq.setAttribute("requestURL",requestURL);
+			
+//System.out.println("Debug:" + requestURL);
+
+/* 要放才會過.... (fixed) */
+//aReq.setAttribute("requestURL",requestURL);
 			
 			try{
 				/* 1.接收請求參數 */
@@ -349,6 +353,15 @@ public class OrdServlet extends HttpServlet {
 				if(requestURL.equals("/backend/hotel/listOrdsByHotelId.jsp")||requestURL.equals("/backend/hotel/listAllHotel2.jsp")){
 					aReq.setAttribute("listOrdsByHotelId", hotelSvc.getOrdsByHotelId(ordVO.getOrdHotelVO().getHotelId()));
 				}
+				
+				
+				if(requestURL.equals("/backend/ord/listOrdsByCompositeQuery.jsp")){
+					HttpSession session = aReq.getSession();
+					Map<String, String[]> map = (Map<String,String[]>)session.getAttribute("map");
+					List<OrdVO> list = ordSvc.getAll(map);
+					aReq.setAttribute("listOrdsByCompositeQuery", list);
+				}
+				
 //				String url = requestURL +"?whichPage="+whichPage+"&ordID="+ ordId ;
 				String url = requestURL;
 				RequestDispatcher successView = aReq.getRequestDispatcher(url);
@@ -566,6 +579,14 @@ public class OrdServlet extends HttpServlet {
 				if(requestURL.equals("/backend/hotel/listOrdsByHotelId.jsp")||requestURL.equals("/backend/hotel/listAllHotel2.jsp")){
 					aReq.setAttribute("listOrdsByHotelId", hotelSvc.getOrdsByHotelId(ordVO.getOrdHotelVO().getHotelId()));
 				}
+				
+				if(requestURL.equals("/backend/ord/listOrdsByCompositeQuery.jsp")){
+					HttpSession session = aReq.getSession();
+					Map<String, String[]> map = (Map<String,String[]>)session.getAttribute("map");
+					List<OrdVO> list = ordSvc.getAll(map);
+					aReq.setAttribute("listOrdsByCompositeQuery", list);
+				}				
+						
 //				String url = requestURL +"?whichPage="+whichPage  ;
 				String url = requestURL;
 				RequestDispatcher successView = aReq.getRequestDispatcher(url);
@@ -583,7 +604,18 @@ public class OrdServlet extends HttpServlet {
 			aReq.setAttribute("errorMsgs", errorMsgs);
 			
 			try{
-				Map<String, String[]> map = aReq.getParameterMap();
+//				Map<String, String[]> map = aReq.getParameterMap();
+				HttpSession session = aReq.getSession();
+				Map<String,String[]> map = (Map<String,String[]>)session.getAttribute("map");
+				if(aReq.getParameter("whichPage")==null){
+					HashMap<String, String[]> map1 = (HashMap<String, String[]>) aReq.getParameterMap();
+					HashMap<String, String[]> map2 = new HashMap<String,String[]>();
+					map2 = (HashMap<String, String[]>) map1.clone();
+					session.setAttribute("map", map2);
+					map = (HashMap<String, String[]>) aReq.getParameterMap();
+				}
+				
+				/* ======================= */
 				
 				OrdService ordSvc = new OrdService();
 				List<OrdVO> list = ordSvc.getAll(map);
@@ -650,8 +682,24 @@ public class OrdServlet extends HttpServlet {
 				failureView.forward(aReq,aRes);
 			}
 			
-		}		
+		}
 		
+		if("getOneFrom04".equals(action)){
+			try{
+				/* 1.接收請求參數 - 輸入格式的錯誤處理 */
+				String ordId = aReq.getParameter("ordId");
+				OrdService ordSvc = new OrdService(); 	
+				OrdVO ordVO = ordSvc.getOneOrd(ordId);	
+				
+				aReq.setAttribute("ordVO", ordVO);
+				RequestDispatcher successView = aReq.getRequestDispatcher("/backend/ord/listAllOrd.jsp");
+				successView.forward(aReq,aRes);								
+			}
+			catch(Exception e){
+				throw new ServletException(e);
+			}
+			
+		}
 	}
 	
 }
