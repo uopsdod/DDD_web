@@ -3,6 +3,7 @@ package util;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import javax.imageio.ImageIO;
 
@@ -23,6 +24,12 @@ public class QRCodeImgGenerator {
 		    byte[] ordQrPic = null;
 		    
 		    try {
+		    	
+		    	//aAddrInput = aAddrInput + "Hello World 世界你好";
+		    	
+		    	/* 解決 QR code 中文亂碼問題 */
+		    	aAddrInput = new String(aAddrInput.getBytes("UTF-8"), "ISO-8859-1");  
+		    	
 		        BitMatrix bitMatrix = writer.encode(aAddrInput, BarcodeFormat.QR_CODE, width, height);
 		        for (int i = 0; i < width; i++) {
 		            for (int j = 0; j < height; j++) {
@@ -37,10 +44,17 @@ public class QRCodeImgGenerator {
 //		            e.printStackTrace();
 //		        }
 		 
-		    } catch (WriterException e) {
+		    } 
+		    
+		    catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    
+		    catch (WriterException e) {
 		        // TODO Auto-generated catch block
 		        e.printStackTrace();
-		    }
+		    } 
 
 		    /* 把BufferedImage轉換成byte[] */	
 			try {
