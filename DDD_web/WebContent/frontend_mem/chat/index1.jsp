@@ -67,9 +67,11 @@
 		webSocket.onmessage = function(event) {
 			var messagesArea = document.getElementById("messagesArea");
 	        var jsonObj = JSON.parse(event.data);
-	        var message = jsonObj.userName + ": " + jsonObj.message + "\r\n";
+	        var message = jsonObj.memChatMemVO.memId + ": " + jsonObj.memChatContent + "\r\n";
 	        messagesArea.value = messagesArea.value + message;
 	        messagesArea.scrollTop = messagesArea.scrollHeight;
+	        
+	        console.log("Debug1: "+jsonObj.memChatContent);
 		};
 
 		webSocket.onclose = function(event) {

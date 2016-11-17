@@ -147,11 +147,28 @@
 		};
 
 		webSocket.onmessage = function(event) {
-			var messagesArea = document.getElementById("messagesArea");
-	        var jsonObj = JSON.parse(event.data);
-	        var message = jsonObj.userName + ": " + jsonObj.message + "\r\n";
-	        messagesArea.value = messagesArea.value + message;
-	        messagesArea.scrollTop = messagesArea.scrollHeight;
+ 	        var jsonObj = JSON.parse(event.data);
+// 	        var message = jsonObj.memChatMemVO.memId + ": " + jsonObj.memChatContent + "\r\n";
+// 	        messagesArea.value = messagesArea.value + message;
+// 	        messagesArea.scrollTop = messagesArea.scrollHeight;
+	        
+	        console.log("Debug: "+jsonObj.memChatContent);
+
+            var yourPic = "img/profile_user2.jpg";
+            var yourChatTime = "13 mins ago";
+            var yourName = jsonObj.memChatMemVO.memId;
+            var yourMessage = jsonObj.memChatContent;
+
+            var yourChatString = 
+                "<li class='left clearfix'><span class='chat-img pull-left'><img src='" +  yourPic
+                +"' alt='User Avatar' class='img-circle'/></span><div class='chat-body clearfix'>"
+                +"<div class='header'><strong class='primary-font'>" + yourName
+                + "</strong><small class='pull-right text-muted'><span class='glyphicon glyphicon-time'></span> "+ yourChatTime
+                +"</small></div><p>" + yourMessage
+                + "</p></div></li>";
+
+            $(".chat").append(yourChatString);	        
+            
 		};
 
 		webSocket.onclose = function(event) {
