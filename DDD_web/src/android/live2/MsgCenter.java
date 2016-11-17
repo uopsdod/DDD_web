@@ -76,7 +76,12 @@ public class MsgCenter extends HttpServlet {
 		if ("uploadTokenId".equals(action)){
 			tokenMap.put(fromMemId, tokenId);
 			aUserSession.getAsyncRemote().sendText("Server aleary stored your token.");
-			System.out.println("tokenMap.size(): "+ tokenMap.size());
+			System.out.println("after added - tokenMap.size(): "+ tokenMap.size());
+			return;
+		}else if("removeTokenId".equals(action)){
+			tokenMap.remove(fromMemId);
+			aUserSession.getAsyncRemote().sendText("Server aleary removed your token.");
+			System.out.println("after removed - tokenMap.size(): "+ tokenMap.size());
 			return;
 		}
 		
@@ -167,7 +172,11 @@ public class MsgCenter extends HttpServlet {
 
 	@OnClose
 	public void onClose(Session aUserSession, CloseReason aReason) {
-		MsgCenter.sessionMap.inverse().remove(aUserSession);
+		String memIdToRemove = MsgCenter.sessionMap.inverse().get(aUserSession);
+		System.out.println("ChatId removed: " + MsgCenter.chatIdMap.remove(memIdToRemove));
+//		MsgCenter.chatIdMap.remove(memIdToRemove);
+		MsgCenter.sessionMap.remove(memIdToRemove);
+		
 		System.out.println("sessionMap.size(): "+ sessionMap.size());
 	}
 
