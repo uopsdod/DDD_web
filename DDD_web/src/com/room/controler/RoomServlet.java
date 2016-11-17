@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
+import com.room.controler.MyEchoServer;
 import com.room.model.RoomService;
 import com.room.model.RoomVO;
 import com.roomphoto.model.RoomPhotoService;
@@ -1226,7 +1226,8 @@ public class RoomServlet extends HttpServlet {
 	        	 }else{
 	        		 one.put("price",nowPrice); //未達底價時繼續降價
 	        	 } 
-	        	 
+	        	
+	        	MyEchoServer.SendMessage(roomId,one.get("price"));  
 	        	System.out.println(one.get("price"));
 	         }
 	     };
@@ -1334,7 +1335,10 @@ public class RoomServlet extends HttpServlet {
 	        	 }else{
 	        		 one.put("price",nowPrice); //未達底價時繼續降價
 	        	 } 
+	        	
 	        	 
+	        	MyEchoServer.SendMessage(roomId,one.get("price")); 
+	        	
 	        	System.out.println(one.get("price"));
 	         }
 	     };

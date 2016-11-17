@@ -11,7 +11,7 @@
 	<%@ include file="City.file" %>
 	
 	
-</head>	
+<head>	
 	 <script src="<%=request.getContextPath()%>/frontend_mem/map/js/map.js"></script>
 	
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,7 +30,7 @@
   <script src="<%=request.getContextPath()%>/frontend_mem/map/jq/jquery-1.12.4.js"></script>
   <script src="<%=request.getContextPath()%>/frontend_mem/map/jq/jquery-ui.js"></script>
 
-	
+  <script src="<%=request.getContextPath()%>/frontend_mem/map/js/socket.js"></script>	<!-- socket -->
 	
 	<script>
   $( function() {
@@ -211,9 +211,10 @@ function construct(hotel){
 	itemLeftDiv.className="col-xs-12 col-sm-9 ";
 	var itemRightDiv = document.createElement("div");
 	itemRightDiv.className="col-xs-12 col-sm-3 ";
+	itemRightDiv.id=hotel.roomBottomId;
 	
 	var price = document.createElement("div");
-	price.style="font-size:30px;margin-top:10px; text-decoration:line-through";
+	price.style="font-size:30px;margin-top:10px;";
 	price.innerText=hotel.bottomPrice;
 	
 	
@@ -248,6 +249,7 @@ function construct(hotel){
 
 </script>
 </head>
+<body onload="connect();" onunload="disconnect();">
 
    <!--  ------------------------------------------------------------------- -->
    

@@ -139,7 +139,7 @@ public class HotelRoomSearch extends HttpServlet {
 	//				System.out.println(hotelVO.getHotelId());
 					JSONArray RoomIdarray= null;
 					int bottom =0;
-					
+					String roomBottomId="";
 		
 					
 					//hotel查詢上架房型條件
@@ -177,6 +177,7 @@ public class HotelRoomSearch extends HttpServlet {
 							if(bottom >= thisRoomPrice)	//取得所有房間滿足價錢限制的最低價錢
 							{
 								bottom = thisRoomPrice;
+								roomBottomId = roomVO.getRoomId();
 							}
 					
 							RoomIdarray.put(Room);	//將符合條件的房型JsonObject裝進房型陣列中				
@@ -224,6 +225,7 @@ public class HotelRoomSearch extends HttpServlet {
 					obj.put("hotelRating",hotelRating);
 					obj.put("hotelId",hotelId);
 					obj.put("hotelName",hotelName);
+					obj.put("roomBottomId", roomBottomId);
 					obj.put("bottomPrice",bottom);
 					obj.put("hotelId",hotelId);
 					obj.put("hotelLon",hotelLon);

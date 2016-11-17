@@ -4,6 +4,9 @@ import java.util.*;
 
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+
+import org.json.JSONArray;
+
 import javax.websocket.Session;
 import javax.websocket.OnOpen;
 import javax.websocket.OnMessage;
@@ -36,10 +39,14 @@ private static final Set<Session> allSessions = Collections.synchronizedSet(new 
 	}
 	
 	
-	public void SendMessage(){
+	public static void SendMessage(String roomId,int Price){
+		JSONArray priceBag= new JSONArray();
+		priceBag.put(roomId);
+		priceBag.put(Price);
+		
 		for (Session session : allSessions) {
 			if (session.isOpen())
-				session.getAsyncRemote().sendText("");
+				session.getAsyncRemote().sendText(priceBag.toString());
 		}	
 	}
 	
