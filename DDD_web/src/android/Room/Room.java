@@ -93,22 +93,19 @@ public class Room extends HttpServlet {
 			
 			
 			String id = jsonObject.get("id").getAsString();
-			Iterator it = null;
 			System.out.println("------------id------------------  :"+id);
 	
 			
 			RoomService dao = new RoomService();
 			
 			Set<RoomVO> set = dao.getOneHotelAllRoom(id);
-			
-			for(it = set.iterator();it.hasNext();){
+			Iterator it = set.iterator();
+			while(it.hasNext()){
 				RoomVO roomId =  (RoomVO) it.next();
 //				String roomIdd = roomId.getRoomId();
 //				RoomVO roomVO = dao.findByPrimaryKey(roomIdd);
-
-				
-				
-				if(roomId.getRoomForSell() != false){
+								
+				if(roomId.getRoomForSell()){
 					Map<String, Map> one = RoomServlet.OnData;
 					Map<String, Integer> two = one.get(roomId.getRoomId());					
 					Integer price = two.get("price");

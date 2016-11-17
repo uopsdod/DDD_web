@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.codec.binary.Base64;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mem.model.MemJDBCDAO;
 import com.mem.model.MemService;
@@ -35,7 +36,7 @@ public class Member extends HttpServlet {
 	public void doPost(HttpServletRequest rq, HttpServletResponse rp) throws ServletException, IOException {
 		MemService dao = new MemService();
 		rq.setCharacterEncoding("UTF-8");
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").create(); // 從資料庫拉出來的Date要經過轉型，若沒轉型就算有資料也無法辨識
 		BufferedReader br = rq.getReader();
 		StringBuilder jsonIn = new StringBuilder();
 		String line = null;
@@ -50,8 +51,11 @@ public class Member extends HttpServlet {
 
 			String id = jsonObject.get("id").getAsString();
 			MemVO memVO = dao.getOneMem(id);
+			System.out.println("--------memName---------" + memVO.getMemName());
+			memVO.setMemProfile(null);
+			memVO.setBs64(null);
 			outStr = gson.toJson(memVO);
-			System.out.println(outStr);
+			System.out.println("Profile null*************" + outStr);
 			rp.setContentType(CONTENT_TYPE);
 			PrintWriter out = rp.getWriter();
 			out.println(outStr);
