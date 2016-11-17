@@ -117,7 +117,7 @@ session.setAttribute("memVO", memVO);
         <!-- 浮動列 -->
         <div id="top_header1">
             <div class="col-md-6 col-md-offset-1 ">
-                <img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg">
+            <a href="<%=request.getContextPath()%>/frontend_mem/index.jsp"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg"></a>
                 
             </div>
             <div class="col-md-4 col-md-offset-1 ">
