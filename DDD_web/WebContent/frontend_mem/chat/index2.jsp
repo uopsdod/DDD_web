@@ -115,10 +115,10 @@
 	var webSocket;
 
 	/* 使用者資訊 */
-	var fromMemId = "10000001";
-    var toMemId = "10000002";
-    var myPic = "img/profile_user.jpg";
-    var yourPic = "img/profile_user2.jpg";
+	var toMemId = "10000001";
+    var fromMemId = "10000002";
+    var yourPic = "img/profile_user.jpg";
+    var myPic = "img/profile_user2.jpg";
     
     document.getElementById("userName").innerHTML = fromMemId;
     var messagesArea = document.getElementById("messagesArea");
