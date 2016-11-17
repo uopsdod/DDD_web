@@ -10,6 +10,13 @@
         </id>
         
         <property name="chatName" column="chatName" />
+        
+ 		<set name="chatMemChats" table="memChat" lazy="false" cascade="all"  inverse="true"  order-by="memChatDate desc">			
+			<key>
+				<column name="memChatChatId" />
+			</key>
+			<one-to-many class="com.memchat.model.MemChatVO" />
+		</set>       
 
     </class>
 </hibernate-mapping>
