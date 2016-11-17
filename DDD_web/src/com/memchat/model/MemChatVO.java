@@ -62,26 +62,32 @@ public class MemChatVO implements Serializable {
 	}
 	
 	// 過渡方法:
-//	public String getmemChatChatId(){
-//		return this.memChatChatVO.getChatId();
-//	}
-//	public void setMemChatChatId(String aChatId){
-//		this.memChatChatVO.setChatId(aChatId);
-//	}
-//	
-//	public String getMemChatMemId(){
-//		return this.memChatMemVO.getMemId();
-//	}
-//	public void setMemChatMemId(String memChatMemId){
-//		this.memChatMemVO.setMemId(memChatMemId);
-//	}
-//	public String getMemChatToMemId(){
-//		return this.memChatToMemVO.getMemId();
-//	}
-//	public void setMemChatToMemId(String aToMemId){
-//		this.memChatToMemVO.setMemId(aToMemId);
-//	}
-//
+	public String getmemChatChatId(){
+		return this.getMemChatChatVO().getChatId();
+	}
+	public void setMemChatChatId(String aChatId){
+		ChatVO chatVO = new ChatVO();
+		chatVO.setChatId(aChatId);
+		this.setMemChatChatVO(chatVO);
+	}
+	
+	public String getMemChatMemId(){
+		return this.getMemChatMemVO().getMemId();
+	}
+	public void setMemChatMemId(String memChatMemId){
+		MemVO memVO = new MemVO();
+		memVO.setMemId(memChatMemId);
+		this.setMemChatMemVO(memVO);
+	}
+	public String getMemChatToMemId(){
+		return this.getMemChatToMemVO().getMemId();
+	}
+	public void setMemChatToMemId(String aToMemId){
+		MemVO toMemVO = new MemVO();
+		toMemVO.setMemId(aToMemId);
+		this.setMemChatToMemVO(toMemVO);
+	}
+
 
 	
 }
