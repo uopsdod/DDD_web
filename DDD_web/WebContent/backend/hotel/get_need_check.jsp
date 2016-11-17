@@ -109,6 +109,9 @@ body {
 #emptableth td{
 		vertical-align:middle;
 	}
+#nosecess{
+	margin-top:10px;
+}
 </style>
 </head>
 <body>
@@ -373,7 +376,8 @@ body {
 <!-- 								送出本網頁的路徑給Controller -->
 								<input type="hidden" name="whichPage" value="<%=whichPage%>">
 <!-- 								送出當前是第幾頁給Controller -->
-								<input type="hidden" name="action" value="nosecess">
+								<input type="hidden" name="action" value="nosecess"><br>
+								<input type="text" name="other" id="nosecess">
 							</FORM>
 						</td>
 <!-- 						<td> -->

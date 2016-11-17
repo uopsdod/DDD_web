@@ -104,13 +104,15 @@ session.getAttribute("account_mem");
         </div>
         <div>
         <%-- 錯誤表列 --%>
+        <div class="col-sm-12 text-center">
 		<c:if test="${not empty errorMsgs}">
-			<font color='red'>
-					<c:forEach var="message" items="${errorMsgs}">
-						${message}
-					</c:forEach>	
-			</font>	
-		</c:if>     
+				<font color='red' style="font-family: Tahoma, Verdana, 微軟正黑體;text-align:center;">									
+						<c:forEach var="message" items="${errorMsgs}">
+								${message}
+						</c:forEach>										
+				</font>
+		</c:if>  
+		</div>   
 			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/mem/mem.do">  
 	            <h2>註冊帳戶</h2>
 	            <h4>加入我們讓您的旅程住得開心玩得開心</h4>
@@ -132,7 +134,7 @@ session.getAttribute("account_mem");
 				<input type="hidden" name="memBlackList" value="0"> 
 				<input type="hidden" name="action" value="insert"> 
 	            <div align="center">
-	                <button id="LoginButton">註冊</button>
+	                <button id="LoginButton">註冊</button><input type="button" id ="magic">
 	            </div>
 			</FORM>
             <div id="forgotPaw" align="center">
@@ -149,5 +151,23 @@ session.getAttribute("account_mem");
         </div>
     </section>
 </body>
-
 </html>
+<script>
+function load() {
+	document.getElementById("magic").onclick=magic;
+	
+}
+window.onload = load;
+
+function magic(){
+	$("[name~='memName']").val("張西西");
+	$("[name~='memAccount']").val("ck001583219@gmail.com");
+	$("[name~='memPsw']").val("a123456");
+	$("[name~='memTwId']").val("H126301368");
+	$("[name~='memBirthDate']").val("1993-02-27");
+	$("[name~='memPhone']").val("0953589679");
+	$("[name~='memGender']").val("M");
+	
+}
+
+</script>
