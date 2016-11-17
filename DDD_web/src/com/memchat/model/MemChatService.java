@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.chat.model.ChatVO;
 import com.memchat.model.MemChatHibernateDAO;
 
 public class MemChatService {
@@ -35,6 +36,10 @@ public class MemChatService {
 	public List<MemChatVO> getOldMsgBtwnTwoMems(String aMemChatMemId01, String aMemChatMemId02){ //找兩個會員間的歷史對話
 		return this.dao.getOldMsgBtwnTwoMems(aMemChatMemId01, aMemChatMemId02);
 	}
+//	public ChatVO getChatVOBtwenTwoMems(String aMemChatMemId01, String aMemChatMemId02){ // hibernate
+//		return this.dao.getChatVOBtwenTwoMems(aMemChatMemId01, aMemChatMemId02);
+//	}
+	
 	public String getChatIdBtwenTwoMems(String aMemChatMemId01, String aMemChatMemId02){ // 找兩個會員間的歷史對話聊天室編號
 		return this.dao.getChatIdBtwenTwoMems(aMemChatMemId01, aMemChatMemId02);
 	}
