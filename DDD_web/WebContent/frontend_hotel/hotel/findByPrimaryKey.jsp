@@ -85,8 +85,23 @@
 	}
 </style>
 
-<div class="col-xs-12 col-sm-10 tablediv" align="center"> 
-	<h1><img src="<%=request.getContextPath()%>/frontend_hotel/hotel/img/update.png">修改廠商基本資料</h1>	
+<div class="col-xs-12 col-sm-10 tablediv" align="center">
+
+		<div role="tabpanel">
+        <!-- 標籤面板：標籤區 -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#X1" aria-controls="tab1" role="tab" data-toggle="tab" style="font-family: Tahoma, Verdana, 微軟正黑體;font-size:18px;">修改廠商資料</a>
+            </li>
+            <li role="presentation">
+                <a href="#X2" aria-controls="tab2" role="tab" data-toggle="tab" style="font-family: Tahoma, Verdana, 微軟正黑體;font-size:18px;">修改密碼</a>
+            </li>
+         </ul> 
+    
+        <!-- 標籤面板：內容區 -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="X1">
+            	<h1><img src="<%=request.getContextPath()%>/frontend_hotel/hotel/img/update.png">修改廠商基本資料</h1>	
 	<c:if test="${not empty errorMsgs}">
 			<font color='red' >			
 					<c:forEach var="message" items="${errorMsgs}">
@@ -260,8 +275,9 @@
 			<input type="hidden" name="action" value="updatehotel"> 
 			<input type="submit" value="送出修改" align="center" class="LoginButton">
 		</form>		
-		<br><br><br>
-		<h1><img src="<%=request.getContextPath()%>/frontend_hotel/hotel/img/key.png">修改密碼</h1>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="X2">
+            	<h1><img src="<%=request.getContextPath()%>/frontend_hotel/hotel/img/key.png">修改密碼</h1>
 		<form METHOD="POST" ACTION="<%=request.getContextPath()%>/hotel/hotel.do" name="form1" enctype="multipart/form-data" id="table">
 				
 				<c:if test="${not empty errorMsgss}">
@@ -284,7 +300,12 @@
 				<input type="submit" value="送出修改" align="center" class="LoginButton">
 			
        </form>
-</div>
+            </div>            
+        </div>
+    </div>
+	 
+	
+		
 		
 </div>
 <%@ include file="../footer.jsp" %>
