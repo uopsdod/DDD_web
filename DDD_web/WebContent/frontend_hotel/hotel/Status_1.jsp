@@ -298,7 +298,7 @@ session.setAttribute("hotelVO", hotelVO);
 				<tr>
 					<td>廠商簡介:</td>
 					<td>
-						<textarea name="hotelIntro" rows="5" cols="40" style='resize : none'
+						<textarea name="hotelIntro" rows="5" cols="40" style='resize : none;width:470px'
 						onkeyup="this.value = this.value.slice(0, 400)">${hotel.hotelIntro}</textarea>
 					</td>
 				</tr>
