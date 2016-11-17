@@ -64,8 +64,6 @@ public class MsgCenter extends HttpServlet {
                 .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
                 .create();
 		PartnerMsg partnerMsg = gson.fromJson(aMessage, PartnerMsg.class);
-		JSONObject jsonObj = new JSONObject(aMessage);
-		System.out.println("Msg Sent here: " + jsonObj); 
 		
 		String action = partnerMsg.getAction();
 		String fromMemId = partnerMsg.getMemChatMemId();
@@ -76,7 +74,6 @@ public class MsgCenter extends HttpServlet {
 		System.out.println("fromMemId: " + fromMemId);
 		// 客戶端傳來FCM - tockenId
 		if ("uploadTokenId".equals(action)){
-			//System.out.println("客戶端傳來的tokenId,memId: " + jsonObj);
 			tokenMap.put(fromMemId, tokenId);
 			aUserSession.getAsyncRemote().sendText("Server aleary stored your token.");
 			System.out.println("tokenMap.size(): "+ tokenMap.size());
@@ -130,7 +127,7 @@ public class MsgCenter extends HttpServlet {
 			// 將資料傳給對方
 			// 狀況一: 使用者A主動寄出訊息，使用者B有session，且也在同一個訊息室窗頁面
 			if (sessionMap.containsKey(toMemId) && this.chatIdMap.get(fromMemId).equals(this.chatIdMap.get(toMemId))){			
-				sessionMap.get(toMemId).getAsyncRemote().sendText(jsonObj.toString());
+				sessionMap.get(toMemId).getAsyncRemote().sendText(aMessage);
 			// 狀況二: 使用者A主動寄出訊息，使用者B不在訊息室窗頁面，使用者B仍然是登入狀態	
 			}else if(tokenMap.containsKey(toMemId)){
 				System.out.println(toMemId +  " is not online yet.");
