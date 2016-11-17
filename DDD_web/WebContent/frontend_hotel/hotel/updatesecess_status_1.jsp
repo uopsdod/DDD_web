@@ -30,9 +30,7 @@
 			.tablediv{
 				margin-top:5%;
 			}
-			#register{
-				margin-top:20%;
-			}
+			
 	
 		</style>
 		</head>
@@ -63,7 +61,10 @@
 
 
 <div class="col-xs-12 col-sm-12 tablediv" align="center"> 
-	<H1 id="register">修改成功，請等候審核</H1>
+     <img src="<%=request.getContextPath()%>/frontend_mem/GIF/loadgif.gif" width="500px" height="400px">
+	<H1 id="register">修改成功</H1>
+	<H2 >請等待我們審核您的資料</H2>
+	<H3 >請留意您的MAIL，我們將會通知您審核結果</H3>
 
 
 </div>

@@ -1,0 +1,124 @@
+.vcenter {
+	display: inline-block;
+	vertical-align: middle;
+	float: none;
+}
+
+.tablediv {
+	margin-top: 2%;
+	margin-left: -1%;
+}
+
+table td {
+	background-color:#fffaf0;
+	color: black;
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	font-size: 18px;
+}
+#bgtable td{
+	background-color:#fffaf0;
+}
+table input {
+	margin-top: 10px;
+	height: 35px;
+}
+
+.modal-title {
+	color: white;
+	font-size: 22px;
+}
+
+.modal-header {
+	color: white;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+#files {
+	text-align: center;
+}
+
+.monkeyb-cust-file {
+	margin-top: 3%;
+	overflow: hidden;
+	position: relative;
+	display: inline-block;
+	background-color: #0283df;
+	color: #fff;
+	text-align: center;
+	-web-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	padding: 10px 10px;
+	font-size: 16px;
+	font-family: Arial, Microsoft JhengHei;
+}
+
+.monkeyb-cust-file input {
+	position: absolute;
+	opacity: 0;
+	filter: alpha(opacity = 0);
+	top: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.LoginButton {
+	margin-top: 10px;
+	background: #dc6eab;
+	color: #ffffff;
+	position: relative;
+	font-weight: bold;
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	padding: 10px;
+	font-size: 17px;
+	border: 0px;
+	border-radius: 5px;
+	width: 100px;
+}
+
+.joinus {
+	z-index: 1;
+	margin-top: 10px;
+	background: #0283df;
+	color: #ffffff;
+	position: absolute;
+	top: 48%;
+	left: 45%; font-weight : bold;
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	padding: 10px;
+	font-size: 20px;
+	border: 0px;
+	border-radius: 5px;
+	width: 235px;
+	font-weight: bold;
+}
+
+.bgimgOfjoin {
+	
+}
+
+#table {
+	background-color:#fffaf0;
+}
+
+.item {
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	height: 250px;
+	padding: 10px;
+	border: 10px;
+	max-width: 100%
+}
+.td{
+	color:black;
+	background-color:#fffaf0;
+}
+.item .img-responsive {
+	height: 170px
+}
+
+
+
+.borderOfBanner {
+	padding: 10px
+}

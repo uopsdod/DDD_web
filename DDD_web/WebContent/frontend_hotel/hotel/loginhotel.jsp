@@ -7,6 +7,8 @@
 <html lang="">
 	<head>
 		<meta charset="utf-8">
+		<link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_hotel/hotel/css/loginhotel.css">
+		<script src="<%=request.getContextPath()%>/frontend_hotel/hotel/js/loginhotel.js"></script>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>廠商前端</title>
@@ -15,25 +17,10 @@
 		<script src="<%=request.getContextPath()%>/frontend_hotel/js/jquery.js"></script>
 		<script src="<%=request.getContextPath()%>/frontend_hotel/js/bootstrap.min.js"></script>
 		<script src="<%=request.getContextPath()%>/frontend_hotel/js/0_new.js "></script>
-		<!--[if lt IE 9]>
-			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-		<![endif]-->
-		<style type="text/css">
-				
-			.vcenter {
-			    display: inline-block;
-			    vertical-align: middle;
-			    float: none;
-			}
-			.tablediv{
-				margin-top:5%;
-			}
 		
-		</style>
 		</head>
-<body style="background:#FFFAF0">		
-		<div id="top-bar" >
+<body style="background:#fffaf0">			
+	<div id="top-bar" >
 			<nav class="navbar navbar-inverse" role="navigation">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -56,58 +43,31 @@
 				<!-- 手機隱藏選單區結束 -->
 			</nav>
 		</div> 
-		<div class="col-xs-12 col-sm-12 tablediv" align="center"> 
-				<c:if test="${not empty errorMsgs}">
-					<font color='red'>請修正以下錯誤:
-						<ul>
-							<c:forEach var="message" items="${errorMsgs}">
-								<li>${message}</li>
-							</c:forEach>
-						</ul>
-					</font>
-				</c:if>
-			<H1 align="center">DDD廠商平台登入</H1>
+		<div class="col-xs-12 col-sm-12 tablediv" align="center"  id="loginbg"> 
+		<div class="bg">
+			<img src="<%=request.getContextPath()%>/frontend_mem/GIF/loadgif.gif" width="500px" height="400px">
+		</div>
+		<img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg" class="animsition">	
+				
 			<form action="<%=request.getContextPath()%>/hotel/hotel.do" method="post">
 					<input type="hidden" name="action" value="login">
-					<table border=1 align="center">
-						<tr>
-							<td colspan=2>
-								<p align=center>
-									<b>登入</b>:<br> 
-							</td>
-						</tr>
-		
-						<tr>
-							<td>
-								<p align=right>
-									<b>account:</b>
-							</td>
-							<td>
-								<p>
-									<input type=text name="account" value="" size=15>
-							</td>
-						</tr>
-		
-						<tr>
-							<td>
-								<p align=right>
-									<b>password:</b>
-							</td>
-							<td>
-								<p>
-									<input type=password name="password" value="" size=15>
-							</td>
-						</tr>
-		
-		
-						<tr>
-							<td colspan=2 align=center>
+					<BR><BR><BR>
+					<c:if test="${not empty errorMsgs}">
+						<font color='red' id="fonterror">			
+								<c:forEach var="message" items="${errorMsgs}">
+									${message}
+								</c:forEach>			
+						</font>
+					</c:if>
+				<H1 id="dddtitle">立即登錄，管理住宿<img src="<%=request.getContextPath()%>/frontend_hotel/hotel/img/login.png" width="45px" height="40px" id="keyimg"></H1>
+				<input type="hidden" name="action" value="login">
+							
+							<input type=text name="account" value="" size=15 id="UserName" placeholder="UserName">
 									
-									<input type=submit value="登入">
-								
-							</td>
-						</tr>
-					</table>
+							<input type=password name="password" value="" size=15 id="UserName" placeholder="Password">
+									
+							<button class="LoginButton">Login</button>					
+			
 			</form>
 		</div>
 
