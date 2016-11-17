@@ -90,11 +90,11 @@
 			輸入訂單編號:
 			<input type="text" name="ordId"><br>
 			輸入房型編號:
-			<input type="text" name="ordRoomId" readonly> (暫時不能用) <br>
+			<input type="text" name="ordRoomVO.roomId"><br>
 			輸入一般會員編號:
-			<input type="text" name="ordMemId" readonly> (暫時不能用) <br>
+			<input type="text" name="ordMemVO.memId"><br>
 			輸入廠商會員編號:
-			<input type="text" name="ordHotelId" readonly> (暫時不能用) <br>
+			<input type="text" name="ordHotelVO.hotelId"><br>
 			輸入訂單金額:
 			<input type="number" name="ordPrice"><br>
 			輸入簡訊驗證碼:

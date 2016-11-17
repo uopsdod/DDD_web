@@ -136,8 +136,8 @@ public class OrdDAO implements OrdDAO_interface {
 //		ordStatus
 //		ordMsgNo
 		
-		else if("ordId".equals(aColumnName) || "ordRoomId".equals(aColumnName) || "ordMemId".equals(aColumnName) ||
-				"ordHotelId".equals(aColumnName) || "ordStatus".equals(aColumnName) || "ordMsgNo".equals(aColumnName) ){
+		else if("ordId".equals(aColumnName) || "ordRoomVO.roomId".equals(aColumnName) || "ordMemVO.memId".equals(aColumnName) ||
+				"ordHotelVO.hotelId".equals(aColumnName) || "ordStatus".equals(aColumnName) || "ordMsgNo".equals(aColumnName) ){
 			aQuery.add(Restrictions.like(aColumnName, "%"+ aValue +"%"));
 		}
 		
