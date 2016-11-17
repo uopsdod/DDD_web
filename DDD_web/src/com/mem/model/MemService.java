@@ -97,6 +97,16 @@ public class MemService {
 		
 		return memVO;
 	}
+	
+	public MemVO updateAndroidMeminfo(MemVO memVO){
+		memVO.setMemName(memVO.getMemName());
+		memVO.setMemLiveBudget(memVO.getMemLiveBudget());
+		memVO.setMemIntro(memVO.getMemIntro());
+		memVO.setMemGender(memVO.getMemGender());
+		dao.update(memVO);
+		
+		return memVO;
+	}
 
 	//-----------------------------------------------------貴新增
 		//取衣

@@ -114,6 +114,15 @@ public class Member extends HttpServlet {
 			rp.setContentType(CONTENT_TYPE);
 			PrintWriter out = rp.getWriter();
 			out.println(outStr);
+		} else if(action.equals("Update")){
+			String memVOJson = jsonObject.get("memVO").getAsString();
+			MemVO memVO = gson.fromJson(memVOJson, MemVO.class);
+			if(memVO.getMemBlackList().equals("0")){
+				memVO.setMemBlackList("0");
+			}else{
+				memVO.setMemBlackList("1");
+			}
+			dao.updateAndroidMeminfo(memVO);
 		}
 
 		// ��hotelVO�নJSON�r��A�^��

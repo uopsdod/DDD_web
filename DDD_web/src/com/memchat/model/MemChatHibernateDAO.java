@@ -327,7 +327,34 @@ public class MemChatHibernateDAO implements MemChatDAO_interface {
 			}// end try-catch-finally	
 		return memChatVOList;
 	}
-
+//	@Override
+//	public ChatVO getChatVOBtwenTwoMems(String aMemChatMemId01, String aMemChatMemId02) {
+//		// "SELECT distinct memChatChatId FROM memchat WHERE memChatMemId IN (?,?) AND memChatToMemId IN (?,?)";
+//		String GET_CHATVO_STMT = "FROM (SELECT * FROM MemChatVO WHERE memChatMemId IN (?,?) AND memChatToMemId IN (?,?)) WHERE ROWID IN (SELECT MAX(ROWID) FROM memchat GROUP BY memChatChatId)";
+//		
+//		
+//		
+//		ChatVO chatVO = null;
+//		List<MemChatVO> list = null;
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		try {
+//			session.beginTransaction();
+//			Query query = session.createQuery(GET_CHATVO_STMT);
+//			query.setParameter(0, aMemChatMemId01);
+//			query.setParameter(1, aMemChatMemId02);
+//			query.setParameter(2, aMemChatMemId01);
+//			query.setParameter(3, aMemChatMemId02);
+//			
+//			list = query.list();
+//			chatVO = list.get(0).getMemChatChatVO();
+//			session.getTransaction().commit();
+//		} catch (RuntimeException ex) {
+//			session.getTransaction().rollback();
+//			throw ex;
+//		}
+//		return chatVO;
+//	}
+//
 
 
 }
