@@ -109,7 +109,11 @@ public class MemService {
 	}
 
 	//-----------------------------------------------------貴新增
-	//註冊
+		//取衣
+		public MemVO getOneMem_web(String aMemId){
+			return dao.findByPrimaryKey_web(aMemId);
+		}	
+		//註冊
 		public MemVO insert_basic(String memAccount,String memPsw,String memName,String memGender, String memTwId,
 				java.sql.Date memBirthDate,String memPhone,String memBlackList) { 
 			

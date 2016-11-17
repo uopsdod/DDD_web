@@ -33,9 +33,7 @@ session.removeAttribute("hotelVO");
 			.tablediv{
 				margin-top:7%;
 			}
-			#register{
-				margin-top:20%;
-			}
+			
 	
 		</style>
 		</head>
@@ -66,8 +64,10 @@ session.removeAttribute("hotelVO");
 
 
 
-<div class="col-xs-12 col-sm-12 tablediv" align="center"> 
-	<H1 id="register">對不起，您的資料尚未審核，請待我們審核後，通知您。</H1>
+<div class="col-xs-12 col-sm-12 tablediv text-center" align="center"> 
+<img src="<%=request.getContextPath()%>/frontend_mem/GIF/loadgif.gif" width="500px" height="400px">
+	<h1>親愛的業者您好，感謝您選擇使用DDD</h1>
+	<H2 id="register">對不起，您的資料尚未審核，請待我們審核後，通知您。</H2>
 		
 				
 
