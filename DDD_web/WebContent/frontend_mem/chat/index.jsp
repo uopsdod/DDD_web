@@ -1,3 +1,7 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.google.gson.Gson, com.google.gson.GsonBuilder" %>
+
 <!DOCTYPE html>
 <html lang="">
 <head>
@@ -17,8 +21,6 @@
 </head>
 <body onload="connect();" onunload="disconnect();">
   <h1 class="text-center">哈囉 ! Chat Room ～哩後！</h1>
-
-  <h3 id="statusOutput" class="statusOutput"></h3>
 
 <!-- 聊天的div -->
 <div class="container">
@@ -98,6 +100,9 @@
     </div>
 </div>
 
+
+<h3 id="statusOutput" class="statusOutput"></h3>
+
 </body>
 
 <script>
@@ -105,111 +110,90 @@
     var MyPoint = "/MyEchoServer";
     var host = window.location.host;
     var path = window.location.pathname;
-    var webCtx = path.substring(0, path.indexOf('/', 1));
-    var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
-    
-    var statusOutput = document.getElementById("statusOutput");
-    var webSocket;
-    
-    function connect() {
-        // 建立 websocket 物件
-        webSocket = new WebSocket(endPointURL);
-        
-        webSocket.onopen = function(event) {
-            updateStatus("WebSocket 成功連線");
-            document.getElementById('sendMessage').disabled = false;
-            document.getElementById('connect').disabled = true;
-            document.getElementById('disconnect').disabled = false;
-        };
+    var webCtx = path.substring(0, path.indexOf('/', 1));    
+    var endPointURL = "ws://localhost:8081/DDD_web/android/live2/MsgCenter";
+	var statusOutput = document.getElementById("statusOutput");
+	var webSocket;
+	
+	function connect() {
+		// 建立 websocket 物件
+		webSocket = new WebSocket(endPointURL);
+		
+		webSocket.onopen = function(event) {
+			updateStatus("WebSocket 成功連線");
+			document.getElementById('sendMessage').disabled = false;
+			document.getElementById('connect').disabled = true;
+			document.getElementById('disconnect').disabled = false;
+			
+            /* 偷傳自己的訊息 */
+            var fromMemId = "10000001";
+            var toMemId = "10000002";
+            var action ="bindMemIdWithSession";
+            var message = "welcome";
+            
+            var jsonObj = {"fromMemId" : fromMemId, "toMemId" : toMemId, "action" : action, "message" : message};
+            webSocket.send(JSON.stringify(jsonObj));			
+		};
 
+		webSocket.onmessage = function(event) {
+			var messagesArea = document.getElementById("messagesArea");
+	        var jsonObj = JSON.parse(event.data);
+	        var message = jsonObj.userName + ": " + jsonObj.message + "\r\n";
+	        messagesArea.value = messagesArea.value + message;
+	        messagesArea.scrollTop = messagesArea.scrollHeight;
+		};
 
-        webSocket.onmessage = function(event) {
-            var messagesArea = document.getElementById("messagesArea");
-            var jsonObj = JSON.parse(event.data);
-            // var message = jsonObj.userName + ": " + jsonObj.message + "\r\n";
-            // messagesArea.value = messagesArea.value + message;
-            // messagesArea.scrollTop = messagesArea.scrollHeight;
+		webSocket.onclose = function(event) {
+			updateStatus("WebSocket 已離線");
+		};
+	}
+	
+	
+	var inputUserName = document.getElementById("userName");
+	inputUserName.focus();
+	
+	function sendMessage() {
+	    var userName = inputUserName.value.trim();
+// 	    if (userName === ""){
+// 	        alert ("使用者名稱請勿空白!");
+// 	        inputUserName.focus();	
+// 			return;
+// 	    }
+	    
+	    var inputMessage = document.getElementById("message");
+	    var message = inputMessage.value.trim();
+	    
+	    if (message === ""){
+	        alert ("訊息請勿空白!");
+	        inputMessage.focus();	
+	    }else{
+	        
+            var fromMemId = "10000001";
+            var toMemId = "10000002";
+            var action ="chat";
+            
+            var jsonObj = {"fromMemId" : fromMemId, "toMemId" : toMemId, "action" : action, "message" : message};
+            webSocket.send(JSON.stringify(jsonObj));	        
+	        
+	        inputMessage.value = "";
+	        inputMessage.focus();
+	    }
+	}
 
-            /* 我方說話*/
-            var myPic = "img/profile_user.jpg";
-            var myChatTime = "13 mins ago";
-            var myName = jsonObj.userName;
-            var myMessage = jsonObj.message;
+	
+	function disconnect () {
+		webSocket.close();
+		document.getElementById('sendMessage').disabled = true;
+		document.getElementById('connect').disabled = false;
+		document.getElementById('disconnect').disabled = true;
+	}
 
-            var myChatString = 
-                "<li class='right clearfix'><span class='chat-img pull-right'><img src='" + myPic
-                + "' alt='User Avatar' class='img-circle' /></span><div class='chat-body clearfix'>"
-                + "<div class='header'><small class='text-muted'><span class='glyphicon glyphicon-time'></span>" + myChatTime
-                +"</small><strong class='pull-right primary-font'>" + myName
-                + "</strong></div><p class='pull-right'>" + myMessage
-                +"</p></div></li>";
-
-            /* 對方說話*/
-            var yourPic = "img/profile_user2.jpg";
-            var yourChatTime = "13 mins ago";
-            var yourName = jsonObj.userName;
-            var yourMessage = jsonObj.message;
-
-
-            var yourChatString = 
-                "<li class='left clearfix'><span class='chat-img pull-left'><img src='" +  yourPic
-                +"' alt='User Avatar' class='img-circle'/></span><div class='chat-body clearfix'>"
-                +"<div class='header'><strong class='primary-font'>" + yourName
-                + "</strong><small class='pull-right text-muted'><span class='glyphicon glyphicon-time'></span> "+ yourChatTime
-                +"</small></div><p>" + yourMessage
-                + "</p></div></li>";
-
-
-            $(".chat").append(yourChatString);
-        };
-
-
-        webSocket.onclose = function(event) {
-            updateStatus("WebSocket 已離線");
-        };
-    }
-    
-    
-    var inputUserName = document.getElementById("userName");
-    inputUserName.focus();
-    
-    function sendMessage() {
-        var userName = inputUserName.value.trim();
-        if (userName === ""){
-            alert ("使用者名稱請勿空白!");
-            inputUserName.focus();  
-            return;
-        }
-        
-        var inputMessage = document.getElementById("message");
-        var message = inputMessage.value.trim();
-        
-        if (message === ""){
-            alert ("訊息請勿空白!");
-            inputMessage.focus();   
-        }else{
-            var jsonObj = {"userName" : userName, "message" : message};
-            webSocket.send(JSON.stringify(jsonObj));
-            inputMessage.value = "";
-            inputMessage.focus();
-        }
-    }
-
-    
-    function disconnect () {
-        webSocket.close();
-        document.getElementById('sendMessage').disabled = true;
-        document.getElementById('connect').disabled = false;
-        document.getElementById('disconnect').disabled = true;
-    }
-
-    
-    function updateStatus(newStatus) {
-        statusOutput.innerHTML = newStatus;
-    }
+	
+	function updateStatus(newStatus) {
+		statusOutput.innerHTML = newStatus;
+	}
     
 </script>
-
 </html>
 
 
