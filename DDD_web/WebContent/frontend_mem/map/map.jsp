@@ -70,15 +70,16 @@
 
 
 
-
+var context;
 	
 function getInfo(){	
   var xhr = new XMLHttpRequest();
   //設定好回呼函數 
   xhr.onreadystatechange = function (){
     if( xhr.readyState == 4 ){
-      if(xhr.status == 200){      
-        alert(xhr.responseText);
+      if(xhr.status == 200){ 
+    	back(xhr.responseText);
+    	
       }else{
         alert( xhr.status);
       }//xhr.status == 200
@@ -88,12 +89,19 @@ function getInfo(){
   //建立好Post連接
   var url = "<%=request.getContextPath()%>/HotelRoomSearch";
  // var data_info = "memId=" + document.getElementById("memId").value;
-  
  
- var city = "city=" + document.getElementById("city").value;	//建立市的key-value
- var zone = "zone=" + document.getElementById("zone").value;	//建立區的key-value
+ var cityObj = document.getElementById("city").value;
+ var zoneObj = document.getElementById("zone").value;
+ 
+ var city = "city=" + cityObj;	//建立市的key-value
+ var zone = "zone=" + zoneObj;	//建立區的key-value
+ 
+ //定位map位置
+ setMapLocal(cityObj,zoneObj);
+ 
  var hotelRatingResult  = "hotelRatingResult=" + document.getElementById("hotelRatingResult").value; //建立評分的key-value
-
+ var amountprice = "Price=" + document.getElementById("amount-price").value;  //建立價錢範圍key-value
+ 
  var roomCapacity = "roomCapacity=";   //建立幾人房的key-value
  var roomCapacityArray  = document.getElementById("roomCapacity").childNodes;
  for (var i=0; i<roomCapacityArray.length; i++)
@@ -115,41 +123,128 @@ function getInfo(){
        
     }
  }
- 
  servItemStr = servItemStr.slice(0,servItemStr.length-1);
- 
 
- 
- var amountprice = "Price=" + document.getElementById("amount-price").value;
-
- 
  var data; 
  if(servItemStr==""){
 	 data = city+"&"+zone+"&"+hotelRatingResult+"&"+roomCapacity+"&"+amountprice;
  }else{
 	 data = city+"&"+zone+"&"+hotelRatingResult+"&"+roomCapacity+"&"+amountprice+"&"+servItemStr;
  }
- 
- 
- 
- console.log(data);
- 
- 
- 
- 
- 
+ data = "action=search&" +data;
 
+//  console.log(data);
   xhr.open("Post",url,true);
   xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-  xhr.send(data);
-  
-  
+  xhr.send(data);  
   //送出請求
-
 }//function 
 
 
-//var roomImgArray = JSON.parse(jsonStr);
+function back(jsonStr){
+	context = document.getElementById("context");
+	context.innerHTML =null;	//清空之前呈現的旅館
+	cancelMark();
+	
+	var HotelArray = JSON.parse(jsonStr);
+	if(HotelArray.length!=0){		//有搜到符合的旅館
+	 	for(var i =0;i<HotelArray.length;i++){	 		
+	 		construct(HotelArray[i]); 	
+	 	}
+	}else{		//未搜到符合的旅館
+		
+		var div = document.createElement("div");
+		div.style="color:red;text-align:center";
+		
+		var h2 = document.createElement("h2");		
+	    var b = document.createElement("b");
+	    b.innerText='查詢未有結果';	    
+	    h2.appendChild(b);
+	    div.appendChild(h2);
+		context.appendChild(div);
+	} 
+
+}
+
+function construct(hotel){
+	
+	
+	setMarker(hotel);	//在地圖上建立標記
+	
+	console.log(hotel.hotelLon);
+	console.log(hotel.hotelLat);
+	console.log(hotel.bottomPrice);
+	console.log(hotel.hotelId);
+	console.log(hotel.hotelName);
+	
+	var outDiv = document.createElement("div"); // 	<div class="col-xs-12 col-sm-6">
+	outDiv.className="col-xs-12 col-sm-6 ";
+	outDiv.onmouseover = function(){
+		changeMark(hotel);	
+	};
+	outDiv.onmouseout = function(){
+		backMark(hotel);	
+	};
+	
+	var innerDiv = document.createElement("div"); // 	<div class="item">
+	innerDiv.className="item";
+	
+	var a = document.createElement("a");
+	a.href="http://www.yahoo.com.tw";
+	
+	var imgeg = document.createElement("img"); // 		<img class="imgmap" src="mapImage/room1.jpg">	
+	imgeg.src= "<%=request.getContextPath()%>/HotelRoomSearch" + "?action=showHotel&hotelId=" +hotel.hotelId;		
+	imgeg.className="imgmap";
+	
+	
+	var h3 = document.createElement("h3"); // 		<h3>新竹豐邑喜來登大飯店</h3>
+	h3.innerText=hotel.hotelName;
+		
+	var starDiv = document.createElement("div");	
+	for(var i=1;i<=hotel.hotelRating;i++){
+		var star = document.createElement("img"); 
+		star.src="mapImage/star.png";
+		starDiv.appendChild(star);
+	}
+	
+	var itemLeftDiv = document.createElement("div");
+	itemLeftDiv.className="col-xs-12 col-sm-9 ";
+	var itemRightDiv = document.createElement("div");
+	itemRightDiv.className="col-xs-12 col-sm-3 ";
+	
+	var price = document.createElement("div");
+	price.style="font-size:30px;margin-top:10px; text-decoration:line-through";
+	price.innerText=hotel.bottomPrice;
+	
+	
+	
+	
+	a.appendChild(imgeg);	
+	innerDiv.appendChild(a);	
+	
+	itemLeftDiv.appendChild(h3);
+	itemLeftDiv.appendChild(starDiv);
+	innerDiv.appendChild(itemLeftDiv);	
+	itemRightDiv.appendChild(price);	
+	innerDiv.appendChild(itemRightDiv);
+	outDiv.appendChild(innerDiv);
+	context.appendChild(outDiv);
+// 	<div class="col-xs-12 col-sm-6">
+// 	<div class="item">
+// 		<a href="yahoo.com.tw"><img class="imgmap" src="mapImage/room1.jpg"></a>
+//      <div class="col-xs-12 col-sm-10">
+	// 		<h3>新竹豐邑喜來登大飯店</h3>
+	// 		<div><img star>*n</div>
+//		</div>
+//		<div class="col-xs-12 col-sm-2">
+//         <div class="price"></div>
+//		</div>
+// 	</div>
+// 	</div>
+	
+}
+
+
 
 </script>
 </head>
@@ -321,7 +416,7 @@ function getInfo(){
 													
 													
 		
-													
+												<div id="context">
 													
 													<div class="col-xs-12 col-sm-6">
 														<div class="item">
@@ -368,19 +463,20 @@ function getInfo(){
 														</div><!--item-->
 													</div>
 												</div>
+											  </div>
 											</div><!--scroll-->
 											</div>
 											<div class="col-xs-12 col-sm-5 semi">
 												
 												<div class="item right" id="right">
-													<img src="https://api.fnkr.net/testimg/500x200/">
-													<h3>title</h3>
-													<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-													tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-													quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-													consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-													cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-													proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<!-- 													<img src="https://api.fnkr.net/testimg/500x200/"> -->
+<!-- 													<h3>title</h3> -->
+<!-- 													<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod -->
+<!-- 													tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, -->
+<!-- 													quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo -->
+<!-- 													consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse -->
+<!-- 													cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non -->
+<!-- 													proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
 												</div>
 												
 												
