@@ -260,7 +260,7 @@ HotelVO hotelVO = (HotelVO) request.getAttribute("hotelVO");
 								<td class="td">廠商簡介:</td>
 								<td>
 									<textarea name="hotelIntro" rows="5" cols="40" style='resize : none'
-									onkeyup="this.value = this.value.slice(0, 200)"></textarea>
+									onkeyup="this.value = this.value.slice(0, 400)"></textarea>
 								</td>
 							</tr>
 							
