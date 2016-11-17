@@ -24,7 +24,7 @@ import org.hibernate.SessionFactory;
 
 import com.chat.modelJDBC.ChatJNDIDAO;
 import com.mem.model.MemVO;
-import com.memchat.model.MemChatJNDIDAO;
+import com.memchat.model.MemChatHibernateDAO;
 import com.memchat.model.MemChatService;
 import com.memchat.model.MemChatVO;
 import com.ord.model.OrdVO;
@@ -175,19 +175,18 @@ public class ChatHibernateDAO implements ChatDAO_interface {
 			rs.close();
 			
 			// 再同時新增MemChatVO
-			String INSERT_STMT_MEMCHAT = "INSERT INTO memChat (memChatChatId,memChatMemId, memChatDate, memChatContent, memChatPic, memChatStatus, memChatToMemId) VALUES (?,?,?,?,?,?,?)";
+			String INSERT_STMT_MEMCHAT = "INSERT INTO memChat (memChatId ,memChatChatId, memChatMemId, memChatDate, memChatContent, memChatStatus, memChatToMemId) VALUES (memChat_seq.NEXTVAL,?,?,?,?,?,?)";
 			MemChatService dao_memChat = new MemChatService();
 			System.out.println("list.size()-A="+list.size());
 			for (MemChatVO aMemChat : list) {
 				pstmt = con.prepareStatement(INSERT_STMT_MEMCHAT);
 	    		
 				pstmt.setString(1, next_chatId); // FK - 自增主鍵
-				pstmt.setString(2, aMemChat.getMemChatMemId()); // FK
+				pstmt.setString(2, aMemChat.getMemChatMemVO().getMemId()); // FK
 				pstmt.setTimestamp(3, aMemChat.getMemChatDate());
 				pstmt.setString(4, aMemChat.getMemChatContent());
-				pstmt.setBytes(5, aMemChat.getMemChatPic());
-				pstmt.setString(6, aMemChat.getMemChatStatus());
-				pstmt.setString(7, aMemChat.getMemChatToMemId());
+				pstmt.setString(5, aMemChat.getMemChatStatus());
+				pstmt.setString(6, aMemChat.getMemChatToMemVO().getMemId()); // FK
 	    		
 	    		
 				pstmt.executeUpdate();

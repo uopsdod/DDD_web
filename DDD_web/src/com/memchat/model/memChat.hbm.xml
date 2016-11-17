@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.memchat.model.MemChatVO" table="memChat">
+
+        <id name="memChatId" column="memChatId">
+            <generator class="com.memchat.model.memChatIdGenerator"/>
+        </id>
+        <many-to-one name="memChatChatVO" class="com.chat.model.ChatVO" lazy="false">
+            <column name="memChatChatId" />
+        </many-to-one>           
+        <many-to-one name="memChatMemVO" class="com.mem.model.MemVO" lazy="false">
+            <column name="memChatMemId" />
+        </many-to-one>                              
+        <property name="memChatDate" column="memChatDate" />
+        <property name="memChatContent" column="memChatContent" />
+        <property name="memChatStatus" column="memChatStatus" />
+        <many-to-one name="memChatToMemVO" class="com.mem.model.MemVO" lazy="false">
+            <column name="memChatToMemId" />
+        </many-to-one>          
+        
+<!--         <many-to-one name="XXXXXXXXXXXXXXVO" class="   com.emp.model.EmpVO" lazy="false"> -->
+<!--             <column name="XXXXXXXXXXXXXXId" /> -->
+<!--         </many-to-one>         -->
+
+	</class>
+</hibernate-mapping>
+

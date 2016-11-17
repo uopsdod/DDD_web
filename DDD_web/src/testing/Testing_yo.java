@@ -41,7 +41,7 @@ import com.mem.model.MemJNDIDAO;
 import com.mem.model.MemVO;
 import com.memchat.model.MemChatDAO_interface;
 import com.memchat.model.MemChatJDBCDAO;
-import com.memchat.model.MemChatJNDIDAO;
+import com.memchat.model.MemChatHibernateDAO;
 import com.memchat.model.MemChatService;
 import com.memchat.model.MemChatVO;
 import com.memlivecond.model.MemLiveCondDAO_interface;
@@ -284,21 +284,54 @@ public class Testing_yo extends HttpServlet {
 //	}
     
     // 測試ChatService - insertWithMemChats
-    ChatService dao_chat = new ChatService();
-    ChatVO chatVO = new ChatVO(); // 不設定第二個欄位
-    List<MemChatVO> list = new ArrayList<>();
-	Timestamp ts = new Timestamp(new java.util.Date().getTime());
-	MemChatVO memChatVO = new MemChatVO();
-//	memChatVO.setMemChatChatId(chatId); // 此行註解掉
-	memChatVO.setMemChatMemId("10000003");
-	memChatVO.setMemChatDate(ts);
-	memChatVO.setMemChatContent("Aloha");
-	memChatVO.setMemChatPic(null);
-	memChatVO.setMemChatStatus("0");
-	memChatVO.setMemChatToMemId("10000004");
-	list.add(memChatVO);
-	dao_chat.insertWithMemChats(chatVO, list);
+//    ChatService dao_chat = new ChatService();
+//    ChatVO chatVO = new ChatVO(); // 不設定第二個欄位
+//    List<MemChatVO> list = new ArrayList<>();
+//	Timestamp ts = new Timestamp(new java.util.Date().getTime());
+//	MemChatVO memChatVO = new MemChatVO();
+////	memChatVO.setMemChatChatId(chatId); // 此行註解掉
+//	memChatVO.setMemChatMemId("10000003");
+//	memChatVO.setMemChatDate(ts);
+//	memChatVO.setMemChatContent("Aloha");
+//	memChatVO.setMemChatPic(null);
+//	memChatVO.setMemChatStatus("0");
+//	memChatVO.setMemChatToMemId("10000004");
+//	list.add(memChatVO);
+//	dao_chat.insertWithMemChats(chatVO, list);
     
+    // 測試MemChatService - hibernate(大改版):
+    // 查詢一筆:
+//    MemChatService dao_memChat = new MemChatService();
+//    MemChatVO memChatVO = dao_memChat.findByPrimaryKey("1000000001");
+//    System.out.println(memChatVO.getMemChatContent());
+//    System.out.println(memChatVO.getMemChatMemVO().getMemName());
+//    System.out.println(memChatVO.getMemChatChatVO().getChatId());
+//    System.out.println(memChatVO.getMemChatToMemVO().getMemName());
+    
+    // 新增
+//    MemChatService dao_memChat = new MemChatService();
+//    MemChatVO memChatVO = new MemChatVO();
+//    memChatVO.setMemChatChatId("10000001");
+//	memChatVO.setMemChatMemId("10000003");
+//	Timestamp ts = new Timestamp(new java.util.Date().getTime());
+//	memChatVO.setMemChatDate(ts);    
+//	memChatVO.setMemChatToMemId("10000004");	
+//	dao_memChat.insert(memChatVO);
+	// 修改
+//    MemChatService dao_memChat = new MemChatService();
+//    MemChatVO memChatVO = dao_memChat.findByPrimaryKey("1000000001");
+//    memChatVO.setMemChatContent("Hibernate test01");
+//	dao_memChat.update(memChatVO);	
 	
+	// 刪除
+//    MemChatService dao_memChat = new MemChatService();
+//    dao_memChat.delete("1000000004");
+    // 查全部:
+    MemChatService dao_memChat = new MemChatService();
+    List<MemChatVO> myList = dao_memChat.getAll();
+    for (MemChatVO myVO: myList){
+    	System.out.println(myVO.getMemChatContent());
+    }
+    
   }
 }
