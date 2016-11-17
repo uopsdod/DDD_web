@@ -65,6 +65,7 @@ public class MsgCenter extends HttpServlet {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
                 .create();
+        System.out.println("got here");
 		PartnerMsg partnerMsg = gson.fromJson(aMessage, PartnerMsg.class);
 		
 		String action = partnerMsg.getAction();
