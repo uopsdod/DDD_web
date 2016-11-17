@@ -1,3 +1,6 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -25,11 +28,8 @@
     var MyPoint = "/MyEchoServer";
     var host = window.location.host;
     var path = window.location.pathname;
-    var webCtx = path.substring(0, path.indexOf('/', 1));
-<!--     var endPointURL = "ws://" + window.location.host + webCtx + MyPoint; -->
-    
+    var webCtx = path.substring(0, path.indexOf('/', 1));    
     var endPointURL = "ws://localhost:8081/DDD_web/android/live2/MsgCenter";
-    
 	var statusOutput = document.getElementById("statusOutput");
 	var webSocket;
 	
@@ -42,6 +42,15 @@
 			document.getElementById('sendMessage').disabled = false;
 			document.getElementById('connect').disabled = true;
 			document.getElementById('disconnect').disabled = false;
+			
+            /* 偷傳自己的訊息 */
+            var fromMemId = "10000002";
+            var toMemId = "10000001";
+            var action ="bindMemIdWithSession";
+            var message = "welcome";
+            
+            var jsonObj = {"fromMemId" : fromMemId, "toMemId" : toMemId, "action" : action, "message" : message};
+            webSocket.send(JSON.stringify(jsonObj));			
 		};
 
 		webSocket.onmessage = function(event) {
@@ -63,11 +72,11 @@
 	
 	function sendMessage() {
 	    var userName = inputUserName.value.trim();
-	    if (userName === ""){
-	        alert ("使用者名稱請勿空白!");
-	        inputUserName.focus();	
-			return;
-	    }
+// 	    if (userName === ""){
+// 	        alert ("使用者名稱請勿空白!");
+// 	        inputUserName.focus();	
+// 			return;
+// 	    }
 	    
 	    var inputMessage = document.getElementById("message");
 	    var message = inputMessage.value.trim();
@@ -76,8 +85,14 @@
 	        alert ("訊息請勿空白!");
 	        inputMessage.focus();	
 	    }else{
-	        var jsonObj = {"userName" : userName, "message" : message};
-	        webSocket.send(JSON.stringify(jsonObj));
+	        
+            var fromMemId = "10000002";
+            var toMemId = "10000001";
+            var action ="chat";
+            
+            var jsonObj = {"fromMemId" : fromMemId, "toMemId" : toMemId, "action" : action, "message" : message};
+            webSocket.send(JSON.stringify(jsonObj));	        
+	        
 	        inputMessage.value = "";
 	        inputMessage.focus();
 	    }

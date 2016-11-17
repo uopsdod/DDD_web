@@ -33,6 +33,7 @@ import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.mem.model.MemVO;
 import com.memchat.model.MemChatService;
 import com.memchat.model.MemChatVO;
 import com.pushraven.Pushraven;
@@ -60,17 +61,19 @@ public class MsgCenter extends HttpServlet {
 	@OnMessage
 	public void onMessage(Session aUserSession, String aMessage) throws JSONException {
 		//Gson gson = new Gson();
+		System.out.println("aMessage: " + aMessage);
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd hh:mm:ss.S")
                 .create();
 		PartnerMsg partnerMsg = gson.fromJson(aMessage, PartnerMsg.class);
 		
 		String action = partnerMsg.getAction();
-		String fromMemId = partnerMsg.getMemChatMemId();
+		String fromMemId = (partnerMsg.getMemChatMemVO() != null)?partnerMsg.getMemChatMemVO().getMemId():null;
 		String tokenId = partnerMsg.getTokenId();
-		String toMemId = partnerMsg.getMemChatToMemId();
+		String toMemId = (partnerMsg.getMemChatToMemVO() != null)?partnerMsg.getMemChatToMemVO().getMemId():null;
 		String message = partnerMsg.getMemChatContent();
 		
+		System.out.println("tokenId: " + tokenId);
 		System.out.println("fromMemId: " + fromMemId);
 		// 客戶端傳來FCM - tockenId
 		if ("uploadTokenId".equals(action)){
@@ -107,13 +110,18 @@ public class MsgCenter extends HttpServlet {
 			String status = "0";
 			
 			MemChatVO memChatVO = new MemChatVO();
-			memChatVO.setMemChatChatId(chatId);
-			memChatVO.setMemChatMemId(fromMemId);
+			ChatVO chatVO = new ChatVO();
+			chatVO.setChatId(chatId);
+			memChatVO.setMemChatChatVO(chatVO);
+			MemVO fromMemVO = new MemVO();
+			fromMemVO.setMemId(fromMemId);
+			memChatVO.setMemChatMemVO(fromMemVO);
 			memChatVO.setMemChatDate(ts);
 			memChatVO.setMemChatContent(message);
-			memChatVO.setMemChatPic(null);
 			memChatVO.setMemChatStatus(status);
-			memChatVO.setMemChatToMemId(toMemId);
+			MemVO toMemVO = new MemVO();
+			toMemVO.setMemId(toMemId);
+			memChatVO.setMemChatToMemVO(toMemVO);
 			
 			// 之前已有對話視窗，用原本的就好
 			if (chatId != null) {
@@ -121,10 +129,10 @@ public class MsgCenter extends HttpServlet {
 			// 第一次聊天，先新增聊天室後再新增訊息(使用交易控管)	
 			}else{
 				ChatService dao_chat = new ChatService();
-				ChatVO chatVO = new ChatVO();
+				ChatVO chatVO_insert = new ChatVO();
 			    List<MemChatVO> list = new ArrayList<>();
 			    list.add(memChatVO);
-				dao_chat.insertWithMemChats(chatVO, list);
+				dao_chat.insertWithMemChats(chatVO_insert, list);
 				this.chatIdMap.put(fromMemId, chatId);
 			}
 			// end of 存入資料庫

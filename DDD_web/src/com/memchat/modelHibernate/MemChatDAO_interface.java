@@ -8,14 +8,20 @@ import java.util.Map;
 import com.memrep.model.MemRepVO;
 
 public interface MemChatDAO_interface {
-	public static final String tableName = "memChat";
+//	public static final String tableName = "memChat";
 	public void insert(MemChatVO aMemChatVO);
 	public void update(MemChatVO aMemChatVO);
-	public void delete(String aMemChatChatId, String aMemChatMemId, Timestamp aDate);
+	public void delete(String aMemChatId);
 	
 	public List<MemChatVO> getAll();
-	public MemChatVO findByPrimaryKey(MemChatVOPK aMemChatVOPK);
-	public List<MemChatVO> findByMemChatChatId(String aMemChatChatId); // 找一個聊天室中所有對話 - 最後再寫
-	//萬用查詢
-	public List<MemChatVO> getAll(Map<String, String[]> map); 
+	public MemChatVO findByPrimaryKey(String aMemChatId);
+	
+	
+//	public List<MemChatVO> findByMemChatChatId(String aMemChatChatId); // 找一個聊天室中所有對話 - 最後再寫
+	public List<MemChatVO> getOldMsgBtwnTwoMems(String aMemChatMemId01, String aMemChatMemId02);
+	public String getChatIdBtwenTwoMems(String aMemChatMemId01, String aMemChatMemId02);
+	public List<MemChatVO> getNewestMsgEachChatId(String aMemChatMemId);
+//	//萬用查詢
+//	public List<MemChatVO> getAll(Map<String, String[]> map); 
+	
 }

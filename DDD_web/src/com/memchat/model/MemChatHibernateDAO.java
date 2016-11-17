@@ -1,4 +1,4 @@
-package com.memchat.modelHibernate;
+package com.memchat.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
