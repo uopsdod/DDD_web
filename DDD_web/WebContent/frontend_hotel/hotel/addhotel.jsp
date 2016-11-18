@@ -7,6 +7,8 @@
 
 <%
 HotelVO hotelVO = (HotelVO) request.getAttribute("hotelVO");
+String myModal = (String) request.getAttribute("myModal");
+pageContext.setAttribute("myModal", myModal);
 %>
 
 <!DOCTYPE html>
@@ -48,7 +50,7 @@ HotelVO hotelVO = (HotelVO) request.getAttribute("hotelVO");
 				<div class="collapse navbar-collapse navbar-ex1-collapse">			
 					<!-- 右選單 -->
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href='#modal-id' data-toggle="modal" ><span class="glyphicon glyphicon-bell"></span> 註冊</a></li>
+						<li id="resgi"><a href='#modal-id' data-toggle="modal" ><span class="glyphicon glyphicon-bell"></span> 註冊</a></li>
 						<li><a href="<%=request.getContextPath()%>/frontend_hotel/hotel/loginhotel.jsp"><span class="glyphicon glyphicon-log-out"></span> 登入</a></li>
 					</ul>
 				</div>
@@ -59,7 +61,7 @@ HotelVO hotelVO = (HotelVO) request.getAttribute("hotelVO");
 <div class="col-xs-12 col-sm-12 tablediv" align="center" width="102%"> 
 <!-- -------------------------------背景圖-------------------------------------------- -->
 		<img src="<%=request.getContextPath()%>/frontend_hotel/hotel/img/light-property-min-2.jpg" width="1924px" height="500px" class="bgimgOfjoin">
-		<a href='#modal-id' data-toggle="modal" ><input type="button" value="加入我們" class="joinus"></a>
+		<a href='#modal-id' data-toggle="modal" ><input type="button" value="加入我們" class="joinus" id="resgis"></a>
 <!-- 		-----------------------------展示特色----------------------------------------------- -->
 		<h1>為什麼選擇DDD.com?</h1>
 		<div class="container">
@@ -109,7 +111,15 @@ HotelVO hotelVO = (HotelVO) request.getAttribute("hotelVO");
 <!-- 		------------------------------註冊------------------------------------------- -->
 		<%-- 錯誤表列 --%>
 		
-		<div class="modal fade" id="modal-id">
+		<div class="modal fade" 
+		<c:choose>
+		    <c:when test="${myModal==null}">
+		      	id="modal-id"
+		    </c:when>		
+		    <c:otherwise>
+		        id="myModal"
+		    </c:otherwise>
+		</c:choose>>
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -290,7 +300,7 @@ HotelVO hotelVO = (HotelVO) request.getAttribute("hotelVO");
 							
 							<br>
 						</table>
-						
+						<input type="hidden" name="myModal" value="myModal">
 						<input type="hidden" name="action" value="inserthotel"> 
 						<input type="submit" value="送出新增" align="center" class="LoginButton"><br>
 						<input type="button" align="center" class="LoginButton" id ="magic" value="神奇小按鈕" class="ui">
@@ -346,7 +356,13 @@ HotelVO hotelVO = (HotelVO) request.getAttribute("hotelVO");
         $('[data-toggle="popover"]').popover();
     })
 	
-
+	$('#myModal').modal('toggle')                // 初始化後立即呼叫 show
+	document.getElementById("resgi").onclick=function(){  //為了錯過一次 再按可以使用
+    	$("#myModal").attr("id","modal-id");
+    }
+    document.getElementById("resgis").onclick=function(){
+    	$("#myModal").attr("id","modal-id");
+    }
 
 
 
