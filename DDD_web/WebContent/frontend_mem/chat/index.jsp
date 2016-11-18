@@ -24,41 +24,19 @@
 	<h1 class="text-center">哈囉 ! Chat Room ～哩後！</h1>
 
 	<!-- 聊天的div -->
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12 col-sm-10">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<!-- 聊天視窗標題 -->
-						<span class="glyphicon glyphicon-comment"></span> Chat
-						<div class="btn-group pull-right">
-							<button type="button"
-								class="btn btn-default btn-xs dropdown-toggle"
-								data-toggle="dropdown">
-								<span class="glyphicon glyphicon-chevron-down"></span>
-							</button>
-							<!-- 右上角的選單 -->
-							<ul class="dropdown-menu slidedown">
-								<li><a href="http://www.jquery2dotnet.com"> <span
-										class="glyphicon glyphicon-refresh"></span> Refresh
-								</a></li>
-								<li><a href="http://www.jquery2dotnet.com"> <span
-										class="glyphicon glyphicon-ok-sign"></span> Available
-								</a></li>
-								<li><a href="http://www.jquery2dotnet.com"> <span
-										class="glyphicon glyphicon-remove"></span> Busy
-								</a></li>
-								<li><a href="http://www.jquery2dotnet.com"> <span
-										class="glyphicon glyphicon-time"></span> Away
-								</a></li>
-								<li class="divider"></li>
-								<li><a href="http://www.jquery2dotnet.com"> <span
-										class="glyphicon glyphicon-off"></span> Sign Out
-								</a></li>
-							</ul>
-						</div>
-					</div>
-					<!--  聊天內容視窗 -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="panel panel-primary">
+                <div class="panel-heading" id="accordion">
+                    <span class="glyphicon glyphicon-comment"></span> Chat
+                    <div class="btn-group pull-right">
+                        <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            <span class="glyphicon glyphicon-chevron-down"></span>
+                        </a>
+                    </div>
+                </div>
+            <div class="panel-collapse collapse" id="collapseOne">
 					<div id="messagesArea" class="panel-body">
 						<ul class="chat">
 
@@ -66,8 +44,6 @@
 
 						</ul>
 					</div>
-
-
 					<div class="panel-footer">
 						<h5 id="userName"></h5>
 						<input type="button" id="connect" class="btn btn-success btn-sm"
@@ -87,10 +63,12 @@
 							</span>
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 	<h3 id="statusOutput" class="statusOutput"></h3>
