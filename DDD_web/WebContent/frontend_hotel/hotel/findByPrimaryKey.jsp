@@ -281,7 +281,7 @@
             </div>
             
             
-            <div role="tabpanel" class="tab-pane <c:if test="${tagname=='#X2'||tagname==null}">active</c:if>" id="X2">
+            <div role="tabpanel" class="tab-pane <c:if test="${tagname=='#X2'}">active</c:if>" id="X2">
             	<h1><img src="<%=request.getContextPath()%>/frontend_hotel/hotel/img/key.png">修改密碼</h1>
 		<form METHOD="POST" ACTION="<%=request.getContextPath()%>/hotel/hotel.do" name="form1" enctype="multipart/form-data" id="table">
 				
