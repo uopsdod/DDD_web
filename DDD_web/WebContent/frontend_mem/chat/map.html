@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Google Map</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<script src="https://code.jquery.com/jquery.js"></script>
+		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_cweOAnsKCSl-jXbIAO3yqlnZ2BbbSR4"
+  		type="text/javascript"></script>
+		
+		
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	    <style type="text/css">
+	      html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
+	    </style>
+
+
+	</head>
+	<body>
+		<h1 class="text-center">哈囉～哩後！</h1>
+		
+		<div id="position"></div>
+		<hr>
+		<div id="map-canvas"></div>
+
+	</body>
+</html>
+
+<script type="text/javascript">
+  
+	function initialize() {
+		var lati = 24.968972;
+		var longi = 121.1946;  
+	  
+		document.getElementById('position').innerHTML = '緯度：'+lati+'<br>經度：'+longi;
+		
+		var latlng = new google.maps.LatLng(lati,longi);
+		
+		
+		var map = new google.maps.Map(document.getElementById('map-canvas'),{
+			zoom:18,
+			center:latlng,
+			mapTypeId:google.maps.MapTypeId.ROADMAP
+		});
+		
+		var marker = new google.maps.Marker({
+			position: latlng,
+			map: map,
+			icon: 'img/pin.png',
+			title: '這不是我家'
+		});
+ 	}
+  
+  google.maps.event.addDomListener(window, 'load', initialize);
+  
+</script>
