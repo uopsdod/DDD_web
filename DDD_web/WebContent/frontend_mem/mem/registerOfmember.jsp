@@ -124,9 +124,9 @@ session.getAttribute("account_mem");
 	            <input type="text" name="memBirthDate" id ="register" placeholder="Birthday" value="<%=(memVO == null) ? "" : memVO.getMemBirthDate()%>"><br>
 	            <input type="text" name="memPhone" id ="register" placeholder="Phone" value="<%=(memVO == null) ? "" : memVO.getMemPhone()%>"><br>
 	                <div class="abgne-menu-20140101-1">
-	                    <input type="radio" id="male" name="memGender"  value="M" checked>
+	                    <input type="radio" id="male" name="memGender"  value="m" checked>
 	                    <label for="male">male</label>        
-	                    <input type="radio" id="female" name="memGender" value="F">
+	                    <input type="radio" id="female" name="memGender" value="f">
 	                    <label for="female">female</label>
 	                </div>
 	            </div>
@@ -166,7 +166,7 @@ function magic(){
 	$("[name~='memTwId']").val("H126301368");
 	$("[name~='memBirthDate']").val("1993-02-27");
 	$("[name~='memPhone']").val("0953589679");
-	$("[name~='memGender']").val("M");
+	$("[name~='memGender']").val("m");
 	
 }
 
