@@ -8,6 +8,8 @@
 	EmpService dao = new EmpService();
 	List<EmpVO> list = dao.getAll();
 	pageContext.setAttribute("list", list);
+	String authIdlistNo =(String)request.getAttribute("authIdlistNo");
+	pageContext.setAttribute("authIdlistNo", authIdlistNo);
 %>
 <%
 session.getAttribute("account");
@@ -38,7 +40,9 @@ if(!authorityList.contains("101")){
 <script src="<%=request.getContextPath()%>/backend/emp/js/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/backend/emp/js/0_new.js "></script>
 <style type="text/css">
-
+	.aaa{
+		height:1200px;
+	}
 </style>
 </head>
 <body>
@@ -69,7 +73,7 @@ if(!authorityList.contains("101")){
 
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-xs-12 col-sm-2 aa" style="background-color: #DCDCDC;">
+				<div class="col-xs-12 col-sm-2 aaa" style="background-color: #DCDCDC;">
 					<div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
 					  <!-- 區塊1 -->
 					  <c:if test="${fn:contains(authorityList,'102')}"> <%-- 行政業務管理 --%>
@@ -263,11 +267,11 @@ if(!authorityList.contains("101")){
 					end="<%=pageIndex+rowsPerPage-1%>">			
 					<tr align='center' valign='middle'
 						${(EmpVO.empId==param.empId) ? 'bgcolor=lightblue':''}
-						>
-<%-- 						${(EmpVO.empId==param.authIdlistNo) ? 'bgcolor=lightblue':''} --%>
+						
+						${(EmpVO.empId == authIdlistNo) ? 'bgcolor=lightblue':''}>
 						<!--將修改的那一筆加入對比色而已-->
 						<td ><img src='data:image/jpeg;base64,${EmpVO.bs64}'
-							width="120" height="80" /></td>
+							width="150" height="110" /></td>
 						<td >${EmpVO.empId}</td>
 						<td >${EmpVO.empName}</td>
 						<td >${EmpVO.empAccount}</td>

@@ -146,7 +146,7 @@ public class MemServlet extends HttpServlet {
 				 * 2.開始查詢資料
 				 ****************************************/
 				MemService memSvc = new MemService();
-				MemVO memid = memSvc.getOneMem(memId);
+				MemVO memid = memSvc.getOneMem_web(memId);
 
 				/***************************
 				 * 3.查詢完成,準備轉交(Send the Success view)
@@ -195,7 +195,7 @@ public class MemServlet extends HttpServlet {
 				}
 
 				MemService memSvc = new MemService();
-				MemVO memvo = memSvc.getOneMem(memId);
+				MemVO memvo = memSvc.getOneMem_web(memId);
 
 				/***************************
 				 * 3.查詢完成,準備轉交(Send the Success view)
@@ -244,7 +244,7 @@ public class MemServlet extends HttpServlet {
 				}
 
 				MemService memSvc = new MemService();
-				MemVO memvo = memSvc.getOneMem(memId);
+				MemVO memvo = memSvc.getOneMem_web(memId);
 
 				/***************************
 				 * 3.查詢完成,準備轉交(Send the Success view)

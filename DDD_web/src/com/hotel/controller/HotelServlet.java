@@ -389,6 +389,7 @@ public class HotelServlet extends HttpServlet {
 				/***********************
 				 * 1.接收請求參數 - 輸入格式的錯誤處理
 				 *************************/
+				String myModal = request.getParameter("myModal").trim();
 				String hotelType = request.getParameter("hotelType").trim();
 
 				String hotelName = request.getParameter("hotelName").trim();
@@ -549,6 +550,7 @@ public class HotelServlet extends HttpServlet {
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					request.setAttribute("hotelVO", hotelVO); // 含有輸入格式錯誤的empVO物件,也存入req
+					request.setAttribute("myModal", myModal); // 含有輸入格式錯誤的empVO物件,也存入req
 					RequestDispatcher failureView = request.getRequestDispatcher("/frontend_hotel/hotel/addhotel.jsp");
 					failureView.forward(request, response);
 					return;
@@ -597,6 +599,7 @@ public class HotelServlet extends HttpServlet {
 				/***************************
 				 * 1.接收請求參數
 				 ****************************************/
+				String tab=request.getParameter("tab").trim();	
 				String hotelType = request.getParameter("hotelType").trim();
 
 				String hotelName = request.getParameter("hotelName").trim();
@@ -748,6 +751,7 @@ public class HotelServlet extends HttpServlet {
 				// Send the use back to the form, if there were errors
 				if (!errorMsgs.isEmpty()) {
 					request.setAttribute("hotelVO", hotelVO); // 含有輸入格式錯誤的empVO物件,也存入req
+					request.setAttribute("tab", tab);
 					RequestDispatcher failureView = request
 							.getRequestDispatcher("/frontend_hotel/hotel/findByPrimaryKey.jsp");
 					failureView.forward(request, response);
@@ -1003,6 +1007,7 @@ public class HotelServlet extends HttpServlet {
 				/***************************
 				 * 1.接收請求參數
 				 ****************************************/
+				String tab=request.getParameter("tab").trim();
 				String hotelId = request.getParameter("hotelId").trim();
 				// 進DB亂數
 				String hotelPwd_1 = request.getParameter("hotelPwd").trim();
@@ -1029,7 +1034,7 @@ public class HotelServlet extends HttpServlet {
 				String hotelPwd = Util_psw.key(hotelPwd_0);
 
 				if (!errorMsgs.isEmpty()) {
-
+					request.setAttribute("tab", tab);
 					RequestDispatcher failureView = request
 							.getRequestDispatcher("/frontend_hotel/hotel/findByPrimaryKey.jsp");
 					failureView.forward(request, response);

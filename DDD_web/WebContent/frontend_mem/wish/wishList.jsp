@@ -9,7 +9,7 @@
 	WishService wishsvc = new WishService();
 	List<Map> list =wishsvc.getOneWishOfmemNO(memVO.getMemId());
 	pageContext.setAttribute("list", list);
-    	
+    
 %>
 <!-- //查看詳情還沒做 -->
 <<style>

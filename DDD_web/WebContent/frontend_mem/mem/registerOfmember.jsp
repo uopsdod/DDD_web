@@ -72,8 +72,8 @@ session.getAttribute("account_mem");
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">成為夥伴</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">夥伴登入</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/addhotel.jsp">成為夥伴</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/loginhotel.jsp">夥伴登入</a></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">問題回報</a></li>
                 </ul>
             </div>
@@ -104,13 +104,15 @@ session.getAttribute("account_mem");
         </div>
         <div>
         <%-- 錯誤表列 --%>
+        <div class="col-sm-12 text-center">
 		<c:if test="${not empty errorMsgs}">
-			<font color='red'>
-					<c:forEach var="message" items="${errorMsgs}">
-						${message}
-					</c:forEach>	
-			</font>	
-		</c:if>     
+				<font color='red' style="font-family: Tahoma, Verdana, 微軟正黑體;text-align:center;">									
+						<c:forEach var="message" items="${errorMsgs}">
+								${message}
+						</c:forEach>										
+				</font>
+		</c:if>  
+		</div>   
 			<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/mem/mem.do">  
 	            <h2>註冊帳戶</h2>
 	            <h4>加入我們讓您的旅程住得開心玩得開心</h4>
@@ -122,9 +124,9 @@ session.getAttribute("account_mem");
 	            <input type="text" name="memBirthDate" id ="register" placeholder="Birthday" value="<%=(memVO == null) ? "" : memVO.getMemBirthDate()%>"><br>
 	            <input type="text" name="memPhone" id ="register" placeholder="Phone" value="<%=(memVO == null) ? "" : memVO.getMemPhone()%>"><br>
 	                <div class="abgne-menu-20140101-1">
-	                    <input type="radio" id="male" name="memGender"  value="M" checked>
+	                    <input type="radio" id="male" name="memGender"  value="m" checked>
 	                    <label for="male">male</label>        
-	                    <input type="radio" id="female" name="memGender" value="F">
+	                    <input type="radio" id="female" name="memGender" value="f">
 	                    <label for="female">female</label>
 	                </div>
 	            </div>
@@ -132,7 +134,7 @@ session.getAttribute("account_mem");
 				<input type="hidden" name="memBlackList" value="0"> 
 				<input type="hidden" name="action" value="insert"> 
 	            <div align="center">
-	                <button id="LoginButton">註冊</button>
+	                <button id="LoginButton">註冊</button><input type="button" id ="magic">
 	            </div>
 			</FORM>
             <div id="forgotPaw" align="center">
@@ -149,5 +151,23 @@ session.getAttribute("account_mem");
         </div>
     </section>
 </body>
-
 </html>
+<script>
+function load() {
+	document.getElementById("magic").onclick=magic;
+	
+}
+window.onload = load;
+
+function magic(){
+	$("[name~='memName']").val("張西西");
+	$("[name~='memAccount']").val("ck001583219@gmail.com");
+	$("[name~='memPsw']").val("a123456");
+	$("[name~='memTwId']").val("H126301368");
+	$("[name~='memBirthDate']").val("1993-02-27");
+	$("[name~='memPhone']").val("0953589679");
+	$("[name~='memGender']").val("m");
+	
+}
+
+</script>

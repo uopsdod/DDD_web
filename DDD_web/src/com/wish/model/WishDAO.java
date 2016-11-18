@@ -339,7 +339,7 @@ public class WishDAO implements WishDAO_interface {
 				map.put("hotelName",rs.getString("hotelName"));
 				map.put("roomPrice",rs.getString("roomPrice"));
 				map.put("roomDisccountPercent",rs.getInt("roomDisccountPercent"));
-				System.out.println(rs.getDouble("roomDisccountPercent"));//未來取得值注意 目前有問題
+				System.out.println(rs.getInt("roomDisccountPercent")+"%");//未來取得值注意 目前有問題
 				map.put("roomName",rs.getString("roomName"));
 				map.put("roomTotalNo",rs.getInt("roomTotalNo"));
 				map.put("roomDiscountStartDate",rs.getInt("roomDiscountStartDate"));//未來必須轉時間

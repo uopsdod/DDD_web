@@ -69,7 +69,7 @@ public class Partner extends HttpServlet {
 			outStr = gson.toJson(tmpMemVOList);
 			res.setContentType(CONTENT_TYPE);
 			PrintWriter out = res.getWriter();
-			System.out.println("outStr:" + outStr);
+			//System.out.println("outStr:" + outStr);
 			out.println(outStr);
 		}else if("getImage".equals(action)){
 			//System.out.println("getImage match: ");

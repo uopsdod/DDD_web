@@ -63,8 +63,8 @@ session.setAttribute("memVO", memVO);
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">成為夥伴</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">夥伴登入</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/addhotel.jsp">成為夥伴</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/loginhotel.jsp">夥伴登入</a></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">問題回報</a></li>
                 </ul>
             </div>
@@ -117,7 +117,7 @@ session.setAttribute("memVO", memVO);
         <!-- 浮動列 -->
         <div id="top_header1">
             <div class="col-md-6 col-md-offset-1 ">
-                <img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg">
+            <a href="<%=request.getContextPath()%>/frontend_mem/index.jsp"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg"></a>
                 
             </div>
             <div class="col-md-4 col-md-offset-1 ">
@@ -148,8 +148,8 @@ session.setAttribute("memVO", memVO);
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">成為夥伴</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">夥伴登入</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/addhotel.jsp">成為夥伴</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/loginhotel.jsp">夥伴登入</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">問題回報</a></li>
                     </ul>
                 </div>               

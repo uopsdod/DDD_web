@@ -74,8 +74,8 @@ session.setAttribute("memVO", memVO);
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">成為夥伴</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">夥伴登入</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/addhotel.jsp">成為夥伴</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/loginhotel.jsp">夥伴登入</a></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">問題回報</a></li>
                 </ul>
             </div>
@@ -107,13 +107,15 @@ session.setAttribute("memVO", memVO);
         <div>
             <h2>會員登入</h2>
             <h4>Welcome to Back</h4>
+            <div class="col-sm-12 text-center">
 			<c:if test="${not empty errorMsgs}">
-				<font color='red' >									
+				<font color='red' style="font-family: Tahoma, Verdana, 微軟正黑體;">									
 						<c:forEach var="message" items="${errorMsgs}">
 								${message}
 						</c:forEach>										
 				</font>
-			</c:if>            
+			</c:if> 
+			</div>           
             <form action="<%=request.getContextPath()%>/mem/mem.do" method="post">
             <div align="center">
                 <input type="text" name="UserName" value="" placeholder="UserName" id="UserName">

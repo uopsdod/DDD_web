@@ -24,19 +24,41 @@
 	<h1 class="text-center">哈囉 ! Chat Room ～哩後！</h1>
 
 	<!-- 聊天的div -->
-<div class="container">
-    <div class="row">
-        <div class="col-md-5">
-            <div class="panel panel-primary">
-                <div class="panel-heading" id="accordion">
-                    <span class="glyphicon glyphicon-comment"></span> Chat
-                    <div class="btn-group pull-right">
-                        <a type="button" class="btn btn-default btn-xs" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                            <span class="glyphicon glyphicon-chevron-down"></span>
-                        </a>
-                    </div>
-                </div>
-	            <div class="panel-collapse collapse" id="collapseOne">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-10">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<!-- 聊天視窗標題 -->
+						<span class="glyphicon glyphicon-comment"></span> Chat
+						<div class="btn-group pull-right">
+							<button type="button"
+								class="btn btn-default btn-xs dropdown-toggle"
+								data-toggle="dropdown">
+								<span class="glyphicon glyphicon-chevron-down"></span>
+							</button>
+							<!-- 右上角的選單 -->
+							<ul class="dropdown-menu slidedown">
+								<li><a href="http://www.jquery2dotnet.com"> <span
+										class="glyphicon glyphicon-refresh"></span> Refresh
+								</a></li>
+								<li><a href="http://www.jquery2dotnet.com"> <span
+										class="glyphicon glyphicon-ok-sign"></span> Available
+								</a></li>
+								<li><a href="http://www.jquery2dotnet.com"> <span
+										class="glyphicon glyphicon-remove"></span> Busy
+								</a></li>
+								<li><a href="http://www.jquery2dotnet.com"> <span
+										class="glyphicon glyphicon-time"></span> Away
+								</a></li>
+								<li class="divider"></li>
+								<li><a href="http://www.jquery2dotnet.com"> <span
+										class="glyphicon glyphicon-off"></span> Sign Out
+								</a></li>
+							</ul>
+						</div>
+					</div>
+					<!--  聊天內容視窗 -->
 					<div id="messagesArea" class="panel-body">
 						<ul class="chat">
 
@@ -44,6 +66,8 @@
 
 						</ul>
 					</div>
+
+
 					<div class="panel-footer">
 						<h5 id="userName"></h5>
 						<input type="button" id="connect" class="btn btn-success btn-sm"
@@ -56,20 +80,17 @@
 						<div class="input-group">
 							<input id="message" class="form-control input-sm" type="text"
 								placeholder="Type your message here..."
-								onkeydown="if (event.keyCode == 13) sendMessage();" />
-							<span
+								onkeydown="if (event.keyCode == 13) sendMessage();" /> <span
 								class="input-group-btn"> <input type="submit"
 								id="sendMessage" class="btn btn-primary btn-sm" value="送出"
 								onclick="sendMessage();" />
 							</span>
 						</div>
 					</div>
-	            </div>
-            </div>
-        </div>
-    </div>
-</div>
-
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 	<h3 id="statusOutput" class="statusOutput"></h3>
@@ -83,19 +104,15 @@
 	var webCtx = path.substring(0, path.indexOf('/', 1));
 	var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
 
-// 	var MyPoint = "/MyEchoServer";
-// 	var host = window.location.host;
-// 	var path = window.location.pathname;
-// 	var webCtx = path.substring(0, path.indexOf('/', 1));
-// 	var endPointURL = "ws://localhost:8081/DDD_web/android/live2/MsgCenter";
- 	var statusOutput = document.getElementById("statusOutput");
+	var statusOutput = document.getElementById("statusOutput");
+
 	var webSocket;
 
 	/* 使用者資訊 */
-	var fromMemId = "10000001";
-	var toMemId = "10000002";
-	var myPic = "img/profile_user.jpg";
-	var yourPic = "img/profile_user2.jpg";
+	var toMemId = "10000001";
+	var fromMemId = "10000002";
+	var yourPic = "img/profile_user.jpg";
+	var myPic = "img/profile_user2.jpg";
 
 	document.getElementById("userName").innerHTML = fromMemId;
 	var messagesArea = document.getElementById("messagesArea");

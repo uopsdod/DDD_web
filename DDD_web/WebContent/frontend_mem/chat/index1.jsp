@@ -32,7 +32,16 @@
     var endPointURL = "ws://localhost:8081/DDD_web/android/live2/MsgCenter";
 	var statusOutput = document.getElementById("statusOutput");
 	var webSocket;
-	
+
+    var PartnerMsg = {
+    		"action":"", // uploadTokenId, removeTokenId, bindMemIdWithSession, chat, 
+    		"memChatContent":"Empty Message",
+    		"memChatDate":"2016-11-17 12:07:51.1", //2016-11-17 12:07:51.1
+    		"memChatMemVO":{"memId":"","memOrds":[]},
+    		"memChatToMemVO":{"memId":"","memOrds":[]},
+    		"tokenId":"aoisjcpoaishcp" // tokenId
+    	};	
+
 	function connect() {
 		// 建立 websocket 物件
 		webSocket = new WebSocket(endPointURL);
@@ -43,22 +52,26 @@
 			document.getElementById('connect').disabled = true;
 			document.getElementById('disconnect').disabled = false;
 			
-            /* 偷傳自己的訊息 */
-            var fromMemId = "10000002";
+            /* 偷傳自己的訊息 */	
+			var fromMemId = "10000002";
             var toMemId = "10000001";
             var action ="bindMemIdWithSession";
-            var message = "welcome";
-            
-            var jsonObj = {"fromMemId" : fromMemId, "toMemId" : toMemId, "action" : action, "message" : message};
-            webSocket.send(JSON.stringify(jsonObj));			
+
+            PartnerMsg.memChatMemVO.memId = fromMemId;
+            PartnerMsg.memChatToMemVO.memId = toMemId;
+            PartnerMsg.action = action; 
+
+            webSocket.send(JSON.stringify(PartnerMsg));	          
 		};
 
 		webSocket.onmessage = function(event) {
 			var messagesArea = document.getElementById("messagesArea");
 	        var jsonObj = JSON.parse(event.data);
-	        var message = jsonObj.userName + ": " + jsonObj.message + "\r\n";
+	        var message = jsonObj.memChatMemVO.memId + ": " + jsonObj.memChatContent + "\r\n";
 	        messagesArea.value = messagesArea.value + message;
 	        messagesArea.scrollTop = messagesArea.scrollHeight;
+	        
+	        console.log("Debug1: "+jsonObj.memChatContent);
 		};
 
 		webSocket.onclose = function(event) {
@@ -85,13 +98,17 @@
 	        alert ("訊息請勿空白!");
 	        inputMessage.focus();	
 	    }else{
-	        
-            var fromMemId = "10000002";
+            /* 偷傳自己的訊息 */	
+			var fromMemId = "10000002";
             var toMemId = "10000001";
             var action ="chat";
-            
-            var jsonObj = {"fromMemId" : fromMemId, "toMemId" : toMemId, "action" : action, "message" : message};
-            webSocket.send(JSON.stringify(jsonObj));	        
+
+            PartnerMsg.memChatMemVO.memId = fromMemId;
+            PartnerMsg.memChatToMemVO.memId = toMemId;
+            PartnerMsg.action = action;
+            PartnerMsg.memChatContent = message;
+
+            webSocket.send(JSON.stringify(PartnerMsg));     
 	        
 	        inputMessage.value = "";
 	        inputMessage.focus();
