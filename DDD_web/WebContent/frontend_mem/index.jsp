@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page import="com.ad.model.*"%>
 <%@ page import="com.mem.model.*"%>
 <%@ page import="java.text.*"%>
 <%@ page import="java.util.*"%>
@@ -8,11 +9,10 @@
 
 <%
 session.getAttribute("account_mem");
-
 MemVO memVO =(MemVO)session.getAttribute("memVO");
 session.setAttribute("memVO", memVO);
-
 %>
+
 
 <html>
 <head>

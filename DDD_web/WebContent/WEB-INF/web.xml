@@ -176,6 +176,15 @@
     <url-pattern>/android/live2/partner.do</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>AndroidWishServlet</servlet-name>
+    <servlet-class>android.Wish.Wish</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AndroidWishServlet</servlet-name>
+    <url-pattern>/android/Wish/wish.do</url-pattern>
+  </servlet-mapping>
+  
   <filter>
     <filter-name>setCharacterEncoding</filter-name>
     <filter-class>com.filters.SetCharacterEncodingFilter</filter-class>
