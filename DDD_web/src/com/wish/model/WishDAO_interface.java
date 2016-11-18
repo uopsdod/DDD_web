@@ -9,6 +9,7 @@ public interface WishDAO_interface {
 	public void delete(String aWishMemId, String aWishRoomId);
 	public WishVO findByPrimaryKey(String aWishMemId, String aWishRommId);
 	public List<WishVO> getAll();
+	public List<String> getAllWishRoomId(String aWishMemId);
 	//-------------------------------------------貴新增
 	public List<WishVO> getOneWishOfmem(String wishMemId);
 	public void delete_one(String wishMemId,String WishRoomId);

@@ -33,6 +33,10 @@ public class WishService {
 	public List<WishVO> getAll(){
 		return dao.getAll();
 	}
+	
+	public List<String> SgetAllWishRoomId(String aWishMemId){
+		return dao.getAllWishRoomId(aWishMemId);
+	}
 
 	//--------------------------------------貴新增
 	public List<Map> getOneWishOfmemNO(String wishMemId) {

@@ -18,6 +18,7 @@ public class WishJDBCDAO implements WishDAO_interface {
 	private static String GET_ALL_STMT = "SElECT wishMemId,wishRoomId FROM wish order by wishMemId";
 	private static String UPDATE = "UPDATE wish set wishRoomId = ? where wishMemId = ?";
 	private static String DELETE = "DELETE FROM wish where wishMemId = ? AND  wishRoomid = ?";
+	private static String GET_ALL_FOR_ONE = "SELECT * FROM wish where wishMemId = ?";//新方法，勿刪
 	//-----------------貴新增
 	private static final String GET_ONE_WISH = "SELECT wishRoomId FROM wish where wishMemId=?";
 	private static final String DELETE_ONE = "DELETE  from wish where wishMemId=? and WishRoomId =?";
@@ -97,6 +98,48 @@ public class WishJDBCDAO implements WishDAO_interface {
 				}
 			}
 		}
+	}
+	
+	@Override
+	public List<String> getAllWishRoomId(String aWishMemId) {
+		List<String> list = new ArrayList<String>();
+		WishVO wishVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(this.driver);
+			con = DriverManager.getConnection(this.url, this.userid, this.passwd);
+			pstmt = con.prepareStatement(WishJDBCDAO.GET_ALL_FOR_ONE);
+			pstmt.setString(1, aWishMemId);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				list.add(rs.getString("wishRoomId"));
+			}
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver." + e.getMessage());
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured." + se.getMessage());
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
 	}
 
 	public List<WishVO> getOneWishOfmem(String wishMemId) {
@@ -371,5 +414,7 @@ public class WishJDBCDAO implements WishDAO_interface {
 			System.out.println(wishVO1.getWishRoomId());
 		};
 	}
+
+	
 
 }
