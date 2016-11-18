@@ -208,13 +208,22 @@ function construct(hotel){
 	}
 	
 	var itemLeftDiv = document.createElement("div");
-	itemLeftDiv.className="col-xs-12 col-sm-9 ";
+	itemLeftDiv.className="col-xs-12 col-sm-6 ";
+	
+	var itemMidDiv = document.createElement("div");
+	itemMidDiv.className="col-xs-12 col-sm-3 ";
+
+	
 	var itemRightDiv = document.createElement("div");
 	itemRightDiv.className="col-xs-12 col-sm-3 ";
 	itemRightDiv.id=hotel.roomBottomId;
 	
+	var roomName = document.createElement("div");
+	roomName.style="font-size:15px;margin-top:15px;color:red;";
+	roomName.innerText=hotel.roomName;
+	
 	var price = document.createElement("div");
-	price.style="font-size:30px;margin-top:10px;";
+	price.style="font-size:30px;margin-top:10px;margin-bottom:-20px;";
 	price.innerText=hotel.bottomPrice;
 	
 	
@@ -225,7 +234,11 @@ function construct(hotel){
 	
 	itemLeftDiv.appendChild(h3);
 	itemLeftDiv.appendChild(starDiv);
-	innerDiv.appendChild(itemLeftDiv);	
+	innerDiv.appendChild(itemLeftDiv);
+	
+	itemMidDiv.appendChild(roomName);
+	innerDiv.appendChild(itemMidDiv);
+	
 	itemRightDiv.appendChild(price);	
 	innerDiv.appendChild(itemRightDiv);
 	outDiv.appendChild(innerDiv);
@@ -236,6 +249,9 @@ function construct(hotel){
 //      <div class="col-xs-12 col-sm-10">
 	// 		<h3>新竹豐邑喜來登大飯店</h3>
 	// 		<div><img star>*n</div>
+//		</div>
+//		<div class="col-xs-12 col-sm-2">
+//			<div>RoomName<div>	
 //		</div>
 //		<div class="col-xs-12 col-sm-2">
 //         <div class="price"></div>

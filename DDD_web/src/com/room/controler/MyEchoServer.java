@@ -39,10 +39,15 @@ private static final Set<Session> allSessions = Collections.synchronizedSet(new 
 	}
 	
 	
-	public static void SendMessage(String roomId,int Price){
+	public static void SendMessage(String roomId,int Price,String str){
 		JSONArray priceBag= new JSONArray();
 		priceBag.put(roomId);
+		
+		if(Price>=0){
 		priceBag.put(Price);
+		}else{
+			priceBag.put(str);	
+		}
 		
 		for (Session session : allSessions) {
 			if (session.isOpen())

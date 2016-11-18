@@ -14,10 +14,7 @@
 		webSocket = new WebSocket(endPointURL);
 
 		webSocket.onopen = function(event) {
-			updateStatus("WebSocket 成功連線");
-			document.getElementById('sendMessage').disabled = false;
-			document.getElementById('connect').disabled = true;
-			document.getElementById('disconnect').disabled = false;
+			
 		};
 
 		webSocket.onmessage = function(event) {
@@ -27,58 +24,47 @@
 	        var one = document.getElementById(jsonObj[0]);
 	       
 	        if(one!=null){//版面上有這個id才更新降價
+	        	
+	        
 		        var price = one.childNodes[0];
 	//	        alert(price.innerText);
-		        price.style="font-size:30px;margin-top:10px; text-decoration:line-through";
+		        price.style="font-size:30px;margin-top:10px;margin-bottom:-20px; text-decoration:line-through";
 		        
 		        var priceNew = document.createElement("div");
-		        priceNew.style="font-size:30px;margin-top:10px;";
-		        priceNew.innerText=jsonObj[1];
-		        one.appendChild(priceNew);
-		        setInterval(function(){price.remove(0);}, 3000);
-	        
+		        priceNew.style="font-size:30px;margin-top:10px;margin-bottom:-20px;";
+		        priceNew.innerText=jsonObj[1];     
+		        if(jsonObj[1]=="已下架"){
+		        	priceNew.style="font-size:20px;margin-top:10px;margin-bottom:-20px;color:red;";
+		        }
+		        
+		        
+		        var box = one.childNodes;
+		        if(box.length==1){
+		        	  one.appendChild(priceNew);
+				      setInterval(function(){price.remove(0);}, 3000);  	
+		        }else if(box.length==2){
+		        	one.innerHTML = null;
+		        	one.appendChild(priceNew);
+		        }
 		       // $(this).parent(".ex").hide("slow");
 //		        $("#"+jsonObj[0]+":first-child").hide("slow",function(){ this.remove(); });
 		    }//if
 		};
 
 		webSocket.onclose = function(event) {
-			updateStatus("WebSocket 已離線");
+	
 		};
 	}
 	
 	
-	var inputUserName = document.getElementById("userName");
-	inputUserName.focus();
-	
 	function sendMessage() {
-	    var userName = inputUserName.value.trim();
-	    if (userName === ""){
-	        alert ("使用者名稱請勿空白!");
-	        inputUserName.focus();	
-			return;
-	    }
-	    
-	    var inputMessage = document.getElementById("message");
-	    var message = inputMessage.value.trim();
-	    
-	    if (message === ""){
-	        alert ("訊息請勿空白!");
-	        inputMessage.focus();	
-	    }else{
-	        var jsonObj = {"userName" : userName, "message" : message};
-	        webSocket.send(JSON.stringify(jsonObj));
-	        inputMessage.value = "";
-	        inputMessage.focus();
-	    }
+	   
 	}
 
 	
 	function disconnect () {
 		webSocket.close();
-		document.getElementById('sendMessage').disabled = true;
-		document.getElementById('connect').disabled = false;
-		document.getElementById('disconnect').disabled = true;
+		
 	}
 
 	
@@ -86,4 +72,3 @@
 		statusOutput.innerHTML = newStatus;
 	}
 	
-	alert(path);

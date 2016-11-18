@@ -273,9 +273,11 @@ public class RoomServlet extends HttpServlet {
 			
 				/***************************2.開始查詢資料*****************************************/
 				RoomService roomSvc = new RoomService();
-				RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
-				
+				RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);				
 				Boolean onSell = roomVO.getRoomForSell();
+				
+				
+				
 				
 				if(onSell==false){
 					RequestDispatcher failureView = req
@@ -298,6 +300,11 @@ public class RoomServlet extends HttpServlet {
 				roomVO.setRoomForSell(false);
 				roomSvc.update(roomVO);
 				
+				
+				
+				MyEchoServer.SendMessage(roomId,-500,"已下架");	//需要將roomId,與已下架往前端推
+				
+			
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/frontend_hotel/room/listAllRoomSell.jsp");
 				failureView.forward(req, res);
@@ -438,7 +445,7 @@ public class RoomServlet extends HttpServlet {
 				//建立房型的降價機制,與下架機制
 				Float cutPrice = roomPrice*roomDisccountPercent*0.01f;
 				int cutPriceInt = cutPrice.intValue();
-				DynamicPrice(roomId,beforeSell,roomDiscountHr*30*60*1000,roomPrice,cutPriceInt,roomBottomPrice,roomOnePrice,roomDiscountEndDate);
+				DynamicPrice(roomId,beforeSell,roomDiscountHr*5*1000,roomPrice,cutPriceInt,roomBottomPrice,roomOnePrice,roomDiscountEndDate);
 
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
@@ -460,6 +467,46 @@ public class RoomServlet extends HttpServlet {
 				failureView.forward(req, res);
 				return;
 			}
+		}
+		
+		
+		
+		
+		
+		if ("AllSell".equals(action)) { // 來自listAllRoom.jsp的請求
+
+			
+		
+				/***************************2.開始查詢資料****************************************/
+				System.out.println("所有房型上架了");
+				RoomService roomSvc = new RoomService();
+				List<RoomVO> roomList = roomSvc.getAll();
+				int i =0;
+				for(RoomVO roomVO:roomList){
+					
+					String roomId = roomVO.getRoomId();
+					boolean beforeSell = roomVO.getRoomForSell();
+					int roomDiscountHr = roomVO.getRoomDiscountHr();
+					int roomPrice = roomVO.getRoomPrice();
+					int roomDisccountPercent = roomVO.getRoomDisccountPercent();
+					int roomBottomPrice= roomVO.getRoomBottomPrice();
+					boolean roomOnePrice = roomVO.getRoomOnePrice(); 
+					int roomDiscountEndDate = roomVO.getRoomDiscountEndDate();
+					
+					roomVO.setRoomForSell(true);
+					roomSvc.update(roomVO);
+					//建立房型的降價機制,與下架機制
+					Float cutPrice = roomPrice*roomDisccountPercent*0.01f;
+					int cutPriceInt = cutPrice.intValue();
+					DynamicPrice(roomId,beforeSell,roomDiscountHr*(10+2*i)*1000,roomPrice,cutPriceInt,roomBottomPrice,roomOnePrice,1000*60*60*23);		
+					i++;
+				}
+			
+				/***************************3.查詢完成,準備轉交(Send the Success view)************/
+				     
+			
+				/***************************其他可能的錯誤處理**********************************/
+		
 		}
 		
 		
@@ -1204,7 +1251,7 @@ public class RoomServlet extends HttpServlet {
 		 data.put("BottomPrice",BottomPrice);	//最低價錢
 		 OnData.put(roomId,data);
 		
-		
+		 MyEchoServer.SendMessage(roomId,price,"");	//每次執行時,需要將roomId,與價錢用socket往前端推
 		 
 	     TimerTask taskPrice = new TimerTask(){
 	        
@@ -1227,7 +1274,7 @@ public class RoomServlet extends HttpServlet {
 	        		 one.put("price",nowPrice); //未達底價時繼續降價
 	        	 } 
 	        	
-	        	MyEchoServer.SendMessage(roomId,one.get("price"));  
+	        	MyEchoServer.SendMessage(roomId,one.get("price"),"");  
 	        	System.out.println(one.get("price"));
 	         }
 	     };
@@ -1236,11 +1283,12 @@ public class RoomServlet extends HttpServlet {
 	     if(roomOnePrice==false){     
 	     //建立降價排程
 //	     timer.scheduleAtFixedRate(taskPrice, aCutPriceTime, aCutPriceTime); 
-	     timer.scheduleAtFixedRate(taskPrice, 10000, 10000); 
+	     timer.scheduleAtFixedRate(taskPrice, aCutPriceTime, aCutPriceTime); 
 	     								//執行delay時間		//每次執行間隔時間(毫秒)
 											//需要一個java.util.Date物件
 	     }
 	     
+
 	     
 	     TimerTask taskDown = new TimerTask(){
 		        
@@ -1258,7 +1306,7 @@ public class RoomServlet extends HttpServlet {
 	        	 OnTimer.remove(roomId);	//清空計時器
 	        	 OnData.remove(roomId); 	//清空資料
 	        	 System.out.println("下架了");
-	        	 
+	        	 MyEchoServer.SendMessage(roomId,-500,"已下架");
 	        	 /*************下架了***************/
 	         }
 	     };
@@ -1274,6 +1322,16 @@ public class RoomServlet extends HttpServlet {
 	     down.schedule(taskDown, DateTask); 
 	     		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public static void RegularOnTime(String roomId){ 
 		
 		RoomService roomSvc = new RoomService();
@@ -1293,7 +1351,7 @@ public class RoomServlet extends HttpServlet {
 		 
 		 int price = roomVO.getRoomPrice();
 		 int roomDisccountPercent = roomVO.getRoomDisccountPercent();
-		 
+		 int aCutPriceTime = roomVO.getRoomDiscountHr() * 1000*5;	//每五秒為一個單位
 		 Float cutPrice = price*roomDisccountPercent*0.01f;
 		 int cutPriceInt = cutPrice.intValue();
 		 int BottomPrice = roomVO.getRoomBottomPrice();
@@ -1313,7 +1371,7 @@ public class RoomServlet extends HttpServlet {
 		 data.put("BottomPrice",BottomPrice);	//最低價錢
 		 OnData.put(roomId,data);
 		
-		
+		 MyEchoServer.SendMessage(roomId,price,"");	//每次執行時,需要將roomId,與價錢用socket往前端推
 		 
 	     TimerTask taskPrice = new TimerTask(){
 	        
@@ -1337,7 +1395,7 @@ public class RoomServlet extends HttpServlet {
 	        	 } 
 	        	
 	        	 
-	        	MyEchoServer.SendMessage(roomId,one.get("price")); 
+	        	MyEchoServer.SendMessage(roomId,one.get("price"),""); 
 	        	
 	        	System.out.println(one.get("price"));
 	         }
@@ -1347,7 +1405,7 @@ public class RoomServlet extends HttpServlet {
 	     if(roomVO.getRoomOnePrice()==false){     
 	     //建立降價排程
 //	     timer.scheduleAtFixedRate(taskPrice, aCutPriceTime, aCutPriceTime); 
-	     timer.scheduleAtFixedRate(taskPrice, 10000, 10000); 
+	     timer.scheduleAtFixedRate(taskPrice, aCutPriceTime, aCutPriceTime); 
 	     								//執行delay時間		//每次執行間隔時間(毫秒)
 											//需要一個java.util.Date物件
 	     }
@@ -1369,7 +1427,7 @@ public class RoomServlet extends HttpServlet {
 	        	 OnTimer.remove(roomId);	//清空計時器
 	        	 OnData.remove(roomId); 	//清空資料
 	        	 System.out.println("下架了");
-	        	 
+	        	 MyEchoServer.SendMessage(roomId,-500,"已下架");
 	        	 /*************下架了***************/
 	         }
 	     };

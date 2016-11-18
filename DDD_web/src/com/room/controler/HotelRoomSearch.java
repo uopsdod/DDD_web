@@ -140,7 +140,7 @@ public class HotelRoomSearch extends HttpServlet {
 					JSONArray RoomIdarray= null;
 					int bottom =0;
 					String roomBottomId="";
-		
+					String roomName="";
 					
 					//hotel查詢上架房型條件
 					Map RoomMap = new HashMap();	
@@ -178,6 +178,7 @@ public class HotelRoomSearch extends HttpServlet {
 							{
 								bottom = thisRoomPrice;
 								roomBottomId = roomVO.getRoomId();
+								roomName = roomVO.getRoomName();
 							}
 					
 							RoomIdarray.put(Room);	//將符合條件的房型JsonObject裝進房型陣列中				
@@ -222,6 +223,7 @@ public class HotelRoomSearch extends HttpServlet {
 					
 					//=================此hotel通通滿足條件,開始加資料至回傳的jsonArrray===================================//
 				try{
+					obj.put("roomName",roomName);
 					obj.put("hotelRating",hotelRating);
 					obj.put("hotelId",hotelId);
 					obj.put("hotelName",hotelName);
