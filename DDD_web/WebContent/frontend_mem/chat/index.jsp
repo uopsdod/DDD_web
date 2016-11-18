@@ -36,7 +36,7 @@
                         </a>
                     </div>
                 </div>
-            <div class="panel-collapse collapse" id="collapseOne">
+	            <div class="panel-collapse collapse" id="collapseOne">
 					<div id="messagesArea" class="panel-body">
 						<ul class="chat">
 
@@ -56,14 +56,15 @@
 						<div class="input-group">
 							<input id="message" class="form-control input-sm" type="text"
 								placeholder="Type your message here..."
-								onkeydown="if (event.keyCode == 13) sendMessage();" /> <span
+								onkeydown="if (event.keyCode == 13) sendMessage();" />
+							<span
 								class="input-group-btn"> <input type="submit"
 								id="sendMessage" class="btn btn-primary btn-sm" value="送出"
 								onclick="sendMessage();" />
 							</span>
 						</div>
 					</div>
-            </div>
+	            </div>
             </div>
         </div>
     </div>
