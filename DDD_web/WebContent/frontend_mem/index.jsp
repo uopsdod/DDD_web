@@ -43,10 +43,10 @@ pageContext.setAttribute("advo",advo);
 <body>
     <!-- 開始導覽列 -->
     <header id="top_header">
-        <div class="col-md-6 col-md-offset-1 ">
+        <div class="col-md-5 col-md-offset-1 ">
             <a href="<%=request.getContextPath()%>/frontend_mem/index.jsp"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg"></a>
         </div>
-        <div class="col-md-4 col-md-offset-1 ">
+        <div class="col-md-5 col-md-offset-1 ">
             <div class="dropdown" style='display: inline-block;'>
                 <button class="btn text-muted" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                     訂單專區
@@ -126,11 +126,11 @@ pageContext.setAttribute("advo",advo);
         </div>
         <!-- 浮動列 -->
         <div id="top_header1" class="hidden-xs">
-            <div class="col-md-6 col-md-offset-1 ">
+            <div class="col-md-5 col-md-offset-1 ">
                 <a href="file:///D:/usee/usee/Desktop/%E5%B0%88%E9%A1%8C%E9%A6%96%E9%A0%81%E7%B7%B4%E7%BF%92/index.html"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg">
                 </a>
             </div>
-            <div class="col-md-4 col-md-offset-1 ">
+            <div class="col-md-5 col-md-offset-1 ">
                 <div class="dropdown" style='display: inline-block;'>
                     <button class="btn text-muted" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                         訂單專區

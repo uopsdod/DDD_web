@@ -9,7 +9,6 @@
 	WishService wishsvc = new WishService();
 	List<Map> list =wishsvc.getOneWishOfmemNO(memVO.getMemId());
 	pageContext.setAttribute("list", list);
-    
 %>
 <!-- //查看詳情還沒做 -->
 <<style>
@@ -30,15 +29,16 @@
 	                <h1 id="WishH2">- 我的願望清單          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
 	             	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/wish/wish.do">
 		                <c:forEach var="wish" items="${list}">		
-			                <hr style="border-top:3px solid lightgray">			
+			                <hr style="border-top:3px solid lightgray">				
 			                <img src='data:image/jpeg;base64,${wish.roomPhotoPic}' width="500" height="300" class="wishImg">
-			                <div class="roomName">${wish.hotelName}/${wish.roomName}</div>
-			                <div class="star">評價${wish.hotelRatingResult} *****</div>
-			                <div class="sale"><u>剩餘房數${wish.roomTotalNo}</u></div>
-			                <div class="sale"><u>優惠期間8:00~9:00</u></div>
-			                <br><br><br><br>
+			                <div class="roomName"><b>${wish.hotelName}/${wish.roomName}</b></div>
+			                <div class="house">旅館剩餘房數-${wish.roomRemainNo}</div>
+			                <div class="star">評價${wish.hotelRatingResult}</div>
+			                <div class="toNight1">原價</div>
+			               <del> <div class="price1">TWD ${wish.roomPrice}</div></del>
+			                <br><br><br>
 			                <div class="toNight">今晚價</div>
-			                <div class="price"><u>TWD ${wish.roomPrice*wish.roomDisccountPercent}</u></div>
+			                <div class="price"><u>TWD ${wish.salePrice}</u></div>
 			                <br>
 			                <button id="buttnOnimg" >查看詳情</button>
 			                <input type="hidden" name="action" value="delect"> 
