@@ -10,7 +10,7 @@
 		<link rel="stylesheet" href="<%=request.getContextPath()%>/bs/bootstrap.css">
 		<script src="<%=request.getContextPath()%>/jq/jquery-3.1.1.min.js"></script>
 		<script src="<%=request.getContextPath()%>/bs/bootstrap.min.js"></script>
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_cweOAnsKCSl-jXbIAO3yqlnZ2BbbSR4"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAg_hj_3C0zLlGwQfq7rQat6MhgkZwrZAk"></script>
 	
 		<style type="text/css">
 			html, body { height: 100%; margin: 0; padding: 0; }

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:aop="http://www.springframework.org/schema/aop"
+xmlns:tx="http://www.springframework.org/schema/tx"
+xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+  
+    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:/comp/env/jdbc/TestDB" />
+	</bean>
+    
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" destroy-method="destroy"> 
+        <property name="dataSource" ref="dataSource"/> 
+        <property name="mappingResources"> 
+            <list> 
+                <value>com/ord/model/ord.hbm.xml</value>
+                <value>com/mem/model/mem.hbm.xml</value>
+                <value>com/hotel/model/hotel.hbm.xml</value>
+                <value>com/room/model/room.hbm.xml</value>
+            </list> 
+        </property> 
+        <property name="hibernateProperties"> 
+            <props> 
+                <prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop> 
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+                <prop key="hibernate.transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</prop>
+                <prop key="hibernate.current_session_context_class">thread</prop>
+            </props> 
+        </property> 
+    </bean> 
+
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"/> 
+    </bean>    
+         
+    <bean id="ordDAO" class="com.ord.model.OrdDAO">
+        <property name="hibernateTemplate" ref="hibernateTemplate"/> 
+    </bean>
+
+    <bean id="transactionManager"
+        class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <tx:advice id="txOrdAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="insert" propagation="REQUIRED"/>
+            <tx:method name="update" propagation="REQUIRED"/>
+            <tx:method name="delete" propagation="REQUIRED"/>
+            <tx:method name="findByPrimaryKey" read-only="true"/>
+            <tx:method name="getAll" read-only="true"/>
+            <tx:method name="getAllByOrdMemId" read-only="true"/>
+            <tx:method name="getAllByOrdHotelId" read-only="true"/>
+       </tx:attributes>
+    </tx:advice>
+  
+    <aop:config>
+        <aop:pointcut id="ordDAOPointcut" expression="execution(* com.ord.model.OrdDAO_interface.*(..))"/>
+        <aop:advisor advice-ref="txOrdAdvice" pointcut-ref="ordDAOPointcut"/>
+    </aop:config>
+
+</beans>

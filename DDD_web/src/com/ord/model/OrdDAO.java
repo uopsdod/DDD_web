@@ -20,105 +20,152 @@ import org.hibernate.*;
 import util.HibernateUtil;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.sql.*;
+import java.util.*;
 
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.Criteria;
 
+import org.springframework.orm.hibernate3.HibernateTemplate;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+
+
 public class OrdDAO implements OrdDAO_interface {
 
 	private static final String GET_ALL_STMT = "from OrdVO order by ordId desc";
-	private static final String GET_ALL_ORDMEMID_STMT = "from OrdVO where ordMemId=:ordMemId order by ordId desc";
-	private static final String GET_ALL_ORDHOTELID_STMT = "from OrdVO where ordHotelId=:ordHotelId order by ordId desc";
+	private static final String GET_ALL_ORDMEMID_STMT = "from OrdVO where ordMemId=? order by ordId desc";
+	private static final String GET_ALL_ORDHOTELID_STMT = "from OrdVO where ordHotelId=? order by ordId desc";
 	
+
+	private HibernateTemplate hibernateTemplate;    
+    public void setHibernateTemplate(HibernateTemplate hibernateTemplate) { 
+        this.hibernateTemplate = hibernateTemplate;
+    }	
+	
+	
+//	@Override
+//	public void insert(OrdVO aOrdVO) {
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		try {
+//			session.beginTransaction();
+//			session.saveOrUpdate(aOrdVO);
+//			session.getTransaction().commit();
+//		} catch (RuntimeException ex) {
+//			session.getTransaction().rollback();
+//			throw ex;
+//		}
+//	}
+
 	@Override
 	public void insert(OrdVO aOrdVO) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			session.saveOrUpdate(aOrdVO);
-			session.getTransaction().commit();
-		} catch (RuntimeException ex) {
-			session.getTransaction().rollback();
-			throw ex;
-		}
-	}
+		hibernateTemplate.saveOrUpdate(aOrdVO);
+	}    
+    
+    
+//	@Override
+//	public void update(OrdVO aOrdVO) {
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		try {
+//			session.beginTransaction();
+//			session.saveOrUpdate(aOrdVO);
+//			session.getTransaction().commit();
+//		} catch (RuntimeException ex) {
+//			session.getTransaction().rollback();
+//			throw ex;
+//		}
+//	}
 
 	@Override
 	public void update(OrdVO aOrdVO) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			session.saveOrUpdate(aOrdVO);
-			session.getTransaction().commit();
-		} catch (RuntimeException ex) {
-			session.getTransaction().rollback();
-			throw ex;
-		}
-	}
+		hibernateTemplate.update(aOrdVO);
+	}	
+	
+//	@Override
+//	public void delete(String aOrdId) {
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		try {
+//			session.beginTransaction();
+//
+////        【此時多方(宜)可採用HQL刪除】
+////			Query query = session.createQuery("delete EmpVO where empno=?");
+////			query.setParameter(0, empno);
+////			System.out.println("刪除的筆數=" + query.executeUpdate());
+//
+////        【或此時多方(也)可採用去除關聯關係後，再刪除的方式】
+//			OrdVO ordVO = new OrdVO();
+//			ordVO.setOrdId(aOrdId);
+//			session.delete(ordVO);
+//
+////        【此時多方不可(不宜)採用cascade聯級刪除】
+////        【多方emp2.hbm.xml如果設為 cascade="all"或 cascade="delete"將會刪除所有相關資料-包括所屬部門與同部門的其它員工將會一併被刪除】
+////			EmpVO empVO = (EmpVO) session.get(EmpVO.class, empno);
+////			session.delete(empVO);
+//
+//			session.getTransaction().commit();
+//		} catch (RuntimeException ex) {
+//			session.getTransaction().rollback();
+//			throw ex;
+//		}
+//	}
 
 	@Override
 	public void delete(String aOrdId) {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-
-//        【此時多方(宜)可採用HQL刪除】
-//			Query query = session.createQuery("delete EmpVO where empno=?");
-//			query.setParameter(0, empno);
-//			System.out.println("刪除的筆數=" + query.executeUpdate());
-
-//        【或此時多方(也)可採用去除關聯關係後，再刪除的方式】
-			OrdVO ordVO = new OrdVO();
-			ordVO.setOrdId(aOrdId);
-			session.delete(ordVO);
-
-//        【此時多方不可(不宜)採用cascade聯級刪除】
-//        【多方emp2.hbm.xml如果設為 cascade="all"或 cascade="delete"將會刪除所有相關資料-包括所屬部門與同部門的其它員工將會一併被刪除】
-//			EmpVO empVO = (EmpVO) session.get(EmpVO.class, empno);
-//			session.delete(empVO);
-
-			session.getTransaction().commit();
-		} catch (RuntimeException ex) {
-			session.getTransaction().rollback();
-			throw ex;
-		}
-	}
-
+		//EmpVO empVO = (EmpVO) hibernateTemplate.get(EmpVO.class, empno);
+		OrdVO ordVO = new OrdVO(); //●●●去除關聯關係後，再刪除
+		ordVO.setOrdId(aOrdId);
+		hibernateTemplate.delete(ordVO);
+	}	
+	
+//	@Override
+//	public OrdVO findByPrimaryKey(String aOrdId) {
+//		OrdVO ordVO = null;
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		try {
+//			session.beginTransaction();
+//			ordVO = (OrdVO) session.get(OrdVO.class, aOrdId);
+//			session.getTransaction().commit();
+//		} catch (RuntimeException ex) {
+//			session.getTransaction().rollback();
+//			throw ex;
+//		}
+//		return ordVO;
+//	}
+	
 	@Override
 	public OrdVO findByPrimaryKey(String aOrdId) {
-		OrdVO ordVO = null;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			ordVO = (OrdVO) session.get(OrdVO.class, aOrdId);
-			session.getTransaction().commit();
-		} catch (RuntimeException ex) {
-			session.getTransaction().rollback();
-			throw ex;
-		}
+		OrdVO ordVO = (OrdVO) hibernateTemplate.get(OrdVO.class, aOrdId);
 		return ordVO;
-	}
+	}	
+	
+//	@Override
+//	public List<OrdVO> getAll() {
+//		List<OrdVO> list = null;
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		try {
+//			session.beginTransaction();
+//			Query query = session.createQuery(OrdDAO.GET_ALL_STMT);
+//			list = query.list();
+//			session.getTransaction().commit();
+//		} catch (RuntimeException ex) {
+//			session.getTransaction().rollback();
+//			throw ex;
+//		}
+//		return list;
+//	}
 
 	@Override
 	public List<OrdVO> getAll() {
 		List<OrdVO> list = null;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			Query query = session.createQuery(OrdDAO.GET_ALL_STMT);
-			list = query.list();
-			session.getTransaction().commit();
-		} catch (RuntimeException ex) {
-			session.getTransaction().rollback();
-			throw ex;
-		}
+		list = hibernateTemplate.find(OrdDAO.GET_ALL_STMT);//可封裝查詢條件,必須使用find方法.
 		return list;
-	}
-
-	public static Criteria getACriteriaForAntDB(Criteria aQuery, String aColumnName, String aValue){
+	}	
+	
+	public static DetachedCriteria getACriteriaForAntDB(DetachedCriteria aQuery, String aColumnName, String aValue){
 	
 		/* 數字(Integer) */
 //		ordPrice
@@ -145,80 +192,127 @@ public class OrdDAO implements OrdDAO_interface {
 	}
 	
 	
+//	@Override
+//	public List<OrdVO> getAll(Map<String, String[]> aMap){
+//
+//		Session session = HibernateUtil.getSessionFactory().openSession();
+//		Transaction tx = session.beginTransaction();
+//		List<OrdVO> list = null;
+//		
+//		try{
+//			Criteria query = session.createCriteria(OrdVO.class);
+//			Set<String> keys = aMap.keySet();
+//			int count = 0;
+//			
+//			for(String key : keys){
+//				String value = aMap.get(key)[0];
+//				if(value!=null && value.trim().length()!=0 && !"action".equals(key)){
+//					count++;
+//					query = getACriteriaForAntDB(query,key,value);
+//					System.out.println("有送出複合查詢資料的欄位數 count = " + count);
+//				}
+//			}
+//			
+//			query.addOrder(Order.desc("ordId"));
+//			
+//			list = query.list();
+//			
+//			tx.commit();
+//			
+//		}
+//		catch (RuntimeException ex) {
+//			if(tx != null){
+//				tx.rollback();
+//			}
+//			throw ex;
+//		}
+//				
+//		return list;		
+//	}
+		
+
 	@Override
 	public List<OrdVO> getAll(Map<String, String[]> aMap){
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
-		List<OrdVO> list = null;
-		
-		try{
-			Criteria query = session.createCriteria(OrdVO.class);
-			Set<String> keys = aMap.keySet();
-			int count = 0;
-			
-			for(String key : keys){
-				String value = aMap.get(key)[0];
-				if(value!=null && value.trim().length()!=0 && !"action".equals(key)){
-					count++;
-					query = getACriteriaForAntDB(query,key,value);
-					System.out.println("有送出複合查詢資料的欄位數 count = " + count);
-				}
-			}
-			
-			query.addOrder(Order.desc("ordId"));
-			
-			list = query.list();
-			
-			tx.commit();
-			
-		}
-		catch (RuntimeException ex) {
-			if(tx != null){
-				tx.rollback();
-			}
-			throw ex;
-		}
-				
-		return list;		
-
-	}
-	
-	@Override
-	public List<OrdVO> getAllByOrdMemId(String aOrdMemId){
 
 		List<OrdVO> list = null;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			Query query = session.createQuery(OrdDAO.GET_ALL_ORDMEMID_STMT);
-			query.setParameter("ordMemId", aOrdMemId);
-			list = query.list();
-			session.getTransaction().commit();
-		} catch (RuntimeException ex) {
-			session.getTransaction().rollback();
-			throw ex;
-		}
-		return list;		
 		
-	}
+
+		DetachedCriteria query = DetachedCriteria.forClass(OrdVO.class);
+		
+		Set<String> keys = aMap.keySet();
+		int count = 0;
+		
+		for(String key : keys){
+			String value = aMap.get(key)[0];
+			if(value!=null && value.trim().length()!=0 && !"action".equals(key)){
+				count++;
+				query = getACriteriaForAntDB(query,key,value);
+				System.out.println("有送出複合查詢資料的欄位數 count = " + count);
+			}
+		}
+		
+		query.addOrder(Order.desc("ordId"));
+		
+		list = (List<OrdVO>) hibernateTemplate.findByCriteria(query);
+			
+		return list;		
+	}	
+	
+	
+	
+//	@Override
+//	public List<OrdVO> getAllByOrdMemId(String aOrdMemId){
+//
+//		List<OrdVO> list = null;
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		try {
+//			session.beginTransaction();
+//			Query query = session.createQuery(OrdDAO.GET_ALL_ORDMEMID_STMT);
+//			query.setParameter("ordMemId", aOrdMemId);
+//			list = query.list();
+//			session.getTransaction().commit();
+//		} catch (RuntimeException ex) {
+//			session.getTransaction().rollback();
+//			throw ex;
+//		}
+//		return list;		
+//		
+//	}
+	
 	
 	@Override
-	public List<OrdVO> getAllByOrdHotelId(String aOrdHotelId){
+	public List<OrdVO> getAllByOrdMemId(String aOrdMemId) {
 		List<OrdVO> list = null;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		try {
-			session.beginTransaction();
-			Query query = session.createQuery(OrdDAO.GET_ALL_ORDHOTELID_STMT);
-			query.setParameter("ordHotelId", aOrdHotelId);
-			list = query.list();
-			session.getTransaction().commit();
-		} catch (RuntimeException ex) {
-			session.getTransaction().rollback();
-			throw ex;
-		}
-		return list;		
-	}
+		list = hibernateTemplate.find(OrdDAO.GET_ALL_ORDMEMID_STMT,aOrdMemId);//可封裝查詢條件,必須使用find方法.
+		return list;
+	}		
+	
+	
+//	@Override
+//	public List<OrdVO> getAllByOrdHotelId(String aOrdHotelId){
+//		List<OrdVO> list = null;
+//		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+//		try {
+//			session.beginTransaction();
+//			Query query = session.createQuery(OrdDAO.GET_ALL_ORDHOTELID_STMT);
+//			query.setParameter("ordHotelId", aOrdHotelId);
+//			list = query.list();
+//			session.getTransaction().commit();
+//		} catch (RuntimeException ex) {
+//			session.getTransaction().rollback();
+//			throw ex;
+//		}
+//		return list;		
+//	}
+	
+	@Override
+	public List<OrdVO> getAllByOrdHotelId(String aOrdHotelId) {
+		List<OrdVO> list = null;
+		list = hibernateTemplate.find(OrdDAO.GET_ALL_ORDHOTELID_STMT,aOrdHotelId);//可封裝查詢條件,必須使用find方法.
+		return list;
+	}		
+	
 	
 	public static void main(String[] args) {
 
