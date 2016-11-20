@@ -41,7 +41,7 @@ if(!authorityList.contains("101")){
 <script src="<%=request.getContextPath()%>/backend/emp/js/0_new.js "></script>
 <style type="text/css">
 	.aaa{
-		height:1200px;
+		height:1600px;
 	}
 </style>
 </head>
@@ -268,10 +268,10 @@ if(!authorityList.contains("101")){
 					<tr align='center' valign='middle'
 						${(EmpVO.empId==param.empId) ? 'bgcolor=lightblue':''}
 						
-						${(EmpVO.empId == authIdlistNo) ? 'bgcolor=lightblue':''}>
+						${(EmpVO.empId==authIdlistNo) ? 'bgcolor=lightblue':''}>
 						<!--將修改的那一筆加入對比色而已-->
 						<td ><img src='data:image/jpeg;base64,${EmpVO.bs64}'
-							width="150" height="110" /></td>
+							width="120" height="120" /></td>
 						<td >${EmpVO.empId}</td>
 						<td >${EmpVO.empName}</td>
 						<td >${EmpVO.empAccount}</td>
@@ -304,6 +304,7 @@ if(!authorityList.contains("101")){
 								<!--送出本網頁的路徑給Controller-->
 								<input type="hidden" name="whichPage" value="<%=whichPage%>">
 								<!--送出當前是第幾頁給Controller-->
+								
 								<input type="hidden" name="action" value="getOne_For_Auth">
 							</FORM>
 						</td>
