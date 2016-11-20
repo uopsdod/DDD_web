@@ -70,6 +70,21 @@
 		lng: 121.19
 	};	
 		
+	/* 更多資訊 */	
+	  var contentString = 
+		'<div>'
+		+ '<img src='+ 'img/profile_user2.jpg alt="Avatar" style="width:100%">'
+		+ '<div>'
+		+ '<h4><b>' + 'John Doe' + '</b></h4>' 
+		+ '<p>' + 'Architect & Engineer' + '</p>' 
+		+ '</div>'
+		+ '<button type="button"'+ "onclick=\"window.open(' http://localhost:8081/DDD_web/frontend_mem/chat/chat2.jsp ', 'Yahoo', config='height=500,width=500');\" " +'>'+ '跟我聊聊' +'</button>'
+		+ '</div>';
+
+	  var infowindow = new google.maps.InfoWindow({
+	    content: contentString
+	  });
+	  	
 	function initialize(){
 		if(navigator.geolocation){
 			//alert('Geolocation support!');
@@ -115,46 +130,59 @@
 			title: '這不是我家'
 		});
 		fromMarker.addListener('click', toggleBounce);
-
+		
 		clearMarkers();
 
 		for (var key in toMembers) {
 		    addMarkerWithTimeout(toMembers[key], 200);
 		}
-
+		
  	}
 
 	function toggleBounce() {
-	  if (fromMarker.getAnimation() !== null) {
-		  fromMarker.setAnimation(null);
+	  if (this.getAnimation() !== null) {
+		  this.setAnimation(null);
 	  } else {
-		  fromMarker.setAnimation(google.maps.Animation.BOUNCE);
+		  this.setAnimation(google.maps.Animation.BOUNCE);
 	  }
 	}
 	
 	function addMarkerWithTimeout(aObj, timeout) {
 		
-		var latlng = new google.maps.LatLng(aObj.lat,aObj.lng);
-		
-		  window.setTimeout(function() {
-			  toMarkers.push(new google.maps.Marker({
-		      position: latlng,
-		      map: map,
-		      icon: 'img/toMemFemale.png',
-		      animation: google.maps.Animation.DROP,
-		      title: aObj.key
-		    }));
-		  }, timeout);
+	var latlng = new google.maps.LatLng(aObj.lat,aObj.lng);
+	
+		window.setTimeout(
+	
+		function() {
+		 	var tmpMark =
+				new google.maps.Marker({
+			      position: latlng,
+			      map: map,
+			      icon: 'img/toMemFemale.png',
+			      animation: google.maps.Animation.DROP,
+			      title: aObj.key
+				});	
+				tmpMark.addListener('click', toggleBounce);
+				toMarkers.push(tmpMark);
+				
+				tmpMark.addListener('click', function() {
+					    infowindow.open(map, tmpMark);
+				});
+				
+		}, timeout);		
+
 	}
 	
 	function clearMarkers() {
+		console.log(toMarkers.length);
 		  for (var i = 0; i < toMarkers.length; i++) {
 			  toMarkers[i].setMap(null);
 		  }
 		  toMarkers = [];
 	}
 	
-  google.maps.event.addDomListener(window, 'load', initialize);
-  //window.addEventListener('load',initialize,false);
-  
+	
+	google.maps.event.addDomListener(window, 'load', initialize);
+	//window.addEventListener('load',initialize,false);		
+
 </script>
