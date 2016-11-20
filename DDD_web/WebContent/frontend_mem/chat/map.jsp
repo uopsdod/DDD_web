@@ -67,14 +67,14 @@
 		
 		var map = new google.maps.Map(document.getElementById('map-canvas'),{
 			center:latlng,
-			zoom:17,
+			zoom:18,
 			mapTypeId:google.maps.MapTypeId.ROADMAP
 		});
 		
 		var marker = new google.maps.Marker({
 			position: latlng,
 			map: map,
-			icon: 'img/pin.png',
+			icon: 'img/toMemFemale.png',
 			title: '這不是我家'
 		});
  	}
