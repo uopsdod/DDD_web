@@ -10,8 +10,8 @@ import java.sql.*;
 public class WishJDBCDAO implements WishDAO_interface {
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
-	String userid = "plzdongo";
-	String passwd = "Tom800712";
+	String userid = "scott";
+	String passwd = "tiger";
 
 	private static String INSERT_STMT = "INSERT INTO wish (wishmemid,wishroomid) VALUES (?,?)";
 	private static String GET_ONE_STMT = "SELECT wishMemId,wishRoomId FROM wish where wishMemId=? AND wishRoomId=?";
@@ -395,7 +395,7 @@ public class WishJDBCDAO implements WishDAO_interface {
 		WishVO wishVO = new WishVO();
 		//insert
 //		wishVO.setWishMemId("10000001");
-//		wishVO.setWishRoomId("1000002");
+//		wishVO.setWishRoomId("1000018");
 //		dao.insert(wishVO);
 		
 		//delete
@@ -406,13 +406,13 @@ public class WishJDBCDAO implements WishDAO_interface {
 //		System.out.print(wishVO.getWishMemId() + ",");
 //		System.out.println(wishVO.getWishRoomId());
 		
-		//select All
-		List<WishVO> list = dao.getAll();
-		
-		for(WishVO wishVO1 :list){
-			System.out.print(wishVO1.getWishMemId() + ",");
-			System.out.println(wishVO1.getWishRoomId());
-		};
+//		//select All
+//		List<WishVO> list = dao.getAll();
+//		
+//		for(WishVO wishVO1 :list){
+//			System.out.print(wishVO1.getWishMemId() + ",");
+//			System.out.println(wishVO1.getWishRoomId());
+//		};
 	}
 
 	

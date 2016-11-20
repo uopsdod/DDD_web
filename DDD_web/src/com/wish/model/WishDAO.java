@@ -44,6 +44,7 @@ public class WishDAO implements WishDAO_interface {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try {
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(WishDAO.INSERT_STMT);
 
 			pstmt.setString(1, aWishVO.getWishMemId());
@@ -81,10 +82,12 @@ public class WishDAO implements WishDAO_interface {
 		PreparedStatement pstmt = null;
 
 		try {
+			con = ds.getConnection();
 			pstmt = con.prepareStatement(WishDAO.DELETE);
 
 			pstmt.setString(1, aWishMemId);
 			pstmt.setString(2, aWishRoomId);
+			System.out.println("12313213131321321321323213213213");
 			pstmt.executeUpdate();
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured." + se.getMessage());

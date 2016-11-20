@@ -33,6 +33,7 @@ import com.wish.model.WishVO;
 import com.hotel.model.HotelJDBCDAO;
 import android.Hotel.ImageUtil;
 import javafx.scene.effect.Light.Spot;
+
 @SuppressWarnings("serial")
 public class Wish extends HttpServlet {
 	// private ServletContext context;
@@ -41,10 +42,8 @@ public class Wish extends HttpServlet {
 	private List<Spot> computerList;
 	private List<Spot> comicList;
 
-
 	@Override
-	public void doPost(HttpServletRequest rq, HttpServletResponse rp)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest rq, HttpServletResponse rp) throws ServletException, IOException {
 		rq.setCharacterEncoding("UTF-8");
 		Gson gson = new Gson();
 		BufferedReader br = rq.getReader();
@@ -53,58 +52,41 @@ public class Wish extends HttpServlet {
 		while ((line = br.readLine()) != null) {
 			jsonIn.append(line);
 		}
-		JsonObject jsonObject = gson.fromJson(jsonIn.toString(),
-				JsonObject.class);
+		JsonObject jsonObject = gson.fromJson(jsonIn.toString(), JsonObject.class);
 		String action = jsonObject.get("action").getAsString();
-		
+
 		String outStr = "";
-		if (action.equals("getOne")) {
-			
+		if (action.equals("Delete")) {
 
 			String id = jsonObject.get("id").getAsString();
-			Map<String, Map> one = RoomServlet.OnData;
-			Map<String, Integer> two = one.get(id);
-			int price = two.get("price");
-			RoomService dao = new RoomService();
-			RoomVO hotelVO = dao.findByPrimaryKey(id);
-			hotelVO.setRoomPrice(price);
-//			System.out.println("======================" + price);
-			outStr = gson.toJson(hotelVO);
-			rp.setContentType(CONTENT_TYPE);
-			PrintWriter out = rp.getWriter();
-			out.println(outStr);
-//			System.out.println(outStr);
-//			System.out.println("id123123132131313132 " + id);
-			
-		}else if(action.equals("getOneAllPhotoId")){
-			
+			String roomId = jsonObject.get("roomId").getAsString();
+			// System.out.println("----------id---------" + id);
+			// System.out.println("----------id---------" + roomId);
+
+			WishService wishDAO = new WishService();
+			wishDAO.delete(id, roomId);
+
+		} else if (action.equals("Insert")) {
+
 			String id = jsonObject.get("id").getAsString();
-			RoomPhotoService dao = new RoomPhotoService();
-			List<String> list = dao.getRoomAllRoomPhotoId(id);
-//			JSONArray array = new JSONArray();
-//			for(String roomPhotoId: list){
-//				array.put(roomPhotoId);
-//			} 
-//			Object aaa = (Object) array;
-			outStr = gson.toJson(list);
-			rp.setContentType(CONTENT_TYPE);
-			PrintWriter out = rp.getWriter();
-			out.println(outStr);
-		}else if(action.equals("getAll")){  // 取得當前會員願望清單內所有的房間資料
-			
-			
+			String roomId = jsonObject.get("roomId").getAsString();
+			WishService dao = new WishService();
+			dao.addWish(id, roomId);
+
+		} else if (action.equals("getAll")) { // 取得當前會員願望清單內所有的房間資料
+
 			String id = jsonObject.get("id").getAsString();
-//			System.out.println("------------id------------------  :"+id);
-	
+			// System.out.println("------------id------------------ :"+id);
+
 			WishService wishDAO = new WishService();
 			RoomService roomDAO = new RoomService();
 			RoomVO roomVO = null;
 			List<RoomVO> roomVOList = new ArrayList<RoomVO>();
-			
-			List<String> wishRoomIdList = wishDAO.SgetAllWishRoomId(id);
-			for(String wishRoomId : wishRoomIdList){
+
+			List<String> wishRoomIdList = wishDAO.getAllWishRoomId(id);
+			for (String wishRoomId : wishRoomIdList) {
 				roomVO = roomDAO.findByPrimaryKey(wishRoomId);
-				if(roomVO.getRoomForSell() != false){
+				if (roomVO.getRoomForSell() != false) {
 					Map<String, Map> one = RoomServlet.OnData;
 					Map<String, Integer> two = one.get(roomVO.getRoomId());
 					Integer price = two.get("price");
@@ -112,33 +94,24 @@ public class Wish extends HttpServlet {
 				}
 				roomVOList.add(roomVO);
 			}
-			
-				
-			
+
 			outStr = gson.toJson(roomVOList);
 			rp.setContentType(CONTENT_TYPE);
 			PrintWriter out = rp.getWriter();
 			out.println(outStr);
 			System.out.println(outStr);
-			
-		}else if(action.equals("getImage")){ //取得當前會員願望清單內所有房型的封面圖片
 
-			int imageSize = jsonObject.get("imageSize").getAsInt();
-			String id = jsonObject.get("id").getAsString();
+		} else if (action.equals("getImage")) { // 取得當前會員願望清單內所有房型的封面圖片
+
 			OutputStream os = rp.getOutputStream();
-			List<RoomPhotoVO> roomPhotoVOList = new ArrayList<RoomPhotoVO>();
-			List<String> list = new ArrayList<String>();
-			WishService wishDAO = new WishService();
-			RoomPhotoService roomPhotoDAO = new RoomPhotoService();
-//			System.out.println("id : " + id);
-			
-			List<String> wishRoomIdList = wishDAO.SgetAllWishRoomId(id);
-			for(String wishRoomId : wishRoomIdList){
-				list = roomPhotoDAO.getRoomAllRoomPhotoId(wishRoomId);
-			}
-			
+			RoomPhotoService dao = new RoomPhotoService();
+			String id = jsonObject.get("id").getAsString();
+			int imageSize = jsonObject.get("imageSize").getAsInt();
+			System.out.println("id : " + id);
+
+			List<String> list = dao.getRoomAllRoomPhotoId(id);
 			String roomPhotoId = list.get(0);
-			RoomPhotoVO roomPhotoVO = roomPhotoDAO.getOneRoomPhoto(roomPhotoId);
+			RoomPhotoVO roomPhotoVO = dao.getOneRoomPhoto(roomPhotoId);
 			byte[] image = roomPhotoVO.getRoomPhotoPic();
 			if (image != null) {
 				image = ImageUtil.shrink(image, imageSize);
@@ -146,36 +119,29 @@ public class Wish extends HttpServlet {
 				rp.setContentLength(image.length);
 			}
 			os.write(image);
-//			System.out.println("image"+image);
-		}else if(action.equals("getAllImage")){
-			
-			byte[] image = null;
-			OutputStream os = rp.getOutputStream();
-			RoomPhotoService dao = new RoomPhotoService();
+
+			// System.out.println("image"+image);
+		} else if (action.equals("getOneWish")) {
+
 			String id = jsonObject.get("id").getAsString();
-			int imageSize = jsonObject.get("imageSize").getAsInt();
-			System.out.println("id : " + id);
-			RoomPhotoVO roomPhotoVO = dao.getOneRoomPhoto(id);
+			String roomId = jsonObject.get("roomId").getAsString();
+			WishVO wishVO = new WishVO();
+			WishService dao = new WishService();
+			wishVO = dao.getOneWish(id, roomId);
 			
-				image = roomPhotoVO.getRoomPhotoPic();
-				if (image != null) {
-					image = ImageUtil.shrink(image, imageSize);
-					rp.setContentType("image/jpeg");
-					rp.setContentLength(image.length);
-				}
-				os.write(image);
-//				System.out.println("image"+image);
-		
+			outStr = gson.toJson(wishVO);
+			rp.setContentType(CONTENT_TYPE);
+			PrintWriter out = rp.getWriter();
+			out.println(outStr);
+
 		}
-		
+
 		// ��hotelVO�নJSON�r��A�^��
-		
-		
+
 	}
 
 	@Override
-	public void doGet(HttpServletRequest rq, HttpServletResponse rp)
-			throws ServletException, IOException {
+	public void doGet(HttpServletRequest rq, HttpServletResponse rp) throws ServletException, IOException {
 		Gson gson = new Gson();
 		String category_json = gson.toJson(category);
 		String computerList_json = gson.toJson(computerList);
