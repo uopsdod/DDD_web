@@ -149,15 +149,15 @@ public class AuthDAO implements AuthVO_interface {
 			pstmt_delete.setString(1, empAuthEmpId);
 
 			rs = pstmt_delete.executeQuery();
-
-			pstmt_insert = con.prepareStatement(INSERT);
-			for (String authid : empAuthList) {
-
-				pstmt_insert.setString(1, empAuthEmpId);
-				pstmt_insert.setString(2, authid);
-				rs = pstmt_insert.executeQuery();
+			if(empAuthList!=null){
+				pstmt_insert = con.prepareStatement(INSERT);
+				for (String authid : empAuthList) {
+	
+					pstmt_insert.setString(1, empAuthEmpId);
+					pstmt_insert.setString(2, authid);
+					rs = pstmt_insert.executeQuery();
+				}
 			}
-
 			con.commit();
 			// Handle any driver errors
 		} catch (SQLException se) {

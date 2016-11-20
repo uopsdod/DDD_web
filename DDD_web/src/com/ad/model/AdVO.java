@@ -2,6 +2,14 @@ package com.ad.model;
 import java.sql.Date;
 
 public class AdVO implements java.io.Serializable {
+	private String bs64;
+	public String getBs64() {
+		return bs64;
+	}
+	public void setBs64(String bs64) {
+		this.bs64 = bs64;
+	}
+	//貴新增上
 	private String adId;
 	private String adAdPlanId;
 	private String adHotelId;
