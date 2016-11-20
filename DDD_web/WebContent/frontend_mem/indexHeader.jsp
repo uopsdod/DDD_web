@@ -32,10 +32,10 @@ session.setAttribute("memVO", memVO);
 
 <body>
     <header id="top_header">
-        <div class="col-md-6 col-md-offset-1 ">
+        <div class="col-md-5 col-md-offset-1 ">
             <a href="<%=request.getContextPath()%>/frontend_mem/index.jsp"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg"></a>
         </div>
-        <div class="col-md-4 col-md-offset-1 ">
+        <div class="col-md-5 col-md-offset-1 ">
             <div class="dropdown" style='display: inline-block;'>
                 <button class="btn text-muted" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                     訂單專區
@@ -116,11 +116,11 @@ session.setAttribute("memVO", memVO);
         </div>
         <!-- 浮動列 -->
         <div id="top_header1">
-            <div class="col-md-6 col-md-offset-1 ">
+            <div class="col-md-5 col-md-offset-1 ">
             <a href="<%=request.getContextPath()%>/frontend_mem/index.jsp"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg"></a>
                 
             </div>
-            <div class="col-md-4 col-md-offset-1 ">
+            <div class="col-md-5 col-md-offset-1 ">
                 <div class="dropdown" style='display: inline-block;'>
                     <button class="btn text-muted" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                         訂單專區

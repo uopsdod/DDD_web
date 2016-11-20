@@ -4,8 +4,8 @@ var timerId;     //宣告timerId
 var timerId1;
 var count=1
 var opacity=1;
-var img1=["images/banner1.jpg","images/banner2.jpg","images/banner3.jpg"];
-var img2=["images/banner4.jpg","images/banner5.jpg","images/banner6.jpg"];
+//var img1=["images/banner1.jpg","images/banner2.jpg","images/banner3.jpg"];//廣告起始
+//var img2=["images/banner4.jpg","images/banner5.jpg","images/banner6.jpg"];
 var flag=1;
 
 // function img(){
@@ -34,39 +34,39 @@ var flag=1;
 // 	count++;
 
 // }
-function banner(){
-		if(flag==1){
-			document.getElementById('dot').style='background:white';
-			document.getElementById('dot1').style='background:lightgray';
-			document.getElementById('banner').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img2[0]+"' width='100%' height='100%' ;></a>"
-			document.getElementById('banner1').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img2[1]+"' width='100%' height='100%' ;></a>"
-			document.getElementById('banner2').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img2[2]+"' width='100%' height='100%' ;></a>"
-			flag+=1;
-		}else{
-			document.getElementById('dot1').style='background:white';
-			document.getElementById('dot').style='background:lightgray';
-			document.getElementById('banner').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[0]+"' width='100%' height='100%' ;></a>"
-			document.getElementById('banner1').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[1]+"' width='100%' height='100%' ;></a>"
-			document.getElementById('banner2').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[2]+"' width='100%' height='100%' ;></a>"
-			flag-=1;
-		}        	
-}
-function onclickLeft(){
-	document.getElementById('dot1').style='background:white';
-	document.getElementById('dot').style='background:lightgray';
-	document.getElementById('banner').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[0]+"' width='100%' height='100%' ;></a>"
-	document.getElementById('banner1').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[1]+"' width='100%' height='100%' ;></a>"
-	document.getElementById('banner2').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[2]+"' width='100%' height='100%' ;></a>"
-	clearInterval(timerId1);
-}
-function onclickRight(){
-	document.getElementById('dot').style='background:white';
-	document.getElementById('dot1').style='background:lightgray';
-	document.getElementById('banner').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img2[0]+"' width='100%' height='100%' ;></a>"
-	document.getElementById('banner1').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img2[1]+"' width='100%' height='100%' ;></a>"
-	document.getElementById('banner2').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img2[2]+"' width='100%' height='100%' ;></a>"
-	clearInterval(timerId1);
-}
+//function banner(){
+//		if(flag==1){//廣告波
+//			document.getElementById('dot').style='background:white';
+//			document.getElementById('dot1').style='background:lightgray';
+//			document.getElementById('banner').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img2[0]+"' width='100%' height='100%' ;></a>"
+//			document.getElementById('banner1').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img2[1]+"' width='100%' height='100%' ;></a>"
+//			document.getElementById('banner2').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img2[2]+"' width='100%' height='100%' ;></a>"
+//			flag+=1;
+//		}else{
+//			document.getElementById('dot1').style='background:white';
+//			document.getElementById('dot').style='background:lightgray';
+//			document.getElementById('banner').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[0]+"' width='100%' height='100%' ;></a>"
+//			document.getElementById('banner1').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[1]+"' width='100%' height='100%' ;></a>"
+//			document.getElementById('banner2').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[2]+"' width='100%' height='100%' ;></a>"
+//			flag-=1;
+//		}        	
+//}
+//function onclickLeft(){//廣告左
+//	document.getElementById('dot1').style='background:white';
+//	document.getElementById('dot').style='background:lightgray';
+//	document.getElementById('banner').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[0]+"' width='100%' height='100%' ;></a>"
+//	document.getElementById('banner1').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[1]+"' width='100%' height='100%' ;></a>"
+//	document.getElementById('banner2').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[2]+"' width='100%' height='100%' ;></a>"
+//	clearInterval(timerId1);
+//}
+//function onclickRight(){//廣告又
+//	document.getElementById('dot').style='background:white';
+//	document.getElementById('dot1').style='background:lightgray';
+//	document.getElementById('banner').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img2[0]+"' width='100%' height='100%' ;></a>"
+//	document.getElementById('banner1').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img2[1]+"' width='100%' height='100%' ;></a>"
+//	document.getElementById('banner2').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img2[2]+"' width='100%' height='100%' ;></a>"
+//	clearInterval(timerId1);
+//}
 
 // function playOrPause(){//不試暫停中或結束
 // 	if(!myMovie.paused && !myMovie.ended){ //影片正在跑的時候,如果按按鈕會暫停
@@ -185,18 +185,23 @@ function load(){
 	document.getElementById('address6').onmouseout=mouseout6;
 	document.getElementById('address7').onmouseout=mouseout7;
 	document.getElementById('address8').onmouseout=mouseout8;
+	//廣告起始
+//	document.getElementById('banner').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[0]+"' width='100%' height='100%' ;></a>"
+//	document.getElementById('banner1').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[1]+"' width='100%' height='100%' ;></a>"
+//	document.getElementById('banner2').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[2]+"' width='100%' height='100%' ;></a>"
+	//控制器點點
+//	document.getElementById('dot').style='background:lightgray';
+	//左右
+//------------------------------------------------------------
+//	document.getElementById("btnOfLeft1").onclick=onclickLeft;
+//	document.getElementById("btnOfRight1").onclick=onclickRight;
+//	------------------------------------------------------
 	
-	document.getElementById('banner').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[0]+"' width='100%' height='100%' ;></a>"
-	document.getElementById('banner1').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[1]+"' width='100%' height='100%' ;></a>"
-	document.getElementById('banner2').innerHTML="<a href='https://goo.gl/I3Ti1G'><img src='"+img1[2]+"' width='100%' height='100%' ;></a>"
-	document.getElementById('dot').style='background:lightgray';
-	document.getElementById("btnOfLeft1").onclick=onclickLeft;
-	document.getElementById("btnOfRight1").onclick=onclickRight;
 	// document.getElementById("myMovie").onclick=playOrPause;
 	document.getElementById("buttnOnimg").onmouseover=btnColorChange;
 	document.getElementById("buttnOnimg").onmouseout=btnColorChange1;
 	// timerId=setInterval(img,5000);
-	timerId1=setInterval(banner,7000);
+//	timerId1=setInterval(banner,7000);
 
 	$('#fade').cycle();//主頁圖 
 
