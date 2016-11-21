@@ -7,13 +7,14 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import com.room.controler.MyEchoServer;
 import com.room.controler.RoomServlet;
 import com.room.model.*;
 public class InitializeRoomListener implements ServletContextListener {
 	
 	
-	Timer down = null;
-	
+ 		Timer down = null;
+ static	Timer WsPush = null;
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		ServletContext context = event.getServletContext();
@@ -106,11 +107,26 @@ public class InitializeRoomListener implements ServletContextListener {
 			        	 /*************下架了***************/
 			         }
 			     };
-			     System.out.println("伺服器啟動");
+//			     System.out.println("伺服器啟動");
 		     down.schedule(taskDown, DateTask,60*1000); 
 		
 		
-		
+		/*webSocket推波初始排程*************************************************************************/
+		     
+		     WsPush = new Timer();
+			 
+			 TimerTask WsTaskDown = new TimerTask(){
+			    
+			         public void run(){
+			         	//排程器要執行的任務	
+//			        	 System.out.println("推送排成啟動");
+			        	 MyEchoServer.BufferBox("",0,"",1); //前三個參數沒意義,第四個參數告訴方法,是要推資料出去的排成
+			        	 
+			        	 /*************下架了***************/
+			         }
+			     };
+			  System.out.println("伺服器啟動");
+			     WsPush.schedule(WsTaskDown, 0, 10*1000); 
 		
 		
 	}
@@ -121,6 +137,9 @@ public class InitializeRoomListener implements ServletContextListener {
 		//System.out.println("ServletContextListener通知: contextDestroyed....");
 		if(down!=null){
 		down.cancel();
+		}
+		if(WsPush!=null){
+			WsPush.cancel();
 		}
 	}	
 	

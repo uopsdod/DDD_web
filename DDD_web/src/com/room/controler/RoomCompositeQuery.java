@@ -46,7 +46,7 @@ public class RoomCompositeQuery {
 				else
 					whereCondition.append(" and " + aCondition);
 
-				System.out.println("有送出查詢資料的欄位數count = " + count);
+				//System.out.println("有送出查詢資料的欄位數count = " + count);
 			}
 		}
 		
@@ -58,7 +58,7 @@ public class RoomCompositeQuery {
 		String finalSQL = "select * from room "
 				          + RoomCompositeQuery.get_WhereCondition(Data)
 				          + "order by roomId";
-		System.out.println("●●finalSQL = " + finalSQL);
+//		System.out.println("●●finalSQL = " + finalSQL);
 		return finalSQL;
 	}
 	

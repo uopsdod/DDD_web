@@ -3,12 +3,20 @@
 <%@ page import="com.room.model.*"%>
 <%@ page import="com.hotel.model.*"%>
 <%@ page import="com.serv.model.*"%>
+<%@ page import="org.json.JSONArray"%>
+<%@ page import="org.json.JSONException"%>
+<%@ page import="org.json.JSONObject"%>
+<%@ page import="com.room.controler.RoomServlet"%>
 
 	<%@ include file="../indexHeader.jsp"%>
 	<%@ include file="City.file" %>
+	<%
+	response.setHeader("Cache-Control", "no-store");//http1.1
+	response.setHeader("Pragma", "no-cache");//http1.0
+	response.setDateHeader("Expires", 0);	
+	%>
 	
-	
-</head>	
+<head>	
 	 <script src="<%=request.getContextPath()%>/frontend_mem/map/js/map.js"></script>
 	
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,8 +34,10 @@
   <link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/map/jq/theme.css">
   <script src="<%=request.getContextPath()%>/frontend_mem/map/jq/jquery-1.12.4.js"></script>
   <script src="<%=request.getContextPath()%>/frontend_mem/map/jq/jquery-ui.js"></script>
-
 	
+	
+
+  <script src="<%=request.getContextPath()%>/frontend_mem/map/js/socket.js"></script>	<!-- socket -->
 	
 	<script>
   $( function() {
@@ -42,7 +52,9 @@
     });
     $( "#amount-price" ).val( "$" + $( "#slider-range-price" ).slider( "values", 0 ) +
       " - $" + $( "#slider-range-price" ).slider( "values", 1 ) );
+      
   } );
+   
   </script>
   
   <style type="text/css">
@@ -61,10 +73,214 @@
 		});
 	});
 </script>	
+<script type="text/javascript">
+
+
+var roomMap;
+var context;
+	
+function getInfo(){	
+  var xhr = new XMLHttpRequest();
+  //設定好回呼函數 
+  xhr.onreadystatechange = function (){
+    if( xhr.readyState == 4 ){
+      if(xhr.status == 200){ 
+    	back(xhr.responseText);
+    	
+      }else{
+        alert( xhr.status);
+      }//xhr.status == 200
+    }//xhr.readyState == 4
+  }//onreadystatechange
+  
+  //建立好Post連接
+  var url = "<%=request.getContextPath()%>/HotelRoomSearch";
+ // var data_info = "memId=" + document.getElementById("memId").value;
+ 
+ var cityObj = document.getElementById("city").value;
+ var zoneObj = document.getElementById("zone").value;
+ 
+ var city = "city=" + cityObj;	//建立市的key-value
+ var zone = "zone=" + zoneObj;	//建立區的key-value
+ 
+ //定位map位置
+ setMapLocal(cityObj,zoneObj);
+ 
+ var hotelRatingResult  = "hotelRatingResult=" + document.getElementById("hotelRatingResult").value; //建立評分的key-value
+ var amountprice = "Price=" + document.getElementById("amount-price").value;  //建立價錢範圍key-value
+ 
+ var roomCapacity = "roomCapacity=";   //建立幾人房的key-value
+ var roomCapacityArray  = document.getElementById("roomCapacity").childNodes;
+ for (var i=0; i<roomCapacityArray.length; i++)
+ {
+    if (roomCapacityArray[i].selected)
+    {
+       roomCapacity += roomCapacityArray[i].value; 
+       break;
+    }
+ }
+ 
+ var servItemStr = ""; 		//旅館設施checkBox
+ var servItem  = document.getElementsByName("servItem");
+ for (var i=0; i<servItem.length; i++)
+ {
+    if (servItem[i].checked)
+    {	
+    	servItemStr += "servItem="+servItem[i].value + "&"; 
+       
+    }
+ }
+ servItemStr = servItemStr.slice(0,servItemStr.length-1);
+
+ var data; 
+ if(servItemStr==""){
+	 data = city+"&"+zone+"&"+hotelRatingResult+"&"+roomCapacity+"&"+amountprice;
+ }else{
+	 data = city+"&"+zone+"&"+hotelRatingResult+"&"+roomCapacity+"&"+amountprice+"&"+servItemStr;
+ }
+ data = "action=search&" +data;
+
+//  console.log(data);
+  xhr.open("Post",url,true);
+  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+  xhr.send(data);  
+  //送出請求
+}//function 
+
+
+function back(jsonStr){
+	context = document.getElementById("context");
+	context.innerHTML =null;	//清空之前呈現的旅館
+	cancelMark();
+	
+	roomMap = null;	//每次搜尋都清空roomMap
+	roomMap = new Map(); //每次搜尋都重新建立roomMap
+	
+	var HotelArray = JSON.parse(jsonStr);
+	if(HotelArray.length!=0){		//有搜到符合的旅館
+	 	for(var i =0;i<HotelArray.length;i++){	 		
+	 		construct(HotelArray[i]); 	
+	 	}
+	}else{		//未搜到符合的旅館
+		
+		var div = document.createElement("div");
+		div.style="color:red;text-align:center";
+		
+		var h2 = document.createElement("h2");		
+	    var b = document.createElement("b");
+	    b.innerText='查詢未有結果';	    
+	    h2.appendChild(b);
+	    div.appendChild(h2);
+		context.appendChild(div);
+	} 
+
+}
+
+function construct(hotel){
+	
+	
+	setMarker(hotel);	//在地圖上建立標記
+	
+// 	console.log(hotel.hotelLon);
+// 	console.log(hotel.hotelLat);
+// 	console.log(hotel.bottomPrice);
+// 	console.log(hotel.hotelId);
+// 	console.log(hotel.hotelName);
+	
+	var outDiv = document.createElement("div"); // 	<div class="col-xs-12 col-sm-6">
+	outDiv.className="col-xs-12 col-sm-6 ";
+	outDiv.onmouseover = function(){
+		changeMark(hotel);	
+	};
+	outDiv.onmouseout = function(){
+		backMark(hotel);	
+	};
+	
+	var innerDiv = document.createElement("div"); // 	<div class="item">
+	innerDiv.className="item";
+	
+	var a = document.createElement("a");
+	a.href="http://www.yahoo.com.tw";
+	
+	var imgeg = document.createElement("img"); // 		<img class="imgmap" src="mapImage/room1.jpg">	
+	imgeg.src= "<%=request.getContextPath()%>/HotelRoomSearch" + "?action=showHotel&hotelId=" +hotel.hotelId;		
+	imgeg.className="imgmap";
+	
+	
+	var h3 = document.createElement("h3"); // 		<h3>新竹豐邑喜來登大飯店</h3>
+	h3.innerText=hotel.hotelName;
+		
+	var starDiv = document.createElement("div");	
+	for(var i=1;i<=hotel.hotelRating;i++){
+		var star = document.createElement("img"); 
+		star.src="mapImage/star.png";
+		starDiv.appendChild(star);
+	}
+	
+	var itemLeftDiv = document.createElement("div");
+	itemLeftDiv.className="col-xs-12 col-sm-6 ";
+	
+	var itemMidDiv = document.createElement("div");
+	itemMidDiv.className="col-xs-12 col-sm-3 ";
+
+	
+	var itemRightDiv = document.createElement("div");
+	itemRightDiv.className="col-xs-12 col-sm-3 ";
+	itemRightDiv.id=hotel.roomBottomId;
+	roomMap.set(hotel.roomBottomId,itemRightDiv); //將此間旅館的變動價格DIV物件裝入roomMap中,並以roomBottomId作為key
+	
+	
+	var roomName = document.createElement("div");
+	roomName.style="font-size:15px;margin-top:15px;color:red;";
+	roomName.innerText=hotel.roomName;
+	
+	var price = document.createElement("div");
+	price.style="font-size:30px;margin-top:10px;margin-bottom:-20px;";
+	
+	var text = document.createTextNode(hotel.bottomPrice); //價錢textNode
+	
+	
+	
+	
+	
+	a.appendChild(imgeg);	
+	innerDiv.appendChild(a);	
+	
+	itemLeftDiv.appendChild(h3);
+	itemLeftDiv.appendChild(starDiv);
+	innerDiv.appendChild(itemLeftDiv);
+	
+	itemMidDiv.appendChild(roomName);
+	innerDiv.appendChild(itemMidDiv);
+	
+	price.appendChild(text);
+	itemRightDiv.appendChild(price);	
+	innerDiv.appendChild(itemRightDiv);
+	outDiv.appendChild(innerDiv);
+	context.appendChild(outDiv);
+// 	<div class="col-xs-12 col-sm-6">
+// 	<div class="item">
+// 		<a href="yahoo.com.tw"><img class="imgmap" src="mapImage/room1.jpg"></a>
+//      <div class="col-xs-12 col-sm-10">
+	// 		<h3>新竹豐邑喜來登大飯店</h3>
+	// 		<div><img star>*n</div>
+//		</div>
+//		<div class="col-xs-12 col-sm-2">
+//			<div>RoomName<div>	
+//		</div>
+//		<div class="col-xs-12 col-sm-2">
+//         <div class="price">價錢</div>
+//		</div>
+// 	</div>
+// 	</div>
+	
+}
 
 
 
+</script>
 </head>
+<body onload="connect();" onunload="disconnect();">
 
    <!--  ------------------------------------------------------------------- -->
    
@@ -126,7 +342,7 @@
 																	 		 	<% String[] roomCapName ={"單人房","雙人房","四人房","六人房","八人房"};%>
 																		
 																			
-																				<select  name="roomCapacity" class="form-control" style="width:100px">	
+																				<select id="roomCapacity" name="roomCapacity" class="form-control" style="width:100px">	
 																	  			<% for(int i =0;i<5;i++){%>
 																					<option value="<%=roomCap[i]%>"	<%=item==null?"":(item.get("roomCapacity").equals(roomCap[i])?"selected":"")%>	><%=roomCapName[i]%>	
 																				<%}%>	  			
@@ -172,7 +388,7 @@
 																	<div class="form-group col-sm-6">
 																			<label class="col-sm-2 control-label">評分</label>
 																			
-																					<select  name="hotelRatingResult" class="form-control" style="width:100px">			
+																					<select id="hotelRatingResult" name="hotelRatingResult" class="form-control" style="width:100px">			
 																					<% for(int i =0;i<6;i++){%>
 																						<option value="<%=i%>"	<%=item==null?"":(item.get("hotelRatingResult").equals(i+"")?"selected":"")%>	><%=i%>	
 																					<%}%>
@@ -180,22 +396,12 @@
 																		
 																	</div>
 																	
-																	
-																	
-																	
-<!-- 																	<div class="form-group col-sm-6"> -->
-<!-- 																		<label class="col-sm-2 control-label">房間定價</label> -->
-<!-- 																		<div class="row"> -->
-<!-- 																			<div class="col-sm-3" style="margin-left:-15px;width:120px" > -->
-<!-- 																					<input type="TEXT" name="roomPrice"  class="form-control" -->
-<%-- 																								value="<%= (item==null)? "" : (item.get("roomPrice")==null?"":item.get("roomPrice"))%>" /> --%>
-<!-- 																			</div> -->
-<!-- 																		</div> -->
-<!-- 																	</div> -->
+			
+
 																	<div class="form-group col-sm-12" style="padding:30px">
 																		<p >
 																		  <label for="amount-price">Price range:</label>
-																		  <input type="text" id="amount-price" readonly style="border:0; color:#f6931f; font-weight:bold;">
+																		  <input type="text" name="Price"  id="amount-price" readonly style="border:0; color:#f6931f; font-weight:bold;">
 																		</p>
 																		 
 																		<div id="slider-range-price"></div>
@@ -203,7 +409,7 @@
 																		
 																		
 																		<div class="panel " style="margin:0px;background:#dff0d8;padding:30px;height:80px;"  >	
-																			<input type="submit" class="btn btn-success"  value="搜尋"  style="margin-top:-10px">
+																			<input type="button" onclick="getInfo()" class="btn btn-success"  value="搜尋"  style="margin-top:-10px">
 																			<input type="button"  id="c-mapBar" class="btn btn-info"  value="進階細項"  style="margin-top:-10px">
 																		</div>
 																		
@@ -214,7 +420,7 @@
 																			<c:forEach var="servVO" items="${servSvc.all}"  >					
 																							
 																					<div class="form-group col-sm-3">
-																				<input type="checkbox" name="servItem" value="${servVO.servName}">${servVO.servName}
+																				<input type="checkbox" name="servItem" class="servItem" value="${servVO.servName}">${servVO.servName}
 																					</div>
 																								 
 																			</c:forEach>					
@@ -241,69 +447,174 @@
 												
 													<!----------------------房型陳列---------------------------------->
 													
-													<div class="col-xs-12 col-sm-6">
-														<div class="item">
-															<img class="imgmap" src="mapImage/room1.jpg">
-															<h3>新竹豐邑喜來登大飯店</h3>
-															<p>Sheraton Hsinchu Hotel</p>
-														</div>
-													</div>
-													<div class="col-xs-12 col-sm-6">
-														<div class="item">
-															<img class="imgmap" src="mapImage/room2.jpg">
-															<h3>新竹豐邑喜來登大飯店</h3>
-															<p>Sheraton Hsinchu Hotel</p></div>
-													</div>
-													<div class="col-xs-12 col-sm-6">
-														<div class="item">
-															<img class="imgmap" src="mapImage/room3.jpg">
-															<h3>新竹豐邑喜來登大飯店</h3>
-															<p>Sheraton Hsinchu Hotel</p></div>
-													</div>
-													<div class="col-xs-12 col-sm-6">
-														<div class="item">
-															<img class="imgmap" src="mapImage/room4.jpg">
-															<h3>新竹豐邑喜來登大飯店</h3>
-															<p>Sheraton Hsinchu Hotel</p></div><!--item-->
-													</div>
-													<div class="col-xs-12 col-sm-6">
-														<div class="item">
-															<img class="imgmap" src="mapImage/room5.jpg">
-															<h3>新竹豐邑喜來登大飯店</h3>
-															<p>Sheraton Hsinchu Hotel</p></div><!--item-->
-													</div>
-													<div class="col-xs-12 col-sm-6">
-														<div class="item">
-															<img class="imgmap" src="mapImage/room7.jpg">
-															<h3>新竹豐邑喜來登大飯店</h3>
-															<p>Sheraton Hsinchu Hotel</p></div><!--item-->
-													</div>
+													
+		
+												<div id="context">
+													
+<!-- 													<div class="col-xs-12 col-sm-6"> -->
+<!-- 														<div class="item"> -->
+<!-- 															<img class="imgmap" src="mapImage/room1.jpg"> -->
+<!-- 															<h3>新竹豐邑喜來登大飯店</h3> -->
+<!-- 															<p>Sheraton Hsinchu Hotel</p> -->
+<!-- 														</div> -->
+<!-- 													</div> -->
+<!-- 													<div class="col-xs-12 col-sm-6"> -->
+<!-- 														<div class="item"> -->
+<!-- 															<img class="imgmap" src="mapImage/room2.jpg"> -->
+<!-- 															<h3>新竹豐邑喜來登大飯店</h3> -->
+<!-- 															<p>Sheraton Hsinchu Hotel</p></div> -->
+<!-- 													</div> -->
+<!-- 													<div class="col-xs-12 col-sm-6"> -->
+<!-- 														<div class="item"> -->
+<!-- 															<img class="imgmap" src="mapImage/room3.jpg"> -->
+<!-- 															<h3>新竹豐邑喜來登大飯店</h3> -->
+<!-- 															<p>Sheraton Hsinchu Hotel</p></div> -->
+<!-- 													</div> -->
+<!-- 													<div class="col-xs-12 col-sm-6"> -->
+<!-- 														<div class="item"> -->
+<!-- 															<img class="imgmap" src="mapImage/room4.jpg"> -->
+<!-- 															<h3>新竹豐邑喜來登大飯店</h3> -->
+<!-- 															<p>Sheraton Hsinchu Hotel</p></div>item -->
+<!-- 													</div> -->
+<!-- 													<div class="col-xs-12 col-sm-6"> -->
+<!-- 														<div class="item"> -->
+<!-- 															<img class="imgmap" src="mapImage/room5.jpg"> -->
+<!-- 															<h3>新竹豐邑喜來登大飯店</h3> -->
+<!-- 															<p>Sheraton Hsinchu Hotel</p></div>item -->
+<!-- 													</div> -->
+<!-- 													<div class="col-xs-12 col-sm-6"> -->
+<!-- 														<div class="item"> -->
+<!-- 															<img class="imgmap" src="mapImage/room7.jpg"> -->
+<!-- 															<h3>新竹豐邑喜來登大飯店</h3> -->
+<!-- 															<p>Sheraton Hsinchu Hotel</p></div>item -->
+<!-- 													</div> -->
+							
+						
+															<%
+																Map<String,String[]> hotelMap = new HashMap<String,String[]>();
+																RoomService roomSvc = new RoomService();
+																List<RoomVO> upRoomList = roomSvc.getListBySQL("select * from room where roomforsell=1");
+													
+																
+																for(RoomVO roomVO:upRoomList){
+																	String hotelId = roomVO.getRoomHotelId();
+																	String[] roomBox = hotelMap.get(hotelId);
+																	Map<String,Integer> roomMap = RoomServlet.OnData.get(roomVO.getRoomId());	//onData的MAP資料
+																	
+																	
+																	String[] hotelData = new String[2];
+																	
+																	if(roomBox !=null){
+																		if(roomMap.get("price")<new Integer(roomBox[1]))								
+																		{	
+																			hotelData[0] = roomVO.getRoomId();
+																			hotelData[1] = roomMap.get("price")+"";
+																			hotelMap.put(hotelId,hotelData);
+																		}
+																		
+																	}else{
+																		hotelData[0] = roomVO.getRoomId();
+																		hotelData[1] = roomMap.get("price")+"";
+																		hotelMap.put(hotelId,hotelData);
+												
+																	}
+																		
+																}
+															
+																System.out.println(hotelMap);
+																
+													
+																
+																Set<String> hotelIdBox = hotelMap.keySet();
+																
+															
+															%>
+															
+													
+															
+															
+															<% 
+															
+															
+																
+															for(String hotelId :hotelIdBox){
+																
+															%>
+															<%  HotelService hotelSvc = new HotelService();
+																HotelVO hotelVO = hotelSvc.getOne(hotelId);	
+																RoomService roomSvc2 = new RoomService();
+															
+																RoomVO roomVO2 = roomSvc2.findByPrimaryKey(hotelMap.get(hotelId)[0]);
+															
+																%>														
+															 	<div class="col-xs-12 col-sm-6">
+															 	<div class="item">
+															
+															 		<a href="yahoo.com.tw">
+															 		<img class="imgmap" src="<%=request.getContextPath()%>/HotelRoomSearch?action=showHotel&hotelId=<%=hotelId%>">
+															 		</a>
+															 		
+															        <div class="col-xs-12 col-sm-6">
+																		<h3><%=hotelVO.getHotelName()%></h3>
+																		<div>		
+																			<% 	for(int i=1;i<=hotelVO.getHotelRatingResult();i++){%>
+																					<img src="mapImage/star.png"> 
+																			
+																			<%}%>
+																		</div>
+																	</div>
+																	
+																	<div class="col-xs-12 col-sm-3">
+																		<div style="font-size:15px;margin-top:15px;color:red;"><%=roomVO2.getRoomName()%></div>	
+																	</div>
+																	<div class="col-xs-12 col-sm-3" id="<%=hotelMap.get(hotelId)[0]%>"><div class="price" style="font-size:30px;margin-top:10px;margin-bottom:-20px;"><%=hotelMap.get(hotelId)[1]%></div>
+																	</div>
+															 	</div>
+															 	</div>
+															
+															<%} %><!--for -->
+														
+														
 											
 													<!-----------------------下一頁--------------------->
-													<div class="col-xs-12 col-sm-6">
-														<div class="itembottom" style="height:300px">
-														   
-														</div><!--item-->
+												
+												
+											  </div>
+											</div>
+											
+											
+												<div class="col-xs-12 col-sm-6">
+													<div class="itembottom" style="height:300px">
+													   
 													</div>
 												</div>
-											</div><!--scroll-->
-											</div>
-											<div class="col-xs-12 col-sm-5 semi">
+											</div><!--scroll-->	
+											
+											
+											
+										</div>
+										
+										<div class="col-xs-12 col-sm-5 semi">
 												
 												<div class="item right" id="right">
-													<img src="https://api.fnkr.net/testimg/500x200/">
-													<h3>title</h3>
-													<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-													tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-													quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-													consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-													cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-													proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<!-- 													<img src="https://api.fnkr.net/testimg/500x200/"> -->
+<!-- 													<h3>title</h3> -->
+<!-- 													<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod -->
+<!-- 													tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, -->
+<!-- 													quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo -->
+<!-- 													consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse -->
+<!-- 													cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non -->
+<!-- 													proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
 												</div>
 												
 												
-											</div>
 										</div>
+										
+										
+										
+										
+										
+									  </div>
 									</div>
                                 </div>
                             </div>
@@ -321,7 +632,23 @@
 
 </body>
 
-</html>
+</html>	
+<script>
+var FirstRoomId = [<%for(RoomVO roomVO3:upRoomList){%> <%=roomVO3.getRoomId()%>, <%}%>  <%=upRoomList.get(0).getRoomId()%> ];
+// 									roomMap.set(hotel.roomBottomId,itemRightDiv);
+window.onload=function(){
+	roomMap = new Map;
+	for(var i=0 ;i<FirstRoomId.length;i++){
+		var item = document.getElementById(FirstRoomId[i]);
+		if(item!=null){
+		roomMap.set(""+FirstRoomId[i],item);
+		}
+	}	
+
+}
+
+
+</script>
 
 <script type="text/javascript">
 
@@ -384,3 +711,4 @@
 
 
 </script>
+
