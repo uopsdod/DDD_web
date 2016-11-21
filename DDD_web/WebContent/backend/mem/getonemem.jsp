@@ -334,7 +334,14 @@ body {
 				</tr>
 				<tr>
 					<td>${memvo.memName}</td>
-					<td>${memvo.memGender}</td>						
+					<c:choose>
+			            <c:when test="${memvo.memGender=='f'}">
+			                <td>女生</td>
+			            </c:when>
+			            <c:when test="${memvo.memGender=='m'}">
+			                <td>男生</td>
+			            </c:when>		       
+			       	</c:choose>																			
 				</tr>
 				<tr>
 					<th>身份證字號</th>

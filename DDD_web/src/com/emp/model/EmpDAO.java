@@ -1,407 +1,176 @@
 package com.emp.model;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+/*
+ Hibernate is providing a factory.getCurrentSession() method for retrieving the current session. A
+ new session is opened for the first time of calling this method, and closed when the transaction is
+ finished, no matter commit or rollback. But what does it mean by the “current session”? We need to
+ tell Hibernate that it should be the session bound with the current thread.
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+ <hibernate-configuration>
+ <session-factory>
+ ...
+ <property name="current_session_context_class">thread</property>
+ ...
+ </session-factory>
+ </hibernate-configuration>
+
+ */
+
+
+import org.hibernate.*;
+import util.HibernateUtil;
+import java.util.*;
+
 
 public class EmpDAO implements EmpDAO_interface {
-	private static DataSource ds = null;
-	static {
+	
+   	private static final Base64.Encoder encoder = Base64.getEncoder();
+	private static final String GET_ALL_STMT = "from EmpVO order by empid";
+
+	@Override
+	public void insert(EmpVO empVO) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-			Context ctx = new InitialContext();
-			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/TestDB");
-		} catch (NamingException e) {
-			e.printStackTrace();
+			session.beginTransaction();
+			session.saveOrUpdate(empVO);
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			session.getTransaction().rollback();
+			throw ex;
 		}
 	}
-	private static final String GET_ALL_STMT = "SELECT empId,empName,empAccount,empPwd,empPhone,empHireDate,empFireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress FROM emp order by empId";
-	private static final String GET_ONE_STMT = "SELECT empId,empName,empAccount,empPwd,empPhone,empHireDate,empFireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress FROM emp where empId=?";
-	private static final String GET_ONE_USER ="SELECT empId,empName,empAccount,empPwd,empPhone,empHireDate,empFireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress FROM emp where empAccount=?";
-	private static final String INSERT_STMT = "INSERT INTO emp (empId,empName,empAccount,empPwd,empPhone,empHireDate,empFireDate,empStatus,empBirthDate,empProfile,empROCId,empAddress) VALUES (emp_seq.NEXTVAL,?,?,?,?,?,?,?,?,?,?,?)";
-	private static final String UPDATE = "UPDATE emp set  empName=?, empAccount=?, empPhone=?,empHireDate=?,empFireDate=?, empStatus=? ,empBirthDate=?,empProfile=?,empROCId=?,empAddress=? where empId =?";
-	private static final String UPDATE_PSW ="UPDATE EMP set empPwd=? where empId=?";
-	private static final String GET_PHOTO ="SELECT empProfile from emp where empId=?";
-	private static final Base64.Encoder encoder = Base64.getEncoder();
-	
+
+
+	@Override
+	public void update(EmpVO aEmpVO) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			
+			Query query = session.createSQLQuery("UPDATE emp set  empName=?, empAccount=?, empPhone=?,empHireDate=?,empFireDate=?, empStatus=? ,empBirthDate=?,empProfile=?,empROCId=?,empAddress=? where empId =?");
+			query.setParameter(0, aEmpVO.getEmpName());
+			query.setParameter(1, aEmpVO.getEmpAccount());
+			query.setParameter(2, aEmpVO.getEmpPhone());
+			query.setParameter(3, aEmpVO.getEmpHireDate());
+			query.setParameter(4, aEmpVO.getEmpFireDate());
+			query.setParameter(5, aEmpVO.getEmpStatus());
+			query.setParameter(6, aEmpVO.getEmpBirthDate());
+			query.setParameter(7, aEmpVO.getEmpProfile());
+			query.setParameter(8, aEmpVO.getEmpROCId());
+			query.setParameter(9, aEmpVO.getEmpAddress());
+			query.setParameter(10, aEmpVO.getEmpId());
+			query.executeUpdate();
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			ex.printStackTrace();
+			session.getTransaction().rollback();
+			throw ex;
+		}
+	}
+
 	@Override
 	public List<EmpVO> getAll() {
-		List<EmpVO> list = new ArrayList<EmpVO>();
-		EmpVO empVO = null;
-
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
+		List<EmpVO> list = null;
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-			
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ALL_STMT);
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()) {
-				// empVO 也稱為 Domain objects
-				empVO = new EmpVO();
-				empVO.setEmpId(rs.getString("empId"));
-				empVO.setEmpName(rs.getString("empName"));
-				empVO.setEmpAccount(rs.getString("empAccount"));
-				empVO.setEmpPwd(rs.getString("empPwd"));
-				empVO.setEmpPhone(rs.getString("empPhone"));
-				empVO.setEmpHireDate(rs.getDate("empHireDate"));
-				empVO.setEmpFireDate(rs.getDate("empFireDate"));
-				empVO.setEmpStatus(rs.getString("empStatus"));
-				empVO.setEmpBirthDate(rs.getDate("empBirthDate"));
-				empVO.setEmpProfile(rs.getBytes("empProfile"));
+			session.beginTransaction();
+			Query query = session.createQuery(GET_ALL_STMT);
+			list = query.list();
+			for(EmpVO empVO:list){
 				if(empVO.getEmpProfile() == null){
 					empVO.setBs64("");
 				} else {
 					empVO.setBs64(encoder.encodeToString(empVO.getEmpProfile()));
 				}
-				
-				empVO.setEmpROCId(rs.getString("empROCId"));
-				empVO.setEmpAddress(rs.getString("empAddress"));
-				list.add(empVO); // Store the row in the list
 			}
-
-			// Handle any driver errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
+			
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
 		}
 		return list;
 	}
-	
-	@Override
-	public EmpVO getUser(String aAccount) {
-		EmpVO empVO = null;
 
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-			
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ONE_USER);
-			pstmt.setString(1, aAccount);
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				// empVO 也稱為 Domain objects
-				
-				empVO = new EmpVO();
-				empVO.setEmpId(rs.getString("empId"));
-				empVO.setEmpName(rs.getString("empName"));
-				empVO.setEmpAccount(rs.getString("empAccount"));
-				empVO.setEmpPwd(rs.getString("empPwd"));
-				empVO.setEmpPhone(rs.getString("empPhone"));
-				empVO.setEmpHireDate(rs.getDate("empHireDate"));
-				empVO.setEmpFireDate(rs.getDate("empFireDate"));
-				empVO.setEmpStatus(rs.getString("empStatus"));
-				empVO.setEmpBirthDate(rs.getDate("empBirthDate"));
-				empVO.setEmpProfile(rs.getBytes("empProfile"));
-				empVO.setEmpROCId(rs.getString("empROCId"));
-				empVO.setEmpAddress(rs.getString("empAddress"));
-				
-			}
-
-			// Handle any driver errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-			return empVO;
-		}
 	
 	@Override
 	public EmpVO getOne(String aEmpId) {
 		EmpVO empVO = null;
-
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-			
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_ONE_STMT);
-			pstmt.setString(1, aEmpId);
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				// empVO 也稱為 Domain objects
-				empVO = new EmpVO();
-				empVO.setEmpId(rs.getString("empId"));
-				empVO.setEmpName(rs.getString("empName"));
-				empVO.setEmpAccount(rs.getString("empAccount"));
-				empVO.setEmpPwd(rs.getString("empPwd"));
-				empVO.setEmpPhone(rs.getString("empPhone"));
-				empVO.setEmpHireDate(rs.getDate("empHireDate"));
-				empVO.setEmpFireDate(rs.getDate("empFireDate"));
-				empVO.setEmpStatus(rs.getString("empStatus"));
-				empVO.setEmpBirthDate(rs.getDate("empBirthDate"));
-				empVO.setEmpProfile(rs.getBytes("empProfile"));
-				empVO.setEmpROCId(rs.getString("empROCId"));
-				empVO.setEmpAddress(rs.getString("empAddress"));
-			}
-
-			// Handle any driver errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
+			session.beginTransaction();
+			empVO = (EmpVO) session.get(EmpVO.class, aEmpId);
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
 		}
-			return empVO;
-		}
-	
-
-	@Override
-	public void insert(EmpVO aEmpVO) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(INSERT_STMT);
-			
-			pstmt.setString(1, aEmpVO.getEmpName());
-			pstmt.setString(2, aEmpVO.getEmpAccount());
-			pstmt.setString(3, aEmpVO.getEmpPwd());
-			pstmt.setString(4, aEmpVO.getEmpPhone());
-			pstmt.setDate(5, aEmpVO.getEmpHireDate());
-			pstmt.setDate(6, aEmpVO.getEmpFireDate());
-			pstmt.setString(7, aEmpVO.getEmpStatus());
-			pstmt.setDate(8, aEmpVO.getEmpBirthDate());
-			pstmt.setBytes(9,aEmpVO.getEmpProfile() );
-			pstmt.setString(10, aEmpVO.getEmpROCId());
-			pstmt.setString(11, aEmpVO.getEmpAddress());
-
-			pstmt.executeUpdate();
-
-			// Handle any driver errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
+		return empVO;
 	}
+//	private static final String GET_ONE_USER ="SELECT empId,
+	//where empAccount=?
 
 	@Override
-	public void update(EmpVO aEmpVO) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-
+	public EmpVO getUser(String aAccount) {
+		EmpVO empVO = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(UPDATE);
-
-			pstmt.setString(1, aEmpVO.getEmpName());
-			pstmt.setString(2, aEmpVO.getEmpAccount());
-//			pstmt.setString(3, aEmpVO.getEmpPwd());
-			pstmt.setString(3, aEmpVO.getEmpPhone());
-			pstmt.setDate(4, aEmpVO.getEmpHireDate());
-			pstmt.setDate(5, aEmpVO.getEmpFireDate());
-			pstmt.setString(6, aEmpVO.getEmpStatus());
-			pstmt.setDate(7, aEmpVO.getEmpBirthDate());
-			pstmt.setBytes(8, aEmpVO.getEmpProfile());
-			pstmt.setString(9, aEmpVO.getEmpROCId());
-			pstmt.setString(10, aEmpVO.getEmpAddress());
-			pstmt.setString(11, aEmpVO.getEmpId());
-
-			pstmt.executeUpdate();
-
-			// Handle any driver errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
+			session.beginTransaction();
+			Query query = session.createQuery("from EmpVO where empAccount=?");
+			
+			query.setParameter(0, aAccount);
+			  List results = query.list();
+			  if(results.size() > 0){
+		    	empVO  = (EmpVO) results.get(0);
+		      }
+			  
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
 		}
+		return empVO;
 	}
 
 	@Override
 	public void update_Psw(EmpVO aEmpVO) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(UPDATE_PSW);
-
-			pstmt.setString(1, aEmpVO.getEmpPwd());
-			pstmt.setString(2, aEmpVO.getEmpId());
-		
-
-			pstmt.executeUpdate();
-
-			// Handle any driver errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
+			session.beginTransaction();
+			session.saveOrUpdate(aEmpVO);
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
 		}
 	}
-
+	
 	@Override
 	public byte[] getPhoto(String aEmpId) {
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+		EmpVO empVO = null;
 		byte[] empProfile;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_PHOTO);
-			pstmt.setString(1, aEmpId);
-			rs = pstmt.executeQuery();
-			rs.next();
-			empProfile=rs.getBytes("empProfile");
-			// Handle any driver errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
+			session.beginTransaction();
+			Query query = session.createQuery("from EmpVO where empId=?");
 			
-			return empProfile;
+			query.setParameter(0, aEmpId);
+			 List results = query.list();
+			 if(results.size() > 0){
+			    	empVO  = (EmpVO) results.get(0);
+			      }
+			empProfile = empVO.getEmpProfile();
+			
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
 		}
-
+		return empProfile;
+	}
+	
 	
 
 }
-
