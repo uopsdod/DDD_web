@@ -115,7 +115,7 @@ footer #list {
 }
 .roomName{
     font-family: Tahoma, Verdana, 微軟正黑體;
-    font-size: 22px;
+    font-size: 25px;
 
 }
 .price{
@@ -123,9 +123,19 @@ footer #list {
     font-family: Tahoma, Verdana, 微軟正黑體;
     font-size: 22px;
 }
+.price1{
+    margin-top: 0%;
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    font-size: 13px;
+}
 .toNight{
     font-family: Tahoma, Verdana, 微軟正黑體;
     font-size: 18px;
+    color: red
+}
+.toNight1{
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    font-size: 14px;
     color: red
 }
 #buttnOnimg {
@@ -150,8 +160,10 @@ footer #list {
     font-size: 20px;
     
 }
-.sale{
-    font-size: 17px;
+.house{
+    font-size: 15px;
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    color:blue;
 }
 #view{
    position: relative;
@@ -160,4 +172,5 @@ footer #list {
 .star{
 	font-family: Tahoma, Verdana, 微軟正黑體;
 	font-size: 16px;
+	color:#b0b504;
 }

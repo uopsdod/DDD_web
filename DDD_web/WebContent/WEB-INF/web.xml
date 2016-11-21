@@ -176,6 +176,15 @@
     <url-pattern>/android/live2/partner.do</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+    <servlet-name>AndroidWishServlet</servlet-name>
+    <servlet-class>android.Wish.Wish</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AndroidWishServlet</servlet-name>
+    <url-pattern>/android/Wish/wish.do</url-pattern>
+  </servlet-mapping>
+  
   <filter>
     <filter-name>setCharacterEncoding</filter-name>
     <filter-class>com.filters.SetCharacterEncodingFilter</filter-class>
@@ -194,9 +203,17 @@
     <listener-class>com.listener.InitializeRoomListener</listener-class>
   </listener>
   
-  
   <listener>
     <listener-class>com.listener.InitializeOrdStatusTransListener</listener-class>
   </listener>
+
+	<!-- Spring 的WebApplicationContext測試, 用於 Test_Servlet_Spring_HibernateTemplate.java -->
+<!-- 	<listener> -->
+<!-- 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> -->
+<!-- 	</listener> -->
+<!-- 	<context-param> -->
+<!-- 		<param-name>contextConfigLocation</param-name> -->
+<!-- 		<param-value>/WEB-INF/model-config.xml</param-value> -->
+<!-- 	</context-param> -->
 
 </web-app>

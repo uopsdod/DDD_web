@@ -10,9 +10,10 @@ public class WishService {
 		dao = new WishDAO();
 	}
 	
-	public WishVO addWish(String aWishRoomId){
+	public WishVO addWish(String aWishMemId, String aWishRoomId){
 		WishVO wishVO = new WishVO();
 		
+		wishVO.setWishMemId(aWishMemId);
 		wishVO.setWishRoomId(aWishRoomId);
 		dao.insert(wishVO);
 		return wishVO;
@@ -32,6 +33,10 @@ public class WishService {
 	
 	public List<WishVO> getAll(){
 		return dao.getAll();
+	}
+	
+	public List<String> getAllWishRoomId(String aWishMemId){
+		return dao.getAllWishRoomId(aWishMemId);
 	}
 
 	//--------------------------------------貴新增

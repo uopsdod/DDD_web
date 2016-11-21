@@ -102,9 +102,6 @@ public class Room extends HttpServlet {
 			Iterator it = set.iterator();
 			while(it.hasNext()){
 				RoomVO roomId =  (RoomVO) it.next();
-//				String roomIdd = roomId.getRoomId();
-//				RoomVO roomVO = dao.findByPrimaryKey(roomIdd);
-								
 				if(roomId.getRoomForSell()){
 					Map<String, Map> one = RoomServlet.OnData;
 					Map<String, Integer> two = one.get(roomId.getRoomId());					
@@ -115,21 +112,6 @@ public class Room extends HttpServlet {
 					it.remove();
 					System.out.println("沒有上架任何房間!!!");
 				}
-	
-				
-				
-//				System.out.println("------------id------------------  :"+ newSet.getRoomId());
-//				if(one.get(newSet.getRoomId()) != null || !one.get(newSet.getRoomId()).equals(null)){
-//					Map<String, Integer> two = one.get(newSet.getRoomId());
-//					System.out.println("========================" + two.get("price"));
-//					int price = two.get("price");
-//					newSet.setRoomPrice(price);
-//				}else{
-//					System.out.println("沒有上架任何房間!!!");
-//				}			
-				
-				
-				
 			}
 			
 			

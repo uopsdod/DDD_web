@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import javax.naming.*;
@@ -32,7 +33,8 @@ public class AdDAO implements AdDAO_interface {
 	private static final String GET_ONE_STMT = "SELECT adId,adAdPlanId,adHotelId,adStatus,to_char(adPayDate,'yyyy-mm-dd') adPayDate,adPic,adPicContent,adHit FROM Ad where adId = ?";
 	private static final String DELETE = "DELETE FROM Ad where AdId = ?";
 	private static final String UPDATE = "UPDATE Ad set adId=?, adAdPlanId=?, adStatus=?, adPayDate=?, adPic=?, adPicContent=?, adHit=? where AdId = ?";
-
+	private static final Base64.Encoder encoder = Base64.getEncoder();
+//è²´æ–°å¢žBS
 	@Override
 	public void insert(AdVO aAdVO) {
 		// TODO Auto-generated method stub
@@ -171,7 +173,7 @@ public class AdDAO implements AdDAO_interface {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// AdVO ¤]ºÙ¬° Domain objects
+				// AdVO ï¿½]ï¿½Ù¬ï¿½ Domain objects
 				AdVO = new AdVO();
 				AdVO.setAdId(rs.getString("adId"));
 				AdVO.setAdAdPlanId(rs.getString("adAdPlanId"));
@@ -233,7 +235,7 @@ public class AdDAO implements AdDAO_interface {
 			}
 
 			while (rs.next()) {
-				// AdVO ¤]ºÙ¬° Domain objects
+				// AdVO ï¿½]ï¿½Ù¬ï¿½ Domain objects
 				System.out.println("rs.getDate(\"adPayDate\"): " + rs.getDate("adPayDate"));
 
 				AdVO = new AdVO();
@@ -243,6 +245,12 @@ public class AdDAO implements AdDAO_interface {
 				AdVO.setAdStatus(rs.getString("adStatus"));
 				AdVO.setAdPayDate(rs.getDate("adPayDate"));
 				AdVO.setAdPic(rs.getBytes("adPic"));
+				if(AdVO.getAdPic() == null){
+					AdVO.setBs64("");
+				} else {
+					AdVO.setBs64(encoder.encodeToString(AdVO.getAdPic()));
+				}
+				//è²´æ–°å¢žBS
 				AdVO.setAdPicContent(rs.getString("adPicContent"));
 				AdVO.setAdHit(rs.getInt("adHit"));
 				list.add(AdVO); // Store the row in the list
@@ -292,10 +300,10 @@ public class AdDAO implements AdDAO_interface {
 //
 //		AdDAO dao = new AdDAO();
 //
-//		// ·s¼W
+//		// ï¿½sï¿½W
 //		AdVO adVO1 = new AdVO();
 //
-//		// ¬d¸ß
+//		// ï¿½dï¿½ï¿½
 //		AdVO AdVO3 = dao.findByPrimaryKey("10000001");
 //		System.out.print(AdVO3.getAdId() + ",");
 //		System.out.print(AdVO3.getAdAdPlanId() + ",");
@@ -307,7 +315,7 @@ public class AdDAO implements AdDAO_interface {
 //		System.out.println(AdVO3.getAdHit());
 //		System.out.println("---------------------");
 //
-//		// ¬d¸ß
+//		// ï¿½dï¿½ï¿½
 //		AdDAO_interface dao2 = new AdJDBCDAO();
 //		dao2.getAll();
 //		List<AdVO> list = dao2.getAll();
