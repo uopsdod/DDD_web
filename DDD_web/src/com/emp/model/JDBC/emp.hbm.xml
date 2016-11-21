@@ -4,11 +4,11 @@
 
 <hibernate-mapping>
 	<class name="com.emp.model.EmpVO" table="emp">
-		
+
 		<id name="empId" column="empId">
             <generator class="com.emp.model.EmpIdGenerator"/>
 		</id>
-		
+
 		<property name="empName" column="empName" />
 		<property name="empAccount" column="empAccount" />
 		<property name="empPwd" column="empPwd" />

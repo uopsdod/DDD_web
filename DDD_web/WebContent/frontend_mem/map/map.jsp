@@ -194,13 +194,13 @@ function construct(hotel){
 	};
 	outDiv.onmouseout = function(){
 		backMark(hotel);	
-	};
+	}; 
 	
 	var innerDiv = document.createElement("div"); // 	<div class="item">
 	innerDiv.className="item";
 	
 	var a = document.createElement("a");
-	a.href="http://www.yahoo.com.tw";
+	a.href="<%=request.getContextPath()%>/HotelRoomSearch?action=hotelPage&hotelId=" + hotel.hotelId;
 	
 	var imgeg = document.createElement("img"); // 		<img class="imgmap" src="mapImage/room1.jpg">	
 	imgeg.src= "<%=request.getContextPath()%>/HotelRoomSearch" + "?action=showHotel&hotelId=" +hotel.hotelId;		
@@ -550,7 +550,7 @@ function construct(hotel){
 															 	<div class="col-xs-12 col-sm-6">
 															 	<div class="item">
 															
-															 		<a href="yahoo.com.tw">
+															 		<a href="<%=request.getContextPath()%>/HotelRoomSearch?action=hotelPage&hotelId=<%=hotelId%>">
 															 		<img class="imgmap" src="<%=request.getContextPath()%>/HotelRoomSearch?action=showHotel&hotelId=<%=hotelId%>">
 															 		</a>
 															 		

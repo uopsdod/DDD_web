@@ -1,4 +1,4 @@
-package com.emp.model;
+package com.emp.model.JDBC;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
