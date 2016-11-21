@@ -1,6 +1,7 @@
 package com.room.controler;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.hotel.model.HotelService;
 import com.hotel.model.HotelVO;
 import com.hotelserv.model.HotelServService;
@@ -97,19 +100,73 @@ public class HotelRoomSearch extends HttpServlet {
 //			
 //		}
 	
-	String action = req.getParameter("action");
 		
+		res.setCharacterEncoding("utf-8");	
+		String action = null;
+		String city = null; //取得輸入的城市
+		String zone = null; //取得輸入的區
+		String hotelRatingResult = null;  //取得旅館評分數
+		String roomCapacity = null;
+		String price = null; //價錢range處理		
+		
+		// 手機端使用:
+		Gson gson_mobile = new Gson();
+		BufferedReader br_mobile = req.getReader();
+		StringBuilder jsonIn_mobile = new StringBuilder();
+		String line_mobile = null;
+		while ((line_mobile = br_mobile.readLine()) != null) {
+			jsonIn_mobile.append(line_mobile);
+		}
+		
+		System.out.println("jsonIn_mobile*******: " + jsonIn_mobile);
+		JsonObject jsonObject_mobile = null;
+		try{
+			jsonObject_mobile = gson_mobile.fromJson(jsonIn_mobile.toString(),JsonObject.class);			
+		}catch(com.google.gson.JsonSyntaxException e){
+			System.out.println("Not from mobile");
+		}
+
+		
+	if ( jsonObject_mobile == null || jsonObject_mobile.get("fromMobile") == null) {
+		HashMap<String,String> paramMap = new HashMap<>();
+		String[] params = jsonIn_mobile.toString().split("&");
+		for (String param: params){
+			//System.out.println("param: " + param);
+			String key = param.split("=")[0];
+			String value = param.split("=")[1];
+			paramMap.put(key, value);
+			System.out.println("key: " + key);
+			System.out.println("value: " + value);
+		}
+		res.setCharacterEncoding("utf-8");	
+		action = paramMap.get("action");
+		city = paramMap.get("city");
+		zone = paramMap.get("zone");
+		hotelRatingResult = paramMap.get("hotelRatingResult");
+		roomCapacity = paramMap.get("roomCapacity");
+		price = paramMap.get("Price");
+				
+//		action = req.getParameter("action");
+//		res.setCharacterEncoding("utf-8");	
+//		city = req.getParameter("city");
+//		zone = req.getParameter("zone");
+//		hotelRatingResult = req.getParameter("hotelRatingResult");
+//		roomCapacity = req.getParameter("roomCapacity");
+//		price = req.getParameter("Price");
+	// 	手機端使用:
+	}else{
+		action = (jsonObject_mobile.get("action") != null)? jsonObject_mobile.get("action").getAsString(): null;
+		city = (jsonObject_mobile.get("city") != null)? jsonObject_mobile.get("city").getAsString(): null;
+		zone = (jsonObject_mobile.get("zone") != null)? jsonObject_mobile.get("zone").getAsString(): null;
+		hotelRatingResult = (jsonObject_mobile.get("hotelRatingResult") != null)? jsonObject_mobile.get("hotelRatingResult").getAsString(): null;
+		roomCapacity = (jsonObject_mobile.get("roomCapacity") != null)? jsonObject_mobile.get("roomCapacity").getAsString(): null;
+		price = (jsonObject_mobile.get("Price") != null)? jsonObject_mobile.get("Price").getAsString(): null;		
+	}
+	
 		if("search".equals(action)){
 		
 		
-			res.setCharacterEncoding("utf-8");	
-			String city = req.getParameter("city"); //取得輸入的城市
-			String zone = req.getParameter("zone"); //取得輸入的區
-			String hotelRatingResult = req.getParameter("hotelRatingResult"); //取得旅館評分數
-			String roomCapacity = req.getParameter("roomCapacity");
-			
-			
-			String price = req.getParameter("Price");		//價錢range處理
+
 			String[] range = price.split(" - ");
 			int min = new Integer(range[0].substring(1, range[0].length()));	//取得價錢下限
 			int max = new Integer(range[1].substring(1, range[1].length()));	//取得價錢上限	
@@ -258,6 +315,7 @@ public class HotelRoomSearch extends HttpServlet {
 			
 			
 			PrintWriter out = res.getWriter();
+			System.out.println("array.toString(): " + array.toString());
 			out.write(array.toString());	//輸出所搜尋到符合條件的旅館資料
 			
 			
