@@ -100,7 +100,7 @@ body {
 
 }
 .aaa{
-	height: 1250px;
+	height: 1450px;
 	background-color: #ccc;
 	margin-top: 53px;
 }
@@ -304,7 +304,7 @@ body {
 			<!-- 		hotelvo		bar結束 -->
 			<div class="col-xs-12 col-sm-10 tablediv text-center" > 
 				<table border='0' bordercolor='black' cellspacing="0" cellpadding="5"
-				width='800' class="table table-hover" id="tablehotel" >	
+				width='800' class="table table-hover " id="tablehotel" >	
 				<tr>
 					<td>
 					<H1>旅館照片</H1>

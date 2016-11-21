@@ -8,6 +8,7 @@ public interface MemDAO_interface {
 	public void update(MemVO aMemVO);
 	public void delete(String aMemId);
 	public MemVO findByPrimaryKey(String aMemId);
+	public MemVO findByPrimaryKey_web(String aMemId);
 	public List<MemVO>getAll();
 	public MemVO memCheck(String aMemAccount, String aMemPsw);
 	//--------------------------------------------貴新增

@@ -19,9 +19,41 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+
+<style>
+	.tablediv{
+		margin-top:2%;
+	}
+	.checkboxname{
+		margin-right:25px;
+		font-size:30px;
+	}
+	.checkauth{
+		padding:10px;
+		zoom: 2;
+		
+	}
+	#btnOfauth{
+	opacity: 0.9;
+	z-index: 1;
+	background: #0283df;
+	color: #ffffff;
+	position: relative;
+	font-weight: bold;
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	border: 0px;
+	border-radius: 10px;
+	padding: 4px;
+	font-size: 20px;
+	width:100px;
+	margin-bottom:10px;
+	
+}
+	
+</style>
 </head>
 <body>
-	<h3>資料修改:</h3>
+	
 	<%-- 錯誤表列 --%>
 	<c:if test="${not empty errorMsgs}">
 		<font color='red'>請修正以下錯誤:
@@ -32,16 +64,17 @@
 			</ul>
 		</font>
 	</c:if>
-
+	
 	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/auth/auth.do">
-	<table border="0">
+	<div class="col-xs-12 col-sm-10 tablediv text-center" > 
+	<table border="0" align="center">
 		<jsp:useBean id="auth" scope="request"
 			class="com.auth.model.AuthService" />
 		<c:forEach var="authvo" items="${auth.all}">
-			<tr>
-				<td><input type="checkbox" name="authIdlIST" size="45"
+			<tr style="display: inline-block" >
+				<td ><input type="checkbox" name="authIdlIST" size="45" class="checkauth"
 					value="${authvo.authId}"
-					<c:if test="${fn:contains(authIdList,authvo.authId)}">checked</c:if>>${authvo.authName}</td>
+					<c:if test="${fn:contains(authIdList,authvo.authId)}">checked</c:if>><div class="checkboxname">${authvo.authName}</div></td>
 				<!-- 						這一個會判斷第二個參數是否存在於第一個參數里面，如果有返回true，沒有則false。和java String.contains()一樣概念。-->
 				<%-- 					${authIdList.contains(authvo.authId)? 'checked':'' } --%>
 				<!-- 							前面是查出來的字串 -->
@@ -49,13 +82,12 @@
 		</c:forEach>
 	</table>
 	
-		<br> <input type="hidden" name="action" value="update"> 
-		
+		<br> <input type="hidden" name="action" value="update" > 		
 		<input type="hidden" name="authIdlistNo" value="${param.empId}"> 	
-		<input type="submit" value="確認修改" >
+		<input type="submit" value="確認修改"  id="btnOfauth">
+		<br>
+		</div>
 	</FORM>
+	
 </body>
 </html>
-<script>
-	
-</script>

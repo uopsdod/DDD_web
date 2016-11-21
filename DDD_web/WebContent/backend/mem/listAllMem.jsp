@@ -16,7 +16,12 @@ List<String> authorityList =(List<String>)session.getAttribute("authorityList");
 session.setAttribute("empvo", empvo);
 session.setAttribute("authorityList",authorityList);
 %>
+<%
 
+if(!authorityList.contains("101")){
+	response.sendRedirect(request.getContextPath()+"/backend/emp_index.jsp");
+}
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -46,7 +51,8 @@ body {
 	border: 0px;
 	border-radius: 10px;
 	padding: 4px;
-	font-size: 12px;
+	font-size: 20px;
+	width:120px;
 }
 
 .vcenter {
@@ -56,6 +62,26 @@ body {
 }
 #empName{
 	color:white;
+}
+.tablediv{
+	
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	font-size: 19px;
+	font-weight: bold;
+	
+}
+#emptableth th{
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	font-size: 20px;
+	 line-height:50px;
+}
+#emptableth td{
+	line-height:70px;
+	}
+	.aaa{
+	height: 1450px;
+	background-color: #ccc;
+	margin-top: 53px;
 }
 </style>
 </head>
@@ -88,7 +114,7 @@ body {
 
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-xs-12 col-sm-2 aa" style="background-color: #DCDCDC;">
+				<div class="col-xs-12 col-sm-2 aaa" style="background-color: #DCDCDC;">
 					<div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
 					  <!-- 區塊1 -->
 					  <c:if test="${fn:contains(authorityList,'102')}"> <%-- 行政業務管理 --%>
@@ -256,39 +282,50 @@ body {
 				</div>
 			<!-- 				bar結束 -->
 		
-			<div class="col-xs-12 col-sm-10 tablediv" > 
-				<table border='3' bordercolor='black' cellspacing="0" cellpadding="5"
-				width='800' class="table table-hover">	
+			<div class="col-xs-12 col-sm-10 tablediv text-center" > 
+			
+			<h1>會員資料列表</h1>
+			<hr  size="10" width="95%"  align="center" style="border-top: 3px solid #000000">
+				<table  cellspacing="0" cellpadding="5"				
+				width='800' class="table table-hover" id="emptableth">	
 				<tr>
-					<th>姓名</th>
-					<th>性別</th>
-					<th>身份證字號</th>
-					<th>出生年月日</th>
-					<th>電話</th>
+					<th  class="text-center">會員編號</th>
+					<th  class="text-center">姓名</th>
+					<th  class="text-center">性別</th>
+					<th  class="text-center">身份證字號</th>
+					<th  class="text-center">出生年月日</th>
+					<th  class="text-center">電話</th>
 					
-					<th>信用卡卡號</th>
-					<th>信用卡驗證碼</th>
-					<th>信用卡有效日期</th>
-					<th>查看詳情</th>
-					
+<!-- 					<th>信用卡卡號</th> -->
+<!-- 					<th>信用卡驗證碼</th> -->
+<!-- 					<th>信用卡有效日期</th> -->
+					<th  class="text-center">查看詳情</th>					
 				</tr>
 				
-				<c:forEach var="memvo" items="${memvo}" >			
+				<c:forEach var="memvo" items="${memvo}">			
 					<tr align='center' valign='middle'
 						${(memvo.memId==param.memId) ? 'bgcolor=lightblue':''}
 						>
 						<!--將修改的那一筆加入對比色而已-->
 <%-- 						<td><img src='data:image/jpeg;base64,${HotelVO.bs64}' --%>
 <!-- 							width="120" height="80" /></td> -->
-					
+						<td>${memvo.memId}</td>
 						<td>${memvo.memName}</td>
-						<td>${memvo.memGender}</td>
+						
+						<c:choose>
+				            <c:when test="${memvo.memGender=='f'}">
+				                <td>女</td>
+				            </c:when>
+				            <c:when test="${memvo.memGender=='m'}">
+				                <td>男</td>
+				            </c:when>				            
+				        </c:choose>					
 						<td>${memvo.memTwId}</td>
 						<td>${memvo.memBirthDate}</td>
 						<td>${memvo.memPhone}</td>
-						<td>${memvo.memCreditCardNo}</td>
-						<td>${memvo.memCreditCheckNo}</td>
-						<td>${memvo.memCreditDueDate}</td>
+<%-- 						<td>${memvo.memCreditCardNo}</td> --%>
+<%-- 						<td>${memvo.memCreditCheckNo}</td> --%>
+<%-- 						<td>${memvo.memCreditDueDate}</td> --%>
 						<td>
 							<FORM METHOD="post"
 								ACTION="<%=request.getContextPath()%>/mem/mem.do">
@@ -318,6 +355,6 @@ body {
 				</c:forEach>
 			</table>
 			</div>
-				
+			
 </body>
 </html>

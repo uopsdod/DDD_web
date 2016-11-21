@@ -64,9 +64,9 @@ public class PartnerMsgController extends HttpServlet {
 			res.setContentType(CONTENT_TYPE);
 			PrintWriter out = res.getWriter();
 			//outStr = gson.toJson(dao_memChat.getAll()); // no no no not get all
-			outStr = gson.toJson(dao_memChat.getOldMsgBtwnTwoMems(memId, toMemId));
+			outStr = gson.toJson(dao_memChat.getOldMsgBtwnTwoMems(memId, toMemId)); // 這邊還無法轉成Hibernate，因為gson與hibernate之間的問題
 			
-			System.out.println("outStr:" + outStr);
+			//System.out.println("outStr:" + outStr);
 			out.println(outStr);
 			return;
 		}
@@ -79,7 +79,7 @@ public class PartnerMsgController extends HttpServlet {
 			//outStr = gson.toJson(dao_memChat.getAll()); // no no no not get all
 			outStr = gson.toJson(dao_memChat.getNewestMsgEachChatId(memId));
 			
-			System.out.println("outStr:" + outStr);
+			//System.out.println("outStr:" + outStr);
 			out.println(outStr);
 			return;
 		}

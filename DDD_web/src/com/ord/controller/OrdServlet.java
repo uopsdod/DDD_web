@@ -5,10 +5,11 @@ import java.sql.Timestamp;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-
 import com.hotel.model.HotelService;
 import com.ord.model.*;
 import javax.servlet.annotation.MultipartConfig;
+import util.QRCodeImgGenerator;
+
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class OrdServlet extends HttpServlet {
@@ -65,6 +66,7 @@ public class OrdServlet extends HttpServlet {
 					failureView.forward(aReq, aRes);
 					return;
 				}
+
 				/* 3.查詢完成 */	
 				aReq.setAttribute("ordVO", ordVO);
 				String url = "/backend/ord/listOneOrd.jsp";
@@ -84,10 +86,11 @@ public class OrdServlet extends HttpServlet {
 			aReq.setAttribute("errorMsgs", errorMsgs);
 			
 			String requestURL = aReq.getParameter("requestURL");
-			aReq.setAttribute("requestURL",requestURL);
 			
-			String whichPage = aReq.getParameter("whichPage");
-			aReq.setAttribute("whichPage", whichPage);
+//System.out.println("Debug:" + requestURL);
+
+/* 要放才會過.... (fixed) */
+//aReq.setAttribute("requestURL",requestURL);
 			
 			try{
 				/* 1.接收請求參數 */
@@ -106,7 +109,6 @@ public class OrdServlet extends HttpServlet {
 					ordId = null;
 					errorMsgs.add("訂單編號格式不正確");
 				}					
-				
 				
 				if(!errorMsgs.isEmpty()){
 					RequestDispatcher failureView = aReq.getRequestDispatcher(requestURL);
@@ -139,10 +141,6 @@ public class OrdServlet extends HttpServlet {
 			OrdVO ordVO =  null;
 			
 			String requestURL = aReq.getParameter("requestURL");
-			aReq.setAttribute("requestURL",requestURL);
-			
-			String whichPage = aReq.getParameter("whichPage");
-			aReq.setAttribute("whichPage", whichPage);
 			
 			try{
 				
@@ -282,11 +280,12 @@ public class OrdServlet extends HttpServlet {
 				}
 				
 				/* 處理上傳圖片進資料庫 */
-				Part part = aReq.getPart("ordQrPic");
-				InputStream in = part.getInputStream();
-				byte[] ordQrPic = new byte[in.available()];
-				in.read(ordQrPic);
-				in.close();				
+//				Part part = aReq.getPart("ordQrPic");
+//				InputStream in = part.getInputStream();
+//				byte[] ordQrPic = new byte[in.available()];
+//				in.read(ordQrPic);
+//				in.close();				
+				
 				
 				/* 
 				 * = UPDATE 對應 =
@@ -304,7 +303,10 @@ public class OrdServlet extends HttpServlet {
 				 * 01-11 ordID
 				*/
 				
-				ordVO = new OrdVO();
+				/* 透過主鍵取一個VO */
+				OrdService ordSvc = new OrdService();
+
+				ordVO = ordSvc.getOneOrd(ordId);
 				
 				com.room.model.RoomVO roomVO = new com.room.model.RoomVO();
 				roomVO.setRoomId(ordRoomId);
@@ -324,7 +326,7 @@ public class OrdServlet extends HttpServlet {
 				ordVO.setOrdStatus(ordStatus);
 				ordVO.setOrdRatingContent(ordRatingContent);
 				ordVO.setOrdRatingStarNo(ordRatingStarNo);
-				ordVO.setOrdQrPic(ordQrPic);	
+//				ordVO.setOrdQrPic(ordQrPic);	
 				ordVO.setOrdMsgNo(ordMsgNo);
 				ordVO.setOrdId(ordId);
 
@@ -336,8 +338,8 @@ public class OrdServlet extends HttpServlet {
 				}
 				
 				/* 2.開始修改資料 */
-				OrdService ordSvc = new OrdService();
-				ordVO = ordSvc.updateOrd(ordRoomId,ordMemId,ordHotelId,ordPrice,ordLiveDateTs,ordStatus,ordRatingContent,ordRatingStarNo,ordQrPic,ordMsgNo,ordId,ordDateTs);
+//				OrdService ordSvc = new OrdService();
+				ordVO = ordSvc.updateOrd(ordVO);
 				
 				/* 3.修改完成 準備轉交 */
 				HotelService hotelSvc = new HotelService(); 
@@ -345,7 +347,17 @@ public class OrdServlet extends HttpServlet {
 				if(requestURL.equals("/backend/hotel/listOrdsByHotelId.jsp")||requestURL.equals("/backend/hotel/listAllHotel2.jsp")){
 					aReq.setAttribute("listOrdsByHotelId", hotelSvc.getOrdsByHotelId(ordVO.getOrdHotelVO().getHotelId()));
 				}
-				String url = requestURL +"?whichPage="+whichPage+"&ordID="+ ordId ;
+				
+				
+				if(requestURL.equals("/backend/ord/listOrdsByCompositeQuery.jsp")){
+					HttpSession session = aReq.getSession();
+					Map<String, String[]> map = (Map<String,String[]>)session.getAttribute("map");
+					List<OrdVO> list = ordSvc.getAll(map);
+					aReq.setAttribute("listOrdsByCompositeQuery", list);
+				}
+				
+//				String url = requestURL +"?whichPage="+whichPage+"&ordID="+ ordId ;
+				String url = requestURL;
 				RequestDispatcher successView = aReq.getRequestDispatcher(url);
 				successView.forward(aReq,aRes);				
 				/* 其他可能錯誤處理 */
@@ -465,11 +477,15 @@ public class OrdServlet extends HttpServlet {
 				}
 				
 				/* 處理上傳圖片進資料庫 */
-				Part part = aReq.getPart("ordQrPic");
-				InputStream in = part.getInputStream();
-				byte[] ordQrPic = new byte[in.available()];
-				in.read(ordQrPic);
-				in.close();				
+//				Part part = aReq.getPart("ordQrPic");
+//				InputStream in = part.getInputStream();
+//				byte[] ordQrPic = new byte[in.available()];
+//				in.read(ordQrPic);
+//				in.close();				
+				
+				String QRUrl = "https://github.com/uopsdod/DDD_web"; 
+				
+				byte[] ordQrPic = QRCodeImgGenerator.writeQRCode(QRUrl);
 				
 				/* 
 				 * = INSERT_STMT 對應 =
@@ -536,7 +552,7 @@ public class OrdServlet extends HttpServlet {
 			aReq.setAttribute("errorMsgs", errorMsgs);
 
 			String requestURL = aReq.getParameter("requestURL");			
-			String whichPage = aReq.getParameter("whichPage");
+//			String whichPage = aReq.getParameter("whichPage");
 				
 			try{
 				/* 1.接收請求參數 */
@@ -553,7 +569,16 @@ public class OrdServlet extends HttpServlet {
 				if(requestURL.equals("/backend/hotel/listOrdsByHotelId.jsp")||requestURL.equals("/backend/hotel/listAllHotel2.jsp")){
 					aReq.setAttribute("listOrdsByHotelId", hotelSvc.getOrdsByHotelId(ordVO.getOrdHotelVO().getHotelId()));
 				}
-				String url = requestURL +"?whichPage="+whichPage  ;
+				
+				if(requestURL.equals("/backend/ord/listOrdsByCompositeQuery.jsp")){
+					HttpSession session = aReq.getSession();
+					Map<String, String[]> map = (Map<String,String[]>)session.getAttribute("map");
+					List<OrdVO> list = ordSvc.getAll(map);
+					aReq.setAttribute("listOrdsByCompositeQuery", list);
+				}				
+						
+//				String url = requestURL +"?whichPage="+whichPage  ;
+				String url = requestURL;
 				RequestDispatcher successView = aReq.getRequestDispatcher(url);
 				successView.forward(aReq,aRes);
 			}
@@ -562,6 +587,39 @@ public class OrdServlet extends HttpServlet {
 				RequestDispatcher failureView = aReq.getRequestDispatcher(requestURL);
 				failureView.forward(aReq,aRes);				
 			}		
+		}
+		
+		if("listOrdsByCompositeQuery".equals(action)){
+			List<String> errorMsgs = new LinkedList<String>();
+			aReq.setAttribute("errorMsgs", errorMsgs);
+			
+			try{
+//				Map<String, String[]> map = aReq.getParameterMap();
+				HttpSession session = aReq.getSession();
+				Map<String,String[]> map = (Map<String,String[]>)session.getAttribute("map");
+				if(aReq.getParameter("whichPage")==null){
+					HashMap<String, String[]> map1 = (HashMap<String, String[]>) aReq.getParameterMap();
+					HashMap<String, String[]> map2 = new HashMap<String,String[]>();
+					map2 = (HashMap<String, String[]>) map1.clone();
+					session.setAttribute("map", map2);
+					map = (HashMap<String, String[]>) aReq.getParameterMap();
+				}
+				
+				/* ======================= */
+				
+				OrdService ordSvc = new OrdService();
+				List<OrdVO> list = ordSvc.getAll(map);
+				
+				aReq.setAttribute("listOrdsByCompositeQuery", list);
+				RequestDispatcher successView = aReq.getRequestDispatcher("/backend/ord/listOrdsByCompositeQuery.jsp"); 
+				successView.forward(aReq, aRes);
+			}
+			
+			catch(Exception e){
+				errorMsgs.add(e.getMessage());
+				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/selectPage.jsp");
+				failureView.forward(aReq,aRes);
+			}
 		}
 		
 		if("listAllByMemId".equals(action)){ //來自selectPage.jsp的請求
@@ -614,8 +672,25 @@ public class OrdServlet extends HttpServlet {
 				failureView.forward(aReq,aRes);
 			}
 			
-		}		
+		}
 		
+		if("getOneFrom04".equals(action)){
+			try{
+				/* 1.接收請求參數 - 輸入格式的錯誤處理 */
+				String requestURL = aReq.getParameter("requestURL");
+				String ordId = aReq.getParameter("ordId");
+				OrdService ordSvc = new OrdService(); 	
+				OrdVO ordVO = ordSvc.getOneOrd(ordId);	
+				
+				aReq.setAttribute("ordVO", ordVO);
+				RequestDispatcher successView = aReq.getRequestDispatcher("/backend/ord/listAllOrd.jsp");
+				successView.forward(aReq,aRes);								
+			}
+			catch(Exception e){
+				throw new ServletException(e);
+			}
+			
+		}
 	}
 	
 }

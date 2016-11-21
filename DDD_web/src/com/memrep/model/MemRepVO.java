@@ -77,6 +77,24 @@ public class MemRepVO implements Serializable {
 		this.memRepEmpVO = memRepEmpVO;
 	}
 	
+	// 過度方法:
+	public String getMemRepOrdId() {
+		return this.getMemRepOrdVO().getOrdId();
+	}
+	public void setMemRepOrdVO(String memRepOrdId) {
+		OrdVO ordVO = new OrdVO();
+		ordVO.setOrdId(memRepOrdId);
+		this.setMemRepOrdVO(ordVO);
+	}
+	public String getMemRepEmpId() {
+		return this.getMemRepEmpVO().getEmpId();
+	}
+	public void setMemRepEmpId(String aMemRepEmpId) {
+		EmpVO empVO = new EmpVO();
+		empVO.setEmpId(aMemRepEmpId);
+		this.setMemRepEmpVO(empVO);
+	}	
+	
 	
 	
 

@@ -13,7 +13,7 @@ session.setAttribute("memVO", memVO);
 
 <%
 	MemService dao = new MemService();
-	MemVO memvo = dao.getOneMem(memVO.getMemId());
+	MemVO memvo = dao.getOneMem_web(memVO.getMemId());
 	pageContext.setAttribute("memvo", memvo);
 	String tagname = (String)request.getAttribute("tab");
 	pageContext.setAttribute("tagname", tagname);
@@ -44,10 +44,10 @@ session.setAttribute("memVO", memVO);
 
 <body background="lightgray">
     <header id="top_header">
-        <div class="col-md-6 col-md-offset-1 ">
+        <div class="col-md-5 col-md-offset-1 ">
             <a href="<%=request.getContextPath()%>/frontend_mem/index.jsp"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg"></a>
         </div>
-        <div class="col-md-4 col-md-offset-1 ">
+        <div class="col-md-5 col-md-offset-1 ">
             <div class="dropdown" style='display: inline-block;'>
                 <button class="btn text-muted" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                     訂單專區
@@ -75,8 +75,8 @@ session.setAttribute("memVO", memVO);
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">成為夥伴</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">夥伴登入</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/addhotel.jsp">成為夥伴</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/loginhotel.jsp">夥伴登入</a></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">問題回報</a></li>
                 </ul>
             </div>
@@ -128,11 +128,11 @@ session.setAttribute("memVO", memVO);
         </div>
         <!-- 浮動列 -->
         <div id="top_header1">
-            <div class="col-md-6 col-md-offset-1 ">
-                <a href="file:///D:/usee/usee/Desktop/%E5%B0%88%E9%A1%8C%E9%A6%96%E9%A0%81%E7%B7%B4%E7%BF%92/index.html"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg">
+            <div class="col-md-5 col-md-offset-1 ">
+            	<a href="<%=request.getContextPath()%>/frontend_mem/index.jsp"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg"></a>
                 </a>
             </div>
-            <div class="col-md-4 col-md-offset-1 ">
+            <div class="col-md-5 col-md-offset-1 ">
                 <div class="dropdown" style='display: inline-block;'>
                     <button class="btn text-muted" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
                         訂單專區
@@ -160,8 +160,8 @@ session.setAttribute("memVO", memVO);
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">成為夥伴</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">夥伴登入</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/addhotel.jsp">成為夥伴</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/loginhotel.jsp">夥伴登入</a></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#">問題回報</a></li>
                     </ul>
                 </div>             

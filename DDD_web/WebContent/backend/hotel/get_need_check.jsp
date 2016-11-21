@@ -12,7 +12,7 @@
 %>
 
 <%
-session.getAttribute("account");
+session.getAttribute("account"); 
 EmpVO empvo =(EmpVO)session.getAttribute("empVO");
 List<String> authorityList =(List<String>)session.getAttribute("authorityList");
 session.setAttribute("empvo", empvo);
@@ -92,6 +92,25 @@ body {
 	border-radius: 10px;
 	padding: 3px;
 	font-size: 15px;
+}
+.tablediv{
+	
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	font-size: 19px;
+	font-weight:bold;
+	font-weight: bold;
+	
+}
+#emptableth th{
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	font-size: 20px;
+	
+}
+#emptableth td{
+		vertical-align:middle;
+	}
+#nosecess{
+	margin-top:10px;
 }
 </style>
 </head>
@@ -290,24 +309,26 @@ body {
 					</div>
 				</div>
 			<!-- 				bar結束 -->
-			<div class="col-xs-12 col-sm-10 tablediv" > 
-				<table border='3' bordercolor='black' cellspacing="0" cellpadding="5"
-				width='800' class="table table-hover">	
+			<div class="col-xs-12 col-sm-10 tablediv text-center" > 
+			<h1>廠商審核作業</h1>
+			<hr  size="10" width="95%"  align="center" style="border-top: 3px solid #000000">
+				<table  cellspacing="0" cellpadding="1"
+				width='800' class="table table-hover" id="emptableth">	
 				<tr>
-					<th>封面照片</th>
-					<th>廠商登記證</th>
+					<th class="text-center">封面照片</th>
+					<th class="text-center">廠商登記證</th>
 					
-					<th>廠商會員編號</th>
-					<th>廠商種類名稱</th>
-					<th>廠商名稱</th>
-					<th>統一編號</th>
-					<th>信箱</th>
-					<th>縣市</th>
-					<th>鄉鎮區</th>
-					<th>路名牌號</th>
-					<th>負責人姓名</th>
-					<th>電話</th>
-					<th>審核結果</th>
+					<th class="text-center">廠商會員編號</th>
+					<th class="text-center">廠商種類名稱</th>
+					<th class="text-center">廠商名稱</th>
+					<th class="text-center">統一編號</th>
+					<th class="text-center">信箱</th>
+					<th class="text-center">縣市</th>
+<!-- 					<th>鄉鎮區</th> -->
+<!-- 					<th>路名牌號</th> -->
+					<th class="text-center">負責人姓名</th>
+					<th class="text-center">電話</th>
+					<th class="text-center">審核結果</th>
 					
 					
 				</tr>
@@ -319,9 +340,9 @@ body {
 						>
 						<!--將修改的那一筆加入對比色而已-->
 						<td><img src='data:image/jpeg;base64,${HotelVO.bs64}'
-							width="120" height="80" /></td>
+							width="130" height="90" /></td>
 						<td><img src='data:image/jpeg;base64,${HotelVO.bs64_2}'
-							width="120" height="80" /></td>
+							width="130" height="90" /></td>
 						<td>${HotelVO.hotelId}</td>
 						<td>${HotelVO.hotelType}</td>
 						<td>${HotelVO.hotelName}</td>
@@ -329,8 +350,8 @@ body {
 						<td>${HotelVO.hotelAccount}</td>
 						
 						<td>${HotelVO.hotelCity}</td>
-						<td>${HotelVO.hotelCounty}</td>
-						<td>${HotelVO.hotelRoad}</td>
+<%-- 						<td>${HotelVO.hotelCounty}</td> --%>
+<%-- 						<td>${HotelVO.hotelRoad}</td> --%>
 						<td>${HotelVO.hotelOwner}</td>
 						<td>${HotelVO.hotelPhone}</td>
 						<td>
@@ -355,7 +376,8 @@ body {
 <!-- 								送出本網頁的路徑給Controller -->
 								<input type="hidden" name="whichPage" value="<%=whichPage%>">
 <!-- 								送出當前是第幾頁給Controller -->
-								<input type="hidden" name="action" value="nosecess">
+								<input type="hidden" name="action" value="nosecess"><br>
+								<input type="text" name="other" id="nosecess">
 							</FORM>
 						</td>
 <!-- 						<td> -->

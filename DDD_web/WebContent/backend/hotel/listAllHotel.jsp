@@ -29,6 +29,8 @@ if(!authorityList.contains("101")){
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/hotel/css/listAllHotel.css">
+<script src="<%=request.getContextPath()%>/backend/hotel/js/listAllHotel.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>管理後端</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/bootstrap.min.css">
@@ -37,33 +39,7 @@ if(!authorityList.contains("101")){
 <script src="<%=request.getContextPath()%>/backend/emp/js/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/backend/emp/js/0_new.js "></script>
 <style type="text/css">
-body {
-	font-family: Tahoma, Verdana, 微軟正黑體;
-	font-size: 13px;
-}
 
-#LoginButton {
-	opacity: 0.7;
-	z-index: 1;
-	background: #0283df;
-	color: #ffffff;
-	position: relative;
-	font-weight: bold;
-	font-family: Tahoma, Verdana, 微軟正黑體;
-	border: 0px;
-	border-radius: 10px;
-	padding: 4px;
-	font-size: 12px;
-}
-
-.vcenter {
-	display: inline-block;
-	vertical-align: middle;
-	float: none;
-}
-#empName{
-	color:white;
-}
 </style>
 </head>
 
@@ -263,22 +239,24 @@ body {
 				</div>
 			<!-- 				bar結束 -->
 		
-			<div class="col-xs-12 col-sm-10 tablediv" > 
-				<table border='3' bordercolor='black' cellspacing="0" cellpadding="5"
-				width='800' class="table table-hover">	
+			<div class="col-xs-12 col-sm-10 tablediv text-center" > 
+			<h1>旅館資料列表</h1>
+			<hr  size="10" width="95%"  align="center" style="border-top: 3px solid #000000">
+				<table cellspacing="0" cellpadding="5"
+				width='800' class="table table-hover text-center" id="emptableth">	
 				<tr>
-					<th>hotelRegisterPic</th>
-					<th>hotelId</th>
-					<th>hotelType</th>
-					<th>hotelName</th>
-					<th>hotelTaxId</th>
+					<th class="text-center">旅館登記証</th>
+					<th class="text-center">廠商會員編號</th>
+					<th class="text-center">廠商種類名稱</th>
+					<th class="text-center">廠商名稱</th>
+					<th class="text-center">統一編號</th>
 					
-					<th>hotelCity</th>
-					<th>hotelCounty</th>
-					<th>hotelRoad</th>
-					<th>hotelOwner</th>
-					<th>hotelPhone</th>
-					<th>All</th>
+					<th class="text-center">縣市</th>
+					<th class="text-center">鄉鎮區</th>
+					<th class="text-center">路名牌號</th>
+					<th class="text-center">負責人姓名</th>
+					<th class="text-center">電話</th>
+					<th class="text-center">查看詳情</th>
 					
 				</tr>
 				<%@ include file="page1.file"%>
@@ -303,7 +281,7 @@ body {
 						<td>
 							<FORM METHOD="post"
 								ACTION="<%=request.getContextPath()%>/hotel/hotel.do">
-								<input type="submit" value="查看" id="LoginButton"> <input
+								<input type="submit" value="查看" id="LoginButtonx"> <input
 									type="hidden" name="hotelId" value="${HotelVO.hotelId}"> <input
 									type="hidden" name="requestURL"
 									value="<%=request.getServletPath()%>">

@@ -38,11 +38,74 @@ session.setAttribute("hotelVO", hotelVO);
 			    float: none;
 			}
 			.tablediv{
-				margin-top:10%;
+				margin-top:5%;
 			}
-			#register{
-				margin-top:20%;
-			}
+			#tablcbasic td{
+		background-color:#fffaf0;
+	}
+	.UserName {
+	font-size: 18px;
+	margin-top: 12px;
+	margin-right: 20px;
+	padding: 4px 18px;
+	background: white;
+	border: 1 none;
+	cursor: pointer;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+.titletext{
+	margin-top:5px;
+	font-size: 18px;
+	font-family: Tahoma, Verdana, 微軟正黑體;
+}
+.downlist{
+	font-size: 20px;
+	width:200px;
+}
+.LoginButton {
+	z-index: 1;
+	background: #dc6eab;
+	color: #ffffff;
+	position: relative;
+	font-weight: bold;
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	padding: 10px;
+	font-size: 20px;
+	border: 0px;
+	border-radius: 5px;
+	width: 125px;
+	margin-top:10px;
+}
+#files {
+	text-align: center;
+}
+
+.monkeyb-cust-file {
+	margin-top: 3%;
+	overflow: hidden;
+	position: relative;
+	display: inline-block;
+	background-color: #0283df;
+	color: #fff;
+	text-align: center;
+	-web-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	padding: 10px 10px;
+	font-size: 16px;
+	font-family: Arial, Microsoft JhengHei;
+}
+
+	.monkeyb-cust-file input {
+		position: absolute;
+		opacity: 0;
+		filter: alpha(opacity = 0);
+		top: 0;
+		right: 0;
+		width: 100%;
+		height: 100%;
+	}
 	
 		</style>
 		</head>
@@ -72,31 +135,39 @@ session.setAttribute("hotelVO", hotelVO);
 		</div> 
 		
 <div class="col-xs-12 col-sm-12 tablediv" align="center"> 
-	<h1>修改資料後請耐心等待我們審核</h1>	
+	<h1>修改資料後請耐心再等待我們審核</h1>	
 	<h1>修改廠商基本資料</h1>	
 	<c:if test="${not empty errorMsgs}">
-			<font color='red'>請修正以下錯誤:
-				<ul>
+			<font color='red'>
 					<c:forEach var="message" items="${errorMsgs}">
-						<li>${message}</li>
+						${message}<br>
 					</c:forEach>
-				</ul>
 			</font>
 		</c:if>
 			
 			<form METHOD="POST" ACTION="<%=request.getContextPath()%>/hotel/hotel.do" name="form1" enctype="multipart/form-data" id="table">
-				<table border="0" align="center">
+				<table border="0" align="center" id ="tablcbasic">
 			
-				<jsp:useBean id="hotelSvc" scope="page" class="com.hotel.model.HotelService" />
+				<%
+					List<String> list= new ArrayList<String>();
+					list.add("飯店");
+					list.add("汽車旅館");
+					list.add("民宿");
+					list.add("渡假村");
+					pageContext.setAttribute("list", list);
+				%>
 				<tr>
-					<td>種類:<font color=red><b>*</b></font></td>
-					<td><select size="1" name="hotelType">
-						<c:forEach var="hotelVO" items="${hotelSvc.all}">
-							<option value="${hotelVO.hotelType}" ${(hotelVO.hotelType==hotel.hotelType)?'selected':'' } >${hotelVO.hotelType}
-						</c:forEach>
+					<td class="titletext">種類:<font color=red><b>*</b></font></td>
+					<td><select size="1" name="hotelType" class="downlist">
+
+							<c:forEach var="hotellist" items="${list}">
+							<option value="${hotellist}" <c:if test="${fn:contains(hotellist,hotel.hotelType)}">selected</c:if>>${hotellist}
+							 </c:forEach>
+
 					</select></td>
 				</tr>
-
+				
+				
 				<tr>
 					<td>廠商名稱:</td>
 					<td><input type="TEXT" name="hotelName" size="45" 
@@ -197,8 +268,13 @@ session.setAttribute("hotelVO", hotelVO);
 				</tr>
 				
 				<tr>
-					<td>旅館業者登記証:</td>
-					<td><input type="file" name="upfile1" id="myFile" />
+					<td class="titletext">旅館業者登記証:</td>
+					<td>
+					<div class="monkeyb-cust-file" >
+	                    <img />
+	                    <span>Select File</span>
+					<input type="file" name="upfile1" id="myFile" />
+					</div>
 						<p>
 							<output id="image_output"></output>
 						</p>
@@ -206,8 +282,13 @@ session.setAttribute("hotelVO", hotelVO);
 				</tr>
 				
 				<tr>
-					<td>封面照片:</td>
-					<td><input type="file" name="upfile2" id="myFile1" />
+					<td class="titletext">封面照片: </td>
+					<td>
+					<div class="monkeyb-cust-file" >
+	                    <img />
+	                    <span>Select File</span>
+					<input type="file" name="upfile2" id="myFile1" />
+					</div>
 						<p>
 							<output id="image_output1"></output>
 						</p>
@@ -217,8 +298,8 @@ session.setAttribute("hotelVO", hotelVO);
 				<tr>
 					<td>廠商簡介:</td>
 					<td>
-						<textarea name="hotelIntro" rows="5" cols="40" style='resize : none'
-						onkeyup="this.value = this.value.slice(0, 200)">${hotel.hotelIntro}</textarea>
+						<textarea name="hotelIntro" rows="5" cols="40" style='resize : none;width:470px'
+						onkeyup="this.value = this.value.slice(0, 400)">${hotel.hotelIntro}</textarea>
 					</td>
 				</tr>
 				
@@ -232,7 +313,7 @@ session.setAttribute("hotelVO", hotelVO);
 			</table>
 			<input type="hidden" name="hotelId" value="${hotel.hotelId}"> 
 			<input type="hidden" name="action" value="updatehotel_st_1"> 
-			<input type="submit" value="送出新增" align="center">
+			<input type="submit" value="送出新增" align="center" class="LoginButton">
 		</form>		
 		
 

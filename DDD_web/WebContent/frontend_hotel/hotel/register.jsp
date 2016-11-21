@@ -30,7 +30,7 @@
 				margin-top:7%;
 			}
 			#register{
-				margin-top:20%;
+				
 			}
 	
 		</style>
@@ -62,9 +62,12 @@
 
 
 
-<div class="col-xs-12 col-sm-12 tablediv" align="center"> 
+<div class="col-xs-12 col-sm-12 tablediv text-center" align="center"> 
+<img src="<%=request.getContextPath()%>/frontend_mem/GIF/loadgif.gif" width="500px" height="400px">
 	<H1 id="register">註冊成功</H1>
-		<a href="<%=request.getContextPath()%>/frontend_hotel/hotel/loginhotel.jsp"><li>登入</li></a>
+	<H2 >請等待我們審核您的資料</H2>
+	<H3 >請留意您的MAIL，我們將會通知您審核結果</H3>
+		<h4><a href="<%=request.getContextPath()%>/frontend_hotel/hotel/addhotel.jsp">回首頁</a></h4>
 				
 
 

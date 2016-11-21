@@ -1,0 +1,48 @@
+.aa{
+	height: 900px;
+	background-color: #ccc;
+	margin-top: 53px;
+}
+
+.bb{
+	height: 900px;
+	background-color: #aaa;
+	margin-top: 53px;
+}
+
+#top-bar{
+	z-index: 10;
+	top:0px;
+	position:fixed;
+	width: 100%;
+}
+
+.panel-group {
+	margin-top: 15px;
+}
+
+*{
+	font-family:Tahoma,Verdana,Arial,微軟正黑體;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+tbody tr:nth-child(even){
+	background-color: #DCDCDC;
+}
+
+tbody tr:nth-child(odd){
+	background-color: #FFFFFF;
+}
+
+.table-hover tbody tr:hover {
+	background-color: #F5DEB3;
+}
+
+#simpleTable{
+		margin-top: 30px;	
+}

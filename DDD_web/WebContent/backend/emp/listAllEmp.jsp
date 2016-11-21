@@ -8,6 +8,8 @@
 	EmpService dao = new EmpService();
 	List<EmpVO> list = dao.getAll();
 	pageContext.setAttribute("list", list);
+	String authIdlistNo =(String)request.getAttribute("authIdlistNo");
+	pageContext.setAttribute("authIdlistNo", authIdlistNo);
 %>
 <%
 session.getAttribute("account");
@@ -28,6 +30,8 @@ if(!authorityList.contains("101")){
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/listAllEmp.css">
+<script src="<%=request.getContextPath()%>/backend/emp/js/listAllEmp.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>管理後端</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/bootstrap.min.css">
@@ -36,33 +40,9 @@ if(!authorityList.contains("101")){
 <script src="<%=request.getContextPath()%>/backend/emp/js/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/backend/emp/js/0_new.js "></script>
 <style type="text/css">
-body {
-	font-family: Tahoma, Verdana, 微軟正黑體;
-	font-size: 13px;
-}
-
-#LoginButton {
-	opacity: 0.7;
-	z-index: 1;
-	background: #0283df;
-	color: #ffffff;
-	position: relative;
-	font-weight: bold;
-	font-family: Tahoma, Verdana, 微軟正黑體;
-	border: 0px;
-	border-radius: 10px;
-	padding: 4px;
-	font-size: 12px;
-}
-
-.vcenter {
-	display: inline-block;
-	vertical-align: middle;
-	float: none;
-}
-#empName{
-	color:white;
-}
+	.aaa{
+		height:1600px;
+	}
 </style>
 </head>
 <body>
@@ -93,7 +73,7 @@ body {
 
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-xs-12 col-sm-2 aa" style="background-color: #DCDCDC;">
+				<div class="col-xs-12 col-sm-2 aaa" style="background-color: #DCDCDC;">
 					<div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
 					  <!-- 區塊1 -->
 					  <c:if test="${fn:contains(authorityList,'102')}"> <%-- 行政業務管理 --%>
@@ -260,47 +240,51 @@ body {
 					</div>
 				</div>
 			<!-- 				bar結束 -->
-			<div class="col-xs-12 col-sm-10 tablediv" > 
-			<table border='3' bordercolor='black' cellspacing="0" cellpadding="5"
-				width='800' class="table table-hover">	
-				<tr>
-					<th>empProfile</th>
-					<th>empId</th>
-					<th>empName</th>
-					<th>empAccount</th>
-					<th>empBirthDate</th>
-					<th>empPhone</th>
-					<th>empStatus</th>
-					<th>empROCId</th>
-					<th>empAddress</th>
-					<th>empHireDate</th>
-					<th>empFireDate</th>
-					<th>update</th>
-					<th>Auth</th>
+			
+			<div class="col-xs-12 col-sm-10 tablediv text-center" > 
+			<h1>員工資料列表<img  src=""></h1>
+			<hr  size="10" width="95%"  align="center" style="border-top: 3px solid #000000">
+			
+			<table cellspacing="0" cellpadding="1"
+				width='800' class="table table-hover text-center" id="emptableth">	
+				<tr class="text-center">
+					<th class="text-center">員工照片</th>
+					<th class="text-center">員工編號</th>
+					<th class="text-center">員工姓名</th>
+					<th class="text-center">員工帳號</th>
+					<th class="text-center">員工生日</th>
+					<th class="text-center">員工電話</th>
+<!-- 					<th>empStatus</th> -->
+					<th class="text-center">身分證字號</th>
+					<th class="text-center">地址</th>
+<!-- 					<th>empHireDate</th> -->
+<!-- 					<th>empFireDate</th> -->
+					<th class="text-center">修改資料</th>
+					<th class="text-center">修改權限</th>
 				</tr>
 				<%@ include file="page1.file"%>
 				<c:forEach var="EmpVO" items="${list}" begin="<%=pageIndex%>"
 					end="<%=pageIndex+rowsPerPage-1%>">			
 					<tr align='center' valign='middle'
 						${(EmpVO.empId==param.empId) ? 'bgcolor=lightblue':''}
-						>
-<%-- 						${(EmpVO.empId==param.authIdlistNo) ? 'bgcolor=lightblue':''} --%>
+						
+						${(EmpVO.empId==authIdlistNo) ? 'bgcolor=lightblue':''}>
 						<!--將修改的那一筆加入對比色而已-->
-						<td><img src='data:image/jpeg;base64,${EmpVO.bs64}'
-							width="120" height="80" /></td>
-						<td>${EmpVO.empId}</td>
-						<td>${EmpVO.empName}</td>
-						<td>${EmpVO.empAccount}</td>
-						<td>${EmpVO.empBirthDate}</td>
-						<td>${EmpVO.empPhone}</td>
-						<td>${EmpVO.empStatus}</td>
-						<td>${EmpVO.empAddress}</td>
-						<td>${EmpVO.empROCId}</td>
-						<td>${EmpVO.empHireDate}</td>
-						<td>${EmpVO.empFireDate}</td>
+						<td ><img src='data:image/jpeg;base64,${EmpVO.bs64}'
+							width="120" height="120" /></td>
+						<td >${EmpVO.empId}</td>
+						<td >${EmpVO.empName}</td>
+						<td >${EmpVO.empAccount}</td>
+						<td >${EmpVO.empBirthDate}</td>
+						<td >${EmpVO.empPhone}</td>
+<%-- 						<td>${EmpVO.empStatus}</td> --%>
+						<td >${EmpVO.empAddress}</td>
+						<td >${EmpVO.empROCId}</td>
+<%-- 						<td>${EmpVO.empHireDate}</td> --%>
+<%-- 						<td>${EmpVO.empFireDate}</td> --%>
 						<td>
 							<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/emp/emp.do">
-								<input type="submit" value="修改" id="LoginButton"> <input
+								<input type="submit" value="修改" id="LoginButtonx"> <input
 									type="hidden" name="empId" value="${EmpVO.empId}"> <input
 									type="hidden" name="requestURL"
 									value="<%=request.getServletPath()%>">
@@ -313,13 +297,14 @@ body {
 						<td>
 							<FORM METHOD="post"
 								ACTION="<%=request.getContextPath()%>/auth/auth.do">
-								<input type="submit" value="查詢權限" id="LoginButton"> <input
+								<input type="submit" value="查詢權限" id="LoginButtonxy"> <input
 									type="hidden" name="empId" value="${EmpVO.empId}"> <input
 									type="hidden" name="requestURL"
 									value="<%=request.getServletPath()%>">
 								<!--送出本網頁的路徑給Controller-->
 								<input type="hidden" name="whichPage" value="<%=whichPage%>">
 								<!--送出當前是第幾頁給Controller-->
+								
 								<input type="hidden" name="action" value="getOne_For_Auth">
 							</FORM>
 						</td>
@@ -327,13 +312,14 @@ body {
 				</c:forEach>
 			</table>
 			</div>
-			<%@ include file="page2.file"%>
-</body>
-</html>
 			<%
 				if (request.getAttribute("authList") != null) {
 			%>
 			<jsp:include page="/backend/auth/update_auth.jsp" />
 			<%
 				}
-%>
+			%>
+			<%@ include file="page2.file"%>
+</body>
+</html>
+			

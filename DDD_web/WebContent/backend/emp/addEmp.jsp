@@ -29,42 +29,19 @@ if(!authorityList.contains("101")){
 <html>
 <head>
 <meta charset="utf-8">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/addEmp.css">
+<script src="<%=request.getContextPath()%>/backend/emp/js/addEmp.js"></script>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>管理後端</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/bootstrap.min.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/0_main.css">
+
 <script src="<%=request.getContextPath()%>/backend/emp/js/jquery.js"></script>
 <script src="<%=request.getContextPath()%>/backend/emp/js/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/backend/emp/js/0_new.js "></script>
 <style type="text/css">
-.vcenter {
-    display: inline-block;
-    vertical-align: middle;
-    float: none;
-}
-#empName{
-	color:white;
-}
 
-
-.UserName {
-	font-size: 14px;
-	margin-top: 5px;
-	margin-right: 20px;
-	padding: 5px 15px;
-	background: #ccc;
-	border: 0 none;
-	cursor: pointer;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-}
-#empName{
-	color:white;
-}
-body {
-	font-family: Tahoma, Verdana, 微軟正黑體;
-}
 </style>
 </head>
 <body>
@@ -263,17 +240,16 @@ body {
 					</div>
 				</div>
 <!-- 		bar end -->
-		
+		 
 		<div class="col-xs-12 col-sm-10 tablediv" align="center"> 
-		<h2 align="center">新進員工:</h2>
+		<h1 align="center">新進員工<img src="<%=request.getContextPath()%>/backend/emp/img/usercolor.png" width="100px" height="100px" ></h1><br>
+		<hr  size="10" width="55%"  align="center" style="border-top: 3px solid #000000"><br>
 		<%-- 錯誤表列 --%>
 		<c:if test="${not empty errorMsgs}">
-			<font color='red'>請修正以下錯誤:
-				<ul>
+			<font color='red'>
 					<c:forEach var="message" items="${errorMsgs}">
-						<li>${message}</li>
+						${message}<br>
 					</c:forEach>
-				</ul>
 			</font>
 		</c:if>
 
@@ -281,14 +257,14 @@ body {
 			enctype="multipart/form-data">
 			<table border="0" align="center">
 				<tr>
-					<td>員工姓名:</td>
-					<td><input type="TEXT" name="empName" size="45"
-						class="UserName" placeholder="請輸入員工名字"
+					<td class="titletext">員工姓名： </td>
+					<td ><input type="TEXT" name="empName" size="45"
+						class="UserName" placeholder="請輸入員工名字" 
 						value="<%=(empVO == null) ? "" : empVO.getEmpName()%>" /></td>
 				</tr>
 
 				<tr>
-					<td>信箱:</td>
+					<td class="titletext">信箱： </td>
 					<td><input type="TEXT" name="empAccount" size="45"
 						class="UserName" placeholder="請輸入信箱"
 						value="<%=(empVO == null) ? "" : empVO.getEmpAccount()%>" /></td>
@@ -303,41 +279,49 @@ body {
 <!-- 				</tr> -->
 
 				<tr>
-					<td>電話:</td>
+					<td class="titletext">電話： </td>
 					<td><input type="TEXT" name="empPhone" size="45"
 						class="UserName" placeholder="請輸入員工電話"
 						value="<%=(empVO == null) ? "" : empVO.getEmpPhone()%>" /></td>
 				</tr>
 
-				<tr>
-					<td>生日:</td>
-					<td><input type="TEXT" name="empBirthDate" size="45"
-						class="UserName" placeholder="yyyy-mm-dd"
-						value="<%=(empVO == null) ? "" : empVO.getEmpBirthDate()%>" /></td>
-				</tr>
+			
 
 				<tr>
-					<td>身分證字號:</td>
+					<td class="titletext">身分證字號： </td>
 					<td><input type="TEXT" name="empROCId" size="45"
 						class="UserName" placeholder="H123000000"
 						value="<%=(empVO == null) ? "" : empVO.getEmpROCId()%>" /></td>
 				</tr>
 
 				<tr>
-					<td>員工住址:</td>
+					<td class="titletext">員工住址： </td>
 					<td><input type="TEXT" name="empAddress" size="45"
 						class="UserName" placeholder="桃園市中壢區中大路10號"
 						value="<%=(empVO == null) ? "" : empVO.getEmpAddress()%>" /></td>
 				</tr>
-
+				
 				<tr>
-					<td>大頭照:</td>
-					<td><input type="file" name="upfile1" id="myFile" />
+					<td class="titletext">生日： </td>
+					<td><input type="date" name="empBirthDate" size="45"
+						class="UserName" placeholder="yyyy-mm-dd"
+						value="<%=(empVO == null) ? "" : empVO.getEmpBirthDate()%>" /></td>
+				</tr>
+				
+				<tr>
+					<td class="titletext">大頭照： </td>
+					<td>
+						<div class="monkeyb-cust-file" >
+	                       <img />
+	                       <span>Select File</span>
+	                       <input type="file" id="myFile" name="upfile1">  
+	                	</div>  
 						<p>
 							<output id="image_output"></output>
-						</p></td>
+						</p>
+						</td>
 				</tr>
-
+			
 				<tr>
 					<%--到職日--%>
 					<td><input type="hidden" name="empHireDate" size="45"
@@ -361,9 +345,9 @@ body {
 
 
 			</table>
-
+			<input type="button" align="center" class="LoginButton" id ="magic" value="神奇小按鈕">
 			<input type="hidden" name="action" value="insert"> 
-			<input type="submit" value="送出新增" align="center">
+			<input type="submit" value="送出新增" align="center" class="LoginButton">
 		</FORM>
 		</div>
 </body>

@@ -1,0 +1,82 @@
+body {
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	font-size: 13px;
+}
+
+
+
+.vcenter {
+	display: inline-block;
+	vertical-align: middle;
+	float: none;
+}
+#fonterror{
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	font-size: 18px;
+}
+.bg {
+	
+   	text-align: center;
+	margin: auto;
+    position: absolute;
+    top: -10%;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -2;
+           
+}    
+ #loginbg{
+ 	margin-top:12%;
+ 	margin-left:37%;
+ 	background-color:rgba(0,0,0,0.5);
+ 	-webkit-border-radius: 55px;
+    border-radius: 55px; 
+ 	height:550px;
+ 	width:500px;
+ 	z-index: -10;
+ 	
+ }
+   .animsition{
+   		
+   		margin-top:19%;
+   		
+   }
+   #keyimg{
+   		margin-top:-14px;
+   }
+   
+#dddtitle{
+	color:white;
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	font-size: 35px;
+	font-weight:bold;
+}
+#UserName{
+    font-size: 18px;
+    
+    padding:10px 35px; background:white; border:1 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+
+}
+#acount{
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	font-size: 25px;
+	font-weight:bold;
+}
+.LoginButton{
+    
+    z-index: 1;
+    background: #0283df;
+    color: #ffffff;
+    position: relative;
+    font-weight: bold;
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    padding: 10px;
+    font-size:20px;
+    border: 0px;
+    border-radius: 5px;
+    width:235px;
+}

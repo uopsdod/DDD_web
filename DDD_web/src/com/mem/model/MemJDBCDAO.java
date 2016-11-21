@@ -226,7 +226,65 @@ public class MemJDBCDAO implements MemDAO_interface {
 
 		return memVO;
 	}
+	@Override
+	public MemVO findByPrimaryKey_web(String aMemid) {
+		MemVO memVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 
+		try {
+			Class.forName(this.driver);
+			con = DriverManager.getConnection(this.url, this.userid, this.passwd);
+			pstmt = con.prepareStatement(GET_ONE_STMT);
+
+			pstmt.setString(1, aMemid);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				memVO = new MemVO();
+				memVO.setMemId(rs.getString("memId"));
+				memVO.setMemAccount(rs.getString("memAccount"));
+				memVO.setMemPsw(rs.getString("memPsw"));
+				memVO.setMemName(rs.getString("memName"));
+				memVO.setMemGender(rs.getString("memGender"));
+				memVO.setMemTwId(rs.getString("memTwId"));
+				memVO.setMemBirthDate(rs.getDate("memBirthDate"));
+				memVO.setMemPhone(rs.getString("memPhone"));
+				memVO.setMemLiveBudget(rs.getInt("memLiveBudget"));
+				memVO.setMemIntro(rs.getString("memIntro"));
+				memVO.setMemProfile(rs.getBytes("memProfile"));
+				memVO.setMemBlackList(rs.getString("memBlackList"));
+				memVO.setMemCreditCardNo(rs.getString("memCreditCardNo"));
+				memVO.setMemCreditCheckNo(rs.getString("memCreditCheckNo"));
+				memVO.setMemCreditDueDate(rs.getString("memCreditDueDate"));
+
+			}
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver." + e.getMessage());
+
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+		return memVO;
+	}
 	@Override
 	public List<MemVO> getAll() {
 		List<MemVO> list = new ArrayList<MemVO>();

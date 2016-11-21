@@ -60,17 +60,19 @@ public class Partner extends HttpServlet {
 		String outStr = "";
 		if ("getAll".equals(action)) {
 			System.out.println("getAll match");
-			// 去掉圖片資料，提升效能
-//			List<MemVO> tmpMemVOList = this.memVOList;
-//			for (MemVO myVO: tmpMemVOList){
-//				myVO.setMemProfile(null);
-//			}
-			outStr = gson.toJson(dao_mem.getAll());
+			// 去掉圖片資料 & bs64資料，提升效能
+			List<MemVO> tmpMemVOList = dao_mem.getAll();
+			for (MemVO myVO: tmpMemVOList){
+				myVO.setMemProfile(null);
+				myVO.setBs64(null);
+			}
+			outStr = gson.toJson(tmpMemVOList);
 			res.setContentType(CONTENT_TYPE);
 			PrintWriter out = res.getWriter();
-//			System.out.println("outStr:" + outStr);
+			//System.out.println("outStr:" + outStr);
 			out.println(outStr);
 		}else if("getImage".equals(action)){
+			//System.out.println("getImage match: ");
 			OutputStream os = res.getOutputStream();
 			int memId = jsonObject.get("memId").getAsInt();
 			int imageSize = jsonObject.get("imageSize").getAsInt();
@@ -83,10 +85,20 @@ public class Partner extends HttpServlet {
 			os.write(image);
 		}else if("getOne".equals(action)){
 			MemVO memVO = dao_mem.findByPrimaryKey(toMemId);
+			memVO.setBs64(null); // 去掉bs64
 			outStr = gson.toJson(memVO);
 			res.setContentType(CONTENT_TYPE);
 			PrintWriter out = res.getWriter();
-			System.out.println("getOne match: " + memVO.getMemName() );
+			//System.out.println("getOne match: " + memVO.getMemName() );
+			out.println(outStr);
+		}else if("getOneText".equals(action)){
+			MemVO memVO = dao_mem.findByPrimaryKey(toMemId);
+			memVO.setMemProfile(null); // 去掉圖片
+			memVO.setBs64(null); // 去掉bs64
+			outStr = gson.toJson(memVO);
+			res.setContentType(CONTENT_TYPE);
+			PrintWriter out = res.getWriter();
+			//System.out.println("getOne Text match: " + memVO.getMemName() );
 			out.println(outStr);
 		}
 		else{

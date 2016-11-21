@@ -2,15 +2,29 @@ package com.ord.model;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.sql.Timestamp;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class OrdService {
 
 	private OrdDAO_interface dao;
 	
-	public OrdService(){
-		dao = new OrdDAO();
-	}
+//	public OrdService(){
+//		dao = new OrdDAO();
+//	}
+	
+	public OrdService() {
+		//dao = new EmpHibernateDAO();
+		//註1: 雖然model-config1-DriverManagerDataSource.xml也可以用
+		//註2: 但為了使用Apache DBCP連線池,以提高效能,所以底下的model-config2-JndiObjectFactoryBean.xml內部dataSource設定是採用org.springframework.jndi.JndiObjectFactoryBean
+		ApplicationContext context = new ClassPathXmlApplicationContext("model-config2-JndiObjectFactoryBean.xml");
+		dao =(OrdDAO_interface) context.getBean("ordDAO");
+	}	
+	
+	
 	
 	/* 
 	 * = INSERT_STMT 對應 =
@@ -79,35 +93,35 @@ public class OrdService {
 	*/	
 	
 	/* (一般會員)新增評論及星星數 & (系統)修改訂單狀態 */
-	public OrdVO updateOrd(String aOrdRoomId,String aOrdMemId,String aOrdHotelId,Integer aOrdPrice,Timestamp aOrdLiveDate,String aOrdStatus,String aOrdRatingContent,Integer aOrdRatingStarNo,byte[] aOrdQrPic,String aOrdMsgNo,String aOrdId,Timestamp aOrdDate){
-		OrdVO ordVO = new OrdVO();
-
-		com.room.model.RoomVO roomVO = new com.room.model.RoomVO();
-		roomVO.setRoomId(aOrdRoomId);
-		ordVO.setOrdRoomVO(roomVO);
+	public OrdVO updateOrd(OrdVO aOrdVO){
+//		OrdVO ordVO = new OrdVO();
+//
+//		com.room.model.RoomVO roomVO = new com.room.model.RoomVO();
+//		roomVO.setRoomId(aOrdRoomId);
+//		ordVO.setOrdRoomVO(roomVO);
+//		
+//		com.mem.model.MemVO memVO = new com.mem.model.MemVO();
+//		memVO.setMemId(aOrdMemId);
+//		ordVO.setOrdMemVO(memVO);
+//
+//		com.hotel.model.HotelVO hotelVO = new com.hotel.model.HotelVO();
+//		hotelVO.setHotelId(aOrdHotelId);
+//		ordVO.setOrdHotelVO(hotelVO);
+//		
+//		ordVO.setOrdPrice(aOrdPrice);
+//		ordVO.setOrdLiveDate(aOrdLiveDate);
+//		ordVO.setOrdStatus(aOrdStatus);
+//		ordVO.setOrdRatingContent(aOrdRatingContent);
+//		ordVO.setOrdRatingStarNo(aOrdRatingStarNo);
+//		ordVO.setOrdQrPic(aOrdQrPic);
+//		ordVO.setOrdMsgNo(aOrdMsgNo);
+//		ordVO.setOrdId(aOrdId);
+//		ordVO.setOrdDate(aOrdDate);
 		
-		com.mem.model.MemVO memVO = new com.mem.model.MemVO();
-		memVO.setMemId(aOrdMemId);
-		ordVO.setOrdMemVO(memVO);
-
-		com.hotel.model.HotelVO hotelVO = new com.hotel.model.HotelVO();
-		hotelVO.setHotelId(aOrdHotelId);
-		ordVO.setOrdHotelVO(hotelVO);
-		
-		ordVO.setOrdPrice(aOrdPrice);
-		ordVO.setOrdLiveDate(aOrdLiveDate);
-		ordVO.setOrdStatus(aOrdStatus);
-		ordVO.setOrdRatingContent(aOrdRatingContent);
-		ordVO.setOrdRatingStarNo(aOrdRatingStarNo);
-		ordVO.setOrdQrPic(aOrdQrPic);
-		ordVO.setOrdMsgNo(aOrdMsgNo);
-		ordVO.setOrdId(aOrdId);
-		ordVO.setOrdDate(aOrdDate);
-		
-		dao.update(ordVO);
+		dao.update(aOrdVO);
 		
 		//這樣才有找外來鍵的其他資訊的超能力
-		return dao.findByPrimaryKey(aOrdId);
+		return dao.findByPrimaryKey(aOrdVO.getOrdId());
 	}
 	
 	/* (練習用)刪除 */
@@ -134,4 +148,9 @@ public class OrdService {
 	public List<OrdVO> getAllByOrdHotelId(String aOrdHotelId){
 		return dao.getAllByOrdHotelId(aOrdHotelId);
 	}
+	
+    //萬用複合查詢(傳入參數型態Map)(回傳 List)
+    public List<OrdVO> getAll(Map<String, String[]> aMap){
+    	return dao.getAll(aMap);
+    } 
 }

@@ -18,7 +18,7 @@
 	<tr>
 		<td>
 			<h3>訂單資料修改 - updateOrdInput.jsp</h3>
-			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"><img src="images/back1.gif" alt="">回首頁</a>
+			<a href="<%=request.getContextPath()%>/backend/selectPage.jsp"><img src="<%=request.getContextPath()%>/backend/ord/images/back1.gif" alt="">回首頁</a>
 		</td>
 	</tr>
 </table>
@@ -35,7 +35,7 @@
 </c:if>
 
 
-<form method="post" action="ord.do" name="form1" enctype="multipart/form-data">
+<form method="post" action="<%=request.getContextPath()%>/ord/ord.do" name="form1" enctype="multipart/form-data">
 	<table>
 		<tr>
 			<td>訂單編號:</td>
@@ -146,8 +146,6 @@
 			<th>QR Code圖片</th>
 			<td>
 				<img src="DBGifReader4?ordId=${ordVO.ordId}">
-				<br>
-				<input type="file" name="ordQrPic"/>
 			</td>
 		</tr>
 	</table>
@@ -155,15 +153,15 @@
 	<input type="hidden" name="action" value="update">
 	<input type="hidden" name="ordId" value="<%=ordVO.getOrdId()%>">
 	<input type="hidden" name="ordDate" value="<%=ordVO.getOrdDate().getTime()%>">
-	<input type="hidden" name="requestURL" value="<%=request.getAttribute("requestURL")%>"/>
-	<input type="hidden" name="whichPage" value="<%=request.getAttribute("whichPage")%>"/>
+	<input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>"/>
+	<input type="hidden" name="whichPage" value="<%=request.getParameter("whichPage")%>"/>
 	
 	<input type="submit" value="送出修改">
 </form>
 	
-	request.getAttribute("requestURL"): <%= request.getAttribute("requestURL") %>
+	request.getAttribute("requestURL"): <%= request.getParameter("requestURL") %>
 	
-	request.getAttribute("whichPage"): <%= request.getAttribute("whichPage")%>
+	request.getAttribute("whichPage"): <%= request.getParameter("whichPage")%>
 	
 </body>
 </html>
