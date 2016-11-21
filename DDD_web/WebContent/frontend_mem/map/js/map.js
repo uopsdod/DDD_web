@@ -30,7 +30,7 @@ function setMarker(hotel){
 		 
 	  });
 	 
-	 var contentString = hotel.hotelName + '<div>'+ hotel.bottomPrice +'</div>';
+	 var contentString = hotel.hotelName;
 	
 	 var infowindow = new google.maps.InfoWindow({
          //包含在資訊視窗中顯示的文字字串或 DOM 節點。

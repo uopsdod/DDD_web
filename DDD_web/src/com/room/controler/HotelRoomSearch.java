@@ -103,6 +103,7 @@ public class HotelRoomSearch extends HttpServlet {
 	
 			String[] servItem = req.getParameterValues("servItem"); //checkBox //取得旅館設施
 			
+			System.out.println(req.getParameterValues("servItem"));
 			
 			Map map = new HashMap();
 			map.put("HOTELCITY", city);

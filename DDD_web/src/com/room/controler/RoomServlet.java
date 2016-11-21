@@ -25,10 +25,9 @@ import com.roomphoto.model.RoomPhotoService;
 public class RoomServlet extends HttpServlet {
 	
 	
-	
-	public static Map<String,Map> OnData = new HashMap<String,Map>();	//存有各room的降價排程
-	static Map<String,Timer> OnTimer = new HashMap<String,Timer>(); //存有各room的即時價格
-	static Map<String,Timer> DownTimer = new HashMap<String,Timer>(); //存有各room的即時價格
+	static Map<String,Timer> OnTimer = Collections.synchronizedMap( new HashMap<String,Timer>()); //存有各room的即時價格
+	public static Map<String,Map> OnData =  Collections.synchronizedMap( new HashMap<String,Map>());	//存有各room的降價排程	
+	static Map<String,Timer> DownTimer =  Collections.synchronizedMap( new HashMap<String,Timer>()); //存有各room的即時價格
 
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -302,8 +301,8 @@ public class RoomServlet extends HttpServlet {
 				
 				
 				
-				MyEchoServer.SendMessage(roomId,-500,"已下架");	//需要將roomId,與已下架往前端推
-				
+				MyEchoServer.BufferBox(roomId,-500,"已下架",0);	//需要將roomId,與已下架往前端推
+				//第四個參數告訴方法,是要是要儲存資料到buffer
 			
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/frontend_hotel/room/listAllRoomSell.jsp");
@@ -445,7 +444,7 @@ public class RoomServlet extends HttpServlet {
 				//建立房型的降價機制,與下架機制
 				Float cutPrice = roomPrice*roomDisccountPercent*0.01f;
 				int cutPriceInt = cutPrice.intValue();
-				DynamicPrice(roomId,beforeSell,roomDiscountHr*5*1000,roomPrice,cutPriceInt,roomBottomPrice,roomOnePrice,roomDiscountEndDate);
+				DynamicPrice(roomId,beforeSell,roomDiscountHr*10*1000,roomPrice,cutPriceInt,roomBottomPrice,roomOnePrice,roomDiscountEndDate);
 
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
@@ -481,7 +480,7 @@ public class RoomServlet extends HttpServlet {
 				System.out.println("所有房型上架了");
 				RoomService roomSvc = new RoomService();
 				List<RoomVO> roomList = roomSvc.getAll();
-				int i =0;
+				
 				for(RoomVO roomVO:roomList){
 					
 					String roomId = roomVO.getRoomId();
@@ -492,14 +491,18 @@ public class RoomServlet extends HttpServlet {
 					int roomBottomPrice= roomVO.getRoomBottomPrice();
 					boolean roomOnePrice = roomVO.getRoomOnePrice(); 
 					int roomDiscountEndDate = roomVO.getRoomDiscountEndDate();
+				
 					
 					roomVO.setRoomForSell(true);
+					
 					roomSvc.update(roomVO);
 					//建立房型的降價機制,與下架機制
 					Float cutPrice = roomPrice*roomDisccountPercent*0.01f;
+//					System.out.println(cutPrice);
 					int cutPriceInt = cutPrice.intValue();
-					DynamicPrice(roomId,beforeSell,roomDiscountHr*(10+2*i)*1000,roomPrice,cutPriceInt,roomBottomPrice,roomOnePrice,1000*60*60*23);		
-					i++;
+//					System.out.println(cutPriceInt);
+					DynamicPrice(roomId,beforeSell,roomDiscountHr*10*1000,roomPrice,cutPriceInt,roomBottomPrice,roomOnePrice,1000*60*60*23);		
+				
 				}
 			
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
@@ -1251,13 +1254,14 @@ public class RoomServlet extends HttpServlet {
 		 data.put("BottomPrice",BottomPrice);	//最低價錢
 		 OnData.put(roomId,data);
 		
-		 MyEchoServer.SendMessage(roomId,price,"");	//每次執行時,需要將roomId,與價錢用socket往前端推
+		 MyEchoServer.BufferBox(roomId,price,"",0);	//每次執行時,需要將roomId,與價錢用socket往前端推
+		//第四個參數告訴方法,是要是要儲存資料到buffer
 		 
 	     TimerTask taskPrice = new TimerTask(){
 	        
 	         public void run(){
 	         	//排程器要執行的任務	
-	        	 
+	        	 synchronized(this){
 	        	
 	        	 Map<String,Integer> one = OnData.get(roomId);
 	     
@@ -1266,16 +1270,18 @@ public class RoomServlet extends HttpServlet {
 	        	 int nowCutPrice = one.get("CutPrice"); 		//單位時間折價
 	        	 int nowBottomPrice = one.get("BottomPrice");   //最低價錢
 	         
+	        	 
 	        	 nowPrice-=nowCutPrice; 
-	        	 if(nowPrice< nowBottomPrice){	//達到底價時取消排程,並且讓價格設定為底價
+	        	 if(nowPrice<= nowBottomPrice){	//達到底價時取消排程,並且讓價格設定為底價
 	        		 one.put("price",nowBottomPrice);
 	        		 OnTimer.get(roomId).cancel();
 	        	 }else{
 	        		 one.put("price",nowPrice); //未達底價時繼續降價
 	        	 } 
 	        	
-	        	MyEchoServer.SendMessage(roomId,one.get("price"),"");  
-	        	System.out.println(one.get("price"));
+	        	MyEchoServer.BufferBox(roomId,one.get("price"),"",0);  //第四個參數告訴方法,是要是要儲存資料到buffer
+//	        	System.out.println(one.get("price"));
+	        	}//synchronized
 	         }
 	     };
 	     
@@ -1294,7 +1300,7 @@ public class RoomServlet extends HttpServlet {
 		        
 	         public void run(){
 	         	//排程器要執行的任務	
-	        	 
+	        	 synchronized(this){
 	        	 RoomService roomSvc = new RoomService();
 	        	 RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
 	        	 
@@ -1306,9 +1312,10 @@ public class RoomServlet extends HttpServlet {
 	        	 OnTimer.remove(roomId);	//清空計時器
 	        	 OnData.remove(roomId); 	//清空資料
 	        	 System.out.println("下架了");
-	        	 MyEchoServer.SendMessage(roomId,-500,"已下架");
+	        	 MyEchoServer.BufferBox(roomId,-500,"已下架",0); //第四個參數告訴方法,是要是要儲存資料到buffer
 	        	 /*************下架了***************/
-	         }
+	        	 }//synchronized
+	        }
 	     };
 	     
 	     Calendar caler = new GregorianCalendar();
@@ -1351,7 +1358,7 @@ public class RoomServlet extends HttpServlet {
 		 
 		 int price = roomVO.getRoomPrice();
 		 int roomDisccountPercent = roomVO.getRoomDisccountPercent();
-		 int aCutPriceTime = roomVO.getRoomDiscountHr() * 1000*5;	//每五秒為一個單位
+		 int aCutPriceTime = roomVO.getRoomDiscountHr() * 1000*10;	//每五秒為一個單位
 		 Float cutPrice = price*roomDisccountPercent*0.01f;
 		 int cutPriceInt = cutPrice.intValue();
 		 int BottomPrice = roomVO.getRoomBottomPrice();
@@ -1371,13 +1378,13 @@ public class RoomServlet extends HttpServlet {
 		 data.put("BottomPrice",BottomPrice);	//最低價錢
 		 OnData.put(roomId,data);
 		
-		 MyEchoServer.SendMessage(roomId,price,"");	//每次執行時,需要將roomId,與價錢用socket往前端推
+		 MyEchoServer.BufferBox(roomId,price,"",0);	//每次執行時,需要將roomId,與價錢用socket往前端推
 		 
 	     TimerTask taskPrice = new TimerTask(){
 	        
 	         public void run(){
 	         	//排程器要執行的任務	
-	        	 
+	        	 synchronized(this){
 	        	
 	        	 Map<String,Integer> one = OnData.get(roomId);
 	     
@@ -1387,7 +1394,7 @@ public class RoomServlet extends HttpServlet {
 	        	 int nowBottomPrice = one.get("BottomPrice");   //最低價錢
 	         
 	        	 nowPrice-=nowCutPrice; 
-	        	 if(nowPrice< nowBottomPrice){	//達到底價時取消排程,並且讓價格設定為底價
+	        	 if(nowPrice<= nowBottomPrice){	//達到底價時取消排程,並且讓價格設定為底價
 	        		 one.put("price",nowBottomPrice);
 	        		 OnTimer.get(roomId).cancel();
 	        	 }else{
@@ -1395,9 +1402,10 @@ public class RoomServlet extends HttpServlet {
 	        	 } 
 	        	
 	        	 
-	        	MyEchoServer.SendMessage(roomId,one.get("price"),""); 
+	        	MyEchoServer.BufferBox(roomId,one.get("price"),"",0);  //第四個參數告訴方法,是要是要儲存資料到buffer
 	        	
-	        	System.out.println(one.get("price"));
+//	        	System.out.println(one.get("price"));
+	        	 } //synchronized
 	         }
 	     };
 	     
@@ -1415,7 +1423,7 @@ public class RoomServlet extends HttpServlet {
 		        
 	         public void run(){
 	         	//排程器要執行的任務	
-	        	 
+	        	 synchronized(this){
 	        	 RoomService roomSvc = new RoomService();
 	        	 RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);
 	        	 
@@ -1427,7 +1435,8 @@ public class RoomServlet extends HttpServlet {
 	        	 OnTimer.remove(roomId);	//清空計時器
 	        	 OnData.remove(roomId); 	//清空資料
 	        	 System.out.println("下架了");
-	        	 MyEchoServer.SendMessage(roomId,-500,"已下架");
+	        	 MyEchoServer.BufferBox(roomId,-500,"已下架",0);  //第四個參數告訴方法,是要是要儲存資料到buffer
+	        	 } //synchronized
 	        	 /*************下架了***************/
 	         }
 	     };
