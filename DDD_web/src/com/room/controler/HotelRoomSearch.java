@@ -43,10 +43,7 @@ public class HotelRoomSearch extends HttpServlet {
 		String action = req.getParameter("action");
 		if("showHotel".equals(action)){
 		
-			
-			
-			
-			/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+	/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 			String hotelId = req.getParameter("hotelId");
 			
 			/***************************2.開始查詢資料*****************************************/
@@ -63,7 +60,24 @@ public class HotelRoomSearch extends HttpServlet {
 			return;
 			
 		}
-	
+		
+		
+		if("hotelPage".equals(action)){
+			
+			String hotelId = req.getParameter("hotelId");
+			
+			
+			String url = "/frontend_mem/hotel/home.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			successView.forward(req, res);
+			
+			
+		}
+		
+		
+		
+		
+		
 	}
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -103,7 +117,7 @@ public class HotelRoomSearch extends HttpServlet {
 	
 			String[] servItem = req.getParameterValues("servItem"); //checkBox //取得旅館設施
 			
-			System.out.println(req.getParameterValues("servItem"));
+			
 			
 			Map map = new HashMap();
 			map.put("HOTELCITY", city);
@@ -247,7 +261,7 @@ public class HotelRoomSearch extends HttpServlet {
 			out.write(array.toString());	//輸出所搜尋到符合條件的旅館資料
 			
 			
-			System.out.println(array);		
+				
 		}// if search
 		
 		

@@ -26,11 +26,11 @@
 			}
 			#c-bigscreen{
 				 background-size:100vw;
- 				 background-image:url(image/hotel1.jpg);	<!--進版大圖示-->
+ 				 background-image:url(<%=request.getContextPath()%>/HotelRoomSearch?action=showHotel&hotelId=<%=request.getParameter("hotelId")%>);	<!--進版大圖示-->
  				 
  				 background-repeat:inherit;
  				 background-repeat: no-repeat;
- 				 height:709px;
+ 				 height:900px;
 				} 
 				
 			#c-bigscreenAnchor{position:absolute;top:650px;left:30px;}
@@ -84,18 +84,18 @@
 
 <!--==內容=====================================================================================================-->	
 
-	<div class="container abody">
-		<div class="row">
-			<div class="col-xs-12 col-sm-12">
+	<div class="container abody" style="width:60vw;">
+		<div class="row" >
+			<div class="col-xs-12 col-sm-12" ">
 				
 				<!--旅館主資料-->
 
 				<div class="row ">
-					<div class="col-xs-12 col-sm-3 c-mainHotel text-center">
-						<img src="https://api.fnkr.net/testimg/50x50/00CED1/FFF/?text=img+placeholder" style="height:18vh; border-radius: 60%;margin-top:25px">
-					</div>
+<!-- 					<div class="col-xs-12 col-sm-3 c-mainHotel text-center"> -->
+<!-- 						<img src="https://api.fnkr.net/testimg/50x50/00CED1/FFF/?text=img+placeholder" style="height:18vh; border-radius: 60%;margin-top:25px"> -->
+<!-- 					</div> -->
 					
-					<div class="col-xs-12 col-sm-9 c-mainHotel">
+					<div class="col-xs-12 col-sm-12 c-mainHotel">
 						<p><h2>Lovely Studio in the Heart of Paris</h2></p>
 						<p><small>巴黎, 法蘭西島(Île-de-France), 法國 <small></p>					
 					
@@ -104,22 +104,22 @@
 
 					<div class="row">
 						<div class="col-xs-12 col-sm-3 c-partHotel text-center">
-							<h2><img src="image/house.png"></h2>
+							<h2><img src="<%=request.getContextPath()%>/frontend_mem/hotel/image/house.png"></h2>
 							<span class"word">飯店<span>	
 						</div>
 						
 						<div class="col-xs-12 col-sm-3 c-partHotel text-center">
-							<h2><img src="image/man.png"></h2>
+							<h2><img src="<%=request.getContextPath()%>/frontend_mem/hotel/image/man.png"></h2>
 							<span class"word">4位房客<span>
 						</div>
 						
 						<div class="col-xs-12 col-sm-3 c-partHotel text-center">
-							<h2><img src="image/room.png"></h2>
+							<h2><img src="<%=request.getContextPath()%>/frontend_mem/hotel/image/room.png"></h2>
 							<span class"word">1間臥室<span>
 						</div>
 						
 						<div class="col-xs-12 col-sm-3 c-partHotel text-center">
-							<h2><img src="image/bed.png"></h2>
+							<h2><img src="<%=request.getContextPath()%>/frontend_mem/hotel/image/bed.png"></h2>
 							<span class"word">2張單人床<span>
 						</div>
 					</div>
