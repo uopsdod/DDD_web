@@ -35,7 +35,7 @@ public class WishDAO implements WishDAO_interface {
 	//------------------------------------------貴新增
 	private static final String GET_ONE_WISH = "SELECT wishRoomId FROM wish where wishMemId=?";
 	private static final String DELETE_ONE = "DELETE  from wish where wishMemId=? and WishRoomId =?";
-	private static final String GET_ONE ="select o.roomPhotoRoomId,o.roomPhotoPic,h.hotelid,h.hotelName,r.roomPrice,r.roomDisccountPercent,r.roomName,r.roomRemainNo,r.roomDiscountStartDate,r.roomDiscountEndDate,h.hotelRatingResult from wish w,room r,roomphoto o,hotel h where w.wishMemId=? and r.roomId = w.wishRoomId and r.roomid=o.roomPhotoRoomId and r.roomHotelId = h.hotelId";
+	private static final String GET_ONE ="select o.roomPhotoRoomId,o.roomPhotoPic,h.hotelid,h.hotelName,r.roomPrice,r.roomid,r.roomDisccountPercent,r.roomName,r.roomRemainNo,r.roomDiscountStartDate,r.roomDiscountEndDate,h.hotelRatingResult from wish w,room r,roomphoto o,hotel h where w.wishMemId=? and r.roomId = w.wishRoomId and r.roomid=o.roomPhotoRoomId and r.roomHotelId = h.hotelId";
 	private static final Base64.Encoder encoder = Base64.getEncoder();
 	
 	
@@ -340,6 +340,7 @@ public class WishDAO implements WishDAO_interface {
 				  double salePrice = rs.getInt("roomPrice")*(rs.getDouble("roomDisccountPercent")/100);
 				  
 				map.put("hotelid",rs.getString("hotelid"));  	//未來查詢詳情用或許看設計
+				map.put("roomid",rs.getString("roomid"));  	//未來查詢詳情用或許看設計
 				map.put("roomPhotoRoomId",rs.getString("roomPhotoRoomId"));//未來查詢詳情房型編號
 				map.put("roomPhotoPic",encoder.encodeToString(roomPhotoPic));//房照片
 				map.put("hotelName",rs.getString("hotelName"));//廠商名

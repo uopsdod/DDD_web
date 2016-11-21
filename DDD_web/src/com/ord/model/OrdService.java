@@ -69,8 +69,7 @@ public class OrdService {
 		
 		Timestamp currentTime = new Timestamp(new java.util.Date().getTime());
 		ordVO.setOrdDate(currentTime);
-		
-		
+
 		dao.insert(ordVO);
 		
 		return ordVO;

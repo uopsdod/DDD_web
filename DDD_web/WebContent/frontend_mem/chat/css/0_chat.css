@@ -58,11 +58,15 @@
     background-color: #555;
 }
 
-img
-{
-	width: 150px;		
-} 
 
-*{
-    font-family:Tahoma,Verdana,Arial,微軟正黑體;
+.chat img
+{
+	max-width: 100px;
+    max-height: 150px;		
+}	
+
+
+#chatWindow{
+	bottom:0px;
+	position:fixed;
 }

@@ -109,6 +109,9 @@ public class MemService {
 	}
 
 	//-----------------------------------------------------貴新增
+		public List<MemVO> getAll_web(){
+			return dao.getAll_web();
+		}
 		//取衣
 		public MemVO getOneMem_web(String aMemId){
 			return dao.findByPrimaryKey_web(aMemId);
