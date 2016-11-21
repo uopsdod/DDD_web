@@ -10,8 +10,10 @@ public interface MemDAO_interface {
 	public MemVO findByPrimaryKey(String aMemId);
 	public MemVO findByPrimaryKey_web(String aMemId);
 	public List<MemVO>getAll();
+
 	public MemVO memCheck(String aMemAccount, String aMemPsw);
 	//--------------------------------------------貴新增
+	public List<MemVO>getAll_web();
 	public void insert_basic(MemVO aMemVO);
 	public void update_card(MemVO aMemVO);
     public void update_iontroduction(MemVO aMemVO);
