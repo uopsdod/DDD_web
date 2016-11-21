@@ -520,28 +520,40 @@ function construct(hotel){
 																	}
 																		
 																}
-																
+															
 																System.out.println(hotelMap);
+																
+													
 																
 																Set<String> hotelIdBox = hotelMap.keySet();
 																
-																
+															
 															%>
 															
-								
+													
 															
 															
-															<% for(String hotelId :hotelIdBox){ %>
+															<% 
+															
+															
+																
+															for(String hotelId :hotelIdBox){
+																
+															%>
 															<%  HotelService hotelSvc = new HotelService();
 																HotelVO hotelVO = hotelSvc.getOne(hotelId);	
 																RoomService roomSvc2 = new RoomService();
+															
 																RoomVO roomVO2 = roomSvc2.findByPrimaryKey(hotelMap.get(hotelId)[0]);
+															
 																%>														
 															 	<div class="col-xs-12 col-sm-6">
 															 	<div class="item">
+															
 															 		<a href="yahoo.com.tw">
 															 		<img class="imgmap" src="<%=request.getContextPath()%>/HotelRoomSearch?action=showHotel&hotelId=<%=hotelId%>">
 															 		</a>
+															 		
 															        <div class="col-xs-12 col-sm-6">
 																		<h3><%=hotelVO.getHotelName()%></h3>
 																		<div>		
@@ -551,6 +563,7 @@ function construct(hotel){
 																			<%}%>
 																		</div>
 																	</div>
+																	
 																	<div class="col-xs-12 col-sm-3">
 																		<div style="font-size:15px;margin-top:15px;color:red;"><%=roomVO2.getRoomName()%></div>	
 																	</div>
@@ -558,10 +571,10 @@ function construct(hotel){
 																	</div>
 															 	</div>
 															 	</div>
-																
-															<%} %>
-							
-												
+															
+															<%} %><!--for -->
+														
+														
 											
 													<!-----------------------下一頁--------------------->
 												
