@@ -19,17 +19,72 @@
 	</head>
 	<body>
 		<h1 class="text-center">哈囉～哩後！</h1>
-		
+
 		<div id="position"></div>
+
 		<hr>
 		<div id="map-canvas"></div>
 	</body>
 </html>
 
 <script type="text/javascript">
-	var lati = 0;
-	var longi = 0; 
-  
+	var map;
+	var fromMarker;
+	var toMarkers = [];
+
+	var toMembers= {};
+
+	toMembers['AA101'] = {
+		key: 'AA101',	
+		lat: 24.967880,
+		lng: 121.191
+	};
+
+	toMembers['AA102'] = {
+		key: 'AA102',
+		lat: 24.967880,
+		lng: 121.193
+	};
+	
+	toMembers['AA103'] = {
+		key: 'AA103',
+		lat: 24.967880,
+		lng: 121.1945
+	};
+
+	toMembers['AA104'] = {
+		key: 'AA104',
+		lat: 24.967880,
+		lng: 121.194
+	};
+	
+	toMembers['AA105'] = {
+		key: 'AA105',
+		lat: 24.967880,
+		lng: 121.192
+	};	
+	
+	toMembers['AA106'] = {
+		key: 'AA106',	
+		lat: 24.967880,
+		lng: 121.19
+	};	
+		
+	/* 更多資訊 */	
+	  var contentString = 
+		'<div>'
+		+ '<img src='+ 'img/profile_user2.jpg alt="Avatar" style="width:100%">'
+		+ '<div>'
+		+ '<h4><b>' + 'John Doe' + '</b></h4>' 
+		+ '<p>' + 'Architect & Engineer' + '</p>' 
+		+ '</div>'
+		+ '<button type="button"'+ "onclick=\"window.open(' http://localhost:8081/DDD_web/frontend_mem/chat/chat2.jsp ', 'Yahoo', config='height=500,width=500');\" " +'>'+ '跟我聊聊' +'</button>'
+		+ '</div>';
+
+	  var infowindow = new google.maps.InfoWindow({
+	    content: contentString
+	  });
+	  	
 	function initialize(){
 		if(navigator.geolocation){
 			//alert('Geolocation support!');
@@ -43,9 +98,7 @@
 		}
 	}
 	  
-	function errorCallback(err) {
-		//console.warn('ERROR(' + err.code + '): ' + err.message);
-		
+	function errorCallback(err) {		
 		var fackPos = {
 			"coords" : {"latitude" : "<%=24.967880%>",    
 						"longitude" : "<%=121.191602%>"   
@@ -56,30 +109,80 @@
 	
 	
 	function succCallback(e) {
-		lati = e.coords.latitude;
-		longi = e.coords.longitude; 
-	  
-		document.getElementById('position').innerHTML = '緯度：'+lati+'<br>經度：'+longi;
+		var lat = e.coords.latitude;
+		var lng = e.coords.longitude; 
+		
+		document.getElementById('position').innerHTML = '緯度：'+lat+'<br>經度：'+lng;
 		
 		
-		var latlng = new google.maps.LatLng(lati,longi);
-		
-		
-		var map = new google.maps.Map(document.getElementById('map-canvas'),{
+		var latlng = new google.maps.LatLng(lat,lng);
+
+		map = new google.maps.Map(document.getElementById('map-canvas'),{
 			center:latlng,
 			zoom:18,
 			mapTypeId:google.maps.MapTypeId.ROADMAP
 		});
 		
-		var marker = new google.maps.Marker({
-			position: latlng,
+		fromMarker = new google.maps.Marker({
 			map: map,
-			icon: 'img/toMemFemale.png',
+			position: latlng,
+			icon: 'img/fromMem.png',
 			title: '這不是我家'
 		});
+		fromMarker.addListener('click', toggleBounce);
+		
+		clearMarkers();
+
+		for (var key in toMembers) {
+		    addMarkerWithTimeout(toMembers[key], 200);
+		}
+		
  	}
-  
-  google.maps.event.addDomListener(window, 'load', initialize);
-  //window.addEventListener('load',initialize,false);
-  
+
+	function toggleBounce() {
+	  if (this.getAnimation() !== null) {
+		  this.setAnimation(null);
+	  } else {
+		  this.setAnimation(google.maps.Animation.BOUNCE);
+	  }
+	}
+	
+	function addMarkerWithTimeout(aObj, timeout) {
+		
+	var latlng = new google.maps.LatLng(aObj.lat,aObj.lng);
+	
+		window.setTimeout(
+	
+		function() {
+		 	var tmpMark =
+				new google.maps.Marker({
+			      position: latlng,
+			      map: map,
+			      icon: 'img/toMemFemale.png',
+			      animation: google.maps.Animation.DROP,
+			      title: aObj.key
+				});	
+				tmpMark.addListener('click', toggleBounce);
+				toMarkers.push(tmpMark);
+				
+				tmpMark.addListener('click', function() {
+					    infowindow.open(map, tmpMark);
+				});
+				
+		}, timeout);		
+
+	}
+	
+	function clearMarkers() {
+		console.log(toMarkers.length);
+		  for (var i = 0; i < toMarkers.length; i++) {
+			  toMarkers[i].setMap(null);
+		  }
+		  toMarkers = [];
+	}
+	
+	
+	google.maps.event.addDomListener(window, 'load', initialize);
+	//window.addEventListener('load',initialize,false);		
+
 </script>

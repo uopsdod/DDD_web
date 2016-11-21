@@ -246,7 +246,7 @@ if(!authorityList.contains("101")){
 			<hr  size="10" width="95%"  align="center" style="border-top: 3px solid #000000">
 			
 			<table cellspacing="0" cellpadding="1"
-				width='800' class="table table-hover text-center" id="emptableth">	
+				width='800' class="table table-hover text-center" id="emptableth" >	
 				<tr class="text-center">
 					<th class="text-center">員工照片</th>
 					<th class="text-center">員工編號</th>
@@ -270,7 +270,7 @@ if(!authorityList.contains("101")){
 						
 						${(EmpVO.empId==authIdlistNo) ? 'bgcolor=lightblue':''}>
 						<!--將修改的那一筆加入對比色而已-->
-						<td ><img src='data:image/jpeg;base64,${EmpVO.bs64}'
+						<td ><img src='data:image/jpeg;base64,${EmpVO.bs64}'				
 							width="120" height="120" /></td>
 						<td >${EmpVO.empId}</td>
 						<td >${EmpVO.empName}</td>
