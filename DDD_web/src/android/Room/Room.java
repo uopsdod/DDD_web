@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
+import org.springframework.util.SystemPropertyUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -59,21 +60,28 @@ public class Room extends HttpServlet {
 		String outStr = "";
 		if (action.equals("getOne")) {
 			
-			System.out.println("1231321231321321313213132132");
+//			System.out.println("1231321231321321313213132132");
 			String id = jsonObject.get("id").getAsString();
+			int price = 0;
 			Map<String, Map> one = RoomServlet.OnData;
 			Map<String, Integer> two = one.get(id);
-			int price = two.get("price");
+			System.out.println("two12121" + two);
+			if(two == null || two.equals(null)){
+				price = 0;
+			}else{
+				price = two.get("price");
+			}
+			
 			RoomService dao = new RoomService();
-			RoomVO hotelVO = dao.findByPrimaryKey(id);
-			hotelVO.setRoomPrice(price);
-			System.out.println("======================" + price);
-			outStr = gson.toJson(hotelVO);
+			RoomVO roomVO = dao.findByPrimaryKey(id);
+			roomVO.setRoomPrice(price);
+//			System.out.println("======================" + price);
+			outStr = gson.toJson(roomVO);
 			rp.setContentType(CONTENT_TYPE);
 			PrintWriter out = rp.getWriter();
 			out.println(outStr);
 			System.out.println(outStr);
-			System.out.println("id123123132131313132 " + id);
+//			System.out.println("id123123132131313132 " + id);
 			
 		}else if(action.equals("getOneAllPhotoId")){
 			
