@@ -35,7 +35,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 <%--錯誤表列--%>
 
 </div>
-<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/room/room.do" name="form1"  method=post enctype="multipart/form-data">
+<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/room/room.do" name="form1"   enctype="multipart/form-data">
 
 						<div class="container">
 			<div class="row">

@@ -262,7 +262,7 @@ pageContext.setAttribute("advo",advo);
         </div>
          <h1 class="title1">提供給您的超值方案</h1>
         
-        <section class="htmleaf-container">
+       <section class="htmleaf-container">
 		<div class="container">
 		  
 		  <div id="full" class="carousel slide" data-ride="carousel">
@@ -272,7 +272,7 @@ pageContext.setAttribute("advo",advo);
 		    
 		        <li class="col-xs-4">
 		          <c:choose>
-		             <c:when test='${advo["0"].bs64==""||advo["0"].bs64==null}'>
+		             <c:when test='${advo["0"].bs64==""||advo["0"].bs64==null||advo["0"].adStatus!="4"}'>
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner1.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
@@ -282,7 +282,7 @@ pageContext.setAttribute("advo",advo);
 		        </li>	         
 		        <li class="col-xs-4">
 		          <c:choose>
-		             <c:when test='${advo["1"].bs64==""||advo["1"].bs64==null}'>
+		             <c:when test='${advo["1"].bs64==""||advo["1"].bs64==null||advo["1"].adStatus!="4"}'>
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner2.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
@@ -292,7 +292,7 @@ pageContext.setAttribute("advo",advo);
 		        </li>
 		        <li class="col-xs-4">
 		          <c:choose>
-		             <c:when test='${advo["2"].bs64==""||advo["2"].bs64==null}'>
+		             <c:when test='${advo["2"].bs64==""||advo["2"].bs64==null||advo["2"].adStatus!="4"}'>
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner3.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
@@ -305,7 +305,7 @@ pageContext.setAttribute("advo",advo);
 		      <ul class="row item">
 		        <li class="col-xs-4">
 		          <c:choose>
-		             <c:when test='${advo["3"].bs64==""||advo["3"].bs64==null}'>
+		             <c:when test='${advo["3"].bs64==""||advo["3"].bs64==null||advo["3"].adStatus!="4"}'>
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner4.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
@@ -315,7 +315,7 @@ pageContext.setAttribute("advo",advo);
 		        </li>
 		        <li class="col-xs-4">
 		          <c:choose>
-		             <c:when test='${advo["4"].bs64==""||advo["4"].bs64==null}'>
+		             <c:when test='${advo["4"].bs64==""||advo["4"].bs64==null||advo["4"].adStatus!="4"}'>
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner5.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
@@ -325,7 +325,7 @@ pageContext.setAttribute("advo",advo);
 		        </li>
 		        <li class="col-xs-4">
 		          <c:choose>
-		             <c:when test='${advo["5"].bs64==""||advo["5"].bs64==null}'>
+		             <c:when test='${advo["5"].bs64==""||advo["5"].bs64==null||advo["5"].adStatus!="4"}'>
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner6.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
@@ -338,7 +338,7 @@ pageContext.setAttribute("advo",advo);
 			  <ul class="row item">
 		        <li class="col-xs-4">
 		          <c:choose>
-		             <c:when test='${advo["6"].bs64==""||advo["6"].bs64==null}'>
+		             <c:when test='${advo["6"].bs64==""||advo["6"].bs64==null||advo["6"].adStatus!="4"}'>
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner7.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
@@ -348,7 +348,7 @@ pageContext.setAttribute("advo",advo);
 		        </li>
 		        <li class="col-xs-4">
 		          <c:choose>
-		             <c:when test='${advo["7"].bs64==""||advo["7"].bs64==null}'>
+		             <c:when test='${advo["7"].bs64==""||advo["7"].bs64==null||advo["7"].adStatus!="4"}'>
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner8.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
@@ -358,7 +358,7 @@ pageContext.setAttribute("advo",advo);
 		        </li>
 		        <li class="col-xs-4">
 		          <c:choose>
-		             <c:when test='${advo["8"].bs64==""||advo["8"].bs64==null}'>
+		             <c:when test='${advo["8"].bs64==""||advo["8"].bs64==null||advo["8"].adStatus!="4"}'>
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner9.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
@@ -369,7 +369,7 @@ pageContext.setAttribute("advo",advo);
 		      </ul>
 			  
 <!-- 			  //第十筆不是空，也不是沒圖片 -->
-		      <c:if test='${advo["9"]!=null&&advo["9"].bs64!=""}'>
+		      <c:if test='${advo["9"]!=null&&advo["9"].bs64!=""&&advo["9"].adStatus=="4"}'>
   			   <ul class="row item">
 		        <li class="col-xs-4">
 		          <img src='data:image/jpeg;base64,${advo["9"].bs64}' srcset=""  width="480" height="270">
