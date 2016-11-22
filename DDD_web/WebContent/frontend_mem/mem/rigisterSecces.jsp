@@ -10,7 +10,7 @@
     }
     #h1register{
     font-family: Tahoma, Verdana, 微軟正黑體;
-    font-size: 45px;
+    
     margin-top:-8%;
 	}
 
@@ -19,6 +19,6 @@
 	
     <div class="col-md-12 text-center">
         <img src="<%=request.getContextPath()%>/frontend_mem/GIF/loading.gif">
-        <h1 id="h1register">註冊成功</h1>
+        <h1 id="h1register"><img src="<%=request.getContextPath()%>/frontend_mem/img/checked.png" width="35px" hight="40px" style="margin-left:5px;"> 註冊成功</h1>
     </div>
 <%@ include file="../indexFooter.jsp" %>

@@ -2,16 +2,40 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.wish.model.*"%>
 <%@ include file="../indexHeader.jsp"%>
+<%@ page import="com.room.model.*"%>
+<%@ page import="com.room.controler.*"%>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/css/wishList.css">
 <script src="<%=request.getContextPath()%>/frontend_mem/js/wishList.js"></script>
+<script src="<%=request.getContextPath()%>/frontend_mem/wish/socket.js"></script>
 <%
 	
 	WishService wishsvc = new WishService();
 	List<Map> list =wishsvc.getOneWishOfmemNO(memVO.getMemId());
 	pageContext.setAttribute("list", list);
 %>
+<script>
+var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${list.get(0).get("roomid")}"];
+
+
+	
+	var roomMap;
+	
+	window.onunload = disconnect;
+	window.addEventListener('load',function(){ 
+		roomMap = new Map;
+		for(var i =0;i<a.length;i++){
+			var node = document.getElementById(a[i]);
+			roomMap.set(a[i],node);	
+			}
+		console.log(roomMap);
+		},false);
+	window.addEventListener('load',connect,false);
+
+</script>
+
+
 <!-- //查看詳情還沒做 -->
-<<style>
+<style>
 	#listinfor{
 		 font-family:Tahoma, Verdana, 微軟正黑體;
 	}
@@ -38,7 +62,28 @@
 			               <del> <div class="price1">TWD ${wish.roomPrice}</div></del>
 			                <br><br><br>
 			                <div class="toNight">今晚價</div>
-			                <div class="price"><u>TWD ${wish.salePrice}</u></div>
+			                <div class="price">
+			                <u>
+			                	<span id="${wish.roomid}"><span>     
+								<%  
+									String roomId = (String)(((Map)pageContext.getAttribute("wish")).get("roomid"));
+									Map oneRoom = RoomServlet.OnData.get(roomId);
+									if(oneRoom!=null)
+									{	
+										int onPrice = (Integer)oneRoom.get("price");
+									%>
+									   <%=onPrice %>
+									<%
+									
+										System.out.println(onPrice);
+									}else{
+										out.write("未上架");
+									}
+								
+								%>
+								</span>
+							</span>
+			                </u></div>
 			                <br>
 			                <button id="buttnOnimg" >查看詳情</button>
 			                <input type="hidden" name="action" value="delect"> 
