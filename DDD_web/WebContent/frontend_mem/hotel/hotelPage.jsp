@@ -88,7 +88,12 @@
 		pageContext.setAttribute("roomList",roomList);
 		pageContext.setAttribute("AllRoomPhotoMap",AllRoomPhotoMap);
 		pageContext.setAttribute("servList",servList);
-	%>		
+	%>	
+	<%   //不要快取
+	response.setHeader("Cache-Control", "no-store");//http1.1
+	response.setHeader("Pragma", "no-cache");//http1.0
+	response.setDateHeader("Expires", 0);	
+	%>	
 	
 	<div class="jumbotron" id="c-bigscreen">
 	  <div class="container">
@@ -111,7 +116,7 @@
 <!-- 					<div class="col-xs-12 col-sm-3 c-mainHotel text-center"> -->
 <!-- 						<img src="https://api.fnkr.net/testimg/50x50/00CED1/FFF/?text=img+placeholder" style="height:18vh; border-radius: 60%;margin-top:25px"> -->
 <!-- 					</div> -->
-					
+					<input type="hidden" id="hotelPageId" value="${hotelVO.hotelId}">
 					<div class="col-xs-12 col-sm-12 c-mainHotel">
 						<p><div style="font-size:50px">${hotelVO.hotelName}
 						<% 	for(int i=1;i<=hotelVO.getHotelRatingResult();i++){%>
@@ -127,21 +132,21 @@
 						<div class="col-xs-12 col-sm-3 c-partHotel text-center">
 							<h2><img src="<%=request.getContextPath()%>/frontend_mem/hotel/image/house.png"></h2>
 							<span class"word">${hotelVO.hotelType}<span>	
-						</div>
+						</div> 
 						
 						<div class="col-xs-12 col-sm-3 c-partHotel text-center">
 							<h2><img src="<%=request.getContextPath()%>/frontend_mem/hotel/image/man.png"></h2>
-							<span class"word">4位房客<span>
+							<span class"word">客服<span>
 						</div>
 						
 						<div class="col-xs-12 col-sm-3 c-partHotel text-center">
 							<h2><img src="<%=request.getContextPath()%>/frontend_mem/hotel/image/room.png"></h2>
-							<span class"word">1間臥室<span>
+							<span class"word">一間房型<span>
 						</div>
 						
 						<div class="col-xs-12 col-sm-3 c-partHotel text-center">
 							<h2><img src="<%=request.getContextPath()%>/frontend_mem/hotel/image/bed.png"></h2>
-							<span class"word">2張單人床<span>
+							<span class"word">舒適睡眠<span>
 						</div>
 					</div>
 				</div>
@@ -219,7 +224,7 @@
 									   <%=onPrice %>
 									<%
 									
-										System.out.println(onPrice);
+// 										System.out.println(onPrice);
 									}else{
 										out.write("未上架");
 									}
@@ -289,9 +294,10 @@
 var roomMap;
 var FirstRoomId = [<%for(RoomVO roomVO3:roomList){%> <%=roomVO3.getRoomId()%>, <%}%>  <%=roomList.get(0).getRoomId()%> ];
 // 
-
+var hotelPageId = document.getElementById("hotelPageId").value; //取得進入哪一間hotel
+	
 window.onload=function(){
-	connect();
+	connect(hotelPageId);
 	roomMap = new Map;
 	for(var i=0 ;i<FirstRoomId.length;i++){
 		var item = document.getElementById(FirstRoomId[i]);
