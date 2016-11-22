@@ -142,6 +142,16 @@
   </servlet-mapping>	
   
   <servlet>
+    <servlet-name>MemCoordServlet</servlet-name>
+    <servlet-class>android.live2.MemCoordServlet</servlet-class> 
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MemCoordServlet</servlet-name>
+    <url-pattern>/android/live2/memCoord.do</url-pattern>
+  </servlet-mapping>  
+  
+  
+  <servlet>
     <servlet-name>AndroindHotelServlet</servlet-name>
     <servlet-class>android.Hotel.Hotel</servlet-class>
   </servlet>

@@ -7,9 +7,7 @@
 
 #top_header {
     background: gray;
-    /*border: 4px solid red;*/
-    /* 外框線*/
-    */ padding: 1px;
+  	padding: 1px;
     width: 100%;
     height: 70px;
     position: relative;
@@ -18,26 +16,20 @@
 }
 
 .memProfile {
-    max-width: 100px;
-    max-height: 100px;
+	margin-left: 10px;
+    height: 150px;
+    width: 150px;
+}   
+
+.memIntro {
+	margin-top: 15px;
+    margin-left: 45%;
 }   
 
 .memProfile2 {
     max-width: 250px;
     max-height: 250px;
 }  
-
-.card-block{
-	margin-left:30%;
-}
-
-.navbar {
-    border-radius: 0;
-}
-
-nav.navbar {
-    margin-bottom: 0;
-}
 
 .sortBar {
     margin-top: 15px;
@@ -50,7 +42,7 @@ nav.navbar {
     background-color: #94A0B2;
     padding: 10px;
     box-shadow:0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    height: 150px;
+    height: 170px;
 }
 
 *{

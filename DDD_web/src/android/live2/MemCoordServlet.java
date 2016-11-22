@@ -1,0 +1,157 @@
+package android.live2;
+
+
+
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import javax.servlet.http.HttpServlet;
+
+import com.mem.model.MemService;
+import com.mem.model.MemVO;
+
+import util.GetDistanceByCoord;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
+
+
+public class MemCoordServlet extends HttpServlet {
+
+	static HashSet<MemCoordVO> onlineUserSet = new HashSet<MemCoordVO>();
+	
+	static{
+		/* 建立假上線人資料 */
+		String[] fackMemId = {"10000012","10000011","10000010","10000009","10000008"};
+		
+		/* lat,lng */
+		Double[][] fackMemPos ={{24.967880d,121.191d},{24.967880d,121.192d},{24.967880d,121.193d},{24.967880d,121.194d},{24.967880d,121.195d}};
+		
+		MemService memSvc = new MemService();
+		
+		for(int count=0; count<fackMemId.length ; count++){
+			MemVO memVO = memSvc.getOneMem_web(fackMemId[count]);
+			MemCoordVO memCoordVO = new MemCoordVO();
+			try {
+				/* 複製memVO資料 */
+				BeanUtils.copyProperties(memCoordVO, memVO);
+				
+				/* 給它假座標 */				
+				memCoordVO.setMemLat(fackMemPos[count][0]);
+				memCoordVO.setMemLng(fackMemPos[count][1]);
+				
+				onlineUserSet.add(memCoordVO);
+				
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		}
+				
+	}
+	
+	public void doGet(HttpServletRequest aReq, HttpServletResponse aRes)throws ServletException, IOException {
+		doPost(aReq,aRes);
+	}
+	
+	public void doPost(HttpServletRequest aReq, HttpServletResponse aRes)throws ServletException, IOException{
+		aReq.setCharacterEncoding("UTF-8");
+		String action = aReq.getParameter("action");
+		
+		/* 登入上傳自己座標 並回傳和其他人的距離 */
+		if("uploadCoord".equals(action)){
+			
+			/* 弄一個新的list(給上傳的使用者) */
+			List<MemCoordVO> listForUploader = new ArrayList<MemCoordVO>();
+			
+			/* 1.接收請求參數 */
+			//String memId = aReq.getParameter("memId");
+		 	//Double memLat = new Double(aReq.getParameter("memLat"));
+		 	//Double memLng = new Double(aReq.getParameter("memLng"));
+		
+		 	/* uploader假座標 */
+			String memId = "10000001";
+			Double memLat = 24.967880d;
+			Double memLng = 121.191602d; 
+			 
+		 	for(MemCoordVO memCoordVO : onlineUserSet){
+		 		/* 複製一份給Uploader的VO 以免被污染到 然後放進給Uploader的list */
+		 		MemCoordVO memCoordVOForUploader = new MemCoordVO();
+		 		
+		 		try {
+					BeanUtils.copyProperties(memCoordVOForUploader, memCoordVO);
+				} catch (IllegalAccessException | InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		 		
+		 		/* 計算Uploader與線上人的距離 */
+		 		//memCoordVOForUploader.getMemLat();
+		 		//memCoordVOForUploader.getMemLng();
+		 		
+		 		Double aMemDis = GetDistanceByCoord.GetDistance(memCoordVOForUploader.getMemLat(), memCoordVOForUploader.getMemLng(), memLat, memLng);
+		 		
+		 		//System.out.println("距離幾公尺? " + aMemDis);
+		 		
+		 		memCoordVO.setMemDis(aMemDis);
+		 		
+		 		/* 放進距離裡 */
+		 		listForUploader.add(memCoordVO);
+		 		
+		 	}
+			
+		 	/* 最後把自己的座標加到Servlet的MemCoordVO list上面 */
+		 	MemService memSvc = new MemService();
+		 	
+		 	MemVO memVO = memSvc.getOneMem_web(memId);
+		 	MemCoordVO memCoordVO = new MemCoordVO();
+		 	
+		 	try {
+				BeanUtils.copyProperties(memCoordVO, memVO);
+				memCoordVO.setMemLat(memLat);
+				memCoordVO.setMemLng(memLng);
+				
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		 	
+		 	onlineUserSet.add(memCoordVO);
+		 	
+			/* 包裝成jason回傳 */
+		 
+		 	JSONArray jArray = new JSONArray(); 
+		 	
+		    for(MemCoordVO aMemCoordVO : listForUploader){
+		    	JSONObject jObj = new JSONObject();	
+		    	try {
+					jObj.put("memId", aMemCoordVO.getMemId());
+			    	jObj.put("memName", aMemCoordVO.getMemName());
+			    	jObj.put("memGender", aMemCoordVO.getMemGender());
+			    	jObj.put("memIntro", aMemCoordVO.getMemIntro());
+			    	jObj.put("memLat", aMemCoordVO.getMemLat());
+			    	jObj.put("memLng", aMemCoordVO.getMemLng());
+			    	jObj.put("memDis", aMemCoordVO.getMemDis());
+				} catch (JSONException e) {
+
+					e.printStackTrace();
+				}
+		    	jArray.put(jObj);
+		    }
+		    
+		    System.out.println(jArray);
+		    
+		}
+	}
+
+}

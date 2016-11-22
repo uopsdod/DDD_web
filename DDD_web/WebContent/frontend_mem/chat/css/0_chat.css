@@ -69,4 +69,5 @@
 #chatWindow{
 	bottom:0px;
 	position:fixed;
+	width: 500px;
 }

@@ -59,34 +59,24 @@
             </div>
 
             <div class="">
-				<div class="col-xs-12 col-sm-12">
-				<!-- 右邊的會員列表 -->
-				
-<!-- 			    <div class="card memCard"> -->
-<!--                        <img class="card-img-top memProfile img-circle pull-left" src="images/profile_user2.jpg" alt="Card image cap"> -->
-<!--                        <div class="card-block"> -->
-<!--                         <h4 class="card-title">詹姆斯</h4> -->
-<!--                         <p class="card-text">18歲 / 男女不拘 / 3000元</p> -->
-<!--                         <a href="#" class="btn btn-primary memBtn ">個人簡介</a> -->
-<!--                         <a href="#" class="btn btn-primary memBtn ">跟你聊一聊</a> -->
-<!--                      	</div> -->
-<!--                    </div> -->
-				
+				<!-- 右邊的會員列表 -->		
+						
+						
 					<c:forEach var="memVO" items="${list}">
-	                    <div class="card memCard">
-	     					<div class="memProfile">
-	     	                   <img class="img-circle pull-left img-responsive" src='data:image/jpeg;base64,${memVO.bs64}' alt="Card image cap">
-	     					</div>
-	
-	                        <div class="card-block">
-		                        <h4 class="card-title">${memVO.memName}</h4>
-		                        <p class="card-text">${memVO.memIntro}</p>
-		                        <a href="#" class="btn btn-primary memBtn ">跟你聊一聊</a>
-	                      	</div>
-	                    </div>					
-					</c:forEach>                   
-				</div>
-
+						<div class="card memCard">
+							<div style="vertical-align: middle" class="memProfile pull-left">
+								<span style="display:inline-block;height:100%;vertical-align:middle;width:1px;margin-left:-10px"></span>
+		               			<img style="display:inline-block;max-height:100%;vertical-align:middle" class="img-responsive" src='data:image/jpeg;base64,${memVO.bs64}' alt="Card image cap">
+							</div>
+							
+							<div class="card-block memIntro">
+					            <h4 class="card-title">${memVO.memName}</h4>
+					            <p class="card-text">${memVO.memIntro}</p>
+					            <a href="#" class="btn btn-primary memBtn">跟你聊一聊</a>		            
+						    </div>
+						    
+						</div>	
+					 </c:forEach>                                  
             </div> <!--  -->
 
     	</div> <!-- myList -->
@@ -95,70 +85,64 @@
     
 	<!-- 聊天的div -->
 	<div id="chatWindow">
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12 col-sm-5">
-					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<!-- 聊天視窗標題 -->
-							<span class="glyphicon glyphicon-comment"></span> Chat
-							<div class="btn-group pull-right">
-								<button type="button"
-									class="btn btn-default btn-xs dropdown-toggle"
-									data-toggle="dropdown">
-									<span class="glyphicon glyphicon-chevron-down"></span>
-								</button>
-								<!-- 右上角的選單 -->
-								<ul class="dropdown-menu slidedown">
-									<li><a href="http://www.jquery2dotnet.com"> <span
-											class="glyphicon glyphicon-refresh"></span> Refresh
-									</a></li>
-									<li><a href="http://www.jquery2dotnet.com"> <span
-											class="glyphicon glyphicon-ok-sign"></span> Available
-									</a></li>
-									<li><a href="http://www.jquery2dotnet.com"> <span
-											class="glyphicon glyphicon-remove"></span> Busy
-									</a></li>
-									<li><a href="http://www.jquery2dotnet.com"> <span
-											class="glyphicon glyphicon-time"></span> Away
-									</a></li>
-									<li class="divider"></li>
-									<li><a href="http://www.jquery2dotnet.com"> <span
-											class="glyphicon glyphicon-off"></span> Sign Out
-									</a></li>
-								</ul>
-							</div>
-						</div>
-						<!--  聊天內容視窗 -->
-						<div id="messagesArea" class="panel-body">
-							<ul class="chat">
-		
-		
-		
-							</ul>
-						</div>
-		
-		
-						<div class="panel-footer">
-							<h5 id="userName"></h5>
-							<input type="button" id="connect" class="btn btn-success btn-sm"
-								value="連線" onclick="connect();" /> <input type="button"
-								id="disconnect" class="btn btn-warning btn-sm" value="離線"
-								onclick="disconnect();" />
-						</div>
-		
-						<div class="panel-footer">
-							<div class="input-group">
-								<input id="message" class="form-control input-sm" type="text"
-									placeholder="Type your message here..."
-									onkeydown="if (event.keyCode == 13) sendMessage();" /> <span
-									class="input-group-btn"> <input type="submit"
-									id="sendMessage" class="btn btn-primary btn-sm" value="送出"
-									onclick="sendMessage();" />
-								</span>
-							</div>
-						</div>
-					</div>
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<!-- 聊天視窗標題 -->
+				<span class="glyphicon glyphicon-comment"></span> Chat
+				<div class="btn-group pull-right">
+					<button type="button"
+						class="btn btn-default btn-xs dropdown-toggle"
+						data-toggle="dropdown">
+						<span class="glyphicon glyphicon-chevron-down"></span>
+					</button>
+					<!-- 右上角的選單 -->
+					<ul class="dropdown-menu slidedown">
+						<li><a href="http://www.jquery2dotnet.com"> <span
+								class="glyphicon glyphicon-refresh"></span> Refresh
+						</a></li>
+						<li><a href="http://www.jquery2dotnet.com"> <span
+								class="glyphicon glyphicon-ok-sign"></span> Available
+						</a></li>
+						<li><a href="http://www.jquery2dotnet.com"> <span
+								class="glyphicon glyphicon-remove"></span> Busy
+						</a></li>
+						<li><a href="http://www.jquery2dotnet.com"> <span
+								class="glyphicon glyphicon-time"></span> Away
+						</a></li>
+						<li class="divider"></li>
+						<li><a href="http://www.jquery2dotnet.com"> <span
+								class="glyphicon glyphicon-off"></span> Sign Out
+						</a></li>
+					</ul>
+				</div>
+			</div>
+			<!--  聊天內容視窗 -->
+			<div id="messagesArea" class="panel-body">
+				<ul class="chat">
+
+
+
+				</ul>
+			</div>
+
+
+			<div class="panel-footer">
+				<h5 id="userName"></h5>
+				<input type="button" id="connect" class="btn btn-success btn-sm"
+					value="連線" onclick="connect();" /> <input type="button"
+					id="disconnect" class="btn btn-warning btn-sm" value="離線"
+					onclick="disconnect();" />
+			</div>
+
+			<div class="panel-footer">
+				<div class="input-group">
+					<input id="message" class="form-control input-sm" type="text"
+						placeholder="Type your message here..."
+						onkeydown="if (event.keyCode == 13) sendMessage();" /> <span
+						class="input-group-btn"> <input type="submit"
+						id="sendMessage" class="btn btn-primary btn-sm" value="送出"
+						onclick="sendMessage();" />
+					</span>
 				</div>
 			</div>
 		</div>
