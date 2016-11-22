@@ -33,12 +33,12 @@
 		<property name="hotelCreditCheckNo" column="hotelCreditCheckNo" />
 		<property name="hotelCreditDueDate" column="hotelCreditDueDate" />
 
-<!-- 		<set name="hotelOrds" table="ord" lazy="false" cascade="all"  inverse="true"  order-by="ordId asc">			 -->
-<!-- 			<key> -->
-<!-- 				<column name="ordHotelId" /> -->
-<!-- 			</key> -->
-<!-- 			<one-to-many class="com.ord.model.OrdVO" /> -->
-<!-- 		</set> -->
+		<set name="hotelOrds" table="ord" lazy="false" cascade="all"  inverse="true"  order-by="ordId asc">			
+			<key>
+				<column name="ordHotelId" />
+			</key>
+			<one-to-many class="com.ord.model.OrdVO" />
+		</set>
 
 	</class>
 </hibernate-mapping>
