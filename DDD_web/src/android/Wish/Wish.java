@@ -91,6 +91,8 @@ public class Wish extends HttpServlet {
 					Map<String, Integer> two = one.get(roomVO.getRoomId());
 					Integer price = two.get("price");
 					roomVO.setRoomPrice(price);
+				}else{
+					roomVO.setRoomPrice(0);
 				}
 				roomVOList.add(roomVO);
 			}

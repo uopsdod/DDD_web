@@ -1,0 +1,54 @@
+#LogoImg {
+    /*logo*/
+    display: inline-block;
+    width: 220px;
+    margin-top: 0px
+}
+
+#top_header {
+    background: gray;
+  	padding: 1px;
+    width: 100%;
+    height: 70px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0px;
+}
+
+.memProfile {
+	margin-left: 10px;
+    height: 150px;
+    width: 150px;
+}   
+
+.memIntro {
+	margin-top: 15px;
+    margin-left: 45%;
+}   
+
+.memProfile2 {
+    max-width: 250px;
+    max-height: 250px;
+}  
+
+.sortBar {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-right: 15px;
+}
+
+.memCard {
+    margin-bottom: 15px;
+    background-color: #94A0B2;
+    padding: 10px;
+    box-shadow:0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    height: 170px;
+}
+
+*{
+    font-family:Tahoma,Verdana,Arial,微軟正黑體;
+}
+
+#map-canvas, myList{
+	margin-top: 15px;   
+}

@@ -1,4 +1,4 @@
-package com.mem.model;
+package com.mem.modelHibernate;
 
 import java.sql.Date;
 import java.util.List;
