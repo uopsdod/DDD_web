@@ -53,6 +53,8 @@ public class HotelRoomSearch extends HttpServlet {
 			HotelService hotelService = new HotelService();
 			HotelVO hotelVO = hotelService.getOne(hotelId);
 			
+			
+			
 			res.setContentType("image/jpeg");
 			ServletOutputStream out = res.getOutputStream(); 
 			BufferedOutputStream buf = new BufferedOutputStream(out);	
@@ -69,8 +71,45 @@ public class HotelRoomSearch extends HttpServlet {
 			
 			String hotelId = req.getParameter("hotelId");
 			
+			HotelService hotelSvc = new HotelService();
+			RoomService roomSvc = new RoomService();
 			
-			String url = "/frontend_mem/hotel/home.jsp";
+			HotelVO hotelVO = hotelSvc.getOne(hotelId);
+			
+			Map RoomMap = new HashMap();
+			RoomMap.put("ROOMHOTELID",hotelId );		
+			String RoomSQL = RoomCompositeQuery.GetSQLString(RoomMap);	//取得SQL指令
+//			System.out.println(RoomSQL);	
+			List<RoomVO> roomVOlist = roomSvc.getListBySQL(RoomSQL);			
+			
+			HotelServService hotelServSvc = new HotelServService();
+			List<HotelServVO> hotelServList = hotelServSvc.getAllByHotelId(hotelId);
+			
+			ServService ServSvc = new ServService();
+			List<String> servList = new ArrayList<String>();
+			for(HotelServVO hotelServVO : hotelServList){
+				ServVO servVO = ServSvc.getOneServ(hotelServVO.getHotelServServId());
+				servList.add(servVO.getServName());
+			}
+			
+			
+			
+			
+			RoomPhotoService roomPhtotSvc = new RoomPhotoService();
+			Map<String,List> AllRoomPhotoMap = new HashMap<String,List>();
+			for(RoomVO roomVO : roomVOlist){
+				String roomId = roomVO.getRoomId();
+				List<RoomPhotoVO> roomPhotoList =  roomPhtotSvc.getOneAllRoomPhotoVO(roomId);	
+				AllRoomPhotoMap.put(roomId,roomPhotoList);
+			}
+			
+		
+			req.setAttribute("servList", servList);
+			req.setAttribute("hotelVO", hotelVO);
+			req.setAttribute("roomVOlist", roomVOlist);
+			req.setAttribute("AllRoomPhotoMap", AllRoomPhotoMap);	
+			
+			String url = "/frontend_mem/hotel/hotelPage.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 			successView.forward(req, res);
 			
@@ -295,6 +334,15 @@ public class HotelRoomSearch extends HttpServlet {
 					
 					//=================此hotel通通滿足條件,開始加資料至回傳的jsonArrray===================================//
 				try{
+					
+					if(MyEchoServer.onTimePeople!=null){
+						try{
+						Integer onTime = (Integer) MyEchoServer.onTimePeople.get(hotelId);
+						obj.put("onTime",onTime);
+						}catch(Exception e){
+						obj.put("onTime",0);
+						}
+					}
 					obj.put("roomName",roomName);
 					obj.put("hotelRating",hotelRating);
 					obj.put("hotelId",hotelId);
@@ -317,7 +365,7 @@ public class HotelRoomSearch extends HttpServlet {
 			PrintWriter out = res.getWriter();
 			System.out.println("array.toString(): " + array.toString());
 			out.write(array.toString());	//輸出所搜尋到符合條件的旅館資料
-			
+//			System.out.println(array.toString());
 			
 				
 		}// if search

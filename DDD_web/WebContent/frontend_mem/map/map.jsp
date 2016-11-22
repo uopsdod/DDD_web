@@ -4,9 +4,11 @@
 <%@ page import="com.hotel.model.*"%>
 <%@ page import="com.serv.model.*"%>
 <%@ page import="org.json.JSONArray"%>
+
 <%@ page import="org.json.JSONException"%>
 <%@ page import="org.json.JSONObject"%>
 <%@ page import="com.room.controler.RoomServlet"%>
+<%@ page import="com.room.controler.MyEchoServer"%>
 
 	<%@ include file="../indexHeader.jsp"%>
 	<%@ include file="City.file" %>
@@ -75,7 +77,7 @@
 </script>	
 <script type="text/javascript">
 
-
+var hotelMap;
 var roomMap;
 var context;
 	
@@ -156,6 +158,9 @@ function back(jsonStr){
 	roomMap = null;	//每次搜尋都清空roomMap
 	roomMap = new Map(); //每次搜尋都重新建立roomMap
 	
+	hotelMap = null;	//每次搜尋都清空roomMap
+	hotelMap = new Map(); //每次搜尋都重新建立roomMap
+	
 	var HotelArray = JSON.parse(jsonStr);
 	if(HotelArray.length!=0){		//有搜到符合的旅館
 	 	for(var i =0;i<HotelArray.length;i++){	 		
@@ -201,6 +206,7 @@ function construct(hotel){
 	
 	var a = document.createElement("a");
 	a.href="<%=request.getContextPath()%>/HotelRoomSearch?action=hotelPage&hotelId=" + hotel.hotelId;
+	a.target="_blank";
 	
 	var imgeg = document.createElement("img"); // 		<img class="imgmap" src="mapImage/room1.jpg">	
 	imgeg.src= "<%=request.getContextPath()%>/HotelRoomSearch" + "?action=showHotel&hotelId=" +hotel.hotelId;		
@@ -230,6 +236,17 @@ function construct(hotel){
 	roomMap.set(hotel.roomBottomId,itemRightDiv); //將此間旅館的變動價格DIV物件裝入roomMap中,並以roomBottomId作為key
 	
 	
+	var nowPeople = document.createElement("div");
+	nowPeople.id=hotel.hotelId;
+	nowPeople.style="font-size:15px;margin-top:15px;color:blue;";
+	hotelMap.set(hotel.hotelId+"",nowPeople);
+	
+	if(hotel.onTime!=0){
+	var PeopleHow = document.createTextNode("正在瀏覽"+hotel.onTime+"人");	
+	nowPeople.appendChild(PeopleHow);
+	}
+	
+	
 	var roomName = document.createElement("div");
 	roomName.style="font-size:15px;margin-top:15px;color:red;";
 	roomName.innerText=hotel.roomName;
@@ -251,6 +268,8 @@ function construct(hotel){
 	innerDiv.appendChild(itemLeftDiv);
 	
 	itemMidDiv.appendChild(roomName);
+	itemMidDiv.appendChild(nowPeople);
+		
 	innerDiv.appendChild(itemMidDiv);
 	
 	price.appendChild(text);
@@ -286,6 +305,7 @@ function construct(hotel){
    
 
    	<% Map item = (HashMap)session.getAttribute("item");%>
+  
    
    
     <section>
@@ -494,7 +514,8 @@ function construct(hotel){
 																Map<String,String[]> hotelMap = new HashMap<String,String[]>();
 																RoomService roomSvc = new RoomService();
 																List<RoomVO> upRoomList = roomSvc.getListBySQL("select * from room where roomforsell=1");
-													
+													if(upRoomList!=null && upRoomList.size()!=0){
+														
 																
 																for(RoomVO roomVO:upRoomList){
 																	String hotelId = roomVO.getRoomHotelId();
@@ -521,7 +542,7 @@ function construct(hotel){
 																		
 																}
 															
-																System.out.println(hotelMap);
+// 																System.out.println(hotelMap);
 																
 													
 																
@@ -550,7 +571,7 @@ function construct(hotel){
 															 	<div class="col-xs-12 col-sm-6">
 															 	<div class="item">
 															
-															 		<a href="<%=request.getContextPath()%>/HotelRoomSearch?action=hotelPage&hotelId=<%=hotelId%>">
+															 		<a href="<%=request.getContextPath()%>/HotelRoomSearch?action=hotelPage&hotelId=<%=hotelId%>"  target="_blank">
 															 		<img class="imgmap" src="<%=request.getContextPath()%>/HotelRoomSearch?action=showHotel&hotelId=<%=hotelId%>">
 															 		</a>
 															 		
@@ -563,9 +584,19 @@ function construct(hotel){
 																			<%}%>
 																		</div>
 																	</div>
-																	
+																	 	<% 
+																	 	Integer onTime = 0;
+																	 	if(MyEchoServer.onTimePeople!=null){ //取出本hotel正在觀看人數
+																			try{
+																			onTime = (Integer) MyEchoServer.onTimePeople.get(hotelId);
+																			
+																			}catch(Exception e){
+																			onTime = 0;
+																			}
+																		}%>
 																	<div class="col-xs-12 col-sm-3">
-																		<div style="font-size:15px;margin-top:15px;color:red;"><%=roomVO2.getRoomName()%></div>	
+																		<div style="font-size:15px;margin-top:15px;color:red;"><%=roomVO2.getRoomName()%></div>
+																		<div style="font-size:15px;margin-top:15px;color:blue;" id="<%=hotelId%>"><%if(onTime!=0){ %><%="正在瀏覽"+onTime+"人"%><%}%></div>	
 																	</div>
 																	<div class="col-xs-12 col-sm-3" id="<%=hotelMap.get(hotelId)[0]%>"><div class="price" style="font-size:30px;margin-top:10px;margin-bottom:-20px;"><%=hotelMap.get(hotelId)[1]%></div>
 																	</div>
@@ -574,8 +605,8 @@ function construct(hotel){
 															
 															<%} %><!--for -->
 														
-														
-											
+														<%} %><!--if -->
+												
 													<!-----------------------下一頁--------------------->
 												
 												
@@ -634,18 +665,28 @@ function construct(hotel){
 
 </html>	
 <script>
-var FirstRoomId = [<%for(RoomVO roomVO3:upRoomList){%> <%=roomVO3.getRoomId()%>, <%}%>  <%=upRoomList.get(0).getRoomId()%> ];
+var FirstRoomId = [<%for(RoomVO roomVO3:upRoomList){%> <%=roomVO3.getRoomId()%>, <%}%>  <%=upRoomList.size()==0?"":upRoomList.get(0).getRoomId()%> ];
 // 									roomMap.set(hotel.roomBottomId,itemRightDiv);
-window.onload=function(){
+var FirstHotelId = [<%for(RoomVO roomVO3:upRoomList){%> <%=roomVO3.getRoomHotelId()%>, <%}%>  <%=upRoomList.size()==0?"":upRoomList.get(0).getRoomHotelId()%> ];
+
+window.addEventListener('load',function(){
 	roomMap = new Map;
 	for(var i=0 ;i<FirstRoomId.length;i++){
 		var item = document.getElementById(FirstRoomId[i]);
 		if(item!=null){
 		roomMap.set(""+FirstRoomId[i],item);
 		}
-	}	
-
-}
+	}
+	
+	hotelMap = new Map;
+	for(var i=0 ;i<FirstHotelId.length;i++){
+		var item = document.getElementById(FirstHotelId[i]);
+		if(item!=null){
+		hotelMap.set(""+FirstHotelId[i],item);
+		}
+	}
+	
+},false);
 
 
 </script>
