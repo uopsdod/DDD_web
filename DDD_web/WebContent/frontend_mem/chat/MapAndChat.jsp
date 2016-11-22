@@ -152,12 +152,64 @@
 	<h3 id="statusOutput" class="statusOutput"></h3>
 
 </body>
+
+<!-- Ajax  -->
+<script>
+/* 全域變數 */
+var memId = "10000001";
+var memLat;
+var memLng;
+
+var ajaxPoint = "/android/live2/memCoord.do";
+var host = window.location.host;
+var path = window.location.pathname;
+var webCtx = path.substring(0, path.indexOf('/', 1));
+var ajaxUrl = "http://" + window.location.host + webCtx + ajaxPoint;
+
+
+function getListForUploader(){ 
+	  //===建立xhr物件(填入程式碼)
+	  var xhr = new XMLHttpRequest();
+	  //設定好回呼函數   
+	  xhr.onreadystatechange = function (){
+	    if( xhr.readyState == 4){
+	      if( xhr.status == 200){
+	      //取回...回傳的資料
+	        console.log(xhr.responseText);
+	        //document.getElementById("showPanel").innerHTML = xhr.responseText;
+	        
+	        var toMemArray = JSON.parse(xhr.responseText);
+	        
+	        for (var i = 0; i < toMemArray.length; i++) {
+	            console.log(toMemArray[i].memId);
+	        }
+	        
+	        
+	      }else{
+	         alert( xhr.status );
+	      }//xhr.status == 200
+	    }//xhr.readyState == 4
+	  };//onreadystatechange 
+	  
+	  //建立好Get連接
+	  
+	  ajaxUrl += "?action=uploadCoord&memId=" + memId + "&memLat=" + memLat + "&memLng=" + memLng;
+	  
+	  console.log(ajaxUrl);
+	  
+	  xhr.open("Get",ajaxUrl,true); 
+
+	  //送出請求 
+	  xhr.send( null );
+	}
+
+</script>
+
+
 <!-- 聊天相關 -->
 <script>
 	var MyPoint = "/android/live2/MsgCenter";
-	var host = window.location.host;
-	var path = window.location.pathname;
-	var webCtx = path.substring(0, path.indexOf('/', 1));
+	/* 上面ajax宣告了 */
 	var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
 
 	var statusOutput = document.getElementById("statusOutput");
@@ -165,14 +217,15 @@
 	var webSocket;
 
 	/* 使用者資訊 */
-	var toMemId = "10000001";
-	var fromMemId = "10000002";
+	var toMemId = "10000002";
+	var fromMemId = memId;
 	var yourPic = "img/profile_user.jpg";
 	var myPic = "img/profile_user2.jpg";
 
 	document.getElementById("userName").innerHTML = fromMemId;
 	var messagesArea = document.getElementById("messagesArea");
 
+	/* 聊天專用物件 */
 	var PartnerMsg = {
 		"action" : "", // uploadTokenId, removeTokenId, bindMemIdWithSession, chat, 
 		"memChatContent" : "Empty Message",
@@ -190,7 +243,8 @@
 
 	function connect() {
 		// 建立 websocket 物件
-		console.log("body connect !");
+		//console.log("body connect !");
+
 		webSocket = new WebSocket(endPointURL);
 
 		webSocket.onopen = function(event) {
@@ -300,7 +354,7 @@
 	var toMarkers = [];
 
 	var toMembers= {};
-
+	
 	toMembers['AA101'] = {
 		key: 'AA101',	
 		lat: 24.967880,
@@ -376,12 +430,15 @@
 	}
 	
 	function succCallback(e) {
-		var lat = e.coords.latitude;
-		var lng = e.coords.longitude; 
+		memLat = e.coords.latitude;
+		memLng = e.coords.longitude; 
 				
-		console.log('緯度：'+lat+' 經度：'+lng);
+		//console.log('緯度：'+memLat+' 經度：'+memLng);
+		/* 有座標 call ajax */
+		getListForUploader();
 		
-		var latlng = new google.maps.LatLng(lat,lng);
+		
+		var latlng = new google.maps.LatLng(memLat,memLng);
 
 		map = new google.maps.Map(document.getElementById('map-canvas'),{
 			center:latlng,
@@ -462,3 +519,4 @@
 	  });			
 	});
 </script>
+

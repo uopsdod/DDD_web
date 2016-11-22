@@ -1,9 +1,7 @@
 package android.live2;
 
-
-
-
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import javax.servlet.http.HttpServlet;
@@ -20,8 +18,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-
 
 
 public class MemCoordServlet extends HttpServlet {
@@ -65,25 +61,32 @@ public class MemCoordServlet extends HttpServlet {
 	
 	public void doPost(HttpServletRequest aReq, HttpServletResponse aRes)throws ServletException, IOException{
 		aReq.setCharacterEncoding("UTF-8");
+		aRes.setCharacterEncoding("UTF-8");
 		String action = aReq.getParameter("action");
 		
 		/* 登入上傳自己座標 並回傳和其他人的距離 */
+		
 		if("uploadCoord".equals(action)){
 			
 			/* 弄一個新的list(給上傳的使用者) */
 			List<MemCoordVO> listForUploader = new ArrayList<MemCoordVO>();
 			
 			/* 1.接收請求參數 */
-			//String memId = aReq.getParameter("memId");
-		 	//Double memLat = new Double(aReq.getParameter("memLat"));
-		 	//Double memLng = new Double(aReq.getParameter("memLng"));
+			String memId = aReq.getParameter("memId");
+		 	Double memLat = new Double(aReq.getParameter("memLat"));
+		 	Double memLng = new Double(aReq.getParameter("memLng"));
 		
 		 	/* uploader假座標 */
-			String memId = "10000001";
-			Double memLat = 24.967880d;
-			Double memLng = 121.191602d; 
+			//String memId = "10000001";
+			//Double memLat = 24.967880d;
+			//Double memLng = 121.191602d; 
 			 
 		 	for(MemCoordVO memCoordVO : onlineUserSet){
+		 		
+		 		if(memId.equals(memCoordVO.getMemId())){
+		 			continue;
+		 		}
+		 		
 		 		/* 複製一份給Uploader的VO 以免被污染到 然後放進給Uploader的list */
 		 		MemCoordVO memCoordVOForUploader = new MemCoordVO();
 		 		
@@ -150,6 +153,10 @@ public class MemCoordServlet extends HttpServlet {
 		    }
 		    
 		    System.out.println(jArray);
+		    
+			PrintWriter out = aRes.getWriter();
+			System.out.println("jArray.toString(): " + jArray.toString());
+			out.write(jArray.toString());	//輸出所搜尋到符合條件的旅館資料
 		    
 		}
 	}
