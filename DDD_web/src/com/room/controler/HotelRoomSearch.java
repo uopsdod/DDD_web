@@ -277,6 +277,15 @@ public class HotelRoomSearch extends HttpServlet {
 					
 					//=================此hotel通通滿足條件,開始加資料至回傳的jsonArrray===================================//
 				try{
+					
+					if(MyEchoServer.onTimePeople!=null){
+						try{
+						Integer onTime = (Integer) MyEchoServer.onTimePeople.get(hotelId);
+						obj.put("onTime",onTime);
+						}catch(Exception e){
+						obj.put("onTime",0);
+						}
+					}
 					obj.put("roomName",roomName);
 					obj.put("hotelRating",hotelRating);
 					obj.put("hotelId",hotelId);
@@ -298,7 +307,7 @@ public class HotelRoomSearch extends HttpServlet {
 			
 			PrintWriter out = res.getWriter();
 			out.write(array.toString());	//輸出所搜尋到符合條件的旅館資料
-			
+//			System.out.println(array.toString());
 			
 				
 		}// if search

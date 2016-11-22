@@ -51,7 +51,9 @@ function setMarker(hotel){
 	 
 	 marker.addListener('click', function() {
 	        //使用 InfoWindow.open() 方法將資訊視窗附加到新的標記
-	        window.location.href = "/DDD_web/HotelRoomSearch?action=hotelPage&hotelId=" + hotel.hotelId;  
+//	        window.location.href = ; 
+	        window.open("/DDD_web/HotelRoomSearch?action=hotelPage&hotelId=" + hotel.hotelId);
+	        
 	  });
 	
 
