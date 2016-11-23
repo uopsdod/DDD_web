@@ -6,8 +6,7 @@
 	MemService memSvc = new MemService();
 // 	List<MemVO> list = memSvc.getAll_web();
 // 	pageContext.setAttribute("list", list);
-	
-	
+
 	String memId = "10000002";
 	MemVO memVO = memSvc.getOneMem(memId);
 	pageContext.setAttribute("memVO", memVO);
@@ -94,7 +93,7 @@
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<!-- 聊天視窗標題 -->
-				<span class="glyphicon glyphicon-comment"></span> Chat
+				<span class="glyphicon glyphicon-comment"> Chat</span>
 				<div class="btn-group pull-right">
 					<span class="glyphicon glyphicon-remove" id="closeChatWindow"></span>
 				</div>
@@ -103,19 +102,16 @@
 			<div id="messagesArea" class="panel-body">
 				<ul class="chat">
 
-
-
 				</ul>
 			</div>
 
-
-			<div class="panel-footer">
-				<h5 id="userName"></h5>
-				<input type="button" id="connect" class="btn btn-success btn-sm"
-					value="連線" onclick="connect();" /> <input type="button"
-					id="disconnect" class="btn btn-warning btn-sm" value="離線"
-					onclick="disconnect();" />
-			</div>
+<!-- 			<div class="panel-footer"> -->
+<!-- 				<h5 id="userName"></h5> -->
+<!-- 				<input type="button" id="connect" class="btn btn-success btn-sm" -->
+<!-- 					value="連線" onclick="connect();" /> <input type="button" -->
+<!-- 					id="disconnect" class="btn btn-warning btn-sm" value="離線" -->
+<!-- 					onclick="disconnect();" /> -->
+<!-- 			</div> -->
 
 			<div class="panel-footer">
 				<div class="input-group">
@@ -131,8 +127,7 @@
 		</div>
 	</div>
 
-
-	<h3 id="statusOutput" class="statusOutput"></h3>
+<!-- 	<h3 id="statusOutput" class="statusOutput"></h3> -->
 
 </body>
 
@@ -168,7 +163,6 @@ function getListForUploader(){
 	        }
 	        */
 	                
-	        
 	        for (var i = 0; i < toMemArray.length; i++) {
 	        	//利用json建立地圖mark
 	        	//利用json建立聊天相關
@@ -185,8 +179,8 @@ function getListForUploader(){
 	  };//onreadystatechange 
 	  
 	  //建立好Get連接
-		var ajaxPoint = "/android/live2/memCoord.do";
-		var ajaxUrl = "http://" + window.location.host + webCtx + ajaxPoint;
+	  var ajaxPoint = "/android/live2/memCoord.do";
+	  var ajaxUrl = "http://" + window.location.host + webCtx + ajaxPoint;
 	  
 	  ajaxUrl += "?action=uploadCoord&memId=" + memId + "&memLat=" + memLat + "&memLng=" + memLng;
 	  
@@ -207,17 +201,17 @@ function getListForUploader(){
 	/* 上面ajax宣告了 */
 	var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
 
-	var statusOutput = document.getElementById("statusOutput");
+	//var statusOutput = document.getElementById("statusOutput");
 
 	var webSocket;
 
 	/* 使用者資訊 */
-	var toMemId = "404";
+	var toMemId = "404"; /* 給個預設收方ID */
 	var fromMemId = memId;
 	//var yourPic = "img/profile_user.jpg";
 	//var myPic = "img/profile_user2.jpg";
 
-	document.getElementById("userName").innerHTML = fromMemId;
+// 	document.getElementById("userName").innerHTML = fromMemId;
 	var messagesArea = document.getElementById("messagesArea");
 
 	/* 聊天專用物件 */
@@ -244,32 +238,44 @@ function getListForUploader(){
 		webSocket = new WebSocket(endPointURL);
 
 		webSocket.onopen = function(event) {
-			updateStatus("WebSocket 成功連線");
-			document.getElementById('sendMessage').disabled = false;
-			document.getElementById('connect').disabled = true;
-			document.getElementById('disconnect').disabled = false;
+			//updateStatus("WebSocket 成功連線");
+// 			document.getElementById('sendMessage').disabled = false;
+// 			document.getElementById('connect').disabled = true;
+// 			document.getElementById('disconnect').disabled = false;
 			
+  			var NowDate = new Date();
+  			var year = NowDate.getFullYear(); 
+  			var month = NowDate.getMonth();
+  			var date = NowDate.getDate();
+  			var h = NowDate.getHours();
+  			var m = NowDate.getMinutes();
+  			var s = NowDate.getSeconds();
+  			var mSec = NowDate.getMilliseconds();
+
+  			var myChatTime = year + "-" + ((month+1)<10 ? '0' : '') + (month+1) +"-"+  (date<10 ? '0' : '') + date + " " + (h<10 ? '0' : '') + h +':' + (m<10 ? '0' : '') + m + ":" + (s<10 ? '0' : '') + s + "." + Math.round(mSec/100);
+
+// 			console.log(myChatTime);
 			
 			var action = "bindMemIdWithSession";
 
 			PartnerMsg.memChatMemVO.memId = fromMemId;
 			PartnerMsg.memChatToMemVO.memId = toMemId;
 			PartnerMsg.action = action;
-
+			PartnerMsg.memChatDate = myChatTime;
 			webSocket.send(JSON.stringify(PartnerMsg));
-			
 			
 		};
 
 		/* 接收訊息 */
 		webSocket.onmessage = function(event) {
+			/* 彈出來 */
 			$("#chatWindow").show();
 			$("#messagesArea").show();
 			$(".panel-footer").show();
 			
 			var jsonObj = JSON.parse(event.data);
 
-			console.log("Debug: "+jsonObj);
+			//console.log("Debug: "+jsonObj);
 
 			//var yourChatTime = "13 mins ago";	
 			var NowDate = new Date();
@@ -277,6 +283,8 @@ function getListForUploader(){
 			var m = NowDate.getMinutes();
 			var s = NowDate.getSeconds();
 			var yourChatTime = (h<10 ? '0' : '') + h +':' + (m<10 ? '0' : '') + m + ":" + (s<10 ? '0' : '') + s;
+			
+			toMemId = jsonObj.memChatMemVO.memId;
 			
 			//可能要在這裡ID NAME轉換
 			//var yourName = jsonObj.memChatMemVO.memId;
@@ -377,12 +385,14 @@ function getListForUploader(){
 			chatObj[0].append(yourChatString);
 			
 			messagesArea.scrollTop = messagesArea.scrollHeight;
-
+			
+			$("span.glyphicon-comment").text(" "+ yourName);
+			
 		};
 
-		webSocket.onclose = function(event) {
-			updateStatus("WebSocket 已離線");
-		};
+// 		webSocket.onclose = function(event) {
+// 			updateStatus("WebSocket 已離線");
+// 		};
 	}
 
 	function sendMessage() {
@@ -396,11 +406,25 @@ function getListForUploader(){
 			/* 傳送自己的訊息 */
 			var action = "chat";
 
+   			var NowDate = new Date();
+   			var year = NowDate.getFullYear(); 
+  			var month = NowDate.getMonth();
+   			var date = NowDate.getDate();
+   			var h = NowDate.getHours();
+   			var m = NowDate.getMinutes();
+   			var s = NowDate.getSeconds();
+   			var mSec = NowDate.getMilliseconds();
+
+   			var myChatTime = year + "-" + ((month+1)<10 ? '0' : '') + (month+1) +"-"+  (date<10 ? '0' : '') + date + " " + (h<10 ? '0' : '') + h +':' + (m<10 ? '0' : '') + m + ":" + (s<10 ? '0' : '') + s + "." + Math.round(mSec/100);
+
+			//console.log(myChatTime);
+			
 			PartnerMsg.memChatMemVO.memId = fromMemId;
 			PartnerMsg.memChatToMemVO.memId = toMemId;
 			PartnerMsg.action = action;
 			PartnerMsg.memChatContent = message;
-
+			PartnerMsg.memChatDate = myChatTime;
+			
 			webSocket.send(JSON.stringify(PartnerMsg));
 
 			inputMessage.value = "";
@@ -503,14 +527,14 @@ function getListForUploader(){
 
 	function disconnect() {
 		webSocket.close();
-		document.getElementById('sendMessage').disabled = true;
-		document.getElementById('connect').disabled = false;
-		document.getElementById('disconnect').disabled = true;
+// 		document.getElementById('sendMessage').disabled = true;
+// 		document.getElementById('connect').disabled = false;
+// 		document.getElementById('disconnect').disabled = true;
 	}
 
-	function updateStatus(newStatus) {
-		statusOutput.innerHTML = newStatus;
-	}
+// 	function updateStatus(newStatus) {
+// 		statusOutput.innerHTML = newStatus;
+// 	}
 </script>
 
 </html>
@@ -605,10 +629,6 @@ function getListForUploader(){
 // </div>
 
 	}
-	
-	
-	
-	
 	
 </script>
 
@@ -844,6 +864,16 @@ function openChatWindow(e){
 	webSocket.send(JSON.stringify(PartnerMsg));
 	
 	
+	var yourName = " Ready To Chat";
+	for (var i = 0; i < toMemArray.length; i++) {
+        //console.log(toMemArray[i].memId);
+        if(toMemArray[i].memId == toMemId ){
+        	yourName = toMemArray[i].memName;
+        	break;
+        }
+    }
+	
+	$("span.glyphicon-comment").text(" "+ yourName);
 }
 
 </script>
