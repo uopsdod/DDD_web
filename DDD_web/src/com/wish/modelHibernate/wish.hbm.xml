@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.wish.model.WishVO" table="wish">
+
+  	<composite-id>
+  		<key-many-to-one name="roomVO" class="com.room.model.RoomVO" lazy="false">			
+  			<column name="roomId"></column>
+  		</key-many-to-one>
+  		<key-many-to-one name="memVO" class="com.mem.model.MemVO" lazy="false">			
+  			<column name="memId"></column>
+  		</key-many-to-one>
+  		<key-many-to-one name="hotelVO" class="com.hotel.model.HotelVO" lazy="false">			
+  			<column name="hotelId"></column>
+  		</key-many-to-one>
+  		<key-many-to-one name="roomPhotoVO" class="com.roomphoto.model.RoomPhotoVO" lazy="false">			
+  			<column name="roomPhotoId"></column>
+  		</key-many-to-one>
+  	</composite-id>
+		<property name="wishMemId" column="wishMemId"/>
+		<property name="wishRoomId" column="wishRoomId"/>
+	</class>
+</hibernate-mapping>
+
