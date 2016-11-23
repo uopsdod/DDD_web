@@ -25,7 +25,7 @@ public class MemCoordVO extends MemVO {
 		this.memDis = aMemDis;
 	}
 	
-	/* 為了HashSet 所改寫的hashCode方法 */
+	/* 為了HashSet 所改寫的hashCode方法 (參考本奇範例) */
 	public boolean equals(Object aObj){
 		if(this == aObj){
 			return true;

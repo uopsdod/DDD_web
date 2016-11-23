@@ -23,7 +23,8 @@
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/css/bootstrap.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/chat/css/livecond_index.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/chat/css/0_chat.css">
-    <link rel="shortcut icon" href="<%=request.getContextPath()%>/images/index.jpg">    
+    <link rel="shortcut icon" href="<%=request.getContextPath()%>/frontend_mem/images/index.jpg">    
+     
 </head>
 
 <body onload="connect();" onunload="disconnect();">
@@ -31,8 +32,7 @@
         <div class="col-md-5 col-md-offset-1 ">
             <img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg">
         </div>
-        <div class="col-md-5 col-md-offset-1 ">
-        
+        <div class="col-md-5 col-md-offset-1">
         </div>
 	</header>
 
@@ -58,26 +58,26 @@
                 </div>
             </div>
 
-            <div class="">
+            <div id="memCardList">
 				<!-- 右邊的會員列表 -->		
-						
-						
-					<c:forEach var="memVO" items="${list}">
-						<div class="card memCard">
-							<div style="vertical-align: middle" class="memProfile pull-left">
-								<span style="display:inline-block;height:100%;vertical-align:middle;width:1px;margin-left:-10px"></span>
-		               			<img style="display:inline-block;max-height:100%;vertical-align:middle" class="img-responsive" src='data:image/jpeg;base64,${memVO.bs64}' alt="Card image cap">
-							</div>
+												
+<%-- 					<c:forEach var="memVO" items="${list}"> --%>
+<!-- 						<div class="card memCard"> -->
+<!-- 							<div style="vertical-align: middle" class="memProfile pull-left"> -->
+<!-- 								<span style="display:inline-block;height:100%;vertical-align:middle;width:1px;margin-left:-10px"></span> -->
+<%-- 		               			<img style="display:inline-block;max-height:100%;vertical-align:middle" class="img-responsive" src="<%=request.getContextPath()%>/mem/DBGifReader5?memId=${memVO.memId}" alt="Card image cap"> --%>
+<!-- 							</div> -->
 							
-							<div class="card-block memIntro">
-					            <h4 class="card-title">${memVO.memName}</h4>
-					            <p class="card-text">${memVO.memIntro}</p>
-					            <a href="#" class="btn btn-primary memBtn">跟你聊一聊</a>		            
-						    </div>
+<!-- 							<div class="card-block memIntro"> -->
+<%-- 					            <h4 class="card-title">${memVO.memName}</h4> --%>
+<%-- 					            <p class="card-text">${memVO.memIntro}</p> --%>
+<!-- 					            <a href="#" class="btn btn-primary memBtn">跟你聊一聊</a>		             -->
+<!-- 						    </div> -->
 						    
-						</div>	
-					 </c:forEach>                                  
-            </div> <!--  -->
+<!-- 						</div>	 -->
+<%-- 					 </c:forEach> --%>
+					                                   
+            </div> <!-- memCardList -->
 
     	</div> <!-- myList -->
 
@@ -159,6 +159,7 @@
 var memId = "10000001";
 var memLat;
 var memLng;
+var toMemArray;
 
 var ajaxPoint = "/android/live2/memCoord.do";
 var host = window.location.host;
@@ -178,13 +179,24 @@ function getListForUploader(){
 	        console.log(xhr.responseText);
 	        //document.getElementById("showPanel").innerHTML = xhr.responseText;
 	        
-	        var toMemArray = JSON.parse(xhr.responseText);
+	        toMemArray = JSON.parse(xhr.responseText);
 	        
+	        /*
 	        for (var i = 0; i < toMemArray.length; i++) {
 	            console.log(toMemArray[i].memId);
 	        }
+	        */
+	                
 	        
-	        
+	        for (var i = 0; i < toMemArray.length; i++) {
+	        	//利用json建立地圖mark
+	        	//利用json建立聊天相關
+		    	addMarkerWithTimeout(toMemArray[i], 200);
+	        	
+		    	//利用json建立右邊列表
+ 		    	createMemCardList(toMemArray[i]);
+			}
+	               
 	      }else{
 	         alert( xhr.status );
 	      }//xhr.status == 200
@@ -219,7 +231,7 @@ function getListForUploader(){
 	/* 使用者資訊 */
 	var toMemId = "10000002";
 	var fromMemId = memId;
-	var yourPic = "img/profile_user.jpg";
+	//var yourPic = "img/profile_user.jpg";
 	var myPic = "img/profile_user2.jpg";
 
 	document.getElementById("userName").innerHTML = fromMemId;
@@ -269,21 +281,114 @@ function getListForUploader(){
 
 			//console.log("Debug: "+jsonObj.memChatContent);
 
-			var yourChatTime = "13 mins ago";
-			var yourName = jsonObj.memChatMemVO.memId;
-			var yourMessage = jsonObj.memChatContent;
+			//var yourChatTime = "13 mins ago";	
+			var NowDate=new Date();
+			var h=NowDate.getHours();
+			var m=NowDate.getMinutes();
+			var s=NowDate.getSeconds();
+			var yourChatTime = (h<10 ? '0' : '') + h +':' + (m<10 ? '0' : '') + m + ":" + (s<10 ? '0' : '') + s;
+			
+			
+			
+			//可能要在這裡ID NAME轉換
+			//var yourName = jsonObj.memChatMemVO.memId;
+			var yourName = "";
+			for (var i = 0; i < toMemArray.length; i++) {
+	            //console.log(toMemArray[i].memId);
+	            if(toMemArray[i].memId == jsonObj.memChatMemVO.memId ){
+	            	yourName = toMemArray[i].memName;
+	            	break;
+	            }
+	        }
+			
+			//var yourMessage = jsonObj.memChatContent;
 
-			var yourChatString = "<li class='left clearfix'><span class='chat-img pull-left'><img src='" +  yourPic
-                +"' alt='User Avatar' class='img-circle'/></span><div class='chat-body clearfix'>"
-					+ "<div class='header'><strong class='primary-font'>"
-					+ yourName
-					+ "</strong><small class='pull-right text-muted'><span class='glyphicon glyphicon-time'></span> "
-					+ yourChatTime
-					+ "</small></div><p>"
-					+ yourMessage
-					+ "</p></div></li>";
+			
+			
+			var yourChatString = document.createElement('li');
+			yourChatString.className = "left clearfix";	
+			
+			var chatSpan = document.createElement('span');
+			chatSpan.className = "chat-img pull-left";
+			
+			yourChatString.appendChild(chatSpan);
+			
+			var yourPic = document.createElement('img');
+			yourPic.className = "img-circle";
+			
+			var memPicPoint = "/mem/DBGifReader5?memId=";
+			var memPicUrl = "http://" + window.location.host + webCtx + memPicPoint;
+			yourPic.src = memPicUrl + jsonObj.memChatMemVO.memId;
+			
+			chatSpan.appendChild(yourPic);
+			
+			
+			var chatBody = document.createElement('div');
+			chatBody.className = "chat-body clearfix";
+			yourChatString.appendChild(chatBody);
+			
+			var header = document.createElement('div');
+			header.className = "header";
+			
+			chatBody.appendChild(header);
+			
+			var yourNameFrame = document.createElement('strong');
+			yourNameFrame.className = "primary-font";
+			//yourNameFrame.innerText = yourName;
+			var yourNameTextNode = document.createTextNode(yourName);
+			
+			header.appendChild(yourNameFrame);
+			yourNameFrame.appendChild(yourNameTextNode);
+			
+			var yourChatTimeFrame = document.createElement('small');
+			yourChatTimeFrame.className = "pull-right text-muted";
+			//yourChatTimeFrame.innerText = yourChatTime;
+			
+			var yourChatTimeTextNode = document.createTextNode(yourChatTime);
+			
+			header.appendChild(yourChatTimeFrame);
+			
+			var chatTimeIcon = document.createElement('span');
+			chatTimeIcon.className = "glyphicon glyphicon-time";
+			
+			yourChatTimeFrame.appendChild(chatTimeIcon);
+			
+			yourChatTimeFrame.appendChild(yourChatTimeTextNode);
+			
+			var yourMessage = document.createElement('p');
+			//yourMessage.innerText = jsonObj.memChatContent;
+			var yourMessageTextNode = document.createTextNode(jsonObj.memChatContent);
+			
+			chatBody.appendChild(yourMessage);
+			yourMessage.appendChild(yourMessageTextNode);
+			
+// 				<li class='left clearfix'>
+// 					<span class='chat-img pull-left'>
+// 						<img src='yourPic' alt='User Avatar' class='img-circle'/>
+// 					</span>
+// 					<div class='chat-body clearfix'>
+// 						<div class='header'>
+// 							<strong class='primary-font'>
+// 								yourName
+// 							</strong>
+// 							<small class='pull-right text-muted'>
+// 								<span class='glyphicon glyphicon-time'>
+// 								</span>
+// 									yourChatTime
+// 							</small>
+// 						</div>
+// 						<p>
+// 							yourMessage
+// 						</p>
+// 					</div>
+// 				</li>
 
-			$(".chat").append(yourChatString);
+			//$(".chat").append(yourChatString);
+			
+			
+			var chatObj = document.getElementsByClassName("chat")
+			chatObj[0].append(yourChatString);
+			
 			messagesArea.scrollTop = messagesArea.scrollHeight;
 
 		};
@@ -328,6 +433,7 @@ function getListForUploader(){
 					+ myMessage + "</p></div></li>";
 
 			$(".chat").append(myChatString);
+			
 			messagesArea.scrollTop = messagesArea.scrollHeight;
 
 		}
@@ -347,66 +453,100 @@ function getListForUploader(){
 
 </html>
 
+<script>
+	//利用json建立右邊列表
+	function createMemCardList(aObj){
+		var  memCardList = document.getElementById('memCardList');
+	
+
+		var card = document.createElement('div');
+		card.className = "card memCard";
+		
+		memCardList.appendChild(card);
+		
+		var picMidDiv = document.createElement('div');
+		picMidDiv.style.verticalAlign = "middle";
+		picMidDiv.className = "memProfile pull-left";
+		
+		card.appendChild(picMidDiv);
+		
+		
+		var picMidSpan = document.createElement('span');
+		picMidSpan.style.display = "inline-block";
+		picMidSpan.style.height = "100%";	
+		picMidSpan.style.verticalAlign = "middle";
+		picMidSpan.style.width = "1px";
+		picMidSpan.style.marginLeft = "-10px";
+		
+		picMidDiv.appendChild(picMidSpan);
+		
+		
+		var memPic = document.createElement('img');
+		memPic.style.display = "inline-block";
+		memPic.style.maxHeight = "100%";
+		memPic.style.verticalAlign = "middle";
+		memPic.className = "img-responsive";
+		
+		
+		var memPicPoint = "/mem/DBGifReader5?memId=";
+		var memPicUrl = "http://" + window.location.host + webCtx + memPicPoint;
+		memPic.src = memPicUrl + aObj.memId;
+		
+		picMidDiv.appendChild(memPic);
+		
+		var memIntro = document.createElement('div');
+		memIntro.className = "card-block memIntro";
+		
+		card.appendChild(memIntro);
+		
+		var memName = document.createElement('h4');
+		memName.className = "card-title";
+		memName.innerText = aObj.memName;
+		
+		memIntro.appendChild(memName);
+		
+		var memIntroP = document.createElement('p');
+		memIntroP.className = "card-text";
+		memIntroP.innerText = aObj.memIntro;
+		
+		memIntro.appendChild(memIntroP);
+		
+		var memBtn = document.createElement('a');
+		memBtn.href = "#";
+		memBtn.className = "btn btn-primary memBtn";
+		memBtn.innerText = "跟你聊一聊";
+				
+		memIntro.appendChild(memBtn);
+		
+// 	<div class="card memCard">
+// 		<div style="vertical-align: middle" class="memProfile pull-left">
+// 			<span style="display:inline-block;height:100%;vertical-align:middle;width:1px;margin-left:-10px"></span>
+// 			<img style="display:inline-block;max-height:100%;vertical-align:middle" class="img-responsive" src='data:image/jpeg;base64,${memVO.bs64}' alt="Card image cap">
+// 		</div>
+	
+// 		<div class="card-block memIntro">
+//         <h4 class="card-title">${memVO.memName}</h4>
+//         <p class="card-text">${memVO.memIntro}</p>
+//         <a href="#" class="btn btn-primary memBtn">跟你聊一聊</a>		            
+//     	</div>
+// </div>
+
+	}
+	
+	
+	
+	
+	
+</script>
+
 <!-- map相關 -->
 <script>
 	var map;
 	var fromMarker;
 	var toMarkers = [];
-
-	var toMembers= {};
+	var infowindows = [];
+	var contentStrings = [];	
 	
-	toMembers['AA101'] = {
-		key: 'AA101',	
-		lat: 24.967880,
-		lng: 121.191
-	};
-
-	toMembers['AA102'] = {
-		key: 'AA102',
-		lat: 24.967880,
-		lng: 121.193
-	};
-	
-	toMembers['AA103'] = {
-		key: 'AA103',
-		lat: 24.967880,
-		lng: 121.1945
-	};
-
-	toMembers['AA104'] = {
-		key: 'AA104',
-		lat: 24.967880,
-		lng: 121.194
-	};
-	
-	toMembers['AA105'] = {
-		key: 'AA105',
-		lat: 24.967880,
-		lng: 121.192
-	};	
-	
-	toMembers['AA106'] = {
-		key: '吳神',	
-		lat: 24.967745,
-		lng: 121.192009
-	};	
-		
-	/* 更多資訊 */	
-	  var contentString = '<div class="thumbnail">'
-							+'<img src="' + 'img/profile_user.jpg' + '" class="memProfile2 img-circle" alt="">'
-							+'<div class="caption">'
-								+'<h2>' + '詹姆斯' + '</h2>'
-								+'<p>' + '我崇尚自然，希望靠這次旅行，能認識更多的人' + '</p>'
-								+'<p>'
-									+'<a href="#" class="btn btn-info">' + '跟你聊一聊' + '</a>'
-								+'</p>'
-							+'</div>'
-						+'</div>';   
-
-	  var infowindow = new google.maps.InfoWindow({
-	    content: contentString
-	  });
-	  	
 	function initialize(){
 		if(navigator.geolocation){
 			//alert('Geolocation support!');
@@ -450,15 +590,11 @@ function getListForUploader(){
 			map: map,
 			position: latlng,
 			icon: 'img/fromMem.png',
-			title: '這不是我家'
+			title: '我在這裡!'
 		});
 		fromMarker.addListener('click', toggleBounce);
 		
 		clearMarkers();
-
-		for (var key in toMembers) {
-		    addMarkerWithTimeout(toMembers[key], 200);
-		}
 		
  	}
 
@@ -470,27 +606,103 @@ function getListForUploader(){
 	  }
 	}
 	
+	
 	function addMarkerWithTimeout(aObj, timeout) {
 		
-	var latlng = new google.maps.LatLng(aObj.lat,aObj.lng);
+		var latlng = new google.maps.LatLng(aObj.memLat,aObj.memLng);
+		var genderIcon;
+		if(aObj.memGender == "f"){
+			genderIcon = 'img/toMemFemale.png';
+		}
+		else{
+			genderIcon = 'img/toMemMale.png';
+		}
 	
+		var markTitle = aObj.memName + " (距離:" + aObj.memDis + "公尺)";
+		
+		
+		/* Mark的更多資訊 */
+		var memPicPoint = "/mem/DBGifReader5?memId=";
+		var memPicUrl = "http://" + window.location.host + webCtx + memPicPoint;
+		
+		var contentString = document.createElement('div');
+		contentString.className = "thumbnail";
+	
+		var profile = document.createElement('img');
+		profile.src = memPicUrl + aObj.memId ;
+		profile.className = "memProfile2 img-circle";
+	
+		contentString.appendChild(profile);
+	
+	
+		var caption = document.createElement('div');
+		caption.className = "caption";
+	
+		contentString.appendChild(caption);
+	
+	
+		var memName = document.createElement('h2');
+		memName.innerText = aObj.memName;
+	
+		caption.appendChild(memName);
+	
+		var memIntro = document.createElement('p');
+		memIntro.innerText = aObj.memIntro;
+	
+		caption.appendChild(memIntro);
+	
+		var btnFrame = document.createElement('p');
+	
+		caption.appendChild(btnFrame);
+	
+		var btn = document.createElement('a');
+		btn.innerText = '跟你聊一聊';
+		btn.href = "#";
+		btn.className = "btn btn-primary";
+		
+		btnFrame.appendChild(btn);
+
+		/* 讓contentString生命週期久一點 */
+		contentStrings.push(contentString);
+		
+		// 	var contentString = 
+								
+		// 		'<div class="thumbnail">'
+		// 							+'<img src="' + 'img/profile_user.jpg' + '" class="memProfile2 img-circle" alt="">'
+		// 							+'<div class="caption">'
+		// 								+'<h2>' + '詹姆斯' + '</h2>'
+		// 								+'<p>' + '我崇尚自然，希望靠這次旅行，能認識更多的人' + '</p>'
+		// 								+'<p>'
+		// 									+'<a href="#" class="btn btn-info">' + '跟你聊一聊' + '</a>'
+		// 								+'</p>'
+		// 							+'</div>'
+		// 						+'</div>';  
+	
+		var infowindow = new google.maps.InfoWindow({
+			    content: contentString
+		});	
+		
+		/* 讓infowindow生命週期久一點 */
+		infowindows.push(infowindow);
+		
 		window.setTimeout(
 	
-		function() {
+		function() {			
 		 	var tmpMark =
 				new google.maps.Marker({
 			      position: latlng,
 			      map: map,
-			      icon: 'img/toMemFemale.png',
+			      icon: genderIcon,
 			      animation: google.maps.Animation.DROP,
-			      title: aObj.key
+			      title: markTitle
 				});	
 				tmpMark.addListener('click', toggleBounce);
-				toMarkers.push(tmpMark);
 				
 				tmpMark.addListener('click', function() {
 					    infowindow.open(map, tmpMark);
 				});
+				
+				toMarkers.push(tmpMark);
 				
 		}, timeout);		
 
@@ -509,8 +721,7 @@ function getListForUploader(){
 
 </script>
 
-
-<!-- 聊天視窗的隱藏跟顯示 -->
+<!-- 聊天視窗的隱藏跟顯示  jQuery -->
 <script>
 	$(document).ready(function(){
 	  $(".panel-heading").click(function(){
@@ -519,4 +730,3 @@ function getListForUploader(){
 	  });			
 	});
 </script>
-
