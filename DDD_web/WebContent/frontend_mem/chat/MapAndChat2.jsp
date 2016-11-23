@@ -8,7 +8,7 @@
 // 	pageContext.setAttribute("list", list);
 	
 	
-	String memId = "10000001";
+	String memId = "10000002";
 	MemVO memVO = memSvc.getOneMem(memId);
 	pageContext.setAttribute("memVO", memVO);
 	
