@@ -36,10 +36,31 @@
 		        	
 		        
 		       		if(one.childNodes[0].childNodes[0]!=jsonObj[1]){	//價錢有變才換價錢
-		       	
+		       			
+		       			
+		       			
+		       			one.nextElementSibling.value=jsonObj[1];	//動態更改input的價格
+		       			
 		       			$(one.childNodes[0]).toggle("fast",showPrice.bind(null, one,jsonObj[1]));    	
 		       			$(one.childNodes[0]).toggle("slow");
-		       		
+		       			
+		       			console.log(XspanMap);
+		       			
+		       			var xx = XspanMap.get(jsonObj[0]+"");
+		       			
+		       			
+		       			if("已下架"==jsonObj[1]+""){			
+		       				xx.style="display:none";
+		       				xx.nextElementSibling.style="display:inline";
+		       				
+		       				
+		       				
+		       			}else{
+		       				xx.style="display:inline";
+		       				xx.nextElementSibling.style="display:none";
+
+		       			}
+ 		
 		       		}
 			    }//if
 			 }//for each

@@ -71,6 +71,7 @@ public class HotelRoomSearch extends HttpServlet {
 			
 			String hotelId = req.getParameter("hotelId");
 			
+			
 			HotelService hotelSvc = new HotelService();
 			RoomService roomSvc = new RoomService();
 			

@@ -443,20 +443,7 @@ function construct(hotel){
 																				<input type="checkbox" name="servItem" class="servItem" value="${servVO.servName}">${servVO.servName}
 																					</div>
 																								 
-																			</c:forEach>					
-<!-- 																			<div class="form-group col-sm-3"> -->
-<!-- 																			<h2><input type="checkbox" >wifi</h2> -->
-<!-- 																			</div> -->
-<!-- 																			<div class="form-group col-sm-3"> -->
-<!-- 																			<h2><input type="checkbox" >ADSL</h2> -->
-<!-- 																			</div> -->
-<!-- 																			<div class="form-group col-sm-3"> -->
-<!-- 																			<h2><input type="checkbox" >停車場</h2> -->
-<!-- 																			</div> -->
-<!-- 																			<input type="checkbox" class="form-control">wifi -->
-<!-- 																			<input type="checkbox" class="form-control">ADSL -->
-<!-- 																			<input type="checkbox" class="form-control">停車場 -->
-																			
+																			</c:forEach>																			
 																		
 																		
 																		</div>
@@ -471,43 +458,7 @@ function construct(hotel){
 		
 												<div id="context">
 													
-<!-- 													<div class="col-xs-12 col-sm-6"> -->
-<!-- 														<div class="item"> -->
-<!-- 															<img class="imgmap" src="mapImage/room1.jpg"> -->
-<!-- 															<h3>新竹豐邑喜來登大飯店</h3> -->
-<!-- 															<p>Sheraton Hsinchu Hotel</p> -->
-<!-- 														</div> -->
-<!-- 													</div> -->
-<!-- 													<div class="col-xs-12 col-sm-6"> -->
-<!-- 														<div class="item"> -->
-<!-- 															<img class="imgmap" src="mapImage/room2.jpg"> -->
-<!-- 															<h3>新竹豐邑喜來登大飯店</h3> -->
-<!-- 															<p>Sheraton Hsinchu Hotel</p></div> -->
-<!-- 													</div> -->
-<!-- 													<div class="col-xs-12 col-sm-6"> -->
-<!-- 														<div class="item"> -->
-<!-- 															<img class="imgmap" src="mapImage/room3.jpg"> -->
-<!-- 															<h3>新竹豐邑喜來登大飯店</h3> -->
-<!-- 															<p>Sheraton Hsinchu Hotel</p></div> -->
-<!-- 													</div> -->
-<!-- 													<div class="col-xs-12 col-sm-6"> -->
-<!-- 														<div class="item"> -->
-<!-- 															<img class="imgmap" src="mapImage/room4.jpg"> -->
-<!-- 															<h3>新竹豐邑喜來登大飯店</h3> -->
-<!-- 															<p>Sheraton Hsinchu Hotel</p></div>item -->
-<!-- 													</div> -->
-<!-- 													<div class="col-xs-12 col-sm-6"> -->
-<!-- 														<div class="item"> -->
-<!-- 															<img class="imgmap" src="mapImage/room5.jpg"> -->
-<!-- 															<h3>新竹豐邑喜來登大飯店</h3> -->
-<!-- 															<p>Sheraton Hsinchu Hotel</p></div>item -->
-<!-- 													</div> -->
-<!-- 													<div class="col-xs-12 col-sm-6"> -->
-<!-- 														<div class="item"> -->
-<!-- 															<img class="imgmap" src="mapImage/room7.jpg"> -->
-<!-- 															<h3>新竹豐邑喜來登大飯店</h3> -->
-<!-- 															<p>Sheraton Hsinchu Hotel</p></div>item -->
-<!-- 													</div> -->
+
 							
 						
 															<%
@@ -628,14 +579,9 @@ function construct(hotel){
 										<div class="col-xs-12 col-sm-5 semi">
 												
 												<div class="item right" id="right">
-<!-- 													<img src="https://api.fnkr.net/testimg/500x200/"> -->
-<!-- 													<h3>title</h3> -->
-<!-- 													<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod -->
-<!-- 													tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, -->
-<!-- 													quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo -->
-<!-- 													consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse -->
-<!-- 													cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non -->
-<!-- 													proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p> -->
+												
+												
+												
 												</div>
 												
 												
