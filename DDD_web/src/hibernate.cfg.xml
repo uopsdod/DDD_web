@@ -33,8 +33,11 @@
 		<mapping resource="com/hotel/model/hotel.hbm.xml" />
 		<mapping resource="com/memrep/model/memRep.hbm.xml" />
 		<mapping resource="com/emp/model/emp.hbm.xml" />
+		<mapping resource="com/auth/model/auth.hbm.xml" />
 		<mapping resource="com/chat/model/chat.hbm.xml" />
 		<mapping resource="com/memchat/model/memChat.hbm.xml" />
+<!-- 		<mapping resource="com/roomphoto/model/roomPhoto.hbm.xml" /> -->
+<!-- 		<mapping resource="com/wish/model/wish.hbm.xml" /> -->  
 		
 		
 

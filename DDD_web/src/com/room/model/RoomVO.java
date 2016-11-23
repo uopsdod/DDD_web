@@ -2,6 +2,8 @@ package com.room.model;
 
 import java.sql.Date;
 import java.util.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ord.model.OrdVO;
 
 public class RoomVO implements java.io.Serializable{
@@ -29,6 +31,7 @@ public class RoomVO implements java.io.Serializable{
 	private Integer roomOneBed;
 	private Integer roomTwoBed;
 	
+	@JsonIgnore
 	private Set<OrdVO> roomOrds = new HashSet<OrdVO>();
 	
 	public String getRoomId() {
@@ -169,7 +172,7 @@ public class RoomVO implements java.io.Serializable{
 	public void setRoomTwoBed(Integer aRoomTwoBed) {
 		this.roomTwoBed = aRoomTwoBed;
 	}
-	
+	@JsonIgnore
 	public Set<OrdVO> getRoomOrds(){
 		return this.roomOrds;
 	}

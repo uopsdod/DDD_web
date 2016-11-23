@@ -1,5 +1,7 @@
 package com.roomphoto.model;
 
+import com.room.model.RoomVO;
+
 public class RoomPhotoVO implements java.io.Serializable {
 	private String roomPhotoId;
 	private String roomPhotoRoomId;
@@ -22,5 +24,15 @@ public class RoomPhotoVO implements java.io.Serializable {
 	}
 	public void setRoomPhotoPic(byte[] aRoomPhotoPic) {
 		this.roomPhotoPic = aRoomPhotoPic;
+	}
+	
+	
+	//--------------------------------貴新增
+	private RoomVO roomVO;
+	public RoomVO getRoomVO() {
+		return roomVO;
+	}
+	public void setRoomVO(RoomVO roomVO) {
+		this.roomVO = roomVO;
 	}
 }
