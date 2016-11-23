@@ -216,4 +216,13 @@
   <listener>
     <listener-class>com.listener.InitializeOrdStatusTransListener</listener-class>
   </listener>
+  
+  	<!-- Spring 的WebApplicationContext測試, 用於 Test_Servlet_Spring_HibernateTemplate.java -->
+<!-- 	<listener> -->
+<!-- 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> -->
+<!-- 	</listener> -->
+<!-- 	<context-param> -->
+<!-- 		<param-name>contextConfigLocation</param-name> -->
+<!-- 		<param-value>/WEB-INF/model-config.xml</param-value> -->
+<!-- 	</context-param> -->
 </web-app>
