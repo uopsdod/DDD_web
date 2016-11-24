@@ -56,6 +56,11 @@ public class OrdServlet extends HttpServlet {
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(),JsonObject.class);
 		String action = (jsonObject.get("action") != null)?jsonObject.get("action").getAsString():null;
 		String memId = (jsonObject.get("memId") != null)?jsonObject.get("memId").getAsString():null;
+		// 以下三個參數給updateRating使用
+		String ordId = (jsonObject.get("ordId") != null)?jsonObject.get("ordId").getAsString():null;
+		String ordRatingStarNo = (jsonObject.get("ordRatingStarNo") != null)?jsonObject.get("ordRatingStarNo").getAsString():null;
+		String ordRatingContent = (jsonObject.get("ordRatingContent") != null)?jsonObject.get("ordRatingContent").getAsString():null;
+		
 		String outStr = "";
 		
 		if ("getAllOld".equals(action)) {
@@ -80,6 +85,8 @@ public class OrdServlet extends HttpServlet {
 			PrintWriter out = res.getWriter();
 			System.out.println("outStr:" + outStr);
 			out.println(outStr);
+		}else if ("updateRating".equals(action)){
+			dao_ord.updateRating(ordId, ordRatingStarNo, ordRatingContent);
 		}
 		
 	}
