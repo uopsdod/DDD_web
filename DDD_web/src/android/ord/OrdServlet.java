@@ -27,6 +27,7 @@ import com.ord.model.OrdService;
 import com.ord.model.OrdVO;
 import com.room.model.RoomVO;
 
+@WebServlet("/android/ord/ord.do")
 public class OrdServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private OrdService dao_ord;
