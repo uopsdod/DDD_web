@@ -63,9 +63,7 @@ pageContext.setAttribute("advo",advo);
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">地圖模式</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">列表模式</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">對話記錄</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/chat/MapAndChat.jsp" target="_blank">聊天地圖</a></li>
                 </ul>
             </div>
             <div class="dropdown" style='display: inline-block;'>

@@ -1,16 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="com.mem.model.*, java.util.*" %>
+<%@ page import="java.text.*"%>
 
 <%
-	MemService memSvc = new MemService();
-// 	List<MemVO> list = memSvc.getAll_web();
-// 	pageContext.setAttribute("list", list);
-
-	String memId = "10000001";
-	MemVO memVO = memSvc.getOneMem(memId);
-	pageContext.setAttribute("memVO", memVO);
-	
+	session.getAttribute("account_mem");
+	MemVO memVO =(MemVO)session.getAttribute("memVO");
+	session.setAttribute("memVO", memVO);
 %>
 
 <!DOCTYPE html>
@@ -32,14 +29,91 @@
      
 </head>
 
-<body onload="connect();" onunload="disconnect();">
+<body>
     <header id="top_header">
         <div class="col-md-5 col-md-offset-1 ">
-            <img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg">
+            <a href="<%=request.getContextPath()%>/frontend_mem/index.jsp"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg"></a>
         </div>
-        <div class="col-md-5 col-md-offset-1">
+        <div class="col-md-5 col-md-offset-1 ">
+            <div class="dropdown" style='display: inline-block;'>
+                <button class="btn text-muted kbtn" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    訂單專區
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">我的訂單</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">QRCODE</a></li>
+                </ul>
+            </div>
+            <div class="dropdown" style='display: inline-block;'>
+                <button class="btn text-muted kbtn" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    共住
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/chat/MapAndChat.jsp" target="_blank">聊天地圖</a></li>
+                </ul>
+            </div>
+            <div class="dropdown" style='display: inline-block;'>
+                <button class="btn text-muted kbtn" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    合作夥伴
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/addhotel.jsp">成為夥伴</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/loginhotel.jsp">夥伴登入</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">問題回報</a></li>
+                </ul>
+            </div>
+            <div class="dropdown" style='display: inline-block;'>
+                <button class="btn text-muted kbtn" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    幫助
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="https://www.agoda.com/zh-tw/">FAQ</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">連絡我們</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">訂房需知</a></li>
+                </ul>
+            </div>
+            <div class="dropdown" style='display: inline-block;'>
+                <c:choose>
+            <c:when test="${memVO.memName==null}">
+                <button class="btn text-muted kbtn" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    會員中心
+                    <span class="caret"></span>
+                </button>      		                
+		     </c:when>		  
+		     <c:otherwise>
+		        <button class="btn text-muted kbtn" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                   ${memVO.memName}您好!
+                    <span class="caret"></span>
+                </button>  
+		      </c:otherwise>
+		    </c:choose> 
+		    <c:choose>
+		     	<c:when test="${memVO.memName==null}">
+                	<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/mem/registerOfmember.jsp">註冊</a></li>
+                    	<li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/mem/loginOfmember.jsp">登入</a></li>
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/mem/member.jsp">會員中心</a></li>
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/wish/wishList.jsp">查看願望清單</a></li>
+                	</ul>
+           		</c:when>
+           		<c:otherwise>
+           			<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">	                
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/mem/mem.do">登出</a></li>
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/mem/member.jsp">會員中心</a></li>
+	                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/wish/wishList.jsp">查看願望清單</a></li>
+                	</ul>
+           		</c:otherwise>
+           </c:choose>
+            </div>
+            
         </div>
-	</header>
+        
+    </header>
+
 
     <section>    
        <div class="col-xs-12 col-sm-9" id="map-canvas" style="height:900px;">
@@ -233,7 +307,7 @@ function getListForUploader(){
 	function connect() {
 		
 		// 建立 websocket 物件
-		//console.log("body connect !");
+		console.log("body connect !");
 
 		webSocket = new WebSocket(endPointURL);
 
@@ -864,7 +938,7 @@ function openChatWindow(e){
 	webSocket.send(JSON.stringify(PartnerMsg));
 	
 	
-	var yourName = " Ready To Chat";
+	var yourName = " Chat";
 	for (var i = 0; i < toMemArray.length; i++) {
         //console.log(toMemArray[i].memId);
         if(toMemArray[i].memId == toMemId ){
@@ -875,6 +949,8 @@ function openChatWindow(e){
 	
 	$("span.glyphicon-comment").text(" "+ yourName);
 }
+
+window.addEventListener('load',connect,false);	
 
 </script>
 
