@@ -1,9 +1,7 @@
 package android.live2;
 
-
-
-
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import javax.servlet.http.HttpServlet;
@@ -22,23 +20,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-
-
 public class MemCoordServlet extends HttpServlet {
 
 	static HashSet<MemCoordVO> onlineUserSet = new HashSet<MemCoordVO>();
 	
 	static{
-		/* 建立假上線人資料 */
-		String[] fackMemId = {"10000012","10000011","10000010","10000009","10000008"};
+		/* 建立線上假人資料 */
+		String[] fackMemId = {"10000012","10000011","10000010","10000009","10000008","10000007","10000006","10000005","10000004","10000003","10000002","10000001"};
 		
 		/* lat,lng */
-		Double[][] fackMemPos ={{24.967880d,121.191d},{24.967880d,121.192d},{24.967880d,121.193d},{24.967880d,121.194d},{24.967880d,121.195d}};
+		Double[][] fackMemPos ={{24.967880d,121.191d},{24.967880d,121.192d},{24.967880d,121.193d},{24.967880d,121.194d},{24.967880d,121.195d},{24.967880d,121.190d},
+								{24.967d,121.191d}	 ,{24.968d,121.192d}   ,{24.969d,121.193d}   ,{24.970d,121.194d}   ,{24.971d,121.195d}   ,{24.972d,121.194d}};
 		
 		MemService memSvc = new MemService();
 		
 		for(int count=0; count<fackMemId.length ; count++){
-			MemVO memVO = memSvc.getOneMem_web(fackMemId[count]);
+			MemVO memVO = memSvc.getOneMem(fackMemId[count]);
 			MemCoordVO memCoordVO = new MemCoordVO();
 			try {
 				/* 複製memVO資料 */
@@ -50,9 +47,7 @@ public class MemCoordServlet extends HttpServlet {
 				
 				onlineUserSet.add(memCoordVO);
 				
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
+			} catch (IllegalAccessException | InvocationTargetException e) {
 				e.printStackTrace();
 			}
 		}
@@ -65,32 +60,41 @@ public class MemCoordServlet extends HttpServlet {
 	
 	public void doPost(HttpServletRequest aReq, HttpServletResponse aRes)throws ServletException, IOException{
 		aReq.setCharacterEncoding("UTF-8");
+		aRes.setCharacterEncoding("UTF-8");
 		String action = aReq.getParameter("action");
 		
-		/* 登入上傳自己座標 並回傳和其他人的距離 */
+		/* 登入上傳自己座標 並計算出和其他人的距離 */
+		
 		if("uploadCoord".equals(action)){
 			
-			/* 弄一個新的list(給上傳的使用者) */
+			/* 弄一個有其他使用者的座標距離的list(給上傳座標的使用者) */
 			List<MemCoordVO> listForUploader = new ArrayList<MemCoordVO>();
 			
 			/* 1.接收請求參數 */
-			//String memId = aReq.getParameter("memId");
-		 	//Double memLat = new Double(aReq.getParameter("memLat"));
-		 	//Double memLng = new Double(aReq.getParameter("memLng"));
+			String memId = aReq.getParameter("memId");
+		 	Double memLat = new Double(aReq.getParameter("memLat"));
+		 	Double memLng = new Double(aReq.getParameter("memLng"));
 		
 		 	/* uploader假座標 */
-			String memId = "10000001";
-			Double memLat = 24.967880d;
-			Double memLng = 121.191602d; 
+			//String memId = "10000001";
+			//Double memLat = 24.967880d;
+			//Double memLng = 121.191602d; 
 			 
 		 	for(MemCoordVO memCoordVO : onlineUserSet){
-		 		/* 複製一份給Uploader的VO 以免被污染到 然後放進給Uploader的list */
+		 		
+		 		//System.out.println("線上有誰: "+memCoordVO.getMemId());
+		 		
+		 		/* Uploader本人就不放進list裡面 */
+		 		if(memId.equals(memCoordVO.getMemId())){
+		 			continue;
+		 		}
+		 		
+		 		/* 複製一份給Uploader的VO 以免被污染到Servlet的VO 然後放進給Uploader的list */
 		 		MemCoordVO memCoordVOForUploader = new MemCoordVO();
 		 		
 		 		try {
 					BeanUtils.copyProperties(memCoordVOForUploader, memCoordVO);
 				} catch (IllegalAccessException | InvocationTargetException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		 		
@@ -104,32 +108,12 @@ public class MemCoordServlet extends HttpServlet {
 		 		
 		 		memCoordVO.setMemDis(aMemDis);
 		 		
-		 		/* 放進距離裡 */
+		 		/* 放進list裡面 */
 		 		listForUploader.add(memCoordVO);
 		 		
 		 	}
-			
-		 	/* 最後把自己的座標加到Servlet的MemCoordVO list上面 */
-		 	MemService memSvc = new MemService();
-		 	
-		 	MemVO memVO = memSvc.getOneMem_web(memId);
-		 	MemCoordVO memCoordVO = new MemCoordVO();
-		 	
-		 	try {
-				BeanUtils.copyProperties(memCoordVO, memVO);
-				memCoordVO.setMemLat(memLat);
-				memCoordVO.setMemLng(memLng);
-				
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			}
-		 	
-		 	onlineUserSet.add(memCoordVO);
-		 	
+					 	
 			/* 包裝成jason回傳 */
-		 
 		 	JSONArray jArray = new JSONArray(); 
 		 	
 		    for(MemCoordVO aMemCoordVO : listForUploader){
@@ -149,8 +133,40 @@ public class MemCoordServlet extends HttpServlet {
 		    	jArray.put(jObj);
 		    }
 		    
-		    System.out.println(jArray);
+		    //System.out.println(jArray);
 		    
+			PrintWriter out = aRes.getWriter();
+			//System.out.println("jArray.toString(): " + jArray.toString());
+			out.write(jArray.toString());
+			
+			
+		 	/* 最後把自己的座標加到Servlet的MemCoordVO list上面 */
+		 	MemService memSvc = new MemService();
+		 	
+		 	MemVO memVO = memSvc.getOneMem(memId);
+		 	MemCoordVO memCoordVO = new MemCoordVO();
+		 	
+		 	try {
+				BeanUtils.copyProperties(memCoordVO, memVO);
+				memCoordVO.setMemLat(memLat);
+				memCoordVO.setMemLng(memLng);
+				
+			} catch (IllegalAccessException | InvocationTargetException e) {
+				e.printStackTrace();
+			}
+		 	
+		 	/* 把Uploader加進去之前 先把線上的Uploader拿掉 避免重複 */
+		 	Iterator<MemCoordVO> iterator = onlineUserSet.iterator();
+		 	while (iterator.hasNext()) {
+		 		MemCoordVO aMemCoordVO = iterator.next();
+		 	    if (memId.equals(aMemCoordVO.getMemId())) {
+		 	    	//System.out.println("刪掉: "+aMemCoordVO.getMemId());
+		 	        iterator.remove();
+		 	    }
+		 	}		 	
+		 	
+		 	onlineUserSet.add(memCoordVO);
+			
 		}
 	}
 

@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 import com.mem.model.MemDAO;
 import com.mem.model.MemDAO_interface;
 import com.mem.model.MemJNDIDAO;
+import com.mem.model.MemService;
 import com.mem.model.MemVO;
 
 @SuppressWarnings("serial")
@@ -26,14 +27,14 @@ import com.mem.model.MemVO;
 public class Partner extends HttpServlet {
 	// private ServletContext context;
 	private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
-	private MemDAO_interface dao_mem;
+	private MemService dao_mem;
 	private List<MemVO> memVOList;
 
 
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		dao_mem = new MemJNDIDAO();
+		dao_mem = new MemService();
 //		memVOList = new ArrayList<MemVO>();
 //		memVOList = dao_mem.getAll();
 //		System.out.println(memVOList);
@@ -76,7 +77,7 @@ public class Partner extends HttpServlet {
 			OutputStream os = res.getOutputStream();
 			int memId = jsonObject.get("memId").getAsInt();
 			int imageSize = jsonObject.get("imageSize").getAsInt();
-			byte[] image = dao_mem.findByPrimaryKey(Integer.toString(memId)).getMemProfile();
+			byte[] image = dao_mem.getOneMem(Integer.toString(memId)).getMemProfile();
 			if (image != null) {
 				image = ImageUtil.shrink(image, imageSize);
 				res.setContentType("image/jpeg");
@@ -84,7 +85,7 @@ public class Partner extends HttpServlet {
 			}
 			os.write(image);
 		}else if("getOne".equals(action)){
-			MemVO memVO = dao_mem.findByPrimaryKey(toMemId);
+			MemVO memVO = dao_mem.getOneMem(toMemId);
 			memVO.setBs64(null); // 去掉bs64
 			outStr = gson.toJson(memVO);
 			res.setContentType(CONTENT_TYPE);
@@ -92,7 +93,7 @@ public class Partner extends HttpServlet {
 			//System.out.println("getOne match: " + memVO.getMemName() );
 			out.println(outStr);
 		}else if("getOneText".equals(action)){
-			MemVO memVO = dao_mem.findByPrimaryKey(toMemId);
+			MemVO memVO = dao_mem.getOneMem(toMemId);
 			memVO.setMemProfile(null); // 去掉圖片
 			memVO.setBs64(null); // 去掉bs64
 			outStr = gson.toJson(memVO);

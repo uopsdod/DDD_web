@@ -52,3 +52,20 @@
 #map-canvas, myList{
 	margin-top: 15px;   
 }
+
+
+.kbtn {
+    /*右上導覽列*/
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    background-color: Transparent;
+    /*按鈕去被*/
+    margin-bottom: 2px;
+    border: 0px;
+    margin-top: 22px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#top_header .text-muted {
+    color: #ffffff;
+}

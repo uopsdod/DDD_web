@@ -16,7 +16,7 @@
 <script>
 var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${list.get(0).get("roomid")}"];
 
-
+	
 	
 	var roomMap;
 	
@@ -57,7 +57,38 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 			                <img src='data:image/jpeg;base64,${wish.roomPhotoPic}' width="500" height="300" class="wishImg">
 			                <div class="roomName"><b>${wish.hotelName}/${wish.roomName}</b></div>
 			                <div class="house">旅館剩餘房數-${wish.roomRemainNo}</div>
-			                <div class="star">評價${wish.hotelRatingResult}</div>
+			                <div class="star">
+			                	<c:choose>
+			                	<c:when test='${wish.hotelRatingResult==0}'>
+			                		目前沒有評價
+							     </c:when>
+						         <c:when test='${wish.hotelRatingResult==1}'>
+						         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+							     </c:when>
+							     <c:when test='${wish.hotelRatingResult==2}'>
+						         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+						         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+							     </c:when>
+							     <c:when test='${wish.hotelRatingResult==3}'>
+						         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+						         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+						         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+							     </c:when>
+							     <c:when test='${wish.hotelRatingResult==4}'>
+						         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+						         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+						         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+						         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+							     </c:when>		  
+							     <c:otherwise>
+							     	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+							     	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+							     	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+							     	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+							     	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+							     </c:otherwise>
+								</c:choose> 
+			                </div>
 			                <div class="toNight1">原價</div>
 			               <del> <div class="price1">TWD ${wish.roomPrice}</div></del>
 			                <br><br><br>

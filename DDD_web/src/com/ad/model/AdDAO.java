@@ -28,13 +28,14 @@ public class AdDAO implements AdDAO_interface {
 		}
 	}
 
-	private static final String INSERT_STMT = "INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPic,adPicContent,adHit) VALUES (Ad_adId.NEXTVAL,Ad_adAdPlanId.NEXTVAL, adHotelId.NEXTVAL, ?, ?, ?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPic,adPicContent,adHit) VALUES (Ad_seq.NEXTVAL,?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT adId,adAdPlanId,adHotelId,adStatus,to_char(adPayDate,'yyyy-mm-dd') adPayDate,adPic,adPicContent,adHit FROM Ad order by adId";
 	private static final String GET_ONE_STMT = "SELECT adId,adAdPlanId,adHotelId,adStatus,to_char(adPayDate,'yyyy-mm-dd') adPayDate,adPic,adPicContent,adHit FROM Ad where adId = ?";
 	private static final String DELETE = "DELETE FROM Ad where AdId = ?";
-	private static final String UPDATE = "UPDATE Ad set adId=?, adAdPlanId=?, adStatus=?, adPayDate=?, adPic=?, adPicContent=?, adHit=? where AdId = ?";
+	private static final String UPDATE = "UPDATE Ad set adStatus=?, adPayDate=?, adPic=?, adPicContent=?, adHit=? where AdId = ?";
+	private static final String GET_ALL_STMT_HOTELID = "SELECT adId,adAdPlanId,adHotelId,adStatus,to_char(adPayDate,'yyyy-mm-dd') adPayDate,adPic,adPicContent,adHit FROM Ad where adHotelId=? order by adId";
 	private static final Base64.Encoder encoder = Base64.getEncoder();
-//貴新增BS
+	
 	@Override
 	public void insert(AdVO aAdVO) {
 		// TODO Auto-generated method stub
@@ -46,11 +47,13 @@ public class AdDAO implements AdDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(AdDAO.INSERT_STMT);
 
-			pstmt.setString(1, aAdVO.getAdStatus());
-			pstmt.setDate(2, aAdVO.getAdPayDate());
-			pstmt.setBytes(3, aAdVO.getAdPic());
-			pstmt.setString(4, aAdVO.getAdPicContent());
-			pstmt.setInt(5, aAdVO.getAdHit());
+			pstmt.setString(1, aAdVO.getAdAdPlanId());
+			pstmt.setString(2, aAdVO.getAdHotelId());
+			pstmt.setString(3, aAdVO.getAdStatus());
+			pstmt.setDate(4, aAdVO.getAdPayDate());
+			pstmt.setBytes(5, aAdVO.getAdPic());
+			pstmt.setString(6, aAdVO.getAdPicContent());
+			pstmt.setInt(7, aAdVO.getAdHit());
 
 			pstmt.executeUpdate();
 
@@ -92,6 +95,7 @@ public class AdDAO implements AdDAO_interface {
 			pstmt.setBytes(3, aAdVO.getAdPic());
 			pstmt.setString(4, aAdVO.getAdPicContent());
 			pstmt.setInt(5, aAdVO.getAdHit());
+			pstmt.setString(6, aAdVO.getAdId());
 
 			pstmt.executeUpdate();
 
@@ -229,10 +233,10 @@ public class AdDAO implements AdDAO_interface {
 			pstmt = con.prepareStatement(AdDAO.GET_ALL_STMT);
 			rs = pstmt.executeQuery();
 			ResultSetMetaData rsmd = rs.getMetaData();
-			int len = rsmd.getColumnCount();
+			/*int len = rsmd.getColumnCount();
 			for (int i = 1; i <= len; i++) {
 				System.out.println("rsmd.getColumnName(i)" + rsmd.getColumnName(i));
-			}
+			}*/
 
 			while (rs.next()) {
 				// AdVO �]�٬� Domain objects
@@ -250,7 +254,73 @@ public class AdDAO implements AdDAO_interface {
 				} else {
 					AdVO.setBs64(encoder.encodeToString(AdVO.getAdPic()));
 				}
-				//貴新增BS
+
+				AdVO.setAdPicContent(rs.getString("adPicContent"));
+				AdVO.setAdHit(rs.getInt("adHit"));
+				list.add(AdVO); // Store the row in the list
+			}
+
+			// Handle any driver errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<AdVO> getAllByHotelId(String aAdHotelId) {
+		List<AdVO> list = new ArrayList<AdVO>();
+		AdVO AdVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(AdDAO.GET_ALL_STMT_HOTELID);
+			pstmt.setString(1,aAdHotelId );
+			rs = pstmt.executeQuery();
+			ResultSetMetaData rsmd = rs.getMetaData();
+			/*int len = rsmd.getColumnCount();
+			for (int i = 1; i <= len; i++) {
+				System.out.println("rsmd.getColumnName(i)" + rsmd.getColumnName(i));
+			}*/
+
+			while (rs.next()) {
+				// AdVO �]�٬� Domain objects
+				System.out.println("rs.getDate(\"adPayDate\"): " + rs.getDate("adPayDate"));
+
+				AdVO = new AdVO();
+				AdVO.setAdId(rs.getString("adId"));
+				AdVO.setAdAdPlanId(rs.getString("adAdPlanId"));
+				AdVO.setAdHotelId(rs.getString("adHotelId"));
+				AdVO.setAdStatus(rs.getString("adStatus"));
+				AdVO.setAdPayDate(rs.getDate("adPayDate"));
+				AdVO.setAdPic(rs.getBytes("adPic"));
 				AdVO.setAdPicContent(rs.getString("adPicContent"));
 				AdVO.setAdHit(rs.getInt("adHit"));
 				list.add(AdVO); // Store the row in the list

@@ -40,7 +40,7 @@ public class OrdService {
 	 * 10-08 ordRatingStarNo
 	 * 11-09 ordQrPic
 	 * 12-10 ordMsgNo
-	*/
+	*/ 
 	
 	/* (一般會員)新增一筆訂單 */
 	public OrdVO addOrd(String aOrdRoomId,String aOrdMemId,String aOrdHotelId,Integer aOrdPrice,Timestamp aOrdLiveDate,String aOrdStatus,String aOrdRatingContent,Integer aOrdRatingStarNo,byte[] aOrdQrPic,String aOrdMsgNo){

@@ -1,7 +1,6 @@
 package com.auth.model;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +12,14 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-public class AuthDAO implements AuthVO_interface {
+import org.hibernate.Query;
+import org.hibernate.Session;
+
+import com.auth.model.AuthVo;
+
+import util.HibernateUtil;
+
+public class AuthDAO implements AuthVO_interface {	
 	private static DataSource ds = null;
 	static {
 		try {
@@ -24,11 +30,57 @@ public class AuthDAO implements AuthVO_interface {
 		}
 	}
 	
+	
 	private static final String GET_ALL_STMT = "select authId,authName from AUTH order by authId";
-	private static final String GET_AUTH_ONE = "select empAuthAuthId from empAuth  where empAuthEmpId=?" ;
-			
+	
 	private static final String DELETE = "DELETE  from empAuth where empAuthEmpId=?";
 	private static final String INSERT = "INSERT INTO empAuth (empAuthEmpId,empAuthAuthId) VALUES (?,?)";
+	
+	
+	@Override
+	public List<String> getAuthsByEmpId(String empAuthEmpId) {
+		List<String> list = new ArrayList<String>();
+		AuthVo authVo = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createSQLQuery("select empAuthAuthId from empAuth  where empAuthEmpId=?");			
+			query.setParameter(0, empAuthEmpId);
+			list = query.list();
+		 
+			  System.out.println(empAuthEmpId);
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
+		}
+		return list;
+	}
+	
+	@Override
+	public void update(String empAuthEmpId, String[] empAuthList) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createSQLQuery("DELETE  from empAuth where empAuthEmpId=?");
+			query.setParameter(0, empAuthEmpId);
+			query.executeUpdate();
+			
+				if(empAuthList!=null){
+					for (String authid : empAuthList) {
+						Query query1 = session.createSQLQuery("INSERT INTO empAuth (empAuthEmpId,empAuthAuthId) VALUES (?,?)");
+						query1.setParameter(0, empAuthEmpId);
+						query1.setParameter(1, authid);
+						query1.executeUpdate();
+				}
+			}
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
+		}	
+	}
+
 	
 	@Override
 	public List<AuthVo> getAll() {
@@ -82,115 +134,7 @@ public class AuthDAO implements AuthVO_interface {
 		}
 		return list;
 	}
-	@Override
-	public List<String> getAuthsByEmpId(String empAuthEmpId) {
-		List<String> list = new ArrayList<String>();
-		String authId = null;
-
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(GET_AUTH_ONE);
-			pstmt.setString(1, empAuthEmpId);
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				
-				
-				authId=rs.getString("empAuthAuthId");
-				
-
-				list.add(authId); 
-			}
-
-			// Handle any driver errors
-		} catch (SQLException se) {
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-		return list;
-	}
-	@Override
-	public void update(String empAuthEmpId, String[] empAuthList) {
-		Connection con = null;
-		PreparedStatement pstmt_delete = null;
-		PreparedStatement pstmt_insert = null;
-		ResultSet rs = null;
-
-		try {
-			con = ds.getConnection();
-			con.setAutoCommit(false);
-			pstmt_delete = con.prepareStatement(DELETE);
-			pstmt_delete.setString(1, empAuthEmpId);
-
-			rs = pstmt_delete.executeQuery();
-			if(empAuthList!=null){
-				pstmt_insert = con.prepareStatement(INSERT);
-				for (String authid : empAuthList) {
 	
-					pstmt_insert.setString(1, empAuthEmpId);
-					pstmt_insert.setString(2, authid);
-					rs = pstmt_insert.executeQuery();
-				}
-			}
-			con.commit();
-			// Handle any driver errors
-		} catch (SQLException se) {
-			try {
-				con.rollback();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			throw new RuntimeException("A database error occured. " + se.getMessage());
-			// Clean up JDBC resources
-		} finally {
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (pstmt_delete != null) {
-				try {
-					pstmt_delete.close();
-				} catch (SQLException se) {
-					se.printStackTrace(System.err);
-				}
-			}
-			if (con != null) {
-				try {
-					con.close();
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-	}
+	
+
 }

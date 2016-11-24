@@ -103,6 +103,7 @@ public class MsgCenter extends HttpServlet {
 			// String chatId =
 			// dao_memChat.getOldMsgBtwnTwoMems(fromMemId,toMemId).get(0).getMemChatChatId();
 			String chatId = dao_memChat.getChatIdBtwenTwoMems(fromMemId, toMemId);
+			chatIdMap.put(fromMemId, chatId);
 			Timestamp ts = new Timestamp(new java.util.Date().getTime());
 			String status = "0";
 
@@ -166,8 +167,28 @@ public class MsgCenter extends HttpServlet {
 				raven.clearAttributes(); // clears FCM protocol paramters
 											// excluding targets
 				raven.clearTargets(); // only clears targets
+				
+				
+				
+				
 			} else {// end if - 將資料傳給對方
 				System.out.println(toMemId + " is not online and not logged in yet.");
+				Session toMemSession = sessionMap.get(toMemId);
+				
+				JSONObject memChatMemVO = new JSONObject();
+				JSONObject memChatToMemVO = new JSONObject();
+				JSONObject offlineObject = new JSONObject();
+				
+				memChatMemVO.put("memId", fromMemId);
+				memChatToMemVO.put("memId", toMemId);
+				
+				offlineObject.put("action", "offlineMessage");
+				offlineObject.put("memChatMemVO",memChatMemVO);
+				offlineObject.put("memChatToMemVO",memChatToMemVO);
+				offlineObject.put("memChatContent", message);
+				
+				//JSONObject notifyJSON = new JSONObject("{\"action\":\"talkToYou\",\"fromMemId\":\"" + fromMemId +  + toMemId +"\"}");
+				toMemSession.getAsyncRemote().sendText(offlineObject.toString());
 			}
 			return;
 		} // end if "chat"
