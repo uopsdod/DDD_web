@@ -3,6 +3,7 @@
 <%@ page import="com.ord.model.*, java.text.SimpleDateFormat" %>
 <%
 	OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
+	pageContext.setAttribute("ordVO", ordVO);
 %>
 
 <!DOCTYPE html>
@@ -159,9 +160,9 @@
 	<input type="submit" value="送出修改">
 </form>
 	
-	request.getAttribute("requestURL"): <%= request.getParameter("requestURL") %>
+	request.getParameter("requestURL"): <%= request.getParameter("requestURL") %>
 	
-	request.getAttribute("whichPage"): <%= request.getParameter("whichPage")%>
+	request.getParameter("whichPage"): <%= request.getParameter("whichPage")%>
 	
 </body>
 </html>
