@@ -70,9 +70,16 @@
 				margin-top:25%;
 			}
 		</style>
-	
-	</head>
-	<body>
+		
+		
+		
+		
+		
+		
+		
+
+		</head>
+		<body>
 	
 	<!--==主導覽列=====================================================================================================-->	
 	
@@ -185,7 +192,18 @@
 				<!--面板- - - - - - - - - - - -      - - - - - - - - - - - -  - - - - - -  -->
 				<div class="panel panel-success col-xs-12 col-sm-12">
 				  <div class="panel-heading">
-				    <h3 class="panel-title">標題</h3>
+				    <h3 class="panel-title">哈囉~
+				    <%  
+				    request.setCharacterEncoding("UTF-8");
+				    String newsGap = request.getParameter("news");
+				    if(newsGap!=null){
+				    String news = new String(newsGap.getBytes("ISO-8859-1"),"UTF-8");
+					%>
+						<span style="color:red">
+						<%=news%>
+						</span>
+					<%}%>
+				    </h3>
 				  </div>
 				  
 				</div>
@@ -351,7 +369,9 @@ window.onload=function(){
 		XspanMap.set(FirstRoomId[i]+"",XspanId[i]);
 		
 	}	
-	console.log(XspanMap);
+		
+	
+	
 }
 window.onunload=disconnect;
 

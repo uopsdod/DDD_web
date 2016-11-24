@@ -25,9 +25,9 @@ import com.roomphoto.model.RoomPhotoService;
 public class RoomServlet extends HttpServlet {
 	
 	
-	static Map<String,Timer> OnTimer = Collections.synchronizedMap( new HashMap<String,Timer>()); //存有各room的即時價格
-	public static Map<String,Map> OnData =  Collections.synchronizedMap( new HashMap<String,Map>());	//存有各room的降價排程	
-	static Map<String,Timer> DownTimer =  Collections.synchronizedMap( new HashMap<String,Timer>()); //存有各room的即時價格
+	static Map<String,Timer> OnTimer = Collections.synchronizedMap( new HashMap<String,Timer>()); //存有各room的降價排程
+	public static Map<String,Map> OnData =  Collections.synchronizedMap( new HashMap<String,Map>());	//存有各room的即時價格	
+	static Map<String,Timer> DownTimer =  Collections.synchronizedMap( new HashMap<String,Timer>()); //存有各room的下架排程
 
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -190,7 +190,7 @@ public class RoomServlet extends HttpServlet {
 		}
 		if ("RegularCancel".equals(action)) { // 來自listAllRoom.jsp的請求
 
-			System.out.println("aaaaa");	
+				
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
 			// send the ErrorPage view.
@@ -417,7 +417,7 @@ public class RoomServlet extends HttpServlet {
 				
 				boolean beforeSell = roomVO.getRoomForSell();
 				
-				System.out.println(roomPrice);
+				
 				
 				roomVO.setRoomPrice(roomPrice);
 				roomVO.setRoomBottomPrice(roomBottomPrice);
@@ -1232,7 +1232,7 @@ public class RoomServlet extends HttpServlet {
 		return bytearr;		
 	}
 	
-	private static void DynamicPrice(String roomId,boolean beforeSell,int aCutPriceTime,int price,int CutPrice,int BottomPrice,boolean roomOnePrice,int EndTime) {
+	public static void DynamicPrice(String roomId,boolean beforeSell,int aCutPriceTime,int price,int CutPrice,int BottomPrice,boolean roomOnePrice,int EndTime) {
 		
 		 
 		if(beforeSell==true){

@@ -271,6 +271,23 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 																		value="${orderPrice}" />
 														</div>
 													</div>
+													
+													
+													<div class="form-group">
+														<label class="col-sm-3 control-label">聯絡信箱</label>
+														<div class="col-sm-9">
+																<input type="TEXT" name="ordMail" size="45" class="form-control" 
+																		value="${ordMail!=null?ordMail:memVO2.memAccount}" />
+														</div>
+													</div>
+													
+													<div class="form-group">
+														<label class="col-sm-3 control-label">聯絡電話</label>
+														<div class="col-sm-9">
+																<input type="TEXT" name="ordPhone" size="45" class="form-control"													
+																		value="${ordPhone!=null?ordPhone:memVO2.memPhone}" />
+														</div>
+													</div>
 <!-- 							/* *************************************************************************************************************/ -->
 													
 													<div class="form-group">
@@ -284,7 +301,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 													
 													
 													<input type="hidden" name="action" value="insert">
-													<input type="submit" value="送出新增">
+													<input type="submit" value="確認下單">
 						
 										 </div>
 									 
