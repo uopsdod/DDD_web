@@ -14,7 +14,7 @@
 	pageContext.setAttribute("list", list);
 %>
 <script>
-var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${list.get(0).get("roomid")}"];
+var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach>"${list.get(0).get("roomid")}"];
 
 	var roomMap;
 	

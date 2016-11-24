@@ -1,15 +1,19 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fs" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="com.mem.model.*"%>
 <%@ page import="com.ad.model.*"%>
+<%@ page import="com.hotel.model.*"%>
 <%@ page import="java.text.*"%>
 <%@ page import="java.util.*"%>
+	<%@ page import="com.room.model.*"%>
+	<%@ page import="com.room.controler.*"%>
 <!DOCTYPE html>
 
 <%
-session.getAttribute("account_mem");
 
+session.getAttribute("account_mem");
 MemVO memVO =(MemVO)session.getAttribute("memVO");
 session.setAttribute("memVO", memVO);
 
@@ -19,15 +23,21 @@ session.setAttribute("memVO", memVO);
 AdService adSvc = new AdService();
 List<AdVO> advo = (List<AdVO>)adSvc.getAll();
 pageContext.setAttribute("advo",advo);
-
+%>
+<%
+HotelService hotelsvc = new HotelService();
+List<Map> list =hotelsvc.GET_RANDOM_HOTEL_TO_VIEW();
+pageContext.setAttribute("list", list);
 %>
 
 <html>
 <head>
         <meta charset="UTF-8">
-        <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/css/1_css.css">
     <script src="<%=request.getContextPath()%>/frontend_mem/js/1_new.js"></script>
+    <script src="<%=request.getContextPath()%>/frontend_mem/wish/socket.js"></script>
     <title>Dua Dee Dou:晚鳥有優惠</title>
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/frontend_mem/images/index.jpg">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/bs/bootstrap.css">
@@ -37,9 +47,77 @@ pageContext.setAttribute("advo",advo);
     <script src="<%=request.getContextPath()%>/jq/jquery-ui.js"></script>
     <script src="<%=request.getContextPath()%>/jq/jquery-cycle-all.js"></script>
     <script src="<%=request.getContextPath()%>/bs/bootstrap.min.js"></script>
+    
     <!-- <script src="jq/jquery.cycle.lite.js"></script> -->
 </head>
+<script>
+var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${list.get(0).get("roomid")}"];
 
+	
+	
+	var roomMap;
+	
+	window.onunload =disconnect;
+	window.addEventListener('load',function(){ 
+		roomMap = new Map;
+		for(var i =0;i<a.length;i++){
+			var node = document.getElementById(a[i]);
+			roomMap.set(a[i],node);	
+			}
+		console.log(roomMap);
+		},false);
+	window.addEventListener('load',connect,false);
+	
+	function formSubmit()
+	  {
+		document.getElementById("myForm").submit();
+	  }
+	function formSubmit1()
+	  {
+		document.getElementById("myForm1").submit();
+	  }
+	function formSubmit2()
+	  {
+		document.getElementById("myForm2").submit();
+	  }
+	function formSubmit3()
+	  {
+		document.getElementById("myForm3").submit();
+	  }
+	function formSubmit4()
+	  {
+		document.getElementById("myForm4").submit();
+	  }
+	function formSubmit5()
+	  {
+		document.getElementById("myForm5").submit();
+	  }
+	function formSubmit6()
+	  {
+		document.getElementById("myForm6").submit();
+	  }
+	function formSubmit7()
+	  {
+		document.getElementById("myForm7").submit();
+	  }
+	function formSubmit8()
+	  {
+		document.getElementById("myForm8").submit();
+	  }
+	function formSubmit9()
+	  {
+		document.getElementById("myForm9").submit();
+	  }
+	function formSubmit10()
+	  {
+		document.getElementById("myForm10").submit();
+	  }
+	function formSubmit11()
+	  {
+		document.getElementById("myForm11").submit();
+	  }
+	
+</script>
 <body>
     <!-- 開始導覽列 -->
     <header id="top_header">
@@ -63,7 +141,9 @@ pageContext.setAttribute("advo",advo);
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/chat/MapAndChat.jsp" target="_blank">聊天地圖</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">地圖模式</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">列表模式</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">對話記錄</a></li>
                 </ul>
             </div>
             <div class="dropdown" style='display: inline-block;'>
@@ -274,7 +354,11 @@ pageContext.setAttribute("advo",advo);
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner1.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
-				       	<img src='data:image/jpeg;base64,${advo["0"].bs64}' srcset=""  width="480" height="270">
+				     <form id="myForm" METHOD="post" ACTION="<%=request.getContextPath()%>/Ad/ad.do">
+				       	<img src='data:image/jpeg;base64,${advo["0"].bs64}' srcset="" style="cursor:pointer" width="480" height="270" onclick="formSubmit()">
+				     	<input type="hidden" name="Adid" value='${advo["0"].adId}'>
+				     	<input type="hidden" name="action" value='hit'>
+				     </form>
 				     </c:otherwise>
 				   </c:choose>
 		        </li>	         
@@ -284,7 +368,11 @@ pageContext.setAttribute("advo",advo);
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner2.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
-				       	<img src='data:image/jpeg;base64,${advo["1"].bs64}' srcset=""  width="480" height="270">
+				     <form id="myForm1" METHOD="post" ACTION="<%=request.getContextPath()%>/Ad/ad.do">
+				       	<img src='data:image/jpeg;base64,${advo["1"].bs64}' srcset="" style="cursor:pointer" width="480" height="270" onclick="formSubmit1()">
+				    	<input type="hidden" name="Adid" value='${advo["1"].adId}'>
+				    	<input type="hidden" name="action" value='hit'>
+				     </form>
 				     </c:otherwise>
 				   </c:choose>
 		        </li>
@@ -294,7 +382,11 @@ pageContext.setAttribute("advo",advo);
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner3.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
-				       	<img src='data:image/jpeg;base64,${advo["2"].bs64}' srcset=""  width="480" height="270">
+				     <form id="myForm2" METHOD="post" ACTION="<%=request.getContextPath()%>/Ad/ad.do">
+				     	<img src='data:image/jpeg;base64,${advo["2"].bs64}' srcset="" style="cursor:pointer" width="480" height="270" onclick="formSubmit2()">
+				    	<input type="hidden" name="Adid" value='${advo["2"].adId}'>
+				    	<input type="hidden" name="action" value='hit'>
+				     </form>
 				     </c:otherwise>
 				   </c:choose>
 		        </li>		       
@@ -307,7 +399,11 @@ pageContext.setAttribute("advo",advo);
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner4.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
-				       	<img src='data:image/jpeg;base64,${advo["3"].bs64}' srcset=""  width="480" height="270">
+				     <form id="myForm3" METHOD="post" ACTION="<%=request.getContextPath()%>/Ad/ad.do">
+				       	<img src='data:image/jpeg;base64,${advo["3"].bs64}' srcset="" style="cursor:pointer" width="480" height="270" onclick="formSubmit3()">				     
+				    	<input type="hidden" name="Adid" value='${advo["3"].adId}'>
+				    	<input type="hidden" name="action" value='hit'>
+				     </form>
 				     </c:otherwise>
 				   </c:choose>
 		        </li>
@@ -317,7 +413,11 @@ pageContext.setAttribute("advo",advo);
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner5.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
-				       	<img src='data:image/jpeg;base64,${advo["4"].bs64}' srcset=""  width="480" height="270">
+				     <form id="myForm4" METHOD="post" ACTION="<%=request.getContextPath()%>/Ad/ad.do">
+				       	<img src='data:image/jpeg;base64,${advo["4"].bs64}' srcset="" style="cursor:pointer" width="480" height="270" onclick="formSubmit4()">				     
+				    	<input type="hidden" name="Adid" value='${advo["4"].adId}'>
+				    	<input type="hidden" name="action" value='hit'>
+				     </form>
 				     </c:otherwise>
 				   </c:choose>
 		        </li>
@@ -327,7 +427,11 @@ pageContext.setAttribute("advo",advo);
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner6.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
-				       	<img src='data:image/jpeg;base64,${advo["5"].bs64}' srcset=""  width="480" height="270">
+				     <form id="myForm5" METHOD="post" ACTION="<%=request.getContextPath()%>/Ad/ad.do">
+				       	<img src='data:image/jpeg;base64,${advo["5"].bs64}' srcset="" style="cursor:pointer" width="480" height="270" onclick="formSubmit5()">				     
+				    	<input type="hidden" name="Adid" value='${advo["5"].adId}'>
+				    	<input type="hidden" name="action" value='hit'>
+				     </form>
 				     </c:otherwise>
 				   </c:choose>
 		        </li>
@@ -340,7 +444,11 @@ pageContext.setAttribute("advo",advo);
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner7.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
-				       	<img src='data:image/jpeg;base64,${advo["6"].bs64}' srcset=""  width="480" height="270">
+				     <form id="myForm6" METHOD="post" ACTION="<%=request.getContextPath()%>/Ad/ad.do">
+				       	<img src='data:image/jpeg;base64,${advo["6"].bs64}' srcset="" style="cursor:pointer" width="480" height="270" onclick="formSubmit6()">				     
+				    	<input type="hidden" name="Adid" value='${advo["6"].adId}'>
+				    	<input type="hidden" name="action" value='hit'>
+				     </form>
 				     </c:otherwise>
 				   </c:choose>
 		        </li>
@@ -350,7 +458,11 @@ pageContext.setAttribute("advo",advo);
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner8.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
-				       	<img src='data:image/jpeg;base64,${advo["7"].bs64}' srcset=""  width="480" height="270">
+				     <form id="myForm7" METHOD="post" ACTION="<%=request.getContextPath()%>/Ad/ad.do">
+				       	<img src='data:image/jpeg;base64,${advo["7"].bs64}' srcset="" style="cursor:pointer" width="480" height="270" onclick="formSubmit7()">				     
+				    	<input type="hidden" name="Adid" value='${advo["7"].adId}'>
+				    	<input type="hidden" name="action" value='hit'>
+				     </form>
 				     </c:otherwise>
 				   </c:choose>
 		        </li>
@@ -360,7 +472,11 @@ pageContext.setAttribute("advo",advo);
 		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner9.jpg'  srcset="" width="480" height="270"> 		                
 				     </c:when>		  
 				     <c:otherwise>
-				       	<img src='data:image/jpeg;base64,${advo["8"].bs64}' srcset=""  width="480" height="270">
+				     <form id="myForm8" METHOD="post" ACTION="<%=request.getContextPath()%>/Ad/ad.do">
+				       	<img src='data:image/jpeg;base64,${advo["8"].bs64}' srcset="" style="cursor:pointer" width="480" height="270" onclick="formSubmit8()">				     
+				    	<input type="hidden" name="Adid" value='${advo["8"].adId}'>
+				    	<input type="hidden" name="action" value='hit'>
+				     </form>
 				     </c:otherwise>
 				   </c:choose>
 		        </li>
@@ -370,25 +486,37 @@ pageContext.setAttribute("advo",advo);
 		      <c:if test='${advo["9"]!=null&&advo["9"].bs64!=""&&advo["9"].adStatus=="4"}'>
   			   <ul class="row item">
 		        <li class="col-xs-4">
-		          <img src='data:image/jpeg;base64,${advo["9"].bs64}' srcset=""  width="480" height="270">
+		        <form id="myForm9" METHOD="post" ACTION="<%=request.getContextPath()%>/Ad/ad.do">
+				  <img src='data:image/jpeg;base64,${advo["9"].bs64}' srcset="" style="cursor:pointer" width="480" height="270" onclick="formSubmit9()">    
+				  <input type="hidden" name="Adid" value='${advo["9"].adId}'>
+				  <input type="hidden" name="action" value='hit'>
+				</form>
 		        </li>
 		        <li class="col-xs-4">
 		          <c:choose>
 		             <c:when test='${advo["10"].bs64==""||advo["10"].bs64==null}'>
-		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner14.jpg'  srcset="" width="480" height="270"> 		                
+		                <a href="http://www.harbour-plaza.com/8degrees/Index-tc.htm"><img src='<%=request.getContextPath()%>/frontend_mem/img/banner14.jpg'  srcset="" width="480" height="270"></a>		                
 				     </c:when>		  
 				     <c:otherwise>
-				       	<img src='data:image/jpeg;base64,${advo["10"].bs64}' srcset=""  width="480" height="270">
+				     <form id="myForm10" METHOD="post" ACTION="<%=request.getContextPath()%>/Ad/ad.do">
+				       	<img src='data:image/jpeg;base64,${advo["10"].bs64}' srcset="" style="cursor:pointer" width="480" height="270" onclick="formSubmit10()">				     
+					    <input type="hidden" name="Adid" value='${advo["10"].adId}'>
+					    <input type="hidden" name="action" value='hit'>
+					 </form>
 				     </c:otherwise>
 				   </c:choose>
 		        </li>
 		        <li class="col-xs-4">
 		          <c:choose>
 		             <c:when test='${advo["11"].bs64==""||advo["11"].bs64==null}'>
-		                <img src='<%=request.getContextPath()%>/frontend_mem/img/banner17.jpg'  srcset="" width="480" height="270"> 		                
+		                <a href="https://taipei.grand.hyatt.com/zh-Hant/hotel/dining.html"><img src='<%=request.getContextPath()%>/frontend_mem/img/banner17.jpg'  srcset="" width="480" height="270"></a> 		                
 				     </c:when>		  
 				     <c:otherwise>
-				       	<img src='data:image/jpeg;base64,${advo["11"].bs64}' srcset=""  width="480" height="270">
+				     <form id="myForm11" METHOD="post" ACTION="<%=request.getContextPath()%>/Ad/ad.do">				   
+				       	<img src='data:image/jpeg;base64,${advo["11"].bs64}' srcset="" style="cursor:pointer" width="480" height="270" onclick="formSubmit11()">
+				     	<input type="hidden" name="Adid" value='${advo["11"].adId}'>
+				     	<input type="hidden" name="action" value='hit'>
+					 </form>
 				     </c:otherwise>
 				   </c:choose>
 		        </li>
@@ -422,153 +550,59 @@ pageContext.setAttribute("advo",advo);
 <!--             <button class="dot" id="dot1"></button> -->
 <%--             <button align="center" class="btnOfRight" id="btnOfRight1"><img src="<%=request.getContextPath()%>/frontend_mem/images/right.png"></button> --%>
 <!--         </div> -->
+			 
+  			  
+<%-- 		<c:if test='${list["7"]!=null}'>     --%>
         <h1 class="title5">提供最優惠的今晚價格</h1>
         <div class="container" style="width: 97%">
             <div class="row">
                 <div class="col-xs-12 col-sm-12">
                     <div class="container" style="width: 97%">
                         <div class="row">
+                        <c:forEach var="room" items="${list}">	
                             <div class="borderOfBanner col-xs-12 col-sm-3">
                                 <div class="item onsaledemo" style="border-bottom: gray double">
-                                    <img src="<%=request.getContextPath()%>/frontend_mem/images/houseImgDemo3.jpg" class="img-responsive" width="100%">
-                                    <h4>富裕自由商旅(RF Hotel)</h4>
-                                    <u>滿意7.7</u>
-                                    <br>
-                                    <br>
-                                    <div align="RIGHT">
-                                        <del id="del">8500</del>
+                                    <img src='data:image/jpeg;base64,${room.roomPhotoPic}' class="img-responsive" width="100%">
+                                    <h4>${room.hotelName}/${room.roomName}</h4>
+                                    <u>滿意${room.hotelRatingResult}</u>
+                                </div>    
+                                   
+                                    <div style="margin-top:-24%;" align="RIGHT">
+                                        <del id="del">${room.roomPrice}</del>
                                         <br>
                                         <b id="tonight">↓今晚低至↓</b>
                                         <br>
-                                        <div id="TWD">TWD 3300</div>
-                                        <br>
+                                        <div id="TWD">TWD 
+                                        	<span id="${room.roomid}"><span>     
+												<%  
+													String roomId = (String)(((Map)pageContext.getAttribute("room")).get("roomid"));
+													Map oneRoom = RoomServlet.OnData.get(roomId);
+													if(oneRoom!=null)
+													{	
+														int onPrice = (Integer)oneRoom.get("price");
+													%>
+													   <%=onPrice %>
+													<%
+													
+														System.out.println(onPrice);
+													}else{
+														out.write("未上架");
+													}
+												
+												%>
+												</span>
+											</span>
+                                        </div>                                     
                                     </div>
-                                </div>
-                            </div>
-                            <div class="borderOfBanner col-xs-12 col-sm-3">
-                                <div class="item onsaledemo" style="border-bottom: gray double">
-                                    <img src="<%=request.getContextPath()%>/frontend_mem/images/houseImgDemo2.jpg" class="img-responsive" width="100%">
-                                    <h4>HOME HOTEL DA-AN</h4>
-                                    <u>滿意9.0</u>
-                                    <br>
-                                    <br>
-                                    <div align="RIGHT">
-                                        <del id="del">4800</del>
-                                        <br>
-                                        <b id="tonight">↓今晚低至↓</b>
-                                        <br>
-                                        <div id="TWD">TWD 1700</div>
-                                        <br>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="borderOfBanner col-xs-12 col-sm-3">
-                                <div class="item onsaledemo" style="border-bottom: gray double">
-                                    <img src="<%=request.getContextPath()%>/frontend_mem/images/houseImgDemo1.jpg" class="img-responsive" width="100%">
-                                    <h4>帥客旅店(S&R)</h4>
-                                    <u>滿意6.7</u>
-                                    <br>
-                                    <br>
-                                    <div align="RIGHT">
-                                        <del id="del">2800</del>
-                                        <br>
-                                        <b id="tonight">↓今晚低至↓</b>
-                                        <br>
-                                        <div id="TWD">TWD 1220</div>
-                                        <br>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="borderOfBanner col-xs-12 col-sm-3">
-                                <div class="item onsaledemo" style="border-bottom: gray double">
-                                    <img src="<%=request.getContextPath()%>/frontend_mem/images/houseImgDemo.jpg" class="img-responsive" width="100%">
-                                    <h4>Hotel PaPa Whale</h4>
-                                    <u>滿意8.7</u>
-                                    <br>
-                                    <br>
-                                    <div align="RIGHT">
-                                        <del id="del">3800</del>
-                                        <br>
-                                        <b id="tonight">↓今晚低至↓</b>
-                                        <br>
-                                        <div id="TWD">TWD 1900</div>
-                                        <br>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="borderOfBanner col-xs-12 col-sm-3">
-                                <div class="item onsaledemo" style="border-bottom: gray double">
-                                    <img src="<%=request.getContextPath()%>/frontend_mem/images/houseImgDemo4.jpg" class="img-responsive" width="100%">
-                                    <h4>台北西華飯店(Sherwood)</h4>
-                                    <u>滿意5.7</u>
-                                    <br>
-                                    <br>
-                                    <div align="RIGHT">
-                                        <del id="del">2800</del>
-                                        <br>
-                                        <b id="tonight">↓今晚低至↓</b>
-                                        <br>
-                                        <div id="TWD">TWD 999</div>
-                                        <br>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="borderOfBanner col-xs-12 col-sm-3">
-                                <div class="item onsaledemo" style="border-bottom: gray double">
-                                    <img src="<%=request.getContextPath()%>/frontend_mem/images/houseImgDemo5.jpg" class="img-responsive" width="100%">
-                                    <h4>洛碁背包客棧 </h4>
-                                    <u>滿意4.7</u>
-                                    <br>
-                                    <br>
-                                    <div align="RIGHT">
-                                        <del id="del">1800</del>
-                                        <br>
-                                        <b id="tonight">↓今晚低至↓</b>
-                                        <br>
-                                        <div id="TWD">TWD 699</div>
-                                        <br>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="borderOfBanner col-xs-12 col-sm-3">
-                                <div class="item onsaledemo" style="border-bottom: gray double">
-                                    <img src="<%=request.getContextPath()%>/frontend_mem/images/houseImgDemo6.jpg" class="img-responsive" width="100%">
-                                    <h4>單人房住宿空間 台北館</h4>
-                                    <u>滿意5.8</u>
-                                    <br>
-                                    <br>
-                                    <div align="RIGHT">
-                                        <del id="del">1200</del>
-                                        <br>
-                                        <b id="tonight">↓今晚低至↓</b>
-                                        <br>
-                                        <div id="TWD">TWD 700</div>
-                                        <br>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="borderOfBanner col-xs-12 col-sm-3">
-                                <div class="item onsaledemo" style="border-bottom: gray double">
-                                    <img src="<%=request.getContextPath()%>/frontend_mem/images/houseImgDemo7.jpg" class="img-responsive" width="100%">
-                                    <h4>Hotel PaPa Whale</h4>
-                                    <u>滿意9.0</u>
-                                    <br>
-                                    <br>
-                                    <div align="RIGHT">
-                                        <del id="del">2100</del>
-                                        <br>
-                                        <b id="tonight">↓今晚低至↓</b>
-                                        <br>
-                                        <div id="TWD">TWD 1100</div>
-                                        <br>
-                                    </div>
-                                </div>
-                            </div>
+                            	</div>
+                          </c:forEach>  
+                         
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+<%--         </c:if> --%>
         <!--  zzzzzzzzzzzz -->
         <h1 class="title4">讓我們為您服務</h1>
         <div id="slideshow" class="col-md-12">

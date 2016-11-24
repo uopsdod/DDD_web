@@ -19,23 +19,21 @@
 
 		webSocket.onmessage = function(event) {
 			
-			console.log("aaaa");
-			console.log(roomMap);
-		 var PriceBox = JSON.parse(event.data);
+		 var allBag = JSON.parse(event.data);	
+		 var PriceBox = allBag.Bag;
 	
 		 for(var i =0;i<PriceBox.length;i++){
 	        var jsonObj = PriceBox[i];
 //	        alert(jsonObj[0] + " : " +jsonObj[1]);
-	        console.log("aadaa");
-	        console.log(jsonObj[0]);
-	        var one = roomMap.get(jsonObj[0]);
-	        console.log(one);
 	        
+	        
+	        var one = roomMap.get(jsonObj[0]);
+	        
+	       
 	        if(one!=null){//版面上有這個id才更新降價
 	        	
-	        	console.log("aacaa");
-	       		if(one.childNodes[0].childNodes[0]!=one,jsonObj[1]){	//價錢有變才換價錢
-	       			console.log("aabaa");
+	       		if(one.childNodes[0].childNodes[0]!=jsonObj[1]){	//價錢有變才換價錢
+	       		
 	       			$(one.childNodes[0]).toggle("fast",showPrice.bind(null, one,jsonObj[1]));    	
 	       			$(one.childNodes[0]).toggle("slow");
 	       		

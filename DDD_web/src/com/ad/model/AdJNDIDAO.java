@@ -27,11 +27,11 @@ public class AdJNDIDAO implements AdDAO_interface {
 		}
 	}
 
-	private static final String INSERT_STMT = "INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPic,adPicContent,adHit) VALUES (Ad_adId.NEXTVAL,Ad_adAdPlanId.NEXTVAL, adHotelId.NEXTVAL, ?, ?, ?, ?, ?)";
+	private static final String INSERT_STMT = "INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPic,adPicContent,adHit) VALUES (Ad_seq.NEXTVAL,?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = "SELECT adId,adAdPlanId,adHotelId,adStatus,to_char(adPayDate,'yyyy-mm-dd') adPayDate,adPic,adPicContent,adHit FROM Ad order by adId";
 	private static final String GET_ONE_STMT = "SELECT adId,adAdPlanId,adHotelId,adStatus,to_char(adPayDate,'yyyy-mm-dd') adPayDate,adPic,adPicContent,adHit FROM Ad where adId = ?";
 	private static final String DELETE = "DELETE FROM Ad where AdId = ?";
-	private static final String UPDATE = "UPDATE Ad set adId=?, adAdPlanId=?, adStatus=?, adPayDate=?, adPic=?, adPicContent=?, adHit=? where AdId = ?";
+	private static final String UPDATE = "UPDATE Ad set  PlanId=?, adStatus=?, adPayDate=?, adPic=?, adPicContent=?, adHit=? where AdId = ?";
 
 	@Override
 	public void insert(AdVO aAdVO) {
@@ -171,7 +171,7 @@ public class AdJNDIDAO implements AdDAO_interface {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// AdVO ¤]ºÙ¬° Domain objects
+				// AdVO ï¿½]ï¿½Ù¬ï¿½ Domain objects
 				AdVO = new AdVO();
 				AdVO.setAdId(rs.getString("adId"));
 				AdVO.setAdAdPlanId(rs.getString("adAdPlanId"));
@@ -226,15 +226,15 @@ public class AdJNDIDAO implements AdDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(AdJNDIDAO.GET_ALL_STMT);
 			rs = pstmt.executeQuery();
-			ResultSetMetaData rsmd = rs.getMetaData();
+			/*ResultSetMetaData rsmd = rs.getMetaData();
 			int len = rsmd.getColumnCount();
 			for (int i = 1; i <= len; i++) {
 				System.out.println("rsmd.getColumnName(i)" + rsmd.getColumnName(i));
-			}
+			}*/
 
 			while (rs.next()) {
-				// AdVO ¤]ºÙ¬° Domain objects
-				System.out.println("rs.getDate(\"adPayDate\"): " + rs.getDate("adPayDate"));
+				// AdVO ï¿½]ï¿½Ù¬ï¿½ Domain objects
+				//System.out.println("rs.getDate(\"adPayDate\"): " + rs.getDate("adPayDate"));
 
 				AdVO = new AdVO();
 				AdVO.setAdId(rs.getString("adId"));
@@ -278,6 +278,12 @@ public class AdJNDIDAO implements AdDAO_interface {
 		return list;
 	}
 
+	@Override
+	public List<AdVO> getAllByHotelId(String aAdHotelId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/*public static void main(String[] args) throws Exception {
 		File pic = new File("C:/tomcat/eclipse_WTP_WorkSpace1/Banner/src/Ad/panda.jpg");
 		if (pic.exists()) {
@@ -292,10 +298,10 @@ public class AdJNDIDAO implements AdDAO_interface {
 
 		AdJNDIDAO dao = new AdJNDIDAO();
 
-		// ·s¼W
+		// ï¿½sï¿½W
 		AdVO adVO1 = new AdVO();
 
-		// ¬d¸ß
+		// ï¿½dï¿½ï¿½
 		AdVO AdVO3 = dao.findByPrimaryKey("10000001");
 		System.out.print(AdVO3.getAdId() + ",");
 		System.out.print(AdVO3.getAdAdPlanId() + ",");
@@ -307,7 +313,7 @@ public class AdJNDIDAO implements AdDAO_interface {
 		System.out.println(AdVO3.getAdHit());
 		System.out.println("---------------------");
 
-		// ¬d¸ß
+		// ï¿½dï¿½ï¿½
 		AdDAO_interface dao2 = new AdJDBCDAO();
 		dao2.getAll();
 		List<AdVO> list = dao2.getAll();

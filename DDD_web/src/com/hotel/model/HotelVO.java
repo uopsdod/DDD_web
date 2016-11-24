@@ -1,8 +1,6 @@
 package com.hotel.model;
 
 import java.util.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ord.model.OrdVO;
 
 public class HotelVO implements java.io.Serializable{
@@ -47,7 +45,7 @@ public class HotelVO implements java.io.Serializable{
 	private String hotelCreditCardNo;
 	private String hotelCreditCheckNo;
 	private String hotelCreditDueDate;
-	@JsonIgnore
+	
 	private Set<OrdVO> hotelOrds = new LinkedHashSet<OrdVO>();
 	
 	public String getHotelId() {
