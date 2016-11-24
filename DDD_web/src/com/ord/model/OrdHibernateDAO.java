@@ -38,7 +38,7 @@ public class OrdHibernateDAO implements OrdDAO_interface {
 	private static final String GET_ALL_ORDHOTELID_STMT = "from OrdVO where ordHotelId=:ordHotelId order by ordId desc";
 	
 	@Override
-	public void insert(OrdVO aOrdVO) {
+	public String insert(OrdVO aOrdVO) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
@@ -48,6 +48,7 @@ public class OrdHibernateDAO implements OrdDAO_interface {
 			session.getTransaction().rollback();
 			throw ex;
 		}
+		return null;
 	}
 
 	@Override

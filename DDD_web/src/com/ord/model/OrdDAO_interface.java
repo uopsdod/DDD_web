@@ -5,7 +5,7 @@ import com.hotelrep.model.HotelRepVO;
 
 public interface OrdDAO_interface {
 	/* (一般會員)新增一筆訂單 */
-	public void insert(OrdVO aOrdVO);
+	public String insert(OrdVO aOrdVO);
 	/* (一般會員)新增評論及星星數 & (系統)修改訂單狀態 */
 	public void update(OrdVO aOrdVO);
 	/* (練習用)刪除 */

@@ -70,8 +70,8 @@ public class OrdService {
 		Timestamp currentTime = new Timestamp(new java.util.Date().getTime());
 		ordVO.setOrdDate(currentTime);
 
-		dao.insert(ordVO);
-		
+		String ordId = dao.insert(ordVO);
+		ordVO.setOrdId(ordId);
 		return ordVO;
 	}
 	
