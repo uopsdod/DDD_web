@@ -550,7 +550,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 <!--             <button class="dot" id="dot1"></button> -->
 <%--             <button align="center" class="btnOfRight" id="btnOfRight1"><img src="<%=request.getContextPath()%>/frontend_mem/images/right.png"></button> --%>
 <!--         </div> -->
-			 
+			
   			  
 <%-- 		<c:if test='${list["7"]!=null}'>     --%>
         <h1 class="title5">提供最優惠的今晚價格</h1>
@@ -560,15 +560,47 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                     <div class="container" style="width: 97%">
                         <div class="row">
                         <c:forEach var="room" items="${list}">	
-                            <div class="borderOfBanner col-xs-12 col-sm-3">
+                            <div class="borderOfBanner col-xs-12 col-sm-3" style="position:relative">
                                 <div class="item onsaledemo" style="border-bottom: gray double">
                                     <img src='data:image/jpeg;base64,${room.roomPhotoPic}' class="img-responsive" width="100%">
                                     <h4>${room.hotelName}/${room.roomName}</h4>
-                                    <u>滿意${room.hotelRatingResult}</u>
+                                    
+                                    	<c:choose>
+                                    	 <c:when test='${room.hotelRatingResult==0}'>
+                                    	 	目前沒有評價
+									     </c:when>
+								         <c:when test='${room.hotelRatingResult==1}'>
+								         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+									     </c:when>
+									     <c:when test='${room.hotelRatingResult==2}'>
+								         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+								         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+									     </c:when>
+									     <c:when test='${room.hotelRatingResult==3}'>
+								         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+								         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+								         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+									     </c:when>
+									     <c:when test='${room.hotelRatingResult==4}'>
+								         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+								         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+								         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+								         	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+									     </c:when>		  
+									     <c:otherwise>
+									     	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+									     	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+									     	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+									     	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+									     	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
+									     </c:otherwise>
+									   </c:choose> 
+                                    
                                 </div>    
                                    
                                     <div style="margin-top:-24%;" align="RIGHT">
-                                        <del id="del">${room.roomPrice}</del>
+                                    	
+                                        <del id="del">原價${room.roomPrice}</del>
                                         <br>
                                         <b id="tonight">↓今晚低至↓</b>
                                         <br>
