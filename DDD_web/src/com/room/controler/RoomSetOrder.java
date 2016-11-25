@@ -367,7 +367,7 @@ public class RoomSetOrder extends HttpServlet {
 	        	 RoomVO roomVO2 = roomSvc2.findByPrimaryKey(ordRoomId);
 	        	 
 	        	 int roomDiscountHr = roomVO2.getRoomDiscountHr();
-	        	 int price = downSellPrice.get(ordRoomId);
+	        	 
 	        	 	        	 
 	        	 int remainNo2 =roomVO2.getRoomRemainNo();
 	        	 remainNo2 = remainNo2+1;
@@ -382,7 +382,7 @@ public class RoomSetOrder extends HttpServlet {
 	        	 
 	        	 if(sellNow==false&&remainNo2==1&&reUpTime<=(downTime-1000*60*30)){	//再次上架時間要比原定下架時間提前30min才再次上架
 	        		
-	        		 
+	        		 int price = downSellPrice.get(ordRoomId);
 	        		 int roomPrice= roomVO2.getRoomPrice();
 		        	 int roomDisccountPercent = roomVO2.getRoomDisccountPercent();
 		        	 Float cutPrice = roomPrice*roomDisccountPercent*0.01f;
@@ -402,6 +402,10 @@ public class RoomSetOrder extends HttpServlet {
 	 
 	     timer.schedule(back,delayTime); 
 	 	
+	     System.out.println(roomVO.getRoomRemainNo());
+	     
+	     
+	     
 }
 
 	 static int randomNumber() {
