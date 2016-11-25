@@ -153,4 +153,12 @@ public class OrdService {
     public List<OrdVO> getAll(Map<String, String[]> aMap){
     	return dao.getAll(aMap);
     } 
+    
+    /*(一般會員)更新評價數與評論內容(柚子新增)*/
+    public void updateRating(String aOrdId, String aOrdRatingStarNo, String aOrdRatingContent){
+    	dao.updateRating(aOrdId, aOrdRatingStarNo, aOrdRatingContent);
+    }
+    
+    
+    
 }

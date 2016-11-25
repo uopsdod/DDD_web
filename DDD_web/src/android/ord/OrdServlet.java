@@ -25,8 +25,10 @@ import com.mem.model.MemVO;
 import com.ord.model.OrdDAO_interface;
 import com.ord.model.OrdService;
 import com.ord.model.OrdVO;
+import com.room.controler.RoomSetOrder;
 import com.room.model.RoomVO;
 
+@WebServlet("/android/ord/ord.do")
 public class OrdServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private OrdService dao_ord;
@@ -56,6 +58,11 @@ public class OrdServlet extends HttpServlet {
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(),JsonObject.class);
 		String action = (jsonObject.get("action") != null)?jsonObject.get("action").getAsString():null;
 		String memId = (jsonObject.get("memId") != null)?jsonObject.get("memId").getAsString():null;
+		// 以下三個參數給updateRating使用
+		String ordId = (jsonObject.get("ordId") != null)?jsonObject.get("ordId").getAsString():null;
+		String ordRatingStarNo = (jsonObject.get("ordRatingStarNo") != null)?jsonObject.get("ordRatingStarNo").getAsString():null;
+		String ordRatingContent = (jsonObject.get("ordRatingContent") != null)?jsonObject.get("ordRatingContent").getAsString():null;
+		
 		String outStr = "";
 		
 		if ("getAllOld".equals(action)) {
@@ -80,6 +87,24 @@ public class OrdServlet extends HttpServlet {
 			PrintWriter out = res.getWriter();
 			System.out.println("outStr:" + outStr);
 			out.println(outStr);
+
+		}else if("Insert".equals(action)){
+			String hotelId = jsonObject.get("hotelId").getAsString();
+			String roomId = jsonObject.get("roomId").getAsString();
+			String price = jsonObject.get("price").getAsString();
+			MemVO memVO = new MemVO();
+			RoomSetOrder setOrd = new RoomSetOrder();
+			MemService memSev = new MemService();
+			memVO = memSev.getOneMem(memId);
+			String memAccount = memVO.getMemAccount();
+			String memPhone = memVO.getMemPhone();
+			int roomPrice = Integer.parseInt(price);
+			
+			setOrd.setOrder(hotelId, roomId, memId, roomPrice, memAccount, memPhone, getServletContext());
+
+		}else if ("updateRating".equals(action)){
+			dao_ord.updateRating(ordId, ordRatingStarNo, ordRatingContent);
+
 		}
 		
 	}
