@@ -20,7 +20,21 @@ public class WishVO implements Serializable {
 	//---------------------------------上面貴新增
 	private String wishMemId;
 	private String wishRoomId;
-	
+//	private RoomVO roomVO;
+//	private MemVO memVO;
+//	
+//	public RoomVO getRoomVO() {
+//		return roomVO;
+//	}
+//	public void setRoomVO(RoomVO roomVO) {
+//		this.roomVO = roomVO;
+//	}
+//	public MemVO getMemVO() {
+//		return memVO;
+//	}
+//	public void setMemVO(MemVO memVO) {
+//		this.memVO = memVO;
+//	}
 	
 	
 	public String getWishMemId() {
