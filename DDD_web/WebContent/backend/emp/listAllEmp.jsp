@@ -36,6 +36,7 @@ if(!authorityList.contains("101")){
 <title>管理後端</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/bootstrap.min.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/0_main.css">
+
 <script src="<%=request.getContextPath()%>/backend/emp/js/jquery.js"></script>
 <script src="<%=request.getContextPath()%>/backend/emp/js/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/backend/emp/js/0_new.js "></script>
