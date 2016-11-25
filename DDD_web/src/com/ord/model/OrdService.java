@@ -71,8 +71,8 @@ public class OrdService {
 		ordVO.setOrdDate(currentTime);
 
 		String ordId = dao.insert(ordVO);
-		ordVO.setOrdId(ordId);
-		return ordVO;
+		
+		return dao.findByPrimaryKey(ordId);
 	}
 	
 	/* 

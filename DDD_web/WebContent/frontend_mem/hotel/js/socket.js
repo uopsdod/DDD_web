@@ -20,7 +20,7 @@
 
 		webSocket.onmessage = function(event) {
 	
-		
+		 console.log(event.data);	
 		 var allBag	= JSON.parse(event.data);
 			
 		 var PriceBox = allBag.Bag;
@@ -34,8 +34,9 @@
 		     
 		        if(one!=null){//版面上有這個id才更新降價
 		        	
-		        
-		       		if(one.childNodes[0].childNodes[0]!=jsonObj[1]){	//價錢有變才換價錢
+		
+		  
+		       		if(one.childNodes[0].childNodes[0]+""!=jsonObj[1]+""){	//價錢有變才換價錢
 		       			
 		       			
 		       			
@@ -44,12 +45,12 @@
 		       			$(one.childNodes[0]).toggle("fast",showPrice.bind(null, one,jsonObj[1]));    	
 		       			$(one.childNodes[0]).toggle("slow");
 		       			
-		       			console.log(XspanMap);
+//		       			console.log(XspanMap);
 		       			
 		       			var xx = XspanMap.get(jsonObj[0]+"");
 		       			
 		       			
-		       			if("已下架"==jsonObj[1]+""){			
+		       			if("已下架"==jsonObj[1]+""||"已售完"==jsonObj[1]+""){			
 		       				xx.style="display:none";
 		       				xx.nextElementSibling.style="display:inline";
 		       				

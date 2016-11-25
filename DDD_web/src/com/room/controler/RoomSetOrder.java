@@ -25,6 +25,7 @@ import com.ord.model.OrdVO;
 import com.room.model.RoomService;
 import com.room.model.RoomVO;
 
+import sendText.Send;
 import util.QRCodeImgGenerator;
 
 import java.awt.image.BufferedImage;
@@ -196,29 +197,38 @@ public class RoomSetOrder extends HttpServlet {
 		
 		
 		int number=0;
-	 	String key;
+	 	String setkey;
     	while(true){
-    		for(int i=1;i<7;i++)
-    		{	
-    			number += randomNumber()*10*i;	
-    		}
-    		key = String.valueOf(number);
-    		if(!orderTimer.containsKey(key)){
+    		
+    		number += randomNumber();
+    		setkey = String.valueOf(number);
+    		if(!orderTimer.containsKey(setkey)){
     			break;
     		}   		
     	}	    	
     	Timer timer = new Timer();
+    	
+    	final String  key = setkey;
+    	
     	orderTimer.put(key, timer);
 	    
-    	String QRUrl = "https://locolhost:8081/DDD_web?ordMsgNo="+key; 		
-		
-    	byte[] ordQrPic = QRCodeImgGenerator.writeQRCode(QRUrl);
+    	
     	
 	
     	OrdService ordSvc = new OrdService();
-    	OrdVO newOrdVO= ordSvc.addOrd(ordRoomId,ordMemId,ordHotelId,ordPrice,null,"0",null,null,ordQrPic,key);	
+    	OrdVO firstOrdVO= ordSvc.addOrd(ordRoomId,ordMemId,ordHotelId,ordPrice,null,"0",null,null,null,key);	
 		
+    	
+    	
+    	
+    	String QRUrl = "https://locolhost:8081/DDD_web?ordMsgNo="+key+"&hotelId="+firstOrdVO.getOrdHotelId(); 		
 		
+    	byte[] ordQrPic = QRCodeImgGenerator.writeQRCode(QRUrl);    	
+    	firstOrdVO.setOrdQrPic(ordQrPic);    	    	    	
+    	
+    	OrdVO newOrdVO = ordSvc.updateOrd(firstOrdVO);
+    	
+    	
     	
     	
 		
@@ -259,21 +269,28 @@ public class RoomSetOrder extends HttpServlet {
 		 
 		 String message = new String(messageBf);
 	 
+		 StringBuffer telBf = new StringBuffer();
+		 telBf.append(memName);
+		 telBf.append("您好~");
+		 telBf.append("您的訂單明細如下 : ");
+		 telBf.append(",旅館名稱 : ");
+		 telBf.append(hotelName);
+		 telBf.append(",房型名稱 : ");
+		 telBf.append(roomName);
+		 telBf.append(",房價 : ");
+		 telBf.append(ordPrice);
+		 telBf.append(",簡訊驗證碼 : "+key);
 		 
-		 
-		 
-		 
-		 
-//				 memName+"您好~"+
-//				 "謝謝您的訂購 "+
-//		 		 "您的訂單明細如下"+
-//				 "旅館名稱 : "+hotelName+
-//				 "房型名稱 : "+roomName+
-//				 "房價 : "+ordPrice+
-//				 "謝謝您的訂購,請直接到旅館付現即可";
-		 
+		 String telMessage = new String(telBf);
 		//**處理email**********************************************************************
-		
+
+		 
+		//**處理簡訊**********************************************************************
+		 String[] tel = {ordPhone};
+				 //0972283671
+		//**處理簡訊**********************************************************************
+		 
+		 
 		 
 		//**處理寄送**********************************************************************
 		  Timer sendTimer = new Timer();
@@ -281,9 +298,9 @@ public class RoomSetOrder extends HttpServlet {
 		        
 		         public void run(){
 		         	//排程器要執行的任務	
-	        	 
+		        	 Send.send(tel,telMessage);
 		        	 MailService.gotMail(ordMail, subject, message); 
-	        	 
+		        	
 		         }
 		     };
 			 	 
@@ -309,7 +326,7 @@ public class RoomSetOrder extends HttpServlet {
 		    	 RoomServlet.OnTimer.get(ordRoomId).cancel();	//取消動態降價排成
 		    	 }
 		    	 
-		    	 nowPrice=ordPrice;	//取得最後一筆成交的價錢
+		    	 nowPrice=(Integer)RoomServlet.OnData.get(ordRoomId).get("price");	//取得此時的動態底價	
 		    	 
 		    	 if(RoomServlet.DownTimer.get(ordRoomId)!=null){ 
 		    	 RoomServlet.DownTimer.get(ordRoomId).cancel();		//取消下架排成
@@ -338,7 +355,7 @@ public class RoomSetOrder extends HttpServlet {
 				 MyEchoServer.BufferBox(ordRoomId,-500,"已售完",0);
 		     }	     
 		     roomSvc.update(roomVO);
-		
+		     MyEchoServer.changeRemainNo(ordRoomId,remainNo);
 		     
 		     
 		     
@@ -395,16 +412,23 @@ public class RoomSetOrder extends HttpServlet {
 	        	 
 	        	 roomSvc2.update(roomVO2);	//房型修改剩餘房數
 	        	 
+	        	 MyEchoServer.changeRemainNo(ordRoomId,roomVO2.getRoomRemainNo());
+	        	 
 	        	 String addOrdId = newOrdVO.getOrdId();         	 
 	        	 OrdVO thisOrdVO = ordSvc.getOneOrd(addOrdId);
 	        	 thisOrdVO.setOrdStatus("4");
 	        	 ordSvc.updateOrd(thisOrdVO);
- 
+	        	 
+	        	 orderTimer.remove(key);
+	        	 System.out.println(orderTimer);
 	         }
 	     };
-	 
+	     
+	     
 	     timer.schedule(back,delayTime); 
 	 	
+	     System.out.println(orderTimer);
+	     
 	     return newOrdVO;
 	     
 	     
@@ -412,8 +436,95 @@ public class RoomSetOrder extends HttpServlet {
 }
 
 	 static int randomNumber() {
-	        return (int) (Math.random() * 9)+1;
+	        return (int) (Math.random() * 10000);
 	    }
 	
 	
+	public synchronized static void checkOrder(String key,String ordId){
+		
+	
+		orderTimer.get(key).cancel();
+		orderTimer.remove(key);
+		
+		System.out.println(orderTimer);
+		
+		OrdService ordSvc = new OrdService();
+		OrdVO ordVO = ordSvc.getOneOrd(ordId);
+		ordVO.setOrdStatus("2");
+		ordSvc.updateOrd(ordVO);
+	}
+	
+	
+	public synchronized static void cancelOrder(String key,String ordId){
+		
+		
+		
+		orderTimer.get(key).cancel();
+		orderTimer.remove(key);
+		
+		OrdService ordSvc = new OrdService();
+		OrdVO ordVO = ordSvc.getOneOrd(ordId);
+		ordVO.setOrdStatus("1");
+		OrdVO newOrdVO = ordSvc.updateOrd(ordVO);
+		
+		
+		System.out.println(orderTimer);
+		
+		
+		//******處理主動取消的再次上架*********************************************************
+		
+		
+		RoomVO roomVO2 =newOrdVO.getOrdRoomVO();		
+		RoomService roomSvc2 = new RoomService();
+    	
+    	 
+    	 int roomDiscountHr = roomVO2.getRoomDiscountHr();
+    	 
+    	 	        	 
+    	 int remainNo2 =roomVO2.getRoomRemainNo();
+    	 remainNo2 = remainNo2+1;
+    	 roomVO2.setRoomRemainNo(remainNo2);	//剩餘房數+1
+    	 
+    	 
+
+    	 boolean sellNow = roomVO2.getRoomForSell();
+    	 
+    	 int downTime = roomVO2.getRoomDiscountEndDate();
+    	 
+    	 String ordRoomId = roomVO2.getRoomId();
+    	
+    	 
+    	 
+    	 Calendar caler = new GregorianCalendar();
+	     int year = caler.get(Calendar.YEAR);
+	     int month = caler.get(Calendar.MONTH);
+	     int date = caler.get(Calendar.DATE);
+	     Calendar TodayTime = new GregorianCalendar(year,month,date,0,0,0);	//取出今日0:0:00的Date物件
+	     long todayZeroMiliSecond = TodayTime.getTime().getTime();        
+	     long nowMiliSecond = caler.getTime().getTime();	     
+	     long divideTime = nowMiliSecond - todayZeroMiliSecond;     
+	
+    	 
+    	 	 
+    	 
+    	 if(sellNow==false&&remainNo2==1&&divideTime<=(downTime-1000*60*30)){	//再次上架時間要比原定下架時間提前30min才再次上架
+    		
+    		 int price = downSellPrice.get(ordRoomId);
+    		 int roomPrice= roomVO2.getRoomPrice();
+        	 int roomDisccountPercent = roomVO2.getRoomDisccountPercent();
+        	 Float cutPrice = roomPrice*roomDisccountPercent*0.01f;
+			 int cutPriceInt = cutPrice.intValue();
+        	 int bottomPrice = roomVO2.getRoomBottomPrice();
+        	 boolean roomOnePrice = roomVO2.getRoomOnePrice(); 
+    	     RoomServlet.DynamicPrice(ordRoomId,false,roomDiscountHr*10*1000,price,cutPriceInt,bottomPrice,roomOnePrice,downTime); 
+    	     roomVO2.setRoomForSell(true);	
+    	 }
+    	 
+    	 roomSvc2.update(roomVO2);	//房型修改剩餘房數
+    	 
+    	 MyEchoServer.changeRemainNo(ordRoomId,remainNo2); //將剩餘房數+1	
+		
+	}
+
 }
+

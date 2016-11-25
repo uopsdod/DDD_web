@@ -223,15 +223,15 @@
 							
 							<div class="col-xs-12 col-sm-5">
 							
-							<div>
-							<span>${roomVO.roomName}</span>
+							<div class="zzzzz9">
+							<span class="zzzzz8">${roomVO.roomName}</span>
 							</div>
 							
 							</div>
-							<div class="col-xs-12 col-sm-5">
-							<div>
-							<span>定價        $</span>
-							<span>${roomVO.roomPrice}</span>
+							<div class="col-xs-12 col-sm-5 xxxxx">
+							<div class="yyyyy"><div class="zzzzz">剩餘房數${roomVO.roomRemainNo}</div>
+							<span class="zzzz2">定價        $</span>
+							<span style="text-decoration:line-through;" class="zzzz3">${roomVO.roomPrice}</span>
 							</div>
 					<form method="post" action="<%=request.getContextPath()%>/RoomSetOrder">
 							<div >

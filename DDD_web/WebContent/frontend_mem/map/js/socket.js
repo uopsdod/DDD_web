@@ -34,7 +34,7 @@
 		        if(one!=null){//版面上有這個id才更新降價
 		        	
 		        
-		       		if(one.childNodes[0].childNodes[0]!=jsonObj[1]){	//價錢有變才換價錢
+		       		if(one.childNodes[0].childNodes[0]+""!=jsonObj[1]+""){	//價錢有變才換價錢
 		       	
 		       			$(one.childNodes[0]).toggle("fast",showPrice.bind(null, one,jsonObj[1]));    	
 		       			$(one.childNodes[0]).toggle("slow");

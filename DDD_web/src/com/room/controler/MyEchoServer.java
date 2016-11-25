@@ -21,7 +21,9 @@ public class MyEchoServer {
 	
 private static JSONArray Bag= new JSONArray();
 public static JSONObject onTimePeople = new JSONObject();	
-	
+private static JSONObject RoomRemainNo = new JSONObject();
+
+
 private static final Set<Session> allSessions = Collections.synchronizedSet(new HashSet<Session>());
 	
 	
@@ -66,6 +68,15 @@ private static final Set<Session> allSessions = Collections.synchronizedSet(new 
 		
 	}
 	
+	
+	synchronized static public void changeRemainNo(String roomId,int remainNo){
+	
+		try{
+		RoomRemainNo.put(roomId,remainNo);
+		}catch(Exception e){}
+		
+	}
+	
 	@OnMessage
 	public void onMessage(Session userSession, String message) {
 		
@@ -103,7 +114,12 @@ private static final Set<Session> allSessions = Collections.synchronizedSet(new 
 				if(Bag.length()!=0){
 				AllBag.put("Bag", Bag);
 				}
+				
 				AllBag.put("onTimePeople", onTimePeople);
+				
+				if(RoomRemainNo.length()!=0){
+				AllBag.put("RoomRemainNo", RoomRemainNo);
+				}
 				
 			}catch(Exception e){}
 			
@@ -113,12 +129,17 @@ private static final Set<Session> allSessions = Collections.synchronizedSet(new 
 					session.getAsyncRemote().sendText(AllBag.toString());				
 			}
 			
+			System.out.println(AllBag.toString());
 
 //			for(int i =0;i<Bag.length();i++){
 //			Bag.remove(i);
 //			}
 			if(Bag.length()!=0){
 			Bag = new JSONArray();
+			}
+			
+			if(RoomRemainNo.length()!=0){
+				RoomRemainNo = new JSONObject();
 			}
 		}
 		
