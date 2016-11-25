@@ -5,7 +5,7 @@ import com.hotelrep.model.HotelRepVO;
 
 public interface OrdDAO_interface {
 	/* (一般會員)新增一筆訂單 */
-	public void insert(OrdVO aOrdVO);
+	public String insert(OrdVO aOrdVO);
 	/* (一般會員)新增評論及星星數 & (系統)修改訂單狀態 */
 	public void update(OrdVO aOrdVO);
 	/* (練習用)刪除 */
@@ -22,4 +22,9 @@ public interface OrdDAO_interface {
 	
     //萬用複合查詢(傳入參數型態Map)(回傳 List)
     public List<OrdVO> getAll(Map<String, String[]> map); 
+    
+    
+    /*(一般會員)更新評價數與評論內容(柚子新增)*/
+    public void updateRating(String aOrdId, String aOrdRatingStarNo, String aOrdRatingContent);
+    
 }
