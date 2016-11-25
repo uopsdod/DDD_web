@@ -22,6 +22,7 @@ if(!authorityList.contains("101")){
 	response.sendRedirect(request.getContextPath()+"/backend/emp_index.jsp");
 }
 %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -31,9 +32,11 @@ if(!authorityList.contains("101")){
 <title>管理後端</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/bootstrap.min.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/0_main.css">
+<link href="<%=request.getContextPath()%>/backend/mem/datatables/css/jquery.dataTables.css" rel="stylesheet">
 <script src="<%=request.getContextPath()%>/backend/emp/js/jquery.js"></script>
 <script src="<%=request.getContextPath()%>/backend/emp/js/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/backend/emp/js/0_new.js "></script>
+
 <style type="text/css">
 body {
 	font-family: Tahoma, Verdana, 微軟正黑體;
@@ -286,8 +289,10 @@ body {
 			
 			<h1>會員資料列表</h1>
 			<hr  size="10" width="95%"  align="center" style="border-top: 3px solid #000000">
+			<div class="panel-body">
 				<table  cellspacing="0" cellpadding="5"				
-				width='800' class="table table-hover" id="emptableth">	
+				width='100%' class="table table-striped table-bordered table-hover" id="dataTables-example">	
+				<thead>
 				<tr>
 					<th  class="text-center">會員編號</th>
 					<th  class="text-center">姓名</th>
@@ -301,9 +306,11 @@ body {
 <!-- 					<th>信用卡有效日期</th> -->
 					<th  class="text-center">查看詳情</th>					
 				</tr>
+				</thead>
 				
+				<tbody>
 				<c:forEach var="memvo" items="${memvo}">			
-					<tr align='center' valign='middle'
+					<tr align='center' valign='middle' class="odd gradeX"
 						${(memvo.memId==param.memId) ? 'bgcolor=lightblue':''}
 						>
 						<!--將修改的那一筆加入對比色而已-->
@@ -319,7 +326,8 @@ body {
 				            <c:when test="${memvo.memGender=='m'}">
 				                <td>男</td>
 				            </c:when>				            
-				        </c:choose>					
+				        </c:choose>			
+				        		
 						<td>${memvo.memTwId}</td>
 						<td>${memvo.memBirthDate}</td>
 						<td>${memvo.memPhone}</td>
@@ -353,8 +361,21 @@ body {
 <!-- 						</td> -->
 					</tr>
 				</c:forEach>
+				</tbody>
 			</table>
 			</div>
-			
+			</div>
+			<script src="<%=request.getContextPath()%>/backend/mem/jquery.min.js"></script>
+		    <script src="<%=request.getContextPath()%>/backend/mem/datatables/js/jquery.dataTables.min.js"></script>
+		    <script src="<%=request.getContextPath()%>/backend/mem/datatables-plugins/dataTables.bootstrap.min.js"></script>
+		    <script src="<%=request.getContextPath()%>/backend/mem/datatables-responsive/dataTables.responsive.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+    </script>
 </body>
 </html>
