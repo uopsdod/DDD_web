@@ -70,9 +70,16 @@
 				margin-top:25%;
 			}
 		</style>
+		
+		
+		
+		
+		
+		
+		
 
-	</head>
-	<body>
+		</head>
+		<body>
 	
 	<!--==主導覽列=====================================================================================================-->	
 	
@@ -141,7 +148,7 @@
 						
 						<div class="col-xs-12 col-sm-3 c-partHotel text-center">
 							<h2><img src="<%=request.getContextPath()%>/frontend_mem/hotel/image/room.png"></h2>
-							<span class"word">一間房型<span>
+							<span class"word">房型<span>
 						</div>
 						
 						<div class="col-xs-12 col-sm-3 c-partHotel text-center">
@@ -185,7 +192,18 @@
 				<!--面板- - - - - - - - - - - -      - - - - - - - - - - - -  - - - - - -  -->
 				<div class="panel panel-success col-xs-12 col-sm-12">
 				  <div class="panel-heading">
-				    <h3 class="panel-title">標題</h3>
+				    <h3 class="panel-title">哈囉~
+				    <%  
+				    request.setCharacterEncoding("UTF-8");
+				    String newsGap = request.getParameter("news");
+				    if(newsGap!=null){
+				    String news = new String(newsGap.getBytes("ISO-8859-1"),"UTF-8");
+					%>
+						<span style="color:red">
+						<%=news%>
+						</span>
+					<%}%>
+				    </h3>
 				  </div>
 				  
 				</div>
@@ -197,20 +215,25 @@
 				<div class="row c-room">
 					
 						<div class="col-xs-12 col-sm-5">
+							<div class="col-xs-12 col-sm-12">
 							<img src="<%=request.getContextPath()%>/RoomPhotoServlet?action=getOne_For_Display&roomPhotoId=${AllRoomPhotoMap.get(roomVO.getRoomId()).get(0).getRoomPhotoId()}"	class="c-roomImg">
-
+							</div>
 						</div>
 						<div class="col-xs-12 col-sm-7">
-						
+							
+							<div class="col-xs-12 col-sm-5">
+							
 							<div>
-							${roomVO.roomName}
+							<span>${roomVO.roomName}</span>
 							</div>
 							
+							</div>
+							<div class="col-xs-12 col-sm-5">
 							<div>
 							<span>定價        $</span>
 							<span>${roomVO.roomPrice}</span>
 							</div>
-							
+					<form method="post" action="<%=request.getContextPath()%>/RoomSetOrder">
 							<div >
 							<span>即時價格        $</span>
 							<span id="${roomVO.roomId}"><span>     
@@ -220,6 +243,7 @@
 									if(oneRoom!=null)
 									{	
 										int onPrice = (Integer)oneRoom.get("price");
+										pageContext.setAttribute("onPrice",onPrice);
 									%>
 									   <%=onPrice %>
 									<%
@@ -231,9 +255,26 @@
 								
 								%>
 								</span>
-							</span>
+							</span><input type="hidden" name="orderPrice" value="${onPrice}">		
 							</div>
-						
+							</div>
+							
+							<div class="col-xs-12 col-sm-2" style="margin-top:-17px">
+								
+								<input type="hidden" name="orderHotelId" value="${hotelVO.hotelId}">
+								<input type="hidden" name="action" value="addOrd">
+								<input type="hidden" name="orderRoomId" value="${roomVO.roomId}">
+																																											
+								<%if(oneRoom!=null){ %>
+								<span style="display:inline" id="xx${roomVO.roomId}"><input type="submit" class="btn btn-success"  value="下訂"></span>
+								<span style="display:none"><input type="button" class="btn btn-success"  value="待上架"  ></span>
+								<%}else{ %>
+								<span style="display:none" id="xx${roomVO.roomId}"><input type="submit" class="btn btn-success"  value="下訂"></span>
+								<span style="display:inline"><input type="button" class="btn btn-success"  value="待上架"  ></span>	
+								<%} %>
+	
+							</div>
+					</form>
 						</div>
 					
 				</div>
@@ -289,11 +330,24 @@
 <!-- 		<script src="https://code.jquery.com/jquery.js"></script> -->
 <!-- 		<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
 	</body>
+<script>
+	function setOrder(data){
+		
+		
+		window.location.href = "<%=request.getContextPath()%>/RoomSetOrder?action=getOrderPage&roomId="+data; 
+		
+	}
+	
+</script>
+	
 	
 <script>
 var roomMap;
+var XspanMap;
 var FirstRoomId = [<%for(RoomVO roomVO3:roomList){%> <%=roomVO3.getRoomId()%>, <%}%>  <%=roomList.get(0).getRoomId()%> ];
-// 
+//
+var XspanId = [<%for(RoomVO roomVO3:roomList){%> <%="xx"+roomVO3.getRoomId()%>, <%}%>  <%="xx"+roomList.get(0).getRoomId()%> ];
+
 var hotelPageId = document.getElementById("hotelPageId").value; //取得進入哪一間hotel
 	
 window.onload=function(){
@@ -304,8 +358,20 @@ window.onload=function(){
 		if(item!=null){
 		roomMap.set(""+FirstRoomId[i],item);
 		}
+	}
+	
+	XspanMap = new Map;
+	for(var i=0 ;i<XspanId.length;i++){
+		var item = document.getElementById(XspanId[i]);
+		console.log(XspanId[i]);
+		console.log(FirstRoomId[i]);
+		
+		XspanMap.set(FirstRoomId[i]+"",XspanId[i]);
+		
 	}	
-
+		
+	
+	
 }
 window.onunload=disconnect;
 
