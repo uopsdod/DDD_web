@@ -210,7 +210,7 @@ public class RoomSetOrder extends HttpServlet {
     	Timer timer = new Timer();
     	orderTimer.put(key, timer);
 	    
-    	String QRUrl = "https://locolhost:8081/DDD_web?ordMsgNo="+key; 		
+    	String QRUrl = "https://10.120.25.4:8081/DDD_web?ordMsgNo="+key; 		
 		
     	byte[] ordQrPic = QRCodeImgGenerator.writeQRCode(QRUrl);
     	
