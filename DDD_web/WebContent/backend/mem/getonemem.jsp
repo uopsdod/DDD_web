@@ -16,6 +16,7 @@ List<String> authorityList =(List<String>)session.getAttribute("authorityList");
 session.setAttribute("empvo", empvo);
 session.setAttribute("authorityList",authorityList);
 %>
+
 <%
 
 if(!authorityList.contains("101")){
@@ -334,14 +335,14 @@ body {
 				</tr>
 				<tr>
 					<td>${memvo.memName}</td>
-					<c:choose>
-			            <c:when test="${memvo.memGender=='f'}">
-			                <td>女生</td>
-			            </c:when>
-			            <c:when test="${memvo.memGender=='m'}">
-			                <td>男生</td>
-			            </c:when>		       
-			       	</c:choose>																			
+				<c:choose>
+		            <c:when test="${memvo.memGender=='f'}">
+		                <td>女生</td>
+		            </c:when>
+		            <c:when test="${memvo.memGender=='m'}">
+		                <td>男生</td>
+		            </c:when>		       
+		       	</c:choose>										
 				</tr>
 				<tr>
 					<th>身份證字號</th>

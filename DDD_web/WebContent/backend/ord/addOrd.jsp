@@ -1,8 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.ord.model.*"%>
+<%@ page import="java.util.Random"%>
+<%@ page import="java.sql.Timestamp"%>
 <%
 OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
+/* Servlet有放 下面可以省 */
+pageContext.setAttribute("ordVO", ordVO);
 %>
 
 <!DOCTYPE html>
@@ -78,15 +82,15 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 					<td>訂單金額:</td>
 					<td>
 						<input type="number" name="ordPrice" 
-						value="<%= (ordVO==null)? "" : ordVO.getOrdPrice()%>"/>
+						value="<%= (ordVO==null)? 100 : ordVO.getOrdPrice()%>" min='100' max='1000000' step='100'/>		
 					</td>
 				</tr>
 
 				<tr>
-					<%java.sql.Date dateSQL = new java.sql.Date(System.currentTimeMillis());%>
+<%-- 					<%java.sql.Date dateSQL = new java.sql.Date(System.currentTimeMillis());%> --%>
 					<td>入住日期:</td>
 					<td>
-						<input type="date" name="ordLiveDate" value="<%= (ordVO==null)? dateSQL : ordVO.getOrdLiveDate()%>">
+						<input type="date" name="ordLiveDate" value='<%= (ordVO == null || ordVO.getOrdLiveDate() == null)? "" : ordVO.getOrdLiveDate() %>'>
 					</td>
 				</tr>
 				
@@ -94,7 +98,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 					<td>訂單狀態名稱:</td>
 					<td>				
 						<select name="ordStatus">
-							<% if(ordVO == null) { %>
+							<% if(ordVO == null || ordVO.getOrdStatus() == null ) { %>
 			  					<option value="0">已下單</option>
 			  					<option value="1">主動取消</option>
 			  					<option value="2">已入住</option>
@@ -114,7 +118,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 				<tr>
 					<td>評價內容:</td>
 					<td>						
-						<textarea name="ordRatingContent"> <%=(ordVO == null)? "" : ordVO.getOrdRatingContent()%> </textarea>
+						<textarea name="ordRatingContent"> <%=(ordVO == null || ordVO.getOrdRatingContent() == null )? "" : ordVO.getOrdRatingContent()%> </textarea>
 					</td>
 				</tr>
 
@@ -122,14 +126,15 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 					<td>評價星星數:</td>
 					<td>
 						<select name="ordRatingStarNo">
-							<% if(ordVO == null) { %>
+							<% if(ordVO == null || ordVO.getOrdRatingStarNo() == null) { %>
+								<option value="">請選擇</option>
 			  					<option value="0">0顆星</option>
 			  					<option value="1">1顆星</option>
 			  					<option value="2">2顆星</option>
 			  					<option value="3">3顆星</option>
 			  					<option value="4">4顆星</option>
 			    				<option value="5">5顆星</option>	
-			    			<% } else { %>	
+			    			<% } else { %>
 			    				<option value="0" <%= ("0".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >0顆星</option>
 			  					<option value="1" <%= ("1".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >1顆星</option>
 			  					<option value="2" <%= ("2".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >2顆星</option>
@@ -149,14 +154,29 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 				<tr>
 					<td>簡訊驗證碼:</td>
 					<td>
-						<input type="text" name="ordMsgNo" value="<%= (ordVO==null)? "" : ordVO.getOrdMsgNo()%>"/>
+						<% 
+							char[] randomCharArray = new char[4];
+						
+							for(int i= 0 ; i < randomCharArray.length ;i++){
+								Random r = new Random();
+								randomCharArray[i] = (char) (r.nextInt(26) + 'A');
+							}
+						
+							String ordMsgNo = new StringBuilder().append(randomCharArray).toString();
+							
+						%>
+					
+						<%=ordMsgNo%>
+						
 					</td>
 				</tr>
 			</table>
 
 			<br>
 			<input type="hidden" name="action" value="insert">
+			<input type="hidden" name="ordMsgNo" value="<%= (ordVO==null)? ordMsgNo : ordVO.getOrdMsgNo()%>"/>
 			<input type="submit" value="送出新增">
 		</form>
+			
 	</body>
 </html>

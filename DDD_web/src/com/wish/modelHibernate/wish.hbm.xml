@@ -5,22 +5,21 @@
 <hibernate-mapping>
 	<class name="com.wish.model.WishVO" table="wish">
 
-  	<composite-id>
-  		<key-many-to-one name="roomVO" class="com.room.model.RoomVO" lazy="false">			
-  			<column name="roomId"></column>
-  		</key-many-to-one>
-  		<key-many-to-one name="memVO" class="com.mem.model.MemVO" lazy="false">			
-  			<column name="memId"></column>
-  		</key-many-to-one>
-  		<key-many-to-one name="hotelVO" class="com.hotel.model.HotelVO" lazy="false">			
-  			<column name="hotelId"></column>
-  		</key-many-to-one>
-  		<key-many-to-one name="roomPhotoVO" class="com.roomphoto.model.RoomPhotoVO" lazy="false">			
-  			<column name="roomPhotoId"></column>
-  		</key-many-to-one>
-  	</composite-id>
-		<property name="wishMemId" column="wishMemId"/>
-		<property name="wishRoomId" column="wishRoomId"/>
+  	
+  		<composite-id>
+			<key-property name="wishMemId"></key-property>
+			<key-property name="wishRoomId"></key-property>
+		</composite-id>		
+		
+<!-- 		<composite-id> -->
+<!-- 	  		<key-many-to-one name="roomVO" class="com.room.model.RoomVO" lazy="false">			 -->
+<!-- 	  			<column name="wishRoomId"></column> -->
+<!-- 	  		</key-many-to-one> -->
+<!-- 	  		<key-many-to-one name="memVO" class="com.mem.model.MemVO" lazy="false">			 -->
+<!-- 	  			<column name="wishMemId"></column> -->
+<!-- 	  		</key-many-to-one>  		 -->
+<!--   		</composite-id> -->
+<!-- 	  查關聯用替換上面 -->
 	</class>
 </hibernate-mapping>
 
