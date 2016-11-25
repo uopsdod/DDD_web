@@ -42,4 +42,8 @@ public class MemRepService {
 	public List<MemRepVO> getAll(Map<String, String[]> aMap){
 		return this.dao.getAll(aMap);
 	}
+	
+	public MemRepVO findByMemRepOrdId(String aMemRepOrdId){
+		return this.dao.findByMemRepOrdId(aMemRepOrdId);
+	}
 }
