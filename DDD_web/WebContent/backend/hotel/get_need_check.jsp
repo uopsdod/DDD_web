@@ -26,8 +26,7 @@ if(!authorityList.contains("101")){
 	response.sendRedirect(request.getContextPath()+"/backend/emp_index.jsp");
 }
 %>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -316,17 +315,17 @@ body {
 				width='800' class="table table-hover" id="emptableth">	
 				<tr>
 					<th class="text-center">封面照片</th>
-					<th class="text-center">廠商登記證</th>
+					<th class="text-center">登記證</th>
 					
-					<th class="text-center">廠商會員編號</th>
-					<th class="text-center">廠商種類名稱</th>
+					<th class="text-center">編號</th>
+					<th class="text-center">種類</th>
 					<th class="text-center">廠商名稱</th>
-					<th class="text-center">統一編號</th>
+					<th class="text-center">統編</th>
 					<th class="text-center">信箱</th>
 					<th class="text-center">縣市</th>
 <!-- 					<th>鄉鎮區</th> -->
 <!-- 					<th>路名牌號</th> -->
-					<th class="text-center">負責人姓名</th>
+					<th class="text-center">負責人</th>
 					<th class="text-center">電話</th>
 					<th class="text-center">審核結果</th>
 					
@@ -357,55 +356,26 @@ body {
 						<td>
 							<FORM METHOD="post"
 								ACTION="<%=request.getContextPath()%>/hotel/hotel.do">
-								<input type="submit" value="審核通過" id="LoginButton"> 
+								<input type="submit" value="" height='32px' style="background-image: url('<%=request.getContextPath()%>/backend/hotel/images/success.png');width:32px;height:32px;background-color:Transparent;border:0px;float:left;margin-left:25%;"> 
 								<input type="hidden" name="hotelId" value="${HotelVO.hotelId}"> 
 								<input type="hidden" name="hotelStatus" value="${HotelVO.hotelStatus}">
 								<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
-<!-- 								送出本網頁的路徑給Controller -->
 								<input type="hidden" name="whichPage" value="<%=whichPage%>">
-<!-- 								送出當前是第幾頁給Controller -->
 								<input type="hidden" name="action" value="secess">
 							</FORM>
-							<br>
+					
 							<FORM METHOD="post"
 								ACTION="<%=request.getContextPath()%>/hotel/hotel.do">
-								<input type="submit" value="審核未通過" id="LoginButton1"> 
+								<input type="submit" value="" height='32px' style="background-image: url('<%=request.getContextPath()%>/backend/hotel/images/error.png');width:32px;height:32px;background-color:Transparent;border:0px;"> 
 								<input type="hidden" name="hotelId" value="${HotelVO.hotelId}"> 
 								<input type="hidden" name="hotelStatus" value="${HotelVO.hotelStatus}">
 								<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
-<!-- 								送出本網頁的路徑給Controller -->
 								<input type="hidden" name="whichPage" value="<%=whichPage%>">
-<!-- 								送出當前是第幾頁給Controller -->
 								<input type="hidden" name="action" value="nosecess"><br>
 								<input type="text" name="other" id="nosecess">
 							</FORM>
 						</td>
-<!-- 						<td> -->
-<!-- 							<FORM METHOD="post" -->
-<%-- 								ACTION="<%=request.getContextPath()%>/hotel/hotel.do"> --%>
-<!-- 								<input type="submit" value="查看" id="LoginButton"> <input -->
-<%-- 									type="hidden" name="hotelId" value="${HotelVO.hotelId}"> <input --%>
-<!-- 									type="hidden" name="requestURL" -->
-<%-- 									value="<%=request.getServletPath()%>"> --%>
-<!-- <!-- 								送出本網頁的路徑給Controller --> 
-<%-- 								<input type="hidden" name="whichPage" value="<%=whichPage%>"> --%>
-<!-- <!-- 								送出當前是第幾頁給Controller --> 
-<!-- 								<input type="hidden" name="action" value="getOne"> -->
-<!-- 							</FORM> -->
-<!-- 						</td> -->
-<!-- 						<td> -->
-<!-- 							<FORM METHOD="post" -->
-<%-- 								ACTION="<%=request.getContextPath()%>/auth/auth.do"> --%>
-<!-- 								<input type="submit" value="查詢權限" id="LoginButton"> <input -->
-<%-- 									type="hidden" name="empId" value="${EmpVO.empId}"> <input --%>
-<!-- 									type="hidden" name="requestURL" -->
-<%-- 									value="<%=request.getServletPath()%>"> --%>
-<!-- 								送出本網頁的路徑給Controller -->
-<%-- 								<input type="hidden" name="whichPage" value="<%=whichPage%>"> --%>
-<!-- 								送出當前是第幾頁給Controller -->
-<!-- 								<input type="hidden" name="action" value="getOne_For_Auth"> -->
-<!-- 							</FORM> -->
-<!-- 						</td> -->
+
 					</tr>
 				</c:forEach>
 			</table>
