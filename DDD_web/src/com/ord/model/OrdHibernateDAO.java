@@ -25,6 +25,10 @@ import java.sql.*;
 
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+
+import com.hotel.model.HotelService;
+import com.hotel.model.HotelVO;
+
 import org.hibernate.Criteria;
 
 public class OrdHibernateDAO implements OrdDAO_interface {
@@ -221,6 +225,10 @@ public class OrdHibernateDAO implements OrdDAO_interface {
 		return list;		
 	}
 	
+	@Override
+	public void updateRating(String aOrdId, String aOrdRatingStarNo, String aOrdRatingContent) {		
+	}
+	
 	public static void main(String[] args) {
 
 		OrdDAO dao = new OrdDAO();
@@ -293,4 +301,6 @@ public class OrdHibernateDAO implements OrdDAO_interface {
 //			System.out.println();
 //		}
 	}
+
+
 }

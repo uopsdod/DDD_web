@@ -22,4 +22,9 @@ public interface OrdDAO_interface {
 	
     //萬用複合查詢(傳入參數型態Map)(回傳 List)
     public List<OrdVO> getAll(Map<String, String[]> map); 
+    
+    
+    /*(一般會員)更新評價數與評論內容(柚子新增)*/
+    public void updateRating(String aOrdId, String aOrdRatingStarNo, String aOrdRatingContent);
+    
 }
