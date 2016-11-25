@@ -5,7 +5,7 @@
 <%@ page import="java.sql.Timestamp"%>
 <%
 OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
-/* Servlet有放 下面可以省 */
+/* OrdServlet有放 下面可以省 */
 pageContext.setAttribute("ordVO", ordVO);
 %>
 
