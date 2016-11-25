@@ -291,12 +291,12 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
         </div>
         <!-- 背景圖 -->
         <div id="fade" class="col-md-12">
-            <img src="<%=request.getContextPath()%>/frontend_mem/images/back20.jpg" class="img" />
-            <img src="<%=request.getContextPath()%>/frontend_mem/images/back16.jpg" class="img" />
-            <img src="<%=request.getContextPath()%>/frontend_mem/images/back15.jpg" class="img" />
-            <img src="<%=request.getContextPath()%>/frontend_mem/images/back13.jpg" class="img" />
-            <img src="<%=request.getContextPath()%>/frontend_mem/images/back19.jpg" class="img" />
-            <img src="<%=request.getContextPath()%>/frontend_mem/images/back14.jpg" class="img" />
+       		<img src="<%=request.getContextPath()%>/frontend_mem/images/back23.jpg" class="img" />
+       		<img src="<%=request.getContextPath()%>/frontend_mem/images/back24.jpg" class="img" />
+        	<img src="<%=request.getContextPath()%>/frontend_mem/images/back15.jpg" class="img" />
+        	<img src="<%=request.getContextPath()%>/frontend_mem/images/back25.jpg" class="img" />            
+            <img src="<%=request.getContextPath()%>/frontend_mem/images/back26.jpg" class="img" />
+            <img src="<%=request.getContextPath()%>/frontend_mem/images/back27.jpg" class="img" />                                     
         </div>
         <!-- <div id="title">LIVE THERE</div>  -->
         <div class="hidden-xs">
@@ -309,7 +309,11 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
     <!-- <div id="img" align="center"></div> <!-- 首頁大圖 -->
     <!-- 圖上大字 -->
     <section>
-        <h2 id='searchTitle'>訂飯店、住Villa、找共住、找便宜 包山包海國內外各類住宿</h2>
+        <h2 id='searchTitle'>
+        	<img src="<%=request.getContextPath()%>/frontend_mem/img/location.png" style="margin-top:-11px;"/>
+        	訂飯店、住Villa、找共住、找便宜 包山包海國內外各類住宿
+        	<img src="<%=request.getContextPath()%>/frontend_mem/img/house.png" style="margin-top:-11px;"/>
+        </h2>
         <div id="searchbgcolor" class="col-md-12">
             <table>
                 <form action="嘉鴻map/map.html" method="get">
@@ -338,7 +342,11 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                 </form>
             </table>
         </div>
-         <h1 class="title1">提供給您的超值方案</h1>
+         <h1 class="title1">
+         	<img src="<%=request.getContextPath()%>/frontend_mem/img/left.jpg" />
+         	提供給您的超值方案
+         	<img src="<%=request.getContextPath()%>/frontend_mem/img/right.jpg" />
+         </h1>
         
        <section class="htmleaf-container">
 		<div class="container">
@@ -553,7 +561,11 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 			
   			  
 <%-- 		<c:if test='${list["7"]!=null}'>     --%>
-        <h1 class="title5">提供最優惠的今晚價格</h1>
+        <h1 class="title5">
+        	<img src="<%=request.getContextPath()%>/frontend_mem/img/left.jpg" />
+        	提供最優惠的今晚價格
+        	<img src="<%=request.getContextPath()%>/frontend_mem/img/right.jpg" />
+        </h1>
         <div class="container" style="width: 97%">
             <div class="row">
                 <div class="col-xs-12 col-sm-12">
@@ -636,12 +648,20 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
         </div>
 <%--         </c:if> --%>
         <!--  zzzzzzzzzzzz -->
-        <h1 class="title4">讓我們為您服務</h1>
+        <h1 class="title4">
+        	<img src="<%=request.getContextPath()%>/frontend_mem/img/left.jpg" />
+       		 讓我們為您服務
+       		<img src="<%=request.getContextPath()%>/frontend_mem/img/right.jpg" />
+        </h1>
         <div id="slideshow" class="col-md-12">
             <img src="<%=request.getContextPath()%>/frontend_mem/images/house.jpg" class="imggg" />
             <img src="<%=request.getContextPath()%>/frontend_mem/images/together.jpg" class="imggg" />
         </div>
-        <h1 class="title2">精選人氣城市，體驗在地生活</h1>
+        <h1 class="title2">
+        	<img src="<%=request.getContextPath()%>/frontend_mem/img/left.jpg" />
+        	精選人氣城市，體驗在地生活
+        	<img src="<%=request.getContextPath()%>/frontend_mem/img/right.jpg" />
+        </h1>
         <div class="col-md-12 text-center">
             <ul class="cityList">
                 <li class="sectionAddress">
