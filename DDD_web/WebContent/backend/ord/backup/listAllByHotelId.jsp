@@ -51,8 +51,8 @@
 		<th>簡訊驗證碼</th>
 		<th>QR Code圖片</th>
 	</tr>
-	<%@ include file="pages/page1.file" %>
-	<c:forEach var="ordVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+<%-- 	<%@ include file="pages/page1.file" %> --%>
+<%-- 	<c:forEach var="ordVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>"> --%>
 		<tr>
 			<td>${ordVO.ordId}</td>
 			<td>${ordVO.ordRoomVO.roomId}</td>
@@ -67,9 +67,9 @@
 			<td>${ordVO.ordMsgNo}</td>
 			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td>
 		</tr>
-	</c:forEach>
+<%-- 	</c:forEach> --%>
 </table>
-<%@ include file="pages/page2.file"%>
+<%-- <%@ include file="pages/page2.file"%> --%>
 
 </body>
 </html>

@@ -51,13 +51,30 @@
 			<td> ${ordVO.ordMemVO.memId} <br> ${ordVO.ordMemVO.memName} </td>
 			<td> ${ordVO.ordHotelVO.hotelId} <br> ${ordVO.ordHotelVO.hotelName} </td>
 			<td><%=ordVO.getOrdPrice()%></td>
-			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdLiveDate())%></td>
+						
+			<% if(ordVO.getOrdLiveDate()!=null){ %>
+				<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdLiveDate())%></td>
+			<% } else { %>
+				<td>尚未入住</td>
+			<% } %>			
+			
 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdDate())%></td>
 			<td><%=ordStatusTrans.get(ordVO.getOrdStatus())%></td>
-			<td><%=ordVO.getOrdRatingContent()%></td>
-			<td><%=ordVO.getOrdRatingStarNo()%></td>
+			
+			<% if(ordVO.getOrdRatingContent()!=null){ %>
+				<td><%=ordVO.getOrdRatingContent()%></td>
+			<% } else { %>
+				<td>目前沒有評價內容</td>
+			<% } %>				
+						
+			<% if(ordVO.getOrdRatingStarNo()!=null){ %>
+				<td><%=ordVO.getOrdRatingStarNo()%></td>
+			<% } else { %>
+				<td>目前沒有評價星星數</td>
+			<% } %>	
+			
 			<td><%=ordVO.getOrdMsgNo()%></td>
-			<td><img src="DBGifReader4?ordId=<%=ordVO.getOrdId()%>"></td>
+			<td><img src="<%=request.getContextPath()%>/ord/DBGifReader4?ordId=<%=ordVO.getOrdId()%>"></td>
 		</tr>
 
 	</table>

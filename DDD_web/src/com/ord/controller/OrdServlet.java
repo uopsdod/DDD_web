@@ -326,6 +326,7 @@ public class OrdServlet extends HttpServlet {
 				ordVO.setOrdStatus(ordStatus);
 				ordVO.setOrdRatingContent(ordRatingContent);
 				ordVO.setOrdRatingStarNo(ordRatingStarNo);
+				/* 圖片不用重送 */
 //				ordVO.setOrdQrPic(ordQrPic);	
 				ordVO.setOrdMsgNo(ordMsgNo);
 				ordVO.setOrdId(ordId);
@@ -370,6 +371,7 @@ public class OrdServlet extends HttpServlet {
 			}
 		}
 		
+		/* 部份欄位可以傳空值 list all那邊也可以顯示 */
 		if("insert".equals(action)){ //來自addOrd.jsp的請求
 			List<String> errorMsgs = new LinkedList<String>();
 			aReq.setAttribute("errorMsgs",errorMsgs);
@@ -393,10 +395,8 @@ public class OrdServlet extends HttpServlet {
 				*/				
 				
 				/* 1.接收請求參數 */
-
 				Integer checkIdFormat = null;
-				
-				
+
 				/* 1.接收請求參數 輸入格式錯誤 */			
 				String ordRoomId = aReq.getParameter("ordRoomId").trim();
 
@@ -463,9 +463,7 @@ public class OrdServlet extends HttpServlet {
 				
 				try{
 					String ordLiveDateString = aReq.getParameter("ordLiveDate").trim();
-					
-					System.out.println("(ordLiveDateString) I was HERE !");
-					
+
 					if(ordLiveDateString !=null && (ordLiveDateString.trim()).length()!=0 ){
 						ordLiveDate = java.sql.Date.valueOf(ordLiveDateString);
 						ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
@@ -482,9 +480,7 @@ public class OrdServlet extends HttpServlet {
 				
 				try{
 					String ordRatingStarNoString = aReq.getParameter("ordRatingStarNo").trim();
-					
-					System.out.println("(ordRatingStarNo) I was HERE !");
-					
+
 					if(ordRatingStarNoString !=null && (ordRatingStarNoString.trim()).length()!=0 ){
 						ordRatingStarNo = new Integer(ordRatingStarNoString); 
 					}
@@ -505,8 +501,6 @@ public class OrdServlet extends HttpServlet {
 				
 				String QRUrl = "https://github.com/uopsdod/DDD_web?ordMsgNo=" + ordMsgNo; 
 				
-
-				
 				byte[] ordQrPic = QRCodeImgGenerator.writeQRCode(QRUrl);
 				
 				/* 
@@ -524,9 +518,8 @@ public class OrdServlet extends HttpServlet {
 				 * 11-09 ordQrPic
 				 * 12-10 ordMsgNo
 				*/
-				
-
-								
+					
+				/* 回傳給Debug用 */
 				ordVO = new OrdVO();
 				com.room.model.RoomVO roomVO = new com.room.model.RoomVO();
 				roomVO.setRoomId(ordRoomId);
@@ -544,12 +537,17 @@ public class OrdServlet extends HttpServlet {
 				if(ordLiveDateTs!=null){
 					ordVO.setOrdLiveDate(ordLiveDateTs);
 				}
+				
 				ordVO.setOrdStatus(ordStatus);
-				ordVO.setOrdRatingContent(ordRatingContent);
+				
+				if(ordRatingContent!=null){
+					ordVO.setOrdRatingContent(ordRatingContent);
+				}
 				
 				if(ordRatingStarNo!=null){
 					ordVO.setOrdRatingStarNo(ordRatingStarNo);
 				}
+				
 				ordVO.setOrdQrPic(ordQrPic);
 				ordVO.setOrdMsgNo(ordMsgNo);
 
@@ -725,6 +723,64 @@ public class OrdServlet extends HttpServlet {
 			}
 			
 		}
+		
+		if("simpleCheckIn".equals(action)){
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			aReq.setAttribute("errorMsgs", errorMsgs);
+			
+			
+			try{
+				/* 1.接收請求參數 - 輸入格式的錯誤處理 */
+				Integer checkIdFormat = null;
+
+				/* 1.接收請求參數 輸入格式錯誤 */			
+				String ordId = aReq.getParameter("ordId").trim();
+
+				if(ordId == null || (ordId.trim()).length()==0){
+					errorMsgs.add("請輸入訂單編號");
+				}				
+				
+				try{
+					checkIdFormat = new Integer(ordId); 
+				}
+				catch(NumberFormatException e){
+					errorMsgs.add("訂單編號格式不正確");
+					e.printStackTrace();
+				}	
+				
+				if(!errorMsgs.isEmpty()){
+					RequestDispatcher failureView = aReq.getRequestDispatcher("/frontend_hotel/ord/simpleCheckIn_Input.jsp");
+					failureView.forward(aReq, aRes);
+					return;
+				}				
+				
+				String ordMsgNo = aReq.getParameter("ordMsgNo");
+				
+				OrdService ordSvc = new OrdService(); 	
+				OrdVO ordVO = ordSvc.getOneOrd(ordId);	
+				
+				String checkResult = null;
+				
+				if(ordMsgNo.equals(ordVO.getOrdMsgNo())){
+					checkResult = "驗證成功";
+				}
+				else{
+					checkResult = "驗證失敗";
+				}
+				
+				aReq.setAttribute("checkResult", checkResult);
+				RequestDispatcher successView = aReq.getRequestDispatcher("/frontend_hotel/ord/simpleCheckIn_Result.jsp");
+				successView.forward(aReq,aRes);
+				
+			}
+			catch(Exception e){
+				throw new ServletException(e);
+			}
+			
+		}
+		
+		
 	}
 	
 }

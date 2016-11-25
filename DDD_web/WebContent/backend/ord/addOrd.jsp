@@ -157,8 +157,8 @@ pageContext.setAttribute("ordVO", ordVO);
 						<% String ordMsgNo = null;
 					
 							if(ordVO==null) {
-								/* 自動產生四個亂數英文數字 */
-								char[] randomCharArray = new char[4];
+								/* 自動產生五個亂數英文數字 */
+								char[] randomCharArray = new char[5];
 							
 								for(int i= 0 ; i < randomCharArray.length ;i++){
 									Random r = new Random();
