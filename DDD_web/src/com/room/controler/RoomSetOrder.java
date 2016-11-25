@@ -190,7 +190,7 @@ public class RoomSetOrder extends HttpServlet {
 	
 	
 	
-	public synchronized static void setOrder(String ordHotelId,String ordRoomId,String ordMemId,int ordPrice,String ordMail,String ordPhone,ServletContext box){
+	public synchronized static OrdVO setOrder(String ordHotelId,String ordRoomId,String ordMemId,int ordPrice,String ordMail,String ordPhone,ServletContext box){
 		
 		
 		
@@ -216,7 +216,7 @@ public class RoomSetOrder extends HttpServlet {
     	
 	
     	OrdService ordSvc = new OrdService();
-    	ordSvc.addOrd(ordRoomId,ordMemId,ordHotelId,ordPrice,null,"0",null,null,ordQrPic,key);	
+    	OrdVO newOrdVO= ordSvc.addOrd(ordRoomId,ordMemId,ordHotelId,ordPrice,null,"0",null,null,ordQrPic,key);	
 		
 		
     	
@@ -395,14 +395,17 @@ public class RoomSetOrder extends HttpServlet {
 	        	 
 	        	 roomSvc2.update(roomVO2);	//房型修改剩餘房數
 	        	 
-	        	  	 
-	        	 
+	        	 String addOrdId = newOrdVO.getOrdId();         	 
+	        	 OrdVO thisOrdVO = ordSvc.getOneOrd(addOrdId);
+	        	 thisOrdVO.setOrdStatus("4");
+	        	 ordSvc.updateOrd(thisOrdVO);
+ 
 	         }
 	     };
 	 
 	     timer.schedule(back,delayTime); 
 	 	
-	     System.out.println(roomVO.getRoomRemainNo());
+	     return newOrdVO;
 	     
 	     
 	     
