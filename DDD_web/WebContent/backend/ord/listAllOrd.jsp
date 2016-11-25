@@ -264,8 +264,9 @@
 
 								<td>${ordVO.ordPrice}</td>
 								<%-- 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdLiveDate())%></td> --%>
-								<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO) (pageContext.getAttribute("ordVO"))).getOrdDate())%></td>
-
+								
+								<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdDate())%></td>		
+								
 								<%-- 			<td>${ordVO.ordStatus}</td> --%>
 								<%-- 			<td><%=ordStatusTrans.get( ((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdStatus() )%></td> --%>
 

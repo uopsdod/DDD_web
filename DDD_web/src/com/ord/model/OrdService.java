@@ -17,7 +17,7 @@ public class OrdService {
 //	}
 	
 	public OrdService() {
-		//dao = new EmpHibernateDAO();
+		//dao = new OrdHibernateDAO();
 		//註1: 雖然model-config1-DriverManagerDataSource.xml也可以用
 		//註2: 但為了使用Apache DBCP連線池,以提高效能,所以底下的model-config2-JndiObjectFactoryBean.xml內部dataSource設定是採用org.springframework.jndi.JndiObjectFactoryBean
 		ApplicationContext context = new ClassPathXmlApplicationContext("model-config2-JndiObjectFactoryBean.xml");
@@ -70,6 +70,7 @@ public class OrdService {
 		Timestamp currentTime = new Timestamp(new java.util.Date().getTime());
 		ordVO.setOrdDate(currentTime);
 
+		/* 把自增主鍵填上去 */
 		String ordId = dao.insert(ordVO);
 		ordVO.setOrdId(ordId);
 		return ordVO;
