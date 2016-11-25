@@ -22,7 +22,7 @@ public class OrdServlet extends HttpServlet {
 		aReq.setCharacterEncoding("UTF-8");
 		String action = aReq.getParameter("action");
 		
-		//System.out.println("now action: " + action);
+		System.out.println("now action: " + action);
 		
 		if("getOneForDisplay".equals(action)){ //來自selectPage.jsp請求
 			List<String> errorMsgs = new LinkedList<String>();
@@ -374,6 +374,9 @@ public class OrdServlet extends HttpServlet {
 			List<String> errorMsgs = new LinkedList<String>();
 			aReq.setAttribute("errorMsgs",errorMsgs);
 			OrdVO ordVO = null;	
+			
+			System.out.println("(insert) I was HERE !");
+			
 			try{
 				/* 
 				 * = INSERT_STMT 對應 =
@@ -409,6 +412,7 @@ public class OrdServlet extends HttpServlet {
 				catch(NumberFormatException e){
 					ordRoomId = null;
 					errorMsgs.add("房型編號格式不正確");
+					e.printStackTrace();
 				}					
 				
 				String ordMemId = aReq.getParameter("ordMemId").trim();
@@ -423,6 +427,7 @@ public class OrdServlet extends HttpServlet {
 				catch(NumberFormatException e){
 					ordMemId = null;
 					errorMsgs.add("一般會員編號格式不正確");
+					e.printStackTrace();
 				}	
 				
 				String ordHotelId = aReq.getParameter("ordHotelId").trim();
@@ -437,6 +442,7 @@ public class OrdServlet extends HttpServlet {
 				catch(NumberFormatException e){
 					ordHotelId = null;
 					errorMsgs.add("廠商會員編號格式不正確");
+					e.printStackTrace();
 				}									
 
 				String ordStatus = aReq.getParameter("ordStatus").trim();
@@ -451,29 +457,45 @@ public class OrdServlet extends HttpServlet {
 				catch(NumberFormatException e){
 					ordPrice = 0;
 					errorMsgs.add("訂單金額請填數字");
+					e.printStackTrace();
 				}
 				
 				java.sql.Date ordLiveDate = null;
 				Timestamp ordLiveDateTs = null;
 				
 				try{
-					ordLiveDate = java.sql.Date.valueOf(aReq.getParameter("ordLiveDate").trim());
-					ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
+					String ordLiveDateString = aReq.getParameter("ordLiveDate").trim();
+					
+					System.out.println("(ordLiveDateString) I was HERE !");
+					
+					if(ordLiveDateString !=null && (ordLiveDateString.trim()).length()!=0 ){
+						ordLiveDate = java.sql.Date.valueOf(ordLiveDateString);
+						ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
+					}
 				}
 				catch(IllegalArgumentException e){
 					ordLiveDate = new java.sql.Date(System.currentTimeMillis());
 					ordLiveDateTs = new Timestamp(ordLiveDate.getTime());
-					errorMsgs.add("請輸入入住日期");
+					errorMsgs.add("入住日期出錯誤??");
+					e.printStackTrace();
 				}				
 				
 				Integer ordRatingStarNo = null;
 				
 				try{
-					ordRatingStarNo = new Integer(aReq.getParameter("ordRatingStarNo").trim()); 
+					String ordRatingStarNoString = aReq.getParameter("ordRatingStarNo").trim();
+					
+					System.out.println("(ordRatingStarNo) I was HERE !");
+					
+					if(ordRatingStarNoString !=null && (ordRatingStarNoString.trim()).length()!=0 ){
+						ordRatingStarNo = new Integer(ordRatingStarNoString); 
+					}
+					
 				}
 				catch(NumberFormatException e){
 					ordRatingStarNo = 0;
 					errorMsgs.add("評價星星數請填數字");
+					e.printStackTrace();
 				}
 				
 				/* 處理上傳圖片進資料庫 */
@@ -483,7 +505,9 @@ public class OrdServlet extends HttpServlet {
 //				in.read(ordQrPic);
 //				in.close();				
 				
-				String QRUrl = "https://github.com/uopsdod/DDD_web"; 
+				String QRUrl = "https://github.com/uopsdod/DDD_web?ordMsgNo=" + ordMsgNo; 
+				
+				System.out.println(QRUrl);
 				
 				byte[] ordQrPic = QRCodeImgGenerator.writeQRCode(QRUrl);
 				
@@ -501,7 +525,9 @@ public class OrdServlet extends HttpServlet {
 				 * 10-08 ordRatingStarNo
 				 * 11-09 ordQrPic
 				 * 12-10 ordMsgNo
-				*/				
+				*/
+				
+				System.out.println("(OrdVO) I was HERE !");
 								
 				ordVO = new OrdVO();
 				com.room.model.RoomVO roomVO = new com.room.model.RoomVO();
@@ -516,10 +542,16 @@ public class OrdServlet extends HttpServlet {
 				hotelVO.setHotelId(ordHotelId);
 				ordVO.setOrdHotelVO(hotelVO);
 				ordVO.setOrdPrice(ordPrice);
-				ordVO.setOrdLiveDate(ordLiveDateTs);
+				
+				if(ordLiveDateTs!=null){
+					ordVO.setOrdLiveDate(ordLiveDateTs);
+				}
 				ordVO.setOrdStatus(ordStatus);
 				ordVO.setOrdRatingContent(ordRatingContent);
-				ordVO.setOrdRatingStarNo(ordRatingStarNo);
+				
+				if(ordRatingStarNo!=null){
+					ordVO.setOrdRatingStarNo(ordRatingStarNo);
+				}
 				ordVO.setOrdQrPic(ordQrPic);
 				ordVO.setOrdMsgNo(ordMsgNo);
 
@@ -540,6 +572,7 @@ public class OrdServlet extends HttpServlet {
 				successView.forward(aReq, aRes);
 			}
 			catch(Exception e){
+				e.printStackTrace();
 				errorMsgs.add(e.getMessage());
 				aReq.setAttribute("ordVO", ordVO);
 				RequestDispatcher failureView = aReq.getRequestDispatcher("/backend/ord/addOrd.jsp");
