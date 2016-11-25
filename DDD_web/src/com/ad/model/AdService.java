@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.ad.model.AdDAO_interface;
 
-public class AdService {//¸òDAO­n¸ê®Æ µM«áDAO¦A¦^¶Ç¸ê®Æµ¹¦Û¤v
+public class AdService {//ï¿½ï¿½DAOï¿½nï¿½ï¿½ï¿½ ï¿½Mï¿½ï¿½DAOï¿½Aï¿½^ï¿½Ç¸ï¿½Æµï¿½ï¿½Û¤v
 
 	private AdDAO_interface dao;
 
@@ -13,11 +13,13 @@ public class AdService {//¸òDAO­n¸ê®Æ µM«áDAO¦A¦^¶Ç¸ê®Æµ¹¦Û¤v
 		dao = new AdDAO();
 	}
 
-	public AdVO addAd(String aAdStatus,java.sql.Date aAdPayDate, byte[] aAdPic,
+	public AdVO addAd(String adAdPlanId,String adHotelId,String aAdStatus,java.sql.Date aAdPayDate, byte[] aAdPic,
 			String aAdPicContent, Integer aAdHit) {
 
 		AdVO AdVO = new AdVO();
 
+		AdVO.setAdAdPlanId(adAdPlanId);
+		AdVO.setAdHotelId(adHotelId);
 		AdVO.setAdStatus(aAdStatus);
 		AdVO.setAdPayDate(aAdPayDate);
 		AdVO.setAdPic(aAdPic);
@@ -29,11 +31,12 @@ public class AdService {//¸òDAO­n¸ê®Æ µM«áDAO¦A¦^¶Ç¸ê®Æµ¹¦Û¤v
 		return AdVO;
 	}
 
-	public AdVO updateAd(String aAdStatus,java.sql.Date aAdPayDate, byte[] aAdPic,
+	public AdVO updateAd(String aAdId,String aAdAdPlanId, String aAdStatus,java.sql.Date aAdPayDate, byte[] aAdPic,
 			String aAdPicContent, Integer aAdHit) {
 
 		AdVO AdVO = new AdVO();
-
+		AdVO.setAdId(aAdId);
+		AdVO.setAdAdPlanId(aAdAdPlanId);
 		AdVO.setAdStatus(aAdStatus);
 		AdVO.setAdPayDate(aAdPayDate);
 		AdVO.setAdPic(aAdPic);
@@ -54,5 +57,9 @@ public class AdService {//¸òDAO­n¸ê®Æ µM«áDAO¦A¦^¶Ç¸ê®Æµ¹¦Û¤v
 
 	public List<AdVO> getAll() {
 		return dao.getAll();
+	}
+	
+	public List<AdVO> getAll(String aAdHotelId) {
+		return dao.getAllByHotelId(aAdHotelId);
 	}
 }

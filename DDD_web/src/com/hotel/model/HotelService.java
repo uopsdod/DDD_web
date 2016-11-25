@@ -1,6 +1,7 @@
 package com.hotel.model;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.emp.model.EmpVO;
@@ -12,7 +13,12 @@ public class HotelService {
 	public HotelService() {
 		dao = new HotelDAO();
 	}
-
+	
+	//亂數FOR展示
+	public List<Map> GET_RANDOM_HOTEL_TO_VIEW() {	
+		return dao.GET_RANDOM_HOTEL_TO_VIEW();		
+	}
+	
 	// 取全
 	public List<HotelVO> getAll() {
 		return dao.getAll();

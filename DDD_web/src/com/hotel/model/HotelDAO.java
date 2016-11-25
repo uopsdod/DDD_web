@@ -5,9 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
 import java.util.*;
 
 import javax.naming.Context;
@@ -68,12 +65,60 @@ public class HotelDAO implements HotelDAO_interface {
 	private static final Base64.Encoder encoder = Base64.getEncoder();
 	private static final Base64.Encoder encoder1 = Base64.getEncoder();
 	public static final String CHECK_MEMBER = "SELECT hotelAccount, hotelPwd FROM hotel where hotelAccount = ?";
-	
+	public static final String GET_RANDOM_HOTEL_TO_VIEW ="SELECT * FROM "
+			+ "(select h.hotelName,h.hotelRatingResult,r.roomName,r.roomid,r.roomPrice,o.roomPhotoPic "
+			+ "from room r,roomphoto o,hotel h where r.roomforsell = '1' and r.roomid=o.roomPhotoRoomId and r.roomHotelId = h.hotelId "
+			+ "ORDER BY dbms_random.value) where rownum <= 8";
 	/*下面是韓哥需要的*/
 	private static final String GET_ORDS_BYHOTELID_STMT = "SELECT ordID,ordRoomId,"
 			+"ordMemId,ordHotelId,ordPrice, ordLiveDate, ordDate,ordStatus,ordRatingContent,"
 			+"ordRatingStarNo,ordMsgNo FROM ord where OrdHotelId = ? order by ordID DESC";		
 	
+	@Override
+	public List<Map> GET_RANDOM_HOTEL_TO_VIEW() {
+		List<Map> list = new ArrayList<Map>();//LISTMAP
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_RANDOM_HOTEL_TO_VIEW);
+			rs = pstmt.executeQuery();	
+			
+			while (rs.next()) {
+				Map<Object,Object> map = new HashMap<Object,Object>();//MAP
+				  byte[] roomPhotoPic = rs.getBytes("roomPhotoPic");
+				  
+				map.put("hotelName",rs.getString("hotelName"));//廠商名
+				map.put("hotelRatingResult",rs.getString("hotelRatingResult")); //廠商評價
+				map.put("roomName",rs.getString("roomName"));//廠商的房名
+				map.put("roomid",rs.getString("roomid"));//房編號為了拿價格
+				map.put("roomPrice",rs.getString("roomPrice"));//房原價
+				map.put("roomPhotoPic",encoder.encodeToString(roomPhotoPic));//房照片				
+				list.add(map);//加到回傳
+			}
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+		return list;
+	}
 	
 	@Override
 	public List<HotelVO> getAll() {
@@ -1013,6 +1058,8 @@ public class HotelDAO implements HotelDAO_interface {
 		}
 		return hotelVO;
 	}
+
+	
 
 }
 

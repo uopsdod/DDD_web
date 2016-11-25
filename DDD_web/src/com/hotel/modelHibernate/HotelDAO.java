@@ -1,7 +1,12 @@
 package com.hotel.modelHibernate;
 
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -14,6 +19,49 @@ public class HotelDAO implements HotelDAO_interface {
 	private static final Base64.Encoder encoder = Base64.getEncoder();
 	private static final Base64.Encoder encoder1 = Base64.getEncoder();
 	private static final String GET_ALL_STMT = "from HotelVO order by hotelid";
+	public static final String GET_RANDOM_HOTEL_TO_VIEW ="SELECT * FROM "
+			+ "(select h.hotelName,h.hotelRatingResult,r.roomName,r.roomid,r.roomPrice,o.roomPhotoPic "
+			+ "from room r,roomphoto o,hotel h where r.roomforsell = '1' and r.roomid=o.roomPhotoRoomId and r.roomHotelId = h.hotelId "
+			+ "ORDER BY dbms_random.value) where rownum <= 8";
+	
+	@Override
+	public List<Map> GET_RANDOM_HOTEL_TO_VIEW() {
+		List<Map> list = new ArrayList<Map>();
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createSQLQuery(GET_RANDOM_HOTEL_TO_VIEW);
+			List<Object[]> a = query.list();
+			for(Object[] rs:a){
+				Map<Object,Object> map = new HashMap<Object,Object>();
+//				byte[] pic = String.valueOf(rs[5]).getBytes();
+				
+				Blob blob = (Blob) rs[5];
+				byte[] blobBytes = blob.getBytes(1, (int) blob.length());
+				map.put("hotelName",rs[0].toString());
+				map.put("hotelRatingResult",rs[1].toString());
+				map.put("roomName",rs[2].toString());
+				map.put("roomid",rs[3].toString());
+				map.put("roomPrice",rs[4].toString());
+				map.put("roomPhotoPic",encoder.encodeToString(blobBytes));
+				
+
+				list.add(map);
+				
+			}
+			
+			
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
 	
 	@Override
 	public List<HotelVO> getAll() {

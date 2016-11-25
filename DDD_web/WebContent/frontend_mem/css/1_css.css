@@ -405,16 +405,21 @@ footer #list {
 
 #del {
     color: red;
-    font-size: 18px;
+    font-size: 16px;
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    margin-right:7px;
 }
 
 #tonight {
     color: gray;
     font-size: 18px;
+    font-family: Tahoma, Verdana, 微軟正黑體;
 }
 
 #TWD {
     font-size: 20px;
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    margin-right:7px;
 }
 
 .borderOfBanner {

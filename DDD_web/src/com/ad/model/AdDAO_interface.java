@@ -8,7 +8,8 @@ public interface AdDAO_interface {
       public void update(AdVO aAdVO);
       public void delete(String aAdid);
       public AdVO findByPrimaryKey(String aAdid);
-      public List<AdVO> getAll();//¨q¥X©Ò¦³Bannerªº¸ê®Æ
-      //¸U¥Î½Æ¦X¬d¸ß(¶Ç¤J°Ñ¼Æ«¬ºAMap)(¦^¶Ç List)
+      public List<AdVO> getAll();
+      public List<AdVO> getAllByHotelId(String aAdHotelId);//ï¿½qï¿½Xï¿½Ò¦ï¿½Bannerï¿½ï¿½ï¿½ï¿½ï¿½
+      //ï¿½Uï¿½Î½Æ¦Xï¿½dï¿½ï¿½(ï¿½Ç¤Jï¿½Ñ¼Æ«ï¿½ï¿½AMap)(ï¿½^ï¿½ï¿½ List)
 //    public List<AdVO> getAll(Map<String, String[]> map); 
 }
