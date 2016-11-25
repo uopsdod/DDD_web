@@ -305,11 +305,15 @@ public class RoomSetOrder extends HttpServlet {
 		    	 
 		    	 roomVO.setRoomForSell(false); 
 		    	
+		    	 if(RoomServlet.OnTimer.get(ordRoomId)!=null){ 
+		    	 RoomServlet.OnTimer.get(ordRoomId).cancel();	//取消動態降價排成
+		    	 }
 		    	 
-		    	 RoomServlet.OnTimer.get(ordRoomId).cancel();		//取消動態降價排成
-		    	 nowPrice=(Integer)RoomServlet.OnData.get(ordRoomId).get("price");	//取得此時的動態底價
+		    	 nowPrice=ordPrice;	//取得最後一筆成交的價錢
+		    	 
+		    	 if(RoomServlet.DownTimer.get(ordRoomId)!=null){ 
 		    	 RoomServlet.DownTimer.get(ordRoomId).cancel();		//取消下架排成
-		    	 	    	 
+		    	 }	    	 
 		    	 
 		    	 RoomServlet.OnTimer.remove(ordRoomId); 	//移除降價排程
 		    	 RoomServlet.OnData.remove(ordRoomId);		//移除動態價格資料
@@ -329,6 +333,7 @@ public class RoomSetOrder extends HttpServlet {
 						 roomRegularTime.remove(beforeStartDate); 
 					  }
 				 }
+				 
 				 downSellPrice.put(ordRoomId, nowPrice);
 				 MyEchoServer.BufferBox(ordRoomId,-500,"已售完",0);
 		     }	     
@@ -349,7 +354,7 @@ public class RoomSetOrder extends HttpServlet {
 	     
 	     long divideTime = nowMiliSecond - todayZeroMiliSecond;
 	     
-	     int delayTime = 30*1000;
+	     int delayTime = 3*10*1000;
 	     long reUpTime = divideTime + delayTime;
 	     
 	        
@@ -363,18 +368,16 @@ public class RoomSetOrder extends HttpServlet {
 	        	 
 	        	 int roomDiscountHr = roomVO2.getRoomDiscountHr();
 	        	 int price = downSellPrice.get(ordRoomId);
-	        	 
-	        	 
-	        	 
-	        	 
+	        	 	        	 
 	        	 int remainNo2 =roomVO2.getRoomRemainNo();
 	        	 remainNo2 = remainNo2+1;
+	        	 roomVO2.setRoomRemainNo(remainNo2);	//剩餘房數+1
 	        	 
 	        	 boolean sellNow = roomVO2.getRoomForSell();
 	        	 
 	        	 int downTime = roomVO2.getRoomDiscountEndDate();
 	        	 
-	        	 roomVO2.setRoomRemainNo(remainNo2);
+	        	
 	        	
 	        	 
 	        	 if(sellNow==false&&remainNo2==1&&reUpTime<=(downTime-1000*60*30)){	//再次上架時間要比原定下架時間提前30min才再次上架
@@ -390,8 +393,9 @@ public class RoomSetOrder extends HttpServlet {
 	        	     roomVO2.setRoomForSell(true);	
 	        	 }
 	        	 
-	        	 roomSvc2.update(roomVO2);
+	        	 roomSvc2.update(roomVO2);	//房型修改剩餘房數
 	        	 
+	        	  	 
 	        	 
 	         }
 	     };

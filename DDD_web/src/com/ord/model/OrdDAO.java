@@ -62,8 +62,9 @@ public class OrdDAO implements OrdDAO_interface {
 //	}
 
 	@Override
-	public void insert(OrdVO aOrdVO) {
+	public String insert(OrdVO aOrdVO) {
 		hibernateTemplate.saveOrUpdate(aOrdVO);
+		return aOrdVO.getOrdId();
 	}    
     
     
