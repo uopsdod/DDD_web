@@ -25,6 +25,10 @@ import java.sql.*;
 
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+
+import com.hotel.model.HotelService;
+import com.hotel.model.HotelVO;
+
 import org.hibernate.Criteria;
 
 public class OrdHibernateDAO implements OrdDAO_interface {
@@ -34,7 +38,7 @@ public class OrdHibernateDAO implements OrdDAO_interface {
 	private static final String GET_ALL_ORDHOTELID_STMT = "from OrdVO where ordHotelId=:ordHotelId order by ordId desc";
 	
 	@Override
-	public void insert(OrdVO aOrdVO) {
+	public String insert(OrdVO aOrdVO) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
 			session.beginTransaction();
@@ -44,6 +48,7 @@ public class OrdHibernateDAO implements OrdDAO_interface {
 			session.getTransaction().rollback();
 			throw ex;
 		}
+		return null;
 	}
 
 	@Override
@@ -220,6 +225,10 @@ public class OrdHibernateDAO implements OrdDAO_interface {
 		return list;		
 	}
 	
+	@Override
+	public void updateRating(String aOrdId, String aOrdRatingStarNo, String aOrdRatingContent) {		
+	}
+	
 	public static void main(String[] args) {
 
 		OrdDAO dao = new OrdDAO();
@@ -292,4 +301,6 @@ public class OrdHibernateDAO implements OrdDAO_interface {
 //			System.out.println();
 //		}
 	}
+
+
 }

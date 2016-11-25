@@ -26,9 +26,10 @@ import java.util.*;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.Criteria;
-
 import org.springframework.orm.hibernate3.HibernateTemplate;
+
+import com.hotel.model.HotelService;
+import com.hotel.model.HotelVO;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -62,8 +63,9 @@ public class OrdDAO implements OrdDAO_interface {
 //	}
 
 	@Override
-	public void insert(OrdVO aOrdVO) {
+	public String insert(OrdVO aOrdVO) {
 		hibernateTemplate.saveOrUpdate(aOrdVO);
+		return aOrdVO.getOrdId();
 	}    
     
     
@@ -385,5 +387,41 @@ public class OrdDAO implements OrdDAO_interface {
 //			System.out.print(aOrd.getOrdMsgNo());
 //			System.out.println();
 //		}
+	}
+
+
+	@Override
+	synchronized public void updateRating(String aOrdId, String aOrdRatingStarNo, String aOrdRatingContent) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			// 更新Ord部分
+			OrdVO ordVO = this.findByPrimaryKey(aOrdId);
+			Integer ratingstarNo = Integer.parseInt(aOrdRatingStarNo.substring(0,1));
+			ordVO.setOrdRatingStarNo(ratingstarNo);
+			ordVO.setOrdRatingContent(aOrdRatingContent);
+			session.saveOrUpdate(ordVO);
+			
+			// 更新hotel部分
+			HotelService dao_hotel = new HotelService();
+			HotelVO hotelVO = dao_hotel.getOne(ordVO.getOrdHotelId());
+			System.out.println("currentTotal: " + hotelVO.getHotelRatingTotal());
+			System.out.println("currentResult: " + hotelVO.getHotelRatingResult());
+			System.out.println("ratingstarNo: " + ratingstarNo);
+			Integer currTotalStarNo = hotelVO.getHotelRatingResult() * hotelVO.getHotelRatingTotal();
+			Integer currTotalRatingNo = hotelVO.getHotelRatingTotal();
+//			Integer ratingResult = (int) Math.round((hotelVO.getHotelRatingResult()*hotelVO.getHotelRatingTotal() + ratingstarNo)/(double)hotelVO.getHotelRatingTotal());
+			hotelVO.setHotelRatingTotal(hotelVO.getHotelRatingTotal() + 1);  // 更新hotel總評論數
+			Integer ratingResult = (int) Math.round((currTotalStarNo + ratingstarNo)/(double)hotelVO.getHotelRatingTotal());
+			hotelVO.setHotelRatingResult(ratingResult);
+			System.out.printf("%s/%s=%s%n",""+(currTotalStarNo + ratingstarNo),""+(double)hotelVO.getHotelRatingTotal(),""+ratingResult);		
+			session.saveOrUpdate(hotelVO);
+			
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
+		}
+		
 	}
 }
