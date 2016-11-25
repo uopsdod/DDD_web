@@ -44,7 +44,7 @@ public class OrdHibernateDAO implements OrdDAO_interface {
 			session.getTransaction().rollback();
 			throw ex;
 		}
-		return null;
+		return aOrdVO.getOrdId();
 	}
 
 	@Override

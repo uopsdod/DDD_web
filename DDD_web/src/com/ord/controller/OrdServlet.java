@@ -22,7 +22,7 @@ public class OrdServlet extends HttpServlet {
 		aReq.setCharacterEncoding("UTF-8");
 		String action = aReq.getParameter("action");
 		
-		System.out.println("now action: " + action);
+		System.out.println("(Debug) action: " + action);
 		
 		if("getOneForDisplay".equals(action)){ //來自selectPage.jsp請求
 			List<String> errorMsgs = new LinkedList<String>();
@@ -375,8 +375,6 @@ public class OrdServlet extends HttpServlet {
 			aReq.setAttribute("errorMsgs",errorMsgs);
 			OrdVO ordVO = null;	
 			
-			System.out.println("(insert) I was HERE !");
-			
 			try{
 				/* 
 				 * = INSERT_STMT 對應 =
@@ -507,7 +505,7 @@ public class OrdServlet extends HttpServlet {
 				
 				String QRUrl = "https://github.com/uopsdod/DDD_web?ordMsgNo=" + ordMsgNo; 
 				
-				System.out.println(QRUrl);
+
 				
 				byte[] ordQrPic = QRCodeImgGenerator.writeQRCode(QRUrl);
 				
@@ -527,7 +525,7 @@ public class OrdServlet extends HttpServlet {
 				 * 12-10 ordMsgNo
 				*/
 				
-				System.out.println("(OrdVO) I was HERE !");
+
 								
 				ordVO = new OrdVO();
 				com.room.model.RoomVO roomVO = new com.room.model.RoomVO();
@@ -568,6 +566,7 @@ public class OrdServlet extends HttpServlet {
 				
 				/* 3.新增完成 */
 				String url = "/backend/ord/listAllOrd.jsp";
+				url =  aReq.getContextPath() + url;
 				//RequestDispatcher successView = aReq.getRequestDispatcher(url);
 				//successView.forward(aReq, aRes);
 				/* 用重導方式 把request的東西清掉 */

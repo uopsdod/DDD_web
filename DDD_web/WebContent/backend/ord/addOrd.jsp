@@ -98,7 +98,7 @@ pageContext.setAttribute("ordVO", ordVO);
 					<td>訂單狀態名稱:</td>
 					<td>				
 						<select name="ordStatus">
-							<% if(ordVO == null || ordVO.getOrdStatus() == null ) { %>
+							<% if(ordVO == null || ordVO.getOrdStatus() == null) { %>
 			  					<option value="0">已下單</option>
 			  					<option value="1">主動取消</option>
 			  					<option value="2">已入住</option>
@@ -154,19 +154,27 @@ pageContext.setAttribute("ordVO", ordVO);
 				<tr>
 					<td>簡訊驗證碼:</td>
 					<td>
-						<% 
-							char[] randomCharArray = new char[4];
-						
-							for(int i= 0 ; i < randomCharArray.length ;i++){
-								Random r = new Random();
-								randomCharArray[i] = (char) (r.nextInt(26) + 'A');
-							}
-						
-							String ordMsgNo = new StringBuilder().append(randomCharArray).toString();
+						<% String ordMsgNo = null;
+					
+							if(ordVO==null) {
+								/* 自動產生四個亂數英文數字 */
+								char[] randomCharArray = new char[4];
 							
+								for(int i= 0 ; i < randomCharArray.length ;i++){
+									Random r = new Random();
+									randomCharArray[i] = (char) (r.nextInt(26) + 'A');
+								}
+						
+							ordMsgNo = new StringBuilder().append(randomCharArray).toString();
 						%>
 					
-						<%=ordMsgNo%>
+							<%=ordMsgNo%>
+						
+						<% } else { %>
+						
+							<%=ordVO.getOrdMsgNo()%>
+						
+						<% } %>
 						
 					</td>
 				</tr>
