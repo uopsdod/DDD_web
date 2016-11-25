@@ -70,6 +70,7 @@ public class OrdService {
 		Timestamp currentTime = new Timestamp(new java.util.Date().getTime());
 		ordVO.setOrdDate(currentTime);
 
+		/* 把自增主鍵填上去 */
 		String ordId = dao.insert(ordVO);
 		ordVO.setOrdId(ordId);
 		return ordVO;

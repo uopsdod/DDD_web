@@ -568,8 +568,10 @@ public class OrdServlet extends HttpServlet {
 				
 				/* 3.新增完成 */
 				String url = "/backend/ord/listAllOrd.jsp";
-				RequestDispatcher successView = aReq.getRequestDispatcher(url);
-				successView.forward(aReq, aRes);
+				//RequestDispatcher successView = aReq.getRequestDispatcher(url);
+				//successView.forward(aReq, aRes);
+				/* 用重導方式 把request的東西清掉 */
+				aRes.sendRedirect(url);
 			}
 			catch(Exception e){
 				e.printStackTrace();
