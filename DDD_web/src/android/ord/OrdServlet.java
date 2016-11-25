@@ -25,6 +25,7 @@ import com.mem.model.MemVO;
 import com.ord.model.OrdDAO_interface;
 import com.ord.model.OrdService;
 import com.ord.model.OrdVO;
+import com.room.controler.RoomSetOrder;
 import com.room.model.RoomVO;
 
 public class OrdServlet extends HttpServlet {
@@ -80,6 +81,19 @@ public class OrdServlet extends HttpServlet {
 			PrintWriter out = res.getWriter();
 			System.out.println("outStr:" + outStr);
 			out.println(outStr);
+		}else if("Insert".equals(action)){
+			String hotelId = jsonObject.get("hotelId").getAsString();
+			String roomId = jsonObject.get("roomId").getAsString();
+			String price = jsonObject.get("price").getAsString();
+			MemVO memVO = new MemVO();
+			RoomSetOrder setOrd = new RoomSetOrder();
+			MemService memSev = new MemService();
+			memVO = memSev.getOneMem(memId);
+			String memAccount = memVO.getMemAccount();
+			String memPhone = memVO.getMemPhone();
+			int roomPrice = Integer.parseInt(price);
+			
+			setOrd.setOrder(hotelId, roomId, memId, roomPrice, memAccount, memPhone, getServletContext());
 		}
 		
 	}
