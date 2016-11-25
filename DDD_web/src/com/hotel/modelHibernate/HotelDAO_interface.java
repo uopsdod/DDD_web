@@ -6,6 +6,7 @@ public interface HotelDAO_interface {
 	 public List<HotelVO> getAll_NEED_CHECK();
 	 public List<HotelVO> getAll_TO_VIEW();
 	 public List<HotelVO> getListBySql(String sql);
+	 public List<Map> GET_RANDOM_HOTEL_TO_VIEW();
 	 public HotelVO getUser(String aAccount);
 	 public void insert(HotelVO aHotelVO);
      public void update(HotelVO aHotelVO);
