@@ -27,8 +27,8 @@ public class MailService {
 
        // ●設定 gmail 的帳號 & 密碼 (將藉由你的Gmail來傳送Email)
        // ●須將myGmail的【安全性較低的應用程式存取權】打開
-	     final String myGmail = "cucuman78@gmail.com";
-	     final String myGmail_password = "fig565roam342";
+	     final String myGmail = "dddweb104@gmail.com";
+	     final String myGmail_password = "k123456789";
 		   Session session = Session.getInstance(props, new Authenticator() {
 			   protected PasswordAuthentication getPasswordAuthentication() {
 				   return new PasswordAuthentication(myGmail, myGmail_password);
