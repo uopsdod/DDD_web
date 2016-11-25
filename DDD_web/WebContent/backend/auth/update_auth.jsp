@@ -3,6 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="com.auth.model.*"%>
 <%@ page import="java.util.*"%>
+<%@ page import="java.text.*"%>
 
 <%
 	List<String> authIdList = (List<String>) request.getAttribute("authList");
@@ -12,7 +13,11 @@
 	System.out.println(empId);
 %>
 <!-- 如果權限沒有人事轉到首頁怕他偷吃步-->
-
+<%
+SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+Date date = new Date();
+String strDate = sdFormat.format(date);
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -92,8 +97,8 @@
 	
 	<script>
 	    function Juge() {     			
-		    setTimeout('document.theForm.submit();', 2000);
-			swal("修改成功", "You clicked the button!", "success");
+		    setTimeout('document.theForm.submit();', 1800);
+			swal("權限更改成功!", "[<%=strDate%>]!", "success");
 	    }
 	</script>
 </body>

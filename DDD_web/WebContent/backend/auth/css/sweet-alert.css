@@ -32,7 +32,8 @@
       left: 15px;
       right: 15px; } }
   .sweet-alert h2 {
-    color: #575757;
+  	font-family:Tahoma, Verdana, 微軟正黑體;
+    color: #ff0000;
     font-size: 30px;
     text-align: center;
     font-weight: 600;
@@ -43,6 +44,7 @@
     line-height: 25px;
     display: block; }
   .sweet-alert p {
+  	font-family:Tahoma, Verdana, 微軟正黑體;
     color: #797979;
     font-size: 16px;
     text-align: center;
