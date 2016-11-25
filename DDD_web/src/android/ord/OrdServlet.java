@@ -2,6 +2,7 @@ package android.ord;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,6 +28,8 @@ import com.ord.model.OrdService;
 import com.ord.model.OrdVO;
 import com.room.controler.RoomSetOrder;
 import com.room.model.RoomVO;
+
+import android.Hotel.ImageUtil;
 
 @WebServlet("/android/ord/ord.do")
 public class OrdServlet extends HttpServlet {
@@ -116,6 +119,7 @@ public class OrdServlet extends HttpServlet {
 			String roomId = jsonObject.get("roomId").getAsString();
 			String price = jsonObject.get("price").getAsString();
 			MemVO memVO = new MemVO();
+			OrdVO ordVO = new OrdVO();
 			RoomSetOrder setOrd = new RoomSetOrder();
 			MemService memSev = new MemService();
 			memVO = memSev.getOneMem(memId);
@@ -123,11 +127,35 @@ public class OrdServlet extends HttpServlet {
 			String memPhone = memVO.getMemPhone();
 			int roomPrice = Integer.parseInt(price);
 			
-			setOrd.setOrder(hotelId, roomId, memId, roomPrice, memAccount, memPhone, getServletContext());
+			ordVO = setOrd.setOrder(hotelId, roomId, memId, roomPrice, memAccount, memPhone, getServletContext());
+			String Id = ordVO.getOrdId();
+			outStr = gson.toJson(Id);
+			res.setContentType(CONTENT_TYPE);
+			PrintWriter out = res.getWriter();
+			System.out.println("outStr:" + outStr);
+			out.println(outStr);
 
 		}else if ("updateRating".equals(action)){
 			dao_ord.updateRating(ordId, ordRatingStarNo, ordRatingContent);
 
+		}else if("getImage".equals(action)){
+			int imageSize = jsonObject.get("imageSize").getAsInt();
+			System.out.println("ordId: " + ordId);
+			OrdVO ordVO = dao_ord.getOneOrd("2016111040");
+			System.out.println(ordVO);
+			OutputStream os = res.getOutputStream();
+			byte[] image = ordVO.getOrdQrPic();
+			if (image != null) {
+				image = ImageUtil.shrink(image, imageSize);
+				res.setContentType("image/jpeg");
+				res.setContentLength(image.length);
+				System.out.println("123112131321212131321231313121231321213");
+			}else{
+				System.out.println("---------------------------------------------------------------------------------------------------------------------------'");
+			}
+			
+			os.write(image);
+			
 		}
 		
 	}
