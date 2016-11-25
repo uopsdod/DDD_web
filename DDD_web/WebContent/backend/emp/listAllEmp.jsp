@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.util.*"%>
+<%@ page import="java.text.*"%>
 <%@ page import="com.emp.model.*"%>
 
 <%
@@ -25,6 +26,7 @@ if(!authorityList.contains("101")){
 	response.sendRedirect(request.getContextPath()+"/backend/emp_index.jsp");
 }
 %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -36,6 +38,7 @@ if(!authorityList.contains("101")){
 <title>管理後端</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/bootstrap.min.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/emp/css/0_main.css">
+
 <script src="<%=request.getContextPath()%>/backend/emp/js/jquery.js"></script>
 <script src="<%=request.getContextPath()%>/backend/emp/js/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/backend/emp/js/0_new.js "></script>

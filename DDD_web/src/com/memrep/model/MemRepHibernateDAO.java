@@ -36,6 +36,7 @@ public class MemRepHibernateDAO implements MemRepDAO_interface {
 	
 	private static final String GET_ALL_MEMREPSTATUS = "SELECT memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus, memrepDate, memrepReviewDate FROM memrep WHERE memrepStatus = ? ORDER BY memrepId";	
 	private static final String GET_ALL_STMT = "from MemRepVO order by memRepId";
+	private static final String GET_ONE_ORDID = "from MemRepVO WHERE memRepOrdId = ?";
 
 	@Override
 	public void insert(MemRepVO aMemrepVO) {
@@ -139,6 +140,23 @@ public class MemRepHibernateDAO implements MemRepDAO_interface {
 	    	throw ex;
 	    }
 		return tmpList;
+	}
+
+	@Override
+	public MemRepVO findByMemRepOrdId(String aMemRepOrdId) {
+		List<MemRepVO> memRepVOList = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			Query query = session.createQuery(GET_ONE_ORDID);
+			query.setParameter(0, aMemRepOrdId);
+			memRepVOList = query.list();
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
+		}
+		return (memRepVOList.size() > 0)?memRepVOList.get(0):null;
 	}
 	
 //	@Override
