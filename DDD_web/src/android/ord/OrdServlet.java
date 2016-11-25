@@ -88,6 +88,29 @@ public class OrdServlet extends HttpServlet {
 			System.out.println("outStr:" + outStr);
 			out.println(outStr);
 
+		}else if ("getAllNow".equals(action)){
+			System.out.println("getAllNow match");
+			// 去掉圖片資料 & bs64資料，提升效能
+			//List<OrdVO> tmpOrdVOList = dao_ord.getAll();
+			List<OrdVO> tmpOrdVOList = dao_ord.getAllByOrdMemId(memId);
+			for (OrdVO myVO: tmpOrdVOList){
+				myVO.setOrdQrPic(null);
+				myVO.setOrdMemVO(new MemVO());
+				myVO.setOrdRoomVO(new RoomVO());
+				myVO.getOrdHotelVO().setHotelCoverPic(null);
+			}
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.setDateFormat(df);
+			// 此處特別注意: 為了讓hibernate的VO可以轉成JSON字串，必須在每個一對多的set變數上加上@JsonIgnore
+			outStr = mapper.writeValueAsString(tmpOrdVOList);
+			
+//			outStr = gson.toJson(tmpOrdVOList);
+			res.setContentType(CONTENT_TYPE);
+			PrintWriter out = res.getWriter();
+			System.out.println("outStr:" + outStr);
+			out.println(outStr);			
+			
 		}else if("Insert".equals(action)){
 			String hotelId = jsonObject.get("hotelId").getAsString();
 			String roomId = jsonObject.get("roomId").getAsString();
