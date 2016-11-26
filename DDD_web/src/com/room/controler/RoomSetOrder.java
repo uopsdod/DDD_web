@@ -195,7 +195,22 @@ public class RoomSetOrder extends HttpServlet {
 		
 		
 		
+		 HotelService hotelSvc = new HotelService();			
+		 HotelVO hotelVO = hotelSvc.getOne(ordHotelId);
+		 
+		 MemService memSvc = new MemService();
+		 MemVO memVO =memSvc.getOneMem(ordMemId);
+		 
+		 RoomService roomSvc = new RoomService();
+		 RoomVO roomVO = roomSvc.findByPrimaryKey(ordRoomId);
+		 	 
 		
+		 String hotelName = hotelVO.getHotelName();
+		 String memName = memVO.getMemName(); 
+		 String roomName = roomVO.getRoomName();
+		
+		
+		//取得簡訊驗證碼
 		int number=0;
 	 	String setkey;
     	while(true){
@@ -209,19 +224,35 @@ public class RoomSetOrder extends HttpServlet {
     	Timer timer = new Timer();
     	
     	final String  key = setkey;
-    	
+  	
     	orderTimer.put(key, timer);
 	     
     	
-    	
-	
     	OrdService ordSvc = new OrdService();
     	OrdVO firstOrdVO= ordSvc.addOrd(ordRoomId,ordMemId,ordHotelId,ordPrice,null,"0",null,null,null,key);	
-		
+		//新增訂單
     	
     	
     	
-    	String QRUrl = "https://10.120.25.4:8081/DDD_web/OrdCheckAndCancel?ordMsgNo="+key+"&action=confirm&ordId="+firstOrdVO.getOrdId(); 		
+    	//處理QRcode
+    	 StringBuffer QRcode = new StringBuffer();
+    	
+    	 QRcode.append("Dua Dee Dou訂單");
+    	 QRcode.append("訂單明細如下 : ");
+    	 QRcode.append("\n");
+    	 QRcode.append("訂購人 : ");
+    	 QRcode.append(memName);   	 
+    	 QRcode.append("\n");
+    	 QRcode.append("旅館名稱 : ");
+    	 QRcode.append(hotelName);   
+    	 QRcode.append("\n");
+		 QRcode.append("房型名稱 : ");
+		 QRcode.append(roomName);
+		 QRcode.append("\n");
+		 QRcode.append("房價 : ");
+		 QRcode.append(ordPrice);
+	
+    	String QRUrl =new String(QRcode);; 		
 		
     	byte[] ordQrPic = QRCodeImgGenerator.writeQRCode(QRUrl);    	
     	firstOrdVO.setOrdQrPic(ordQrPic);    	    	    	
@@ -231,23 +262,8 @@ public class RoomSetOrder extends HttpServlet {
     	
     	
     	
+    	//**處理email**********************************************************************	
 		
-		 HotelService hotelSvc = new HotelService();			
-		 HotelVO hotelVO = hotelSvc.getOne(ordHotelId);
-		 
-		 MemService memSvc = new MemService();
-		 MemVO memVO =memSvc.getOneMem(ordMemId);
-		 
-		 RoomService roomSvc = new RoomService();
-		 RoomVO roomVO = roomSvc.findByPrimaryKey(ordRoomId);
-		 
-		 
-		//**處理email**********************************************************************
-		 
-		 String subject = "Dua Dee Dou訂單通知";
-		 String hotelName = hotelVO.getHotelName();
-		 String memName = memVO.getMemName(); 
-		 String roomName = roomVO.getRoomName();
 		 
 		 StringBuffer messageBf = new StringBuffer();
 		 messageBf.append(memName);
@@ -268,7 +284,12 @@ public class RoomSetOrder extends HttpServlet {
 		 messageBf.append("謝謝您的訂購,請直接到旅館付現即可");
 		 
 		 String message = new String(messageBf);
-	 
+		//**處理email**********************************************************************
+		 
+		 
+		//**處理簡訊**********************************************************************
+		 
+		 
 		 StringBuffer telBf = new StringBuffer();
 		 telBf.append(memName);
 		 telBf.append("您好~");
@@ -282,11 +303,9 @@ public class RoomSetOrder extends HttpServlet {
 		 telBf.append(",簡訊驗證碼 : "+key);
 		 
 		 String telMessage = new String(telBf);
-		//**處理email**********************************************************************
-
-		 
-		//**處理簡訊**********************************************************************
+			 	
 		 String[] tel = {ordPhone};
+		 String subject = "Dua Dee Dou訂單通知";
 				 //0972283671
 		//**處理簡訊**********************************************************************
 		 
@@ -298,7 +317,7 @@ public class RoomSetOrder extends HttpServlet {
 		        
 		         public void run(){
 		         	//排程器要執行的任務	
-		        	 Send.send(tel,telMessage);
+//		        	 Send.send(tel,telMessage);	//傳簡訊
 		        	 MailService.gotMail(ordMail, subject, message); 
 		        	
 		         }
