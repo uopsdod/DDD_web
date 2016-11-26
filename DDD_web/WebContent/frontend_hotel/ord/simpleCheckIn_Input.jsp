@@ -48,7 +48,7 @@
 				
 				<select id="ordId" name="ordId">
 					<c:forEach var="ordVO" items="${list}">
-						<c:if test=${ordVO.ordStatus == '0'}>
+						<c:if test="${ordVO.ordStatus == '0'}">
 							<option value="${ordVO.ordId}">${ordVO.ordMemVO.memName} [${ordVO.ordHotelVO.hotelName}]</option>
 						</c:if>
 					</c:forEach>
