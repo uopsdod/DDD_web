@@ -14,4 +14,8 @@ public interface MemRepDAO_interface {
 	public MemRepVO findByPrimaryKey(String aMemrepId);	
 	//萬用查詢
 	public List<MemRepVO> getAll(Map<String, String[]> map); 
+	
+	//查詢一筆訂單所對到的旅客檢舉單:
+	public MemRepVO findByMemRepOrdId(String aMemRepOrdId);
+	
 }

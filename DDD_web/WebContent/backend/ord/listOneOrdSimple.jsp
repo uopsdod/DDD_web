@@ -52,7 +52,11 @@
 			</tr>
 			<tr>
 				<th class="text-center">入住日期</th>
-				<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdLiveDate())%></td>
+				<% if(ordVO.getOrdLiveDate()!=null){ %>
+					<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdLiveDate())%></td>
+				<% } else { %>
+					<td>尚未入住</td>
+				<% } %>
 			</tr>
 			<tr>
 				<th class="text-center">下訂日期</th>
@@ -64,11 +68,23 @@
 			</tr>
 			<tr>
 				<th class="text-center">評價內容</th>
-				<td><%=ordVO.getOrdRatingContent()%></td>
+				
+				<% if(ordVO.getOrdRatingContent()!=null){ %>
+					<td><%=ordVO.getOrdRatingContent()%></td>
+				<% } else { %>
+					<td>目前沒有評價內容</td>
+				<% } %>				
+				
 			</tr>
 			<tr>
 				<th class="text-center">評價星星數</th>
-				<td><%=ordVO.getOrdRatingStarNo()%></td>
+				
+				<% if(ordVO.getOrdRatingStarNo()!=null){ %>
+					<td><%=ordVO.getOrdRatingStarNo()%></td>
+				<% } else { %>
+					<td>目前沒有評價星星數</td>
+				<% } %>						
+				
 			</tr>
 			<tr>
 				<th class="text-center">簡訊驗證碼</th>
@@ -76,7 +92,7 @@
 			</tr>
 			<tr>
 				<th class="text-center">QR Code圖片</th>
-				<td><img src="DBGifReader4?ordId=<%=ordVO.getOrdId()%>" width="120"></td>
+				<td><img src="<%=request.getContextPath()%>/ord/DBGifReader4?ordId=<%=ordVO.getOrdId()%>" width="120"></td>
 			</tr>
 		</tbody>
 	</table>

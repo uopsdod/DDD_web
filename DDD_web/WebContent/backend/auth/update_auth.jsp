@@ -3,6 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="com.auth.model.*"%>
 <%@ page import="java.util.*"%>
+<%@ page import="java.text.*"%>
 
 <%
 	List<String> authIdList = (List<String>) request.getAttribute("authList");
@@ -12,14 +13,19 @@
 	System.out.println(empId);
 %>
 <!-- 如果權限沒有人事轉到首頁怕他偷吃步-->
-
+<%
+SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+Date date = new Date();
+String strDate = sdFormat.format(date);
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-
+<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/auth/css/sweet-alert.css">
+<script src="<%=request.getContextPath()%>/backend/auth/js/sweet-alert.js"></script>
 <style>
 	.tablediv{
 		margin-top:2%;
@@ -65,7 +71,7 @@
 		</font>
 	</c:if>
 	
-	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/auth/auth.do">
+	<FORM name="theForm" METHOD="post" ACTION="<%=request.getContextPath()%>/auth/auth.do">
 	<div class="col-xs-12 col-sm-10 tablediv text-center" > 
 	<table border="0" align="center">
 		<jsp:useBean id="auth" scope="request"
@@ -84,10 +90,17 @@
 	
 		<br> <input type="hidden" name="action" value="update" > 		
 		<input type="hidden" name="authIdlistNo" value="${param.empId}"> 	
-		<input type="submit" value="確認修改"  id="btnOfauth">
+		<input type="button" value="確認修改"  id="btnOfauth" onClick="Juge()">
 		<br>
 		</div>
 	</FORM>
 	
+	<script>
+	    function Juge() {     			
+		    setTimeout('document.theForm.submit();', 1800);
+			swal("權限更改成功!", "[<%=strDate%>]!", "success");
+	    }
+	</script>
 </body>
 </html>
+

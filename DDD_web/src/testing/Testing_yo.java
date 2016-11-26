@@ -353,23 +353,23 @@ public class Testing_yo extends HttpServlet {
 //		ChatVO chatVO = dao_memChat.getChatVOBtwenTwoMems("10000001", "10000002");
 //		out.println(chatVO.getChatMemChats());
 		
-		ChatService dao_chat = new ChatService();
-		
-		ChatVO chatVO = new ChatVO(); // 一方
-		Set<MemChatVO> set = new HashSet<>(); // 多方
-		MemChatVO memChatVO = new MemChatVO(); 
-		
-		memChatVO.setMemChatChatVO(chatVO);
-		memChatVO.setMemChatMemId("10000003");
-		Timestamp ts = new Timestamp(new java.util.Date().getTime());
-		memChatVO.setMemChatDate(ts);
-		memChatVO.setMemChatContent("Hibernate *************************************");
-		memChatVO.setMemChatToMemId("10000008");
-		
-		set.add(memChatVO); // 多方
-		chatVO.setChatMemChats(set); // 將多方塞入一方
-		
-		dao_chat.insert(chatVO); // 一方新增
+//		ChatService dao_chat = new ChatService();
+//		
+//		ChatVO chatVO = new ChatVO(); // 一方
+//		Set<MemChatVO> set = new HashSet<>(); // 多方
+//		MemChatVO memChatVO = new MemChatVO(); 
+//		
+//		memChatVO.setMemChatChatVO(chatVO);
+//		memChatVO.setMemChatMemId("10000003");
+//		Timestamp ts = new Timestamp(new java.util.Date().getTime());
+//		memChatVO.setMemChatDate(ts);
+//		memChatVO.setMemChatContent("Hibernate *************************************");
+//		memChatVO.setMemChatToMemId("10000008");
+//		
+//		set.add(memChatVO); // 多方
+//		chatVO.setChatMemChats(set); // 將多方塞入一方
+//		
+//		dao_chat.insert(chatVO); // 一方新增
 		
 //		DeptVO deptVO = new DeptVO(); // 部門POJO
 //		Set<EmpVO> set = new HashSet<EmpVO>();// 準備置入員工數人,以便cascade="save-update"的測試
@@ -377,6 +377,10 @@ public class Testing_yo extends HttpServlet {
 //		deptVO.setEmps(set);
 //		dao.insert(deptVO);
 		
-
+		MemRepService dao_memRep = new MemRepService();
+		MemRepVO memRepVO = dao_memRep.findByMemRepOrdId("201611100x"); // 2016111002
+		out.println((memRepVO != null)?memRepVO.getMemRepContent():null);
+		
+	
 	}
 }
