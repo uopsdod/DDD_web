@@ -206,8 +206,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
         <!-- 浮動列 -->
         <div id="top_header1" class="hidden-xs">
             <div class="col-md-5 col-md-offset-1 ">
-                <a href="file:///D:/usee/usee/Desktop/%E5%B0%88%E9%A1%8C%E9%A6%96%E9%A0%81%E7%B7%B4%E7%BF%92/index.html"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg">
-                </a>
+                <a href="<%=request.getContextPath()%>/frontend_mem/index.jsp"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg"></a>
             </div>
             <div class="col-md-5 col-md-offset-1 ">
                 <div class="dropdown" style='display: inline-block;'>
@@ -226,9 +225,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="嘉鴻map/map.html">地圖模式</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">列表模式</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">對話記錄</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/chat/MapAndChat.jsp" target="_blank">聊天地圖</a></li>
                     </ul>
                 </div>
                 <div class="dropdown" style='display: inline-block;'>
