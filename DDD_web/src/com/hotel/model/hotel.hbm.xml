@@ -41,6 +41,13 @@
 			</key>
 			<one-to-many class="com.ord.model.OrdVO" />
 		</set>
+		
+		<set name="hotelHotelReps" table="hotrlRep" lazy="false" cascade="all"  inverse="true"  order-by="hotrlRepId asc">			
+			<key>
+				<column name="hotelRepHotelId" />
+			</key>
+			<one-to-many class="com.hotelrep.model.HotelRepVO" />
+		</set>  
 
 	</class>
 </hibernate-mapping>

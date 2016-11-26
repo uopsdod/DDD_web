@@ -29,7 +29,15 @@
       
         <many-to-one name="ordHotelVO" class="com.hotel.model.HotelVO" lazy="false">
             <column name="ordHotelId" />
-        </many-to-one>              
+        </many-to-one>
+        
+		<set name="ordHotelReps" table="hotrlRep" lazy="false" cascade="all"  inverse="true"  order-by="hotrlRepId asc">			
+			<key>
+				<column name="hotelRepOrdId" />
+			</key>
+			<one-to-many class="com.hotelrep.model.HotelRepVO" />
+		</set>        
+                      
         
     </class>
 </hibernate-mapping>
