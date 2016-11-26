@@ -74,6 +74,7 @@ $(document).ready(function() {
    $("#ordId").select2({
      width:'300',
      placeholder: "輸入會員姓名",
+     placeholderOption:"first",
      allowClear: true 
    });
 
