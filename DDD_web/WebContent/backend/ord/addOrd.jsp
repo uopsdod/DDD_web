@@ -87,10 +87,13 @@ pageContext.setAttribute("ordVO", ordVO);
 				</tr>
 
 				<tr>
-<%-- 					<%java.sql.Date dateSQL = new java.sql.Date(System.currentTimeMillis());%> --%>
+					<% java.sql.Date dateSQL = null;
+						if (ordVO != null && ordVO.getOrdLiveDate() != null) {
+						dateSQL = new java.sql.Date(ordVO.getOrdLiveDate().getTime());
+					 	} %>
 					<td>入住日期:</td>
 					<td>
-						<input type="date" name="ordLiveDate" value='<%= (ordVO == null || ordVO.getOrdLiveDate() == null)? "" : ordVO.getOrdLiveDate() %>'>
+						<input type="date" name="ordLiveDate" value='<%= (ordVO == null || ordVO.getOrdLiveDate() == null)? "" : dateSQL %>'>
 					</td>
 				</tr>
 				

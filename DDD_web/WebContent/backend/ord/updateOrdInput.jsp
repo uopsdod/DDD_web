@@ -88,11 +88,15 @@
 		</tr>
 
 		<%-- TimeStamp轉換成Date --%>
-		<%java.sql.Date dateSQL = new java.sql.Date(ordVO.getOrdLiveDate().getTime());%>
 		<tr>
 			<td>入住日期:</td>
 			<td>
+				<% if(ordVO.getOrdLiveDate() != null) { %>
+				<%java.sql.Date dateSQL = new java.sql.Date(ordVO.getOrdLiveDate().getTime());%>
 				<input type="date" name="ordLiveDate" value="<%=dateSQL%>">
+				<% } else { %>
+				<input type="date" name="ordLiveDate"">
+				<% } %>
 			</td>
 		</tr>
 
@@ -117,7 +121,7 @@
 		<tr>
 			<td>評價內容:</td>
 			<td>
-				<textarea name="ordRatingContent"><%=ordVO.getOrdRatingContent()%></textarea>
+				<textarea name="ordRatingContent"> <%=(ordVO.getOrdRatingContent() == null )? "" : ordVO.getOrdRatingContent()%> </textarea>
 			</td>
 		</tr>
 
@@ -125,13 +129,23 @@
 			<td>評價星星數:</td>
 			<td>
 				<select name="ordRatingStarNo">
-    				<option value="0" <%= ("0".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >0顆星</option>
-  					<option value="1" <%= ("1".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >1顆星</option>
-  					<option value="2" <%= ("2".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >2顆星</option>
-  					<option value="3" <%= ("3".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >3顆星</option>
-  					<option value="4" <%= ("4".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >4顆星</option>
-    				<option value="5" <%= ("5".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >5顆星</option>					
-				</select>			
+					<% if(ordVO.getOrdRatingStarNo() == null) { %>
+						<option value="">請選擇</option>
+	  					<option value="0">0顆星</option>
+	  					<option value="1">1顆星</option>
+	  					<option value="2">2顆星</option>
+	  					<option value="3">3顆星</option>
+	  					<option value="4">4顆星</option>
+	    				<option value="5">5顆星</option>	
+	    			<% } else { %>
+	    				<option value="0" <%= ("0".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >0顆星</option>
+	  					<option value="1" <%= ("1".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >1顆星</option>
+	  					<option value="2" <%= ("2".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >2顆星</option>
+	  					<option value="3" <%= ("3".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >3顆星</option>
+	  					<option value="4" <%= ("4".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >4顆星</option>
+	    				<option value="5" <%= ("5".equals(Integer.toString(ordVO.getOrdRatingStarNo()))) ? "selected" : "" %> >5顆星</option>		
+    				<% } %>			
+				</select>				
 			</td>
 		</tr>
 
@@ -153,7 +167,7 @@
 	<br>
 	<input type="hidden" name="action" value="update">
 	<input type="hidden" name="ordId" value="<%=ordVO.getOrdId()%>">
-	<input type="hidden" name="ordDate" value="<%=ordVO.getOrdDate().getTime()%>">
+<%-- 	<input type="hidden" name="ordDate" value="<%=ordVO.getOrdDate().getTime()%>"> --%>
 	<input type="hidden" name="requestURL" value="<%=request.getParameter("requestURL")%>"/>
 	<input type="hidden" name="whichPage" value="<%=request.getParameter("whichPage")%>"/>
 	
