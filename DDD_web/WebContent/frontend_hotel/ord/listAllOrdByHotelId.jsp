@@ -8,9 +8,9 @@
 		<div class="col-xs-12 col-sm-10 bb" style="background-color:#FFFAF0;postion:relative;top:220px">
 					<ol class="breadcrumb">
 						<li>
-							房型資料
+							訂單
 						</li>
-						<li class="active">上架管理</li>
+						<li class="active">所有訂單查詢</li>
 					</ol>
 
 				  <table class="table table-hover" border="1">
