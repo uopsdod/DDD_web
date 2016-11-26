@@ -17,7 +17,8 @@ public class OrdCheckAndCancel extends HttpServlet {
   
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-	
+		
+		System.out.println("阿宏好棒");
 	
 		doPost(req,res);
 		
@@ -32,7 +33,7 @@ public class OrdCheckAndCancel extends HttpServlet {
 		
 		if("confirm".equals(action)){
 			
-//			System.out.println("11111");
+			System.out.println("11111");
 			String key = req.getParameter("ordMsgNo");
 			String ordId = req.getParameter("ordId");
 			

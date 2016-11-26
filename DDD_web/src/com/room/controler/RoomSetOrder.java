@@ -221,7 +221,7 @@ public class RoomSetOrder extends HttpServlet {
     	
     	
     	
-    	String QRUrl = "https://locolhost:8081/DDD_web/OrdCheckAndCancel?ordMsgNo="+key+"&action=confirm&ordId="+firstOrdVO.getOrdId(); 		
+    	String QRUrl = "https://10.120.25.4:8081/DDD_web/OrdCheckAndCancel?ordMsgNo="+key+"&action=confirm&ordId="+firstOrdVO.getOrdId(); 		
 		
     	byte[] ordQrPic = QRCodeImgGenerator.writeQRCode(QRUrl);    	
     	firstOrdVO.setOrdQrPic(ordQrPic);    	    	    	
