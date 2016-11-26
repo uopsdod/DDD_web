@@ -1,46 +1,32 @@
+
 package com.hotelrep.model;
+
+
+import java.io.Serializable;
 import java.sql.Date;
 
-public class HotelRepVO implements java.io.Serializable {
+import com.emp.model.EmpVO;
+import com.hotel.model.HotelVO;
+import com.mem.model.MemVO;
+import com.ord.model.OrdVO;
+
+public class HotelRepVO implements Serializable {
 	private String hotelRepId;
-	private String hotelRepHotelId; //Not Null
-	private String hotelRepMemId; // Not Null
-	private String hotelRepOrdId; //Not Null
-	private String hotelRepEmpId;
 	private String hotelRepContent;
-	private String hotelRepStatus; //0.未審核 1.已審核未通過 2.已審核已通過
-	private Date   hotelRepDate;
-	private Date   hotelRepReviewDate;
+	private String hotelRepStatus; // 0.未審核 1.已審核未通過 2.已審核已通過
+	private Date hotelRepDate;
+	private Date hotelRepReviewDate;	
+	
+	private MemVO hotelRepMemVO; // Not Null
+	private HotelVO hotelRepHotelVO; // Not Null
+	private OrdVO hotelRepOrdVO; // Not Null
+	private EmpVO hotelRepEmpVO;
 	
 	public String getHotelRepId() {
 		return this.hotelRepId;
 	}
 	public void setHotelRepId(String aHotelRepId) {
 		this.hotelRepId = aHotelRepId;
-	}
-	public String getHotelRepHotelId() {
-		return this.hotelRepHotelId;
-	}
-	public void setHotelRepHotelId(String aHotelRepHotelId) {
-		this.hotelRepHotelId = aHotelRepHotelId;
-	}
-	public String getHotelRepMemId() {
-		return this.hotelRepMemId;
-	}
-	public void setHotelRepMemId(String aHotelRepMemId) {
-		this.hotelRepMemId = aHotelRepMemId;
-	}
-	public String getHotelRepOrdId() {
-		return this.hotelRepOrdId;
-	}
-	public void setHotelRepOrdId(String aHotelRepOrdId) {
-		this.hotelRepOrdId = aHotelRepOrdId;
-	}
-	public String getHotelRepEmpId() {
-		return this.hotelRepEmpId;
-	}
-	public void setHotelRepEmpId(String aHotelRepEmpId) {
-		this.hotelRepEmpId = aHotelRepEmpId;
 	}
 	public String getHotelRepContent() {
 		return this.hotelRepContent;
@@ -66,5 +52,28 @@ public class HotelRepVO implements java.io.Serializable {
 	public void setHotelRepReviewDate(Date aHotelRepReviewDate) {
 		this.hotelRepReviewDate = aHotelRepReviewDate;
 	}
-	
+	public MemVO getHotelRepMemVO() {
+		return this.hotelRepMemVO;
+	}
+	public void setHotelRepMemVO(MemVO aHotelRepMemVO) {
+		this.hotelRepMemVO = aHotelRepMemVO;
+	}
+	public HotelVO getHotelRepHotelVO() {
+		return this.hotelRepHotelVO;
+	}
+	public void setHotelRepHotelVO(HotelVO aHotelRepHotelVO) {
+		this.hotelRepHotelVO = aHotelRepHotelVO;
+	}
+	public OrdVO getHotelRepOrdVO() {
+		return this.hotelRepOrdVO;
+	}
+	public void setHotelRepOrdVO(OrdVO aHotelRepOrdVO) {
+		this.hotelRepOrdVO = aHotelRepOrdVO;
+	}
+	public EmpVO getHotelRepEmpVO() {
+		return this.hotelRepEmpVO;
+	}
+	public void setHotelRepEmpVO(EmpVO aHotelRepEmpVO) {
+		this.hotelRepEmpVO = aHotelRepEmpVO;
+	}
 }
