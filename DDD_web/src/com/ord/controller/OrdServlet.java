@@ -809,7 +809,10 @@ public class OrdServlet extends HttpServlet {
 				
 			}
 			catch(Exception e){
-				throw new ServletException(e);
+				e.printStackTrace();
+				errorMsgs.add("輸入的ID有錯誤喔!" + e.getMessage());
+				RequestDispatcher failureView = aReq.getRequestDispatcher("/frontend_hotel/ord/simpleCheckIn_Input.jsp");
+				failureView.forward(aReq,aRes);
 			}
 			
 		}

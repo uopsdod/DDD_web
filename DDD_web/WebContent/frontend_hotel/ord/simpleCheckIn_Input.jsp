@@ -1,7 +1,20 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ page import="com.ord.model.*" %>
 <%@ include file="../head.jsp"%>
+
+		<%
+			String hotelId = (String)session.getAttribute("hotelId");
+		%>
+		
+		
+		<%
+			OrdService ordSvc = new OrdService();
+			List<OrdVO> list = ordSvc.getAllByOrdHotelId(hotelId);
+			pageContext.setAttribute("list",list);
+		%>
+
+
 
 		<!-- 自訂CSS -->
 		<link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_hotel/ord/css/select2.css">		
@@ -28,15 +41,17 @@
 				</ul>
 			</c:if>
 	
-	
 			<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
-				<h2>輸入訂單編號:</h2>
+				<h2>輸入旅客姓名:</h2>
+				
+
+				
 				<select id="ordId" name="ordId">
-		    		<option value="1">中中</option>
-		    		<option value="2">中中中中</option>
-		    		<option value="3">好客戶1</option>
-		    		<option value="4">好客戶2</option>
-		    		<option value="5">好客戶123</option>
+					<c:forEach var="ordVO" items="${list}">
+						<c:if test="${ordVO.ordStatus == '0'}">
+							<option value="${ordVO.ordId}">${ordVO.ordMemVO.memName} [${ordVO.ordHotelVO.hotelName}]</option>
+						</c:if>
+					</c:forEach>
 				</select>
 				<br>
 				
@@ -59,6 +74,7 @@ $(document).ready(function() {
    $("#ordId").select2({
      width:'300',
      placeholder: "輸入會員姓名",
+     placeholderOption:"first",
      allowClear: true 
    });
 
