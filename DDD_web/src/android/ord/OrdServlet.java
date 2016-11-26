@@ -118,7 +118,7 @@ public class OrdServlet extends HttpServlet {
 		}else if("getImage".equals(action)){
 			int imageSize = jsonObject.get("imageSize").getAsInt();
 			System.out.println("ordId: " + ordId);
-			OrdVO ordVO = dao_ord.getOneOrd("201611035");
+			OrdVO ordVO = dao_ord.getOneOrd("2016111040");
 			System.out.println(ordVO);
 			OutputStream os = res.getOutputStream();
 			byte[] image = ordVO.getOrdQrPic();
