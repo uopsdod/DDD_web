@@ -1,5 +1,5 @@
 function doFirst(){
-	document.querySelector('p').onclick = talk;
+	//document.querySelector('p').onclick = talk;
 }
 function talk(){
 	alert('hi~');

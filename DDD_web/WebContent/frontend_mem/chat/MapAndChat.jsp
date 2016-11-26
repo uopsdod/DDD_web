@@ -757,6 +757,7 @@ function getListForUploader(){
 			map: map,
 			position: latlng,
 			icon: 'img/fromMem.png',
+			draggable:true,
 			title: '我在這裡!'
 		});
 		fromMarker.addListener('click', toggleBounce);

@@ -1,0 +1,86 @@
+.bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -999;
+}
+
+.bg img {
+    min-height: 100%;
+    width: 100%;
+}
+
+#LogoImg {
+    /*logo*/
+    display: inline-block;
+    /*左至右 */
+    /*padding-right: 1170px;
+    padding-left: 200px;*/
+    position: absolute;
+    z-index: 1;
+    top: 2%;
+    left: 2%;
+    width: 220px;
+    margin-top: -2px
+}
+
+#title {
+    /*區塊致中*/
+    text-align: center;
+    position: absolute;
+    top: 30%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    z-index: 1;
+}
+
+#title img {
+    width: 650px;
+}
+
+#title1 {
+    text-align: center;
+    position: absolute;
+    top: 49%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    z-index: 1;
+}
+
+#title1 img {
+    width: 520px;
+}
+
+#title3 {
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    color: #ffffff;
+    text-align: center;
+    position: absolute;
+    top: 55%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    z-index: 1;
+}
+
+#icon {
+    text-align: center;
+    position: absolute;
+    top: 90%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    z-index: 1;
+}
+
+.img {
+    width: 50px;
+}
