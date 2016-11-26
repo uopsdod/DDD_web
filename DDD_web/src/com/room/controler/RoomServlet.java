@@ -299,9 +299,10 @@ public class RoomServlet extends HttpServlet {
 				roomVO.setRoomForSell(false);
 				roomSvc.update(roomVO);
 				
-				
+				MyEchoServer.changeRemainNo(roomId,0);	//直接下架時,將前端畫面的剩餘房數歸0
 				
 				MyEchoServer.BufferBox(roomId,-500,"已下架",0);	//需要將roomId,與已下架往前端推
+				
 				//第四個參數告訴方法,是要是要儲存資料到buffer
 			
 				RequestDispatcher failureView = req
@@ -387,6 +388,9 @@ public class RoomServlet extends HttpServlet {
 					roomRemainNo = 0;
 				}
 				
+				if(roomRemainNo==0){
+					errorMsgs.add("請輸入上架房數");	 
+				}
 				
 				
 				//roomDiscountHr
@@ -444,7 +448,7 @@ public class RoomServlet extends HttpServlet {
 				//建立房型的降價機制,與下架機制
 				Float cutPrice = roomPrice*roomDisccountPercent*0.01f;
 				int cutPriceInt = cutPrice.intValue();
-				DynamicPrice(roomId,beforeSell,roomDiscountHr*10*1000,roomPrice,cutPriceInt,roomBottomPrice,roomOnePrice,roomDiscountEndDate);
+				DynamicPrice(roomId,beforeSell,roomDiscountHr*10*1000,roomPrice,cutPriceInt,roomBottomPrice,roomOnePrice,roomDiscountEndDate,roomRemainNo);
 
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
@@ -491,8 +495,12 @@ public class RoomServlet extends HttpServlet {
 					int roomBottomPrice= roomVO.getRoomBottomPrice();
 					boolean roomOnePrice = roomVO.getRoomOnePrice(); 
 					int roomDiscountEndDate = roomVO.getRoomDiscountEndDate();
-				
+					int remainNo = roomVO.getRoomRemainNo();
 					
+					if(remainNo==0){
+						   continue;
+					}
+								
 					roomVO.setRoomForSell(true);
 					
 					roomSvc.update(roomVO);
@@ -501,7 +509,11 @@ public class RoomServlet extends HttpServlet {
 //					System.out.println(cutPrice);
 					int cutPriceInt = cutPrice.intValue();
 //					System.out.println(cutPriceInt);
-					DynamicPrice(roomId,beforeSell,roomDiscountHr*10*1000,roomPrice,cutPriceInt,roomBottomPrice,roomOnePrice,1000*60*60*23);		
+					
+					
+					
+					
+					DynamicPrice(roomId,beforeSell,roomDiscountHr*10*1000,roomPrice,cutPriceInt,roomBottomPrice,roomOnePrice,1000*60*60*23,remainNo);		
 				
 				}
 			
@@ -1232,15 +1244,20 @@ public class RoomServlet extends HttpServlet {
 		return bytearr;		
 	}
 	
-	public static void DynamicPrice(String roomId,boolean beforeSell,int aCutPriceTime,int price,int CutPrice,int BottomPrice,boolean roomOnePrice,int EndTime) {
+	public static void DynamicPrice(String roomId,boolean beforeSell,int aCutPriceTime,int price,int CutPrice,int BottomPrice,boolean roomOnePrice,int EndTime,int remainNo) {
 		
-		 
+		
+		
+			 
 		if(beforeSell==true){
 			try{
 			 OnTimer.get(roomId).cancel();	//前期降價排程取消
 			 DownTimer.get(roomId).cancel(); //前期下架排程取消	
 			}catch(Exception e){}
 		}
+		
+		
+		
 		 /*為本次新增的房型準被一個動態降價的排程*/
 		 Timer timer = new Timer();
 		 Timer down = new Timer();
@@ -1253,9 +1270,15 @@ public class RoomServlet extends HttpServlet {
 		 data.put("CutPrice",CutPrice);			//單位時間折價	
 		 data.put("BottomPrice",BottomPrice);	//最低價錢
 		 OnData.put(roomId,data);
-		
+		 
+		 
+		 
+		 
 		 MyEchoServer.BufferBox(roomId,price,"",0);	//每次執行時,需要將roomId,與價錢用socket往前端推
 		//第四個參數告訴方法,是要是要儲存資料到buffer
+		 MyEchoServer.changeRemainNo(roomId,remainNo); //每次執行時將剩餘房數往前端推	
+		 
+		 
 		 
 	     TimerTask taskPrice = new TimerTask(){
 	        
@@ -1313,6 +1336,7 @@ public class RoomServlet extends HttpServlet {
 	        	 OnData.remove(roomId); 	//清空資料
 	        	 System.out.println("下架了");
 	        	 MyEchoServer.BufferBox(roomId,-500,"已下架",0); //第四個參數告訴方法,是要是要儲存資料到buffer
+	        	 MyEchoServer.changeRemainNo(roomId,0); //下架時將剩餘房數歸0往前端推	
 	        	 /*************下架了***************/
 	        	 }//synchronized
 	        }
@@ -1347,6 +1371,13 @@ public class RoomServlet extends HttpServlet {
 		   return;
 		}
 		
+		
+		int remainNo = roomVO.getRoomDefaultNo();
+		if(remainNo==0){
+			   return;
+		}
+		
+		
 		System.out.println(roomId + "上架囉~");
 		
 		
@@ -1364,6 +1395,7 @@ public class RoomServlet extends HttpServlet {
 		 int BottomPrice = roomVO.getRoomBottomPrice();
 		 int EndTime = roomVO.getRoomDiscountEndDate();
 		 
+		 
 		 //將預訂上架房數設為當日上架房數
 		 roomVO.setRoomRemainNo(roomVO.getRoomDefaultNo());
 		 //將該房型設為上架
@@ -1379,6 +1411,8 @@ public class RoomServlet extends HttpServlet {
 		 OnData.put(roomId,data);
 		
 		 MyEchoServer.BufferBox(roomId,price,"",0);	//每次執行時,需要將roomId,與價錢用socket往前端推
+		 
+		 MyEchoServer.changeRemainNo(roomId,remainNo); //每次執行時將剩餘房數往前端推	
 		 
 	     TimerTask taskPrice = new TimerTask(){
 	        
@@ -1436,6 +1470,7 @@ public class RoomServlet extends HttpServlet {
 	        	 OnData.remove(roomId); 	//清空資料
 	        	 System.out.println("下架了");
 	        	 MyEchoServer.BufferBox(roomId,-500,"已下架",0);  //第四個參數告訴方法,是要是要儲存資料到buffer
+	        	 MyEchoServer.changeRemainNo(roomId,0); //下架時,將剩餘房數歸0
 	        	 } //synchronized
 	        	 /*************下架了***************/
 	         }

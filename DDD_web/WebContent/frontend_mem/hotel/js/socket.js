@@ -20,9 +20,35 @@
 
 		webSocket.onmessage = function(event) {
 	
-		 console.log(event.data);	
+//		 console.log(event.data);	
 		 var allBag	= JSON.parse(event.data);
+				 
+		 var remainBox = allBag.RoomRemainNo;
+		 
+		 if(remainBox!=null){
 			
+			 for (var key in remainBox) {
+				
+				 if (remainBox.hasOwnProperty(key)) {	
+				    var one =remainMap.get(""+key);
+				    if(one!=null){
+				    	
+				    			
+				    	 if(one.childNodes[0]!=null){
+							one.childNodes[0].remove();
+						  }  	
+				    	 
+				    	 var nowRemain = document.createTextNode("剩餘房數"+remainBox[key]);	
+						 one.appendChild(nowRemain);	
+				    	 
+				    }					 
+				 } 	 
+			 }
+		 }
+		 
+		 
+	 
+		 
 		 var PriceBox = allBag.Bag;
 		 
 		 if(PriceBox!=null){
@@ -34,8 +60,7 @@
 		     
 		        if(one!=null){//版面上有這個id才更新降價
 		        	
-		
-		  
+		        		  
 		       		if(one.childNodes[0].childNodes[0]+""!=jsonObj[1]+""){	//價錢有變才換價錢
 		       			
 		       			

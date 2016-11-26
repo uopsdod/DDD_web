@@ -406,8 +406,10 @@ public class RoomSetOrder extends HttpServlet {
 					 int cutPriceInt = cutPrice.intValue();
 		        	 int bottomPrice = roomVO2.getRoomBottomPrice();
 		        	 boolean roomOnePrice = roomVO2.getRoomOnePrice(); 
-	        	     RoomServlet.DynamicPrice(ordRoomId,false,roomDiscountHr*10*1000,price,cutPriceInt,bottomPrice,roomOnePrice,downTime); 
+	        	     RoomServlet.DynamicPrice(ordRoomId,false,roomDiscountHr*10*1000,price,cutPriceInt,bottomPrice,roomOnePrice,downTime,remainNo2); 
 	        	     roomVO2.setRoomForSell(true);	
+	        	 }else{	//上架的推送房數資料,由DynamicPrice方法內來推送
+	        		 MyEchoServer.changeRemainNo(ordRoomId,remainNo2); //將剩餘房數+1 並往前推
 	        	 }
 	        	 
 	        	 roomSvc2.update(roomVO2);	//房型修改剩餘房數
@@ -516,13 +518,14 @@ public class RoomSetOrder extends HttpServlet {
 			 int cutPriceInt = cutPrice.intValue();
         	 int bottomPrice = roomVO2.getRoomBottomPrice();
         	 boolean roomOnePrice = roomVO2.getRoomOnePrice(); 
-    	     RoomServlet.DynamicPrice(ordRoomId,false,roomDiscountHr*10*1000,price,cutPriceInt,bottomPrice,roomOnePrice,downTime); 
+    	     RoomServlet.DynamicPrice(ordRoomId,false,roomDiscountHr*10*1000,price,cutPriceInt,bottomPrice,roomOnePrice,downTime,remainNo2); 
     	     roomVO2.setRoomForSell(true);	
+    	 }else{	//上架的推送房數資料,由DynamicPrice方法內來推送
+    		 MyEchoServer.changeRemainNo(ordRoomId,remainNo2); //將剩餘房數+1 並往前推
     	 }
     	 
     	 roomSvc2.update(roomVO2);	//房型修改剩餘房數
     	 
-    	 MyEchoServer.changeRemainNo(ordRoomId,remainNo2); //將剩餘房數+1	
 		
 	}
 
