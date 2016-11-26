@@ -212,13 +212,7 @@ public class RoomSetOrder extends HttpServlet {
     	
     	orderTimer.put(key, timer);
 	    
-<<<<<<< HEAD
-    	String QRUrl = "https://10.120.25.4:8081/DDD_web?ordMsgNo="+key; 		
-		
-    	byte[] ordQrPic = QRCodeImgGenerator.writeQRCode(QRUrl);
-=======
     	
->>>>>>> branch 'master' of https://github.com/uopsdod/DDD_web.git
     	
 	
     	OrdService ordSvc = new OrdService();
