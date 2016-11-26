@@ -221,7 +221,7 @@ public class RoomSetOrder extends HttpServlet {
     	
     	
     	
-    	String QRUrl = "https://locolhost:8081/DDD_web?ordMsgNo="+key+"&hotelId="+firstOrdVO.getOrdHotelId(); 		
+    	String QRUrl = "https://locolhost:8081/DDD_web/OrdCheckAndCancel?ordMsgNo="+key+"&action=confirm&ordId="+firstOrdVO.getOrdId(); 		
 		
     	byte[] ordQrPic = QRCodeImgGenerator.writeQRCode(QRUrl);    	
     	firstOrdVO.setOrdQrPic(ordQrPic);    	    	    	
@@ -371,7 +371,7 @@ public class RoomSetOrder extends HttpServlet {
 	     
 	     long divideTime = nowMiliSecond - todayZeroMiliSecond;
 	     
-	     int delayTime = 3*10*1000;
+	     int delayTime = 6*10*1000;
 	     long reUpTime = divideTime + delayTime;
 	     
 	        

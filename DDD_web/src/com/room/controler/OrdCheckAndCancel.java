@@ -18,13 +18,21 @@ public class OrdCheckAndCancel extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 	
-		req.setCharacterEncoding("utf-8");
+	
+		doPost(req,res);
+		
+	}
+
+	
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		
+	req.setCharacterEncoding("utf-8");
 		
 		String action = req.getParameter("action");
 		
 		if("confirm".equals(action)){
 			
-		
+//			System.out.println("11111");
 			String key = req.getParameter("ordMsgNo");
 			String ordId = req.getParameter("ordId");
 			
@@ -46,11 +54,6 @@ public class OrdCheckAndCancel extends HttpServlet {
 			return;
 		}
 		
-		
-	}
-
-	
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
 	}
 

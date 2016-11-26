@@ -41,7 +41,7 @@
 				</ul>
 			</c:if>
 	
-			<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
+			<form method="post" action="<%=request.getContextPath()%>/OrdCheckAndCancel">
 				<h2>輸入旅客姓名:</h2>
 				
 
@@ -60,7 +60,7 @@
 				<br>
 				<br>
 				<input type="submit" value="送出">
-				<input type="hidden" name="action" value="simpleCheckIn">
+				<input type="hidden" name="action" value="confirm">
 			</form>
 
 		</div>	
