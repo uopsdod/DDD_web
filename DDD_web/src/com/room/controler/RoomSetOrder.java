@@ -244,7 +244,7 @@ public class RoomSetOrder extends HttpServlet {
     	 QRcode.append(memName);   	 
     	 QRcode.append("\n");
     	 QRcode.append("旅館名稱 : ");
-    	 QRcode.append(hotelName);
+    	 QRcode.append(hotelName);  
     	 QRcode.append("\n");
 		 QRcode.append("房型名稱 : ");
 		 QRcode.append(roomName);
