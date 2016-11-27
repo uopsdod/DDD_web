@@ -65,6 +65,7 @@ public class OrdServlet extends HttpServlet {
 		String ordId = (jsonObject.get("ordId") != null)?jsonObject.get("ordId").getAsString():null;
 		String ordRatingStarNo = (jsonObject.get("ordRatingStarNo") != null)?jsonObject.get("ordRatingStarNo").getAsString():null;
 		String ordRatingContent = (jsonObject.get("ordRatingContent") != null)?jsonObject.get("ordRatingContent").getAsString():null;
+		String ordMsgNo = (jsonObject.get("ordMsgNo") != null)?jsonObject.get("ordMsgNo").getAsString():null;
 		
 		String outStr = "";
 		
@@ -112,7 +113,7 @@ public class OrdServlet extends HttpServlet {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.setDateFormat(df);
 			// 此處特別注意: 為了讓hibernate的VO可以轉成JSON字串，必須在每個一對多的set變數上加上@JsonIgnore
-			outStr = mapper.writeValueAsString(outStr);
+			outStr = mapper.writeValueAsString(ordVO);
 			
 			//outStr = gson.toJson(ordVO);
 			PrintWriter out = res.getWriter();
@@ -154,6 +155,26 @@ public class OrdServlet extends HttpServlet {
 			}
 			outStr = gson.toJson(check);
 			System.out.println("Q*-------------------*Q" + check);
+			res.setContentType(CONTENT_TYPE);
+			PrintWriter out = res.getWriter();
+			System.out.println("outStr:" + outStr);
+			out.println(outStr);
+		}else if("cancel".equals(action)){
+			RoomSetOrder.cancelOrder(ordMsgNo,ordId);
+		}else if("getOneText".equals(action)){
+			OrdVO ordVO = dao_ord.getOneOrd(ordId);
+			ordVO.setOrdQrPic(null);
+			ordVO.setOrdMemVO(new MemVO());
+			ordVO.setOrdRoomVO(new RoomVO());
+			ordVO.getOrdHotelVO().setHotelCoverPic(null);	
+			
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.setDateFormat(df);
+			// 此處特別注意: 為了讓hibernate的VO可以轉成JSON字串，必須在每個一對多的set變數上加上@JsonIgnore
+			outStr = mapper.writeValueAsString(ordVO);
+			
+//			outStr = gson.toJson(tmpOrdVOList);
 			res.setContentType(CONTENT_TYPE);
 			PrintWriter out = res.getWriter();
 			System.out.println("outStr:" + outStr);
