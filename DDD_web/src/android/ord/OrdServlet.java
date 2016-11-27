@@ -118,7 +118,7 @@ public class OrdServlet extends HttpServlet {
 		}else if("getImage".equals(action)){
 			int imageSize = jsonObject.get("imageSize").getAsInt();
 			System.out.println("ordId: " + ordId);
-			OrdVO ordVO = dao_ord.getOneOrd("2016111040");
+			OrdVO ordVO = dao_ord.getOneOrd(ordId);
 			System.out.println(ordVO);
 			OutputStream os = res.getOutputStream();
 			byte[] image = ordVO.getOrdQrPic();
@@ -135,10 +135,22 @@ public class OrdServlet extends HttpServlet {
 			
 		}else if("checked".equals(action)){
 			String key = jsonObject.get("key").getAsString();
+			System.out.println("R*--------------------------*R : " + key);
+			boolean check = true;
 			RoomSetOrder setOrd = new RoomSetOrder();
 			setOrd.checkOrder(key, ordId);
 			OrdVO ordVO = dao_ord.getOneOrd(ordId);
-			if(ordVO.getOrdStatus().equals(0)){}
+			if(ordVO.getOrdStatus().equals("2")){
+				check = true;
+			}else{
+				check = false;
+			}
+			outStr = gson.toJson(check);
+			System.out.println("Q*-------------------*Q" + check);
+			res.setContentType(CONTENT_TYPE);
+			PrintWriter out = res.getWriter();
+			System.out.println("outStr:" + outStr);
+			out.println(outStr);
 		}
 		
 	}
