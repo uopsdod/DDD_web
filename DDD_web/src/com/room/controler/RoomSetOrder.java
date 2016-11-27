@@ -259,7 +259,7 @@ public class RoomSetOrder extends HttpServlet {
 		 QRcode.append(",");
 		 QRcode.append(roomName);
 		 QRcode.append(",");
-		 QRcode.append("房價 : ");
+		 QRcode.append("房價 : "); 
 		 QRcode.append(",");
 		 QRcode.append(ordPrice);
 		 QRcode.append(",");
@@ -270,6 +270,10 @@ public class RoomSetOrder extends HttpServlet {
 		 QRcode.append("會員編號 : ");
 		 QRcode.append(",");
 		 QRcode.append(ordMemId);
+		 QRcode.append(",");
+		 QRcode.append("簡訊驗證碼 : ");
+		 QRcode.append(",");
+		 QRcode.append(key);
 	
     	String QRUrl =new String(QRcode);; 		
 		
