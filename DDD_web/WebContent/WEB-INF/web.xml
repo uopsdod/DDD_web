@@ -127,7 +127,7 @@
   
   <servlet>
     <servlet-name>HotelRepServlet</servlet-name>
-    <servlet-class>com.hotelRep.controller.HotelRepServlet</servlet-class>
+    <servlet-class>com.hotelrep.controller.HotelRepServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>HotelRepServlet</servlet-name>
@@ -218,5 +218,7 @@
   <listener>
     <listener-class>com.listener.InitializeOrdStatusTransListener</listener-class>
   </listener>
-
+  <listener>
+    <listener-class>com.listener.InitializeHotelRepStatusTransListener</listener-class>
+  </listener>
 </web-app>
