@@ -129,8 +129,15 @@ public class OrdServlet extends HttpServlet {
 			
 			ordVO = setOrd.setOrder(hotelId, roomId, memId, roomPrice, memAccount, memPhone, getServletContext());
 		 
-			outStr = gson.toJson(ordVO);
+			
 			res.setContentType(CONTENT_TYPE);
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.setDateFormat(df);
+			// 此處特別注意: 為了讓hibernate的VO可以轉成JSON字串，必須在每個一對多的set變數上加上@JsonIgnore
+			outStr = mapper.writeValueAsString(outStr);
+			
+			//outStr = gson.toJson(ordVO);
 			PrintWriter out = res.getWriter();
 			System.out.println("outStr:" + outStr);
 			out.println(outStr);
