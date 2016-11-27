@@ -3,30 +3,60 @@ import java.util.List;
 
 public class HotelRepService {
 	private HotelRepDAO_interface dao;
-	
 	public HotelRepService(){
-		this.dao = new HotelRepJNDIDAO();
+		this.dao = new HotelRepHibernateDAO();
 	}
 	
-	public int insert(String aHotelRepHotelId, String aHotelRepMemId, String aHotelRepOrdId, String aHotelRepContent){
+	public HotelRepVO addHotelRep(String aHotelRepHotelId, String aHotelRepMemId, String aHotelRepOrdId, String aHotelRepEmpId, String aHotelRepContent, String aHotelRepStatus){
 		HotelRepVO hotelRepVO = new HotelRepVO();
-		hotelRepVO.setHotelRepHotelId(aHotelRepHotelId);
-		hotelRepVO.setHotelRepMemId(aHotelRepMemId);
-		hotelRepVO.setHotelRepOrdId(aHotelRepOrdId);
-		hotelRepVO.setHotelRepContent(aHotelRepContent);
-		return dao.insert(hotelRepVO);
-	}
-	
-	public int update(String aHotelRepEmpId, String aHotelRepStatus, String aHotelRepId){
-		HotelRepVO hotelRepVO = new HotelRepVO();
-		hotelRepVO.setHotelRepEmpId(aHotelRepEmpId);
+		
+		//hotelRepVO.setHotelRepHotelId(aHotelRepHotelId);
+		com.hotel.model.HotelVO hotelVO = new com.hotel.model.HotelVO();
+		hotelVO.setHotelId(aHotelRepHotelId);
+		hotelRepVO.setHotelRepHotelVO(hotelVO);
+		
+		//hotelRepVO.setHotelRepMemId(aHotelRepMemId);
+		com.mem.model.MemVO memVO = new com.mem.model.MemVO();
+		memVO.setMemId(aHotelRepMemId);
+		hotelRepVO.setHotelRepMemVO(memVO);
+		
+		//hotelRepVO.setHotelRepOrdId(aHotelRepOrdId);
+		com.ord.model.OrdVO ordVO = new com.ord.model.OrdVO();
+		ordVO.setOrdId(aHotelRepOrdId);
+		hotelRepVO.setHotelRepOrdVO(ordVO);
+		
+		if(!aHotelRepEmpId.isEmpty()){
+			com.emp.model.EmpVO empVO = new com.emp.model.EmpVO();
+			empVO.setEmpId(aHotelRepEmpId);
+			hotelRepVO.setHotelRepOrdVO(ordVO);
+		}
+		
+		if(!aHotelRepContent.isEmpty()){
+			hotelRepVO.setHotelRepContent(aHotelRepContent);
+		}
+		
 		hotelRepVO.setHotelRepStatus(aHotelRepStatus);
-		hotelRepVO.setHotelRepId(aHotelRepId);
-		return dao.insert(hotelRepVO);
+		
+		/* 新增的時間就是現在時間 */		
+		/* 新增時 預設員工處理時間是null */
+		hotelRepVO.setHotelRepDate( new java.sql.Date( new java.util.Date().getTime() ));
+				
+		String hotelRepId  = dao.insert(hotelRepVO);
+		return dao.findByPrimaryKey(hotelRepId);
 	}
 	
-	public int delete(String aHotelRepId){
-		return dao.delete(aHotelRepId);
+	public HotelRepVO updateHotelRep(HotelRepVO aHotelRepVO){
+		
+		 dao.update(aHotelRepVO);
+		 
+		/* 處理的時間就是現在時間 */
+		aHotelRepVO.setHotelRepReviewDate(new java.sql.Date( new java.util.Date().getTime() ));
+ 
+		return dao.findByPrimaryKey(aHotelRepVO.getHotelRepId());
+	}
+	
+	public void deleteHotelRep(String aHotelRepId){
+		dao.delete(aHotelRepId);
 	}
 	
 	public List<HotelRepVO> getAll(){
@@ -35,13 +65,8 @@ public class HotelRepService {
 	public List<HotelRepVO> getAllByHotelRepStatus(String aHotelRepStatus){
 		return dao.getAllByHotelRepStatus(aHotelRepStatus);
 	}
-	public HotelRepVO findByPrimaryKey(String aHotelRepId){
+	public HotelRepVO getOneHotelRep(String aHotelRepId){
 		return dao.findByPrimaryKey(aHotelRepId);
 	}
-	
-	//柚子的萬用查詢
-//	public List<HotelRepVO> getAll(Map<String, String[]> aMap){
-//		
-//	}
-	
+		
 }

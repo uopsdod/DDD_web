@@ -1,47 +1,82 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.ord.model.*" %>
+<%@ include file="../head.jsp"%>
 
-<!DOCTYPE html>
-<html lang="">
-	<head>
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!-- 請輸入標題 -->
-		<title></title>		
+		<%
+			String hotelId = (String)session.getAttribute("hotelId");
+		%>
 		
-		<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/css/bootstrap.css">
+		
+		<%
+			OrdService ordSvc = new OrdService();
+			List<OrdVO> list = ordSvc.getAllByOrdHotelId(hotelId);
+			pageContext.setAttribute("list",list);
+		%>
+
+
+
 		<!-- 自訂CSS -->
-		<link rel="stylesheet" href="">		
-		
-		<script src="<%=request.getContextPath()%>/backend/js/jquery.js"></script>
-		<script src="<%=request.getContextPath()%>/backend/js/bootstrap.js"></script>
+		<link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_hotel/ord/css/select2.css">		
 		<!-- 自訂JavaScript --> 	
-		<script src=""></script>
-	</head>
-	<body>
+		<script src="<%=request.getContextPath()%>/frontend_hotel/ord/js/select2.js"></script>
 
-		<h3>訂單驗證:</h3>
-		<%-- 錯誤表列 --%>
-		<c:if test="${not empty errorMsgs}">
-			請修正以下錯誤:
-			<ul>
-				<c:forEach var="message" items="${errorMsgs}">	
-					<li>${message}</li>	
-				</c:forEach>
-			</ul>
-		</c:if>
+		<div class="col-xs-12 col-sm-10 bb" style="background-color:#FFFAF0;postion:relative;top:220px">
+		
+			<ol class="breadcrumb">
+				<li>
+					訂單
+				</li>
+				<li class="active">旅客入住驗證</li>
+			</ol>
+
+			<h1>訂單驗證:</h1>
+			<%-- 錯誤表列 --%>
+			<c:if test="${not empty errorMsgs}">
+				請修正以下錯誤:
+				<ul>
+					<c:forEach var="message" items="${errorMsgs}">	
+						<li>${message}</li>	
+					</c:forEach>
+				</ul>
+			</c:if>
+	
+			<form method="post" action="<%=request.getContextPath()%>/OrdCheckAndCancel">
+				<h2>輸入旅客姓名:</h2>
+				
+
+				
+				<select id="ordId" name="ordId">
+					<c:forEach var="ordVO" items="${list}">
+						<c:if test="${ordVO.ordStatus == '0'}">
+							<option value="${ordVO.ordId}">${ordVO.ordMemVO.memName} [${ordVO.ordHotelVO.hotelName}]</option>
+						</c:if>
+					</c:forEach>
+				</select>
+				<br>
+				
+				<h2>輸入簡訊驗證碼:</h2>
+				<input type="text" name="ordMsgNo">
+				<br>
+				<br>
+				<input type="submit" value="送出">
+				<input type="hidden" name="action" value="confirm">
+			</form>
+
+		</div>	
+
+<%@ include file="../footer.jsp" %>
 
 
-		<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
-			輸入訂單編號:
-			<input type="text" name="ordId"><br>
-			輸入簡訊驗證碼:
-			<input type="text" name="ordMsgNo">
+<script>
+$(document).ready(function() {
 
-			<input type="submit" name="送出">
-			<input type="hidden" name="action" value="simpleCheckIn">
-		</form>
+   $("#ordId").select2({
+     width:'300',
+     placeholder: "輸入會員姓名",
+     placeholderOption:"first",
+     allowClear: true 
+   });
 
-	</body>
-</html>
+});
+</script>

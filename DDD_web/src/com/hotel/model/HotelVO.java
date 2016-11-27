@@ -3,6 +3,7 @@ package com.hotel.model;
 import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hotelrep.model.HotelRepVO;
 import com.ord.model.OrdVO;
 
 public class HotelVO implements java.io.Serializable{
@@ -47,9 +48,13 @@ public class HotelVO implements java.io.Serializable{
 	private String hotelCreditCardNo;
 	private String hotelCreditCheckNo;
 	private String hotelCreditDueDate;
+	
 	@JsonIgnore
 	private Set<OrdVO> hotelOrds = new LinkedHashSet<OrdVO>();
 	
+	@JsonIgnore
+	private Set<HotelRepVO> hotelHotelReps = new LinkedHashSet<HotelRepVO>();
+		
 	public String getHotelId() {
 		return this.hotelId;
 	}
@@ -201,6 +206,14 @@ public class HotelVO implements java.io.Serializable{
 	
 	public void setHotelOrds(Set<OrdVO> aHotelOrds){
 		this.hotelOrds = aHotelOrds;
+	}
+	
+	/* 韓哥hibernate練習用 */
+	public Set<HotelRepVO> getHotelHotelReps() {
+		return this.hotelHotelReps;
+	}
+	public void setHotelHotelReps(Set<HotelRepVO> aHotelHotelReps) {
+		this.hotelHotelReps = aHotelHotelReps;
 	}
 	
 }

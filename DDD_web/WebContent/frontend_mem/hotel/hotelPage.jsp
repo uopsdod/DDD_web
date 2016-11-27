@@ -223,15 +223,15 @@
 							
 							<div class="col-xs-12 col-sm-5">
 							
-							<div>
-							<span>${roomVO.roomName}</span>
+							<div >
+							<span >${roomVO.roomName}</span>
 							</div>
 							
 							</div>
 							<div class="col-xs-12 col-sm-5">
-							<div>
+							<div ><div id="yy${roomVO.roomId}">剩餘房數${roomVO.roomRemainNo}</div>
 							<span>定價        $</span>
-							<span>${roomVO.roomPrice}</span>
+							<span style="text-decoration:line-through;">${roomVO.roomPrice}</span>
 							</div>
 					<form method="post" action="<%=request.getContextPath()%>/RoomSetOrder">
 							<div >
@@ -342,11 +342,15 @@
 	
 	
 <script>
+
 var roomMap;
 var XspanMap;
+var remainMap;
 var FirstRoomId = [<%for(RoomVO roomVO3:roomList){%> <%=roomVO3.getRoomId()%>, <%}%>  <%=roomList.get(0).getRoomId()%> ];
 //
 var XspanId = [<%for(RoomVO roomVO3:roomList){%> <%="xx"+roomVO3.getRoomId()%>, <%}%>  <%="xx"+roomList.get(0).getRoomId()%> ];
+
+var remainId = [<%for(RoomVO roomVO3:roomList){%> <%="yy"+roomVO3.getRoomId()%>, <%}%>  <%="yy"+roomList.get(0).getRoomId()%> ];
 
 var hotelPageId = document.getElementById("hotelPageId").value; //取得進入哪一間hotel
 	
@@ -363,17 +367,52 @@ window.onload=function(){
 	XspanMap = new Map;
 	for(var i=0 ;i<XspanId.length;i++){
 		var item = document.getElementById(XspanId[i]);
-		console.log(XspanId[i]);
-		console.log(FirstRoomId[i]);
+// 		console.log(XspanId[i]);
+// 		console.log(FirstRoomId[i]);
 		
 		XspanMap.set(FirstRoomId[i]+"",XspanId[i]);
 		
 	}	
-		
 	
+	remainMap = new Map;
+	for(var i=0 ;i<remainId.length;i++){
+// 		var item = document.getElementById(remainId[i]);
+// 		console.log(remainId[i]);
+// 		console.log(FirstRoomId[i]);
+		
+		remainMap.set(FirstRoomId[i]+"",remainId[i]);
+		
+	}	
+	
+	addMan(hotelPageId);
+// 	console.log(remainMap);
 	
 }
-window.onunload=disconnect;
 
+function addMan(hotelId){
+	var xhr = new XMLHttpRequest();
+	  
+	  //建立好Post連接
+	  var url = "<%=request.getContextPath()%>/countMan";
+	  var data_info = "hotelId=" +hotelId+"&action=add";
+	  xhr.open("Post",url,true);
+	  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	  xhr.send(data_info);	
+	
+}
+
+window.onunload=function(){
+	
+	  var xhr2 = new XMLHttpRequest();
+	  
+	  //建立好Post連接
+	  var url = "<%=request.getContextPath()%>/countMan";
+	  var data_info = "hotelId=" +hotelPageId+"&action=cut";
+	  xhr2.open("Post",url,true);
+	  xhr2.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	  xhr2.send(data_info);
+   	  disconnect();
+   	  console.log("aaaaa");
+}
 </script>
 </html>

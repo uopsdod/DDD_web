@@ -51,8 +51,8 @@
 		<th>簡訊驗證碼</th>
 		<th>QR Code圖片</th>
 	</tr>
-	<%@ include file="pages/page1.file" %>
-	<c:forEach var="ordVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+
+	<c:forEach var="ordVO" items="${list}"">
 		<tr>
 			<td>${ordVO.ordId}</td>
 			<td>${ordVO.ordRoomVO.roomId}</td>
@@ -69,7 +69,7 @@
 		</tr>
 	</c:forEach>
 </table>
-<%@ include file="pages/page2.file"%>
+
 
 </body>
 </html>

@@ -121,7 +121,7 @@ pageContext.setAttribute("ordVO", ordVO);
 				<tr>
 					<td>評價內容:</td>
 					<td>						
-						<textarea name="ordRatingContent"> <%=(ordVO == null || ordVO.getOrdRatingContent() == null )? "" : ordVO.getOrdRatingContent()%> </textarea>
+						<textarea name="ordRatingContent"><%=(ordVO == null || ordVO.getOrdRatingContent() == null )? "" : ordVO.getOrdRatingContent()%></textarea>
 					</td>
 				</tr>
 

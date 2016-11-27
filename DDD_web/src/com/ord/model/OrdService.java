@@ -72,6 +72,7 @@ public class OrdService {
 
 		/* 把自增主鍵填上去 */
 		String ordId = dao.insert(ordVO);
+
 		//ordVO.setOrdId(ordId);
 		//這樣才有找外來鍵的其他資訊的超能力
 		return dao.findByPrimaryKey(ordId);
