@@ -53,6 +53,7 @@
     <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
     <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
     <url-pattern>/frontend_mem/chat/MapAndChat.jsp</url-pattern>
+    <url-pattern>/frontend_mem/ord/listAllOrdByMemId.jsp</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
