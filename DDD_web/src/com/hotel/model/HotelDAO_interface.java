@@ -9,6 +9,7 @@ public interface HotelDAO_interface {
 	 public List<HotelVO> getAll_TO_VIEW();
 	 public List<Map> GET_RANDOM_HOTEL_TO_VIEW();
 	 public List<HotelVO> getListBySql(String sql);//嘉鴻
+	 public String GET_WISH_COUNT(String aRooid);
 	 public HotelVO getUser(String aAccount);
 	 public void insert(HotelVO aHotelVO);
      public void update(HotelVO aHotelVO);

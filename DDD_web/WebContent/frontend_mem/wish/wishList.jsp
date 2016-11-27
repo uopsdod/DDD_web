@@ -54,7 +54,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 	           <c:choose>
 				    <c:when test="${list.size()!=0}">				     
 	                <h1 id="WishH2">- 我的願望清單          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
-	             	<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/wish/wish.do">
+	             	
 		                <c:forEach var="wish" items="${list}">		
 			                <hr style="border-top:3px solid lightgray">				
 			                <img src='data:image/jpeg;base64,${wish.roomPhotoPic}' width="500" height="300" class="wishImg">
@@ -95,6 +95,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 			                <div class="toNight1">原價</div>
 			               <del> <div class="price1">TWD ${wish.roomPrice}</div></del>
 			                <br><br><br>
+			                <div style="c​​lear:both;">
 			                <div class="toNight">今晚價</div>
 			                <div class="price">
 			                <u>
@@ -119,13 +120,16 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 							</span>
 			                </u></div>
 			                <br>
-			                <button id="buttnOnimg" >查看詳情</button>
-			                <input type="hidden" name="action" value="delect"> 
-			                <input type="hidden" name="memid" value="${memVO.getMemId()}"> 
-			                <input type="hidden" name="roomPhotoRoomId" value="${wish.roomPhotoRoomId}"> 
-			                <button id="buttnOnimg1" >X刪除</button>
+			                <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/wish/wish.do">
+				                <button id="buttnOnimg" >查看詳情</button>
+				                <input type="hidden" name="action" value="delect"> 
+				                <input type="hidden" name="memid" value="${memVO.getMemId()}"> 
+				                <input type="hidden" name="roomPhotoRoomId" value="${wish.roomPhotoRoomId}"> 
+				                <button id="buttnOnimg1" >X刪除</button>
+			                </FORM>
+			                </div>
 		            	</c:forEach>
-	                </FORM>
+	                
 	           	   </c:when>		  
 			       <c:otherwise>
 			       	    <h1 id="WishH2">- 我的願望清單          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>

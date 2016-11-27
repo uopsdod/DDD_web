@@ -5,9 +5,8 @@
 <%-- 此頁練習採用 EL 的寫法取值 --%>
 
 <%
-    HotelRepService hotelRepSvc = new HotelRepService();
-    List<HotelRepVO> list = hotelRepSvc.getAll();
-    pageContext.setAttribute("list",list);
+	List<HotelRepVO> list = (List<HotelRepVO>)request.getAttribute("list");
+	pageContext.setAttribute("list", list );
 %>
 
 <html>
@@ -71,7 +70,7 @@
 			<td>
 			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/hotelRep/hotelRep.do">
 			     <input type="submit" value="修改">
-			     <input type="hidden" name="hotelRepId" value="${hotelRepVO.hotelRepId}">
+			     <input type="hidden" name="hotelRepId" value="${empVO.empno}">
 			     <input type="hidden" name="action"	value="getOneForUpdate"></FORM>
 			</td>
 		</tr>

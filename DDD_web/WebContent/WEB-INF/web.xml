@@ -36,6 +36,7 @@
     <url-pattern>/frontend_hotel/index.jsp</url-pattern>
     <url-pattern>/frontend_hotel/hotel/findByPrimaryKey.jsp</url-pattern>
     <url-pattern>/frontend_hotel/hotel/updatesecess.jsp</url-pattern>
+    <url-pattern>/frontend_hotel/hotel/Status_1.jsp</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
@@ -49,8 +50,6 @@
   <filter-mapping>
     <filter-name>LoginFilter_mem</filter-name>
     <url-pattern>/frontend_mem/mem/member.jsp</url-pattern>
-    <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
-    <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
     <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
     <url-pattern>/frontend_mem/chat/MapAndChat.jsp</url-pattern>
     <url-pattern>/frontend_mem/ord/listAllOrdByMemId.jsp</url-pattern>

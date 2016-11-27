@@ -1,6 +1,7 @@
 package com.wish.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,8 +10,15 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
+import com.hotel.model.HotelService;
+import com.hotel.model.HotelVO;
 import com.wish.model.WishService;
+import com.wish.model.WishVO;
+
+import util.AddressToLat;
+import util.Util_psw;
 
 
 public class WishServlet extends HttpServlet {
@@ -29,12 +37,53 @@ public class WishServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		System.out.println(action);
 		
+		if ("insertWish".equals(action)) {
+
+			List<String> errorMsgs = new LinkedList<String>();
+			
+			request.setAttribute("errorMsgs", errorMsgs);
+			String requestURL = request.getParameter("requestURL");
+			try {
+				
+				String WISHMEMID = request.getParameter("WISHMEMID").trim();
+				String WISHROOMID = request.getParameter("WISHROOMID").trim();
+						
+				
+
+				WishService wishsvc = new WishService();
+				//SELECT wishRoomId FROM wish where wishMemId=?
+				List<WishVO> list =wishsvc.getOneWishOfmem(WISHMEMID);
+				for(WishVO a:list){
+					if(a.getWishRoomId().contains(WISHROOMID)){
+						errorMsgs.add("您已經加入過此房型了!");
+					}
+				}
+				if (!errorMsgs.isEmpty()) {
+					
+					RequestDispatcher failureView = request.getRequestDispatcher("/frontend_mem/index.jsp");
+					failureView.forward(request, response);
+					return;
+				}
+				
+				wishsvc.addWish_web(WISHMEMID, WISHROOMID);
+				
+				String url="/frontend_mem/index.jsp";
+				RequestDispatcher successView = request.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
+				successView.forward(request, response);
+
+				/*************************** 其他可能的錯誤處理 **********************************/
+			} catch (Exception e) {
+				errorMsgs.add(e.getMessage());
+				RequestDispatcher failureView = request.getRequestDispatcher("requestURL");
+				failureView.forward(request, response);
+			}
+		}
 		
 		if ("delect".equals(action)) { // 來自/dept/listAllDept.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
 			request.setAttribute("errorMsgs", errorMsgs);
-	
+			
 			try {
 				/***************************1.接收請求參數***************************************/
 				String memid = new String(request.getParameter("memid"));
