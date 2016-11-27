@@ -2,9 +2,13 @@ package com.ord.model;
 
 import com.room.model.*;
 import com.mem.model.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hotel.model.*;
+import com.hotelrep.model.HotelRepVO;
 
 import java.sql.Timestamp;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class OrdVO implements java.io.Serializable {
 	private String ordId;
@@ -26,6 +30,9 @@ public class OrdVO implements java.io.Serializable {
 	private byte[] ordQrPic;
 	private String ordMsgNo;
 	
+	@JsonIgnore
+	private Set<HotelRepVO> ordHotelReps = new LinkedHashSet<HotelRepVO>();
+		
 	public String getOrdId() {
 		return this.ordId;
 	}
@@ -98,6 +105,14 @@ public class OrdVO implements java.io.Serializable {
 	}
 	public void setOrdMsgNo(String aOrdMsgNo) {
 		this.ordMsgNo = aOrdMsgNo;
+	}
+	
+	public Set<HotelRepVO> getOrdHotelReps() {
+		return this.ordHotelReps;
+	}
+	
+	public void setOrdHotelReps(Set<HotelRepVO> aOrdHotelReps) {
+		this.ordHotelReps = aOrdHotelReps;
 	}
 	
 	/* 過渡方法  */
