@@ -1,4 +1,54 @@
+.btnwish{
+	opacity: 0.9;
+    background: #0283df;
+    color: #ffffff;
+    
+    font-weight: bold;
+    font-family: Tahoma, Verdana, 微軟正黑體;
+    border: 0px;	
+}
 
+#gotop1 {
+		heigh:50px;
+        width: 50px;
+        position: fixed;
+        bottom: 45px;
+        cursor: pointer;
+        z-index: 99998;
+        right: 50%;
+        margin-right: -920px;
+        font-family:Tahoma, Verdana, 微軟正黑體;
+        text-align:center;
+        font-weight:bold;
+    }    
+    
+    #gotop1:hover {
+        animation: rubberBand 1s;
+    }
+    
+    @keyframes rubberBand {
+        from {
+            transform: scale3d(1, 1, 1);
+        }
+        30% {
+            transform: scale3d(1.25, 0.75, 1);
+        }
+        40% {
+            transform: scale3d(0.75, 1.25, 1);
+        }
+        50% {
+            transform: scale3d(1.15, 0.85, 1);
+        }
+        65% {
+            transform: scale3d(.95, 1.05, 1);
+        }
+        75% {
+            transform: scale3d(1.05, .95, 1);
+        }
+        to {
+            transform: scale3d(1, 1, 1);
+        }
+    }
 * {
     /*全套用*/
     margin: 0px;
@@ -388,7 +438,7 @@ footer #list {
 
 .item {
     font-family: Tahoma, Verdana, 微軟正黑體;
-    height: 380px;
+    height: 400px;
     padding: 10px;
     border: 10px;
     max-width: 100%
@@ -396,7 +446,8 @@ footer #list {
 }
 
 .item .img-responsive {
-    height: 200px
+    height: 200px;
+    
 }
 
 .item h4 {
@@ -409,7 +460,11 @@ footer #list {
     font-family: Tahoma, Verdana, 微軟正黑體;
     margin-right:7px;
 }
-
+.count{
+	font-family: Tahoma, Verdana, 微軟正黑體;
+    margin-right:7px;
+    color:#408080;
+}
 #tonight {
     color: gray;
     font-size: 18px;
@@ -420,13 +475,14 @@ footer #list {
     font-size: 20px;
     font-family: Tahoma, Verdana, 微軟正黑體;
     margin-right:7px;
+    color:#000075;
 }
 
 .borderOfBanner {
     padding: 10px
 }
 div.onsaledemo:hover{
-    background-color:#0283df;
+    background-color:#e1e1e1;
 }
 
 

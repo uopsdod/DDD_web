@@ -63,10 +63,79 @@ public class HotelJDBCDAO implements HotelDAO_interface {
 			+ "(select h.hotelName,h.hotelRatingResult,r.roomName,r.roomid,r.roomPrice,o.roomPhotoPic "
 			+ "from room r,roomphoto o,hotel h where r.roomid=o.roomPhotoRoomId and r.roomHotelId = h.hotelId "
 			+ "ORDER BY dbms_random.value) where rownum <= 8;";
-	
+	private static final String GET_WISH_COUNT="select count(wishmemid)as count from wish where wishroomid=?";
+
 	private static final Base64.Encoder encoder = Base64.getEncoder();
 	private static final Base64.Encoder encoder1 = Base64.getEncoder();
 	
+	@Override
+	public String GET_WISH_COUNT(String aRooid) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Integer count=0;
+		String product="";
+		try {
+			Class.forName(this.driver);
+			con = DriverManager.getConnection(this.url, this.userid, this.passwd);
+			pstmt = con.prepareStatement(GET_WISH_COUNT);
+			pstmt.setString(1,aRooid);
+			rs = pstmt.executeQuery();
+			rs.next(); 
+			
+			count = rs.getInt("count");
+			
+			if(count==0){
+	       		product = "新品上架!!";
+	       	 }else if(count==1){
+	       		product="目前有1人正在考慮";
+	       	 }else if(count==2){
+	        	product="目前有2人正在考慮";
+	         }else if(count==3){
+	        	product="目前有3人正在考慮，趕緊下手!";
+	         }else if(count==4){
+	         	product="目前有4人正在考慮，趕緊下手!";
+	         }else if(count==5){
+	         	product="目前有5人正在考慮，錯過就沒了!";
+	         }else if(count==6){
+	          	product="目前有6人正在考慮，錯過就沒了!";
+	         }else if(count==7){
+	          	product="目前有7人正在考慮，錯過就沒了!";
+	         }else if(count==8){
+	           	product="目前有8人正在考慮，人氣非常高呀!";
+	         }else if(count==9){
+	            product="目前有9人正在考慮，人氣非常高呀!";
+	         }else if(count==10){
+	            product="目前有10人正在考慮，人氣非常高呀!";
+	         }else{
+	        	product="目前有"+count+"人正在考慮，人氣非常高呀!"; 
+	         }			
+			
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+
+		return product;
+	}
 	
 	@Override
 	public List<Map> GET_RANDOM_HOTEL_TO_VIEW() {

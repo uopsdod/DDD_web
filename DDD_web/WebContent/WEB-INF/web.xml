@@ -129,7 +129,6 @@
     <servlet-name>DBGifReader4</servlet-name>
     <url-pattern>/ord/DBGifReader4</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>DBGifReader5</servlet-name>
     <servlet-class>com.mem.controller.DBGifReader5</servlet-class>
@@ -138,8 +137,6 @@
     <servlet-name>DBGifReader5</servlet-name>
     <url-pattern>/mem/DBGifReader5</url-pattern>
   </servlet-mapping>
-  
-  
   <servlet>
     <servlet-name>MemCoordServlet</servlet-name>
     <servlet-class>android.live2.MemCoordServlet</servlet-class>

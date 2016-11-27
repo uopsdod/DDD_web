@@ -133,7 +133,6 @@ private static final Set<Session> allSessions = Collections.synchronizedSet(new 
 	
 	@OnClose
 	public void onClose(Session userSession, CloseReason reason,@PathParam("myRoom") String HotelId) {
-		hotelPeople(HotelId,-1);
 		allSessions.remove(userSession);
 		System.out.println(userSession.getId() + ": Disconnected: " + Integer.toString(reason.getCloseCode().getCode()));
 	}
