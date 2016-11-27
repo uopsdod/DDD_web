@@ -58,9 +58,9 @@ public class HotelRepServlet extends HttpServlet {
 				
 				/***************************2.開始查詢資料*****************************************/
 				HotelRepService hotelRepSvc = new HotelRepService();
-				HotelRepVO hotelReoVO = hotelRepSvc.getOneHotelRep(hotelRepId);
+				HotelRepVO hotelRepVO = hotelRepSvc.getOneHotelRep(hotelRepId);
 				
-				if (hotelReoVO == null) {
+				if (hotelRepVO == null) {
 					errorMsgs.add("查無資料");
 				}
 				// Send the use back to the form, if there were errors
@@ -72,7 +72,7 @@ public class HotelRepServlet extends HttpServlet {
 				}
 				
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
-				aReq.setAttribute("hotelReoVO", hotelReoVO); // 資料庫取出的empVO物件,存入req
+				aReq.setAttribute("hotelRepVO", hotelRepVO); // 資料庫取出的empVO物件,存入req
 				String url = "/backend/hotelRep/listOneHotelRep.jsp";
 				RequestDispatcher successView = aReq.getRequestDispatcher(url); // 成功轉交listOneEmp.jsp
 				successView.forward(aReq, aRes);
@@ -121,9 +121,9 @@ public class HotelRepServlet extends HttpServlet {
 				
 				/***************************2.開始查詢資料****************************************/
 				HotelRepService hotelRepSvc = new HotelRepService();
-				HotelRepVO hotelReoVO = hotelRepSvc.getOneHotelRep(hotelRepId);
+				HotelRepVO hotelRepVO = hotelRepSvc.getOneHotelRep(hotelRepId);
 				
-				if (hotelReoVO == null) {
+				if (hotelRepVO == null) {
 					errorMsgs.add("查無資料");
 				}
 				// Send the use back to the form, if there were errors
@@ -135,7 +135,7 @@ public class HotelRepServlet extends HttpServlet {
 				}
 								
 				/***************************3.查詢完成,準備轉交(Send the Success view)************/
-				aReq.setAttribute("hotelReoVO", hotelReoVO); // 資料庫取出的empVO物件,存入req
+				aReq.setAttribute("hotelRepVO", hotelRepVO); // 資料庫取出的empVO物件,存入req
 				String url = "/backend/hotelRep/updateHotelRepInput.jsp";
 				RequestDispatcher successView = aReq.getRequestDispatcher(url); // 成功轉交update_emp_input.jsp
 				successView.forward(aReq, aRes);
