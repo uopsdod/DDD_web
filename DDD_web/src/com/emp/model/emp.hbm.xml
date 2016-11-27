@@ -21,6 +21,13 @@
 		<property name="empROCId" column="empROCId" />
 		<property name="empAddress" column="empAddress" />
 
+		<set name="empHotelReps" table="hotelRep" lazy="false" cascade="all"  inverse="true"  order-by="hotelRepId asc">			
+			<key>
+				<column name="hotelRepEmpId" />
+			</key>
+			<one-to-many class="com.hotelrep.model.HotelRepVO" />
+		</set>  
+
 	</class>
 </hibernate-mapping>
 
