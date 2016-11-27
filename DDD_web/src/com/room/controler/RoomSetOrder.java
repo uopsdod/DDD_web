@@ -179,7 +179,13 @@ public class RoomSetOrder extends HttpServlet {
 			
 				
 			System.out.println("通過驗證");
-
+			
+			
+			
+			req.setAttribute("OrdMessage","謝謝您的訂購");
+			RequestDispatcher failureView = req
+					.getRequestDispatcher("/frontend_mem/ord/listAllOrdByMemId.jsp");
+			failureView.forward(req, res);
 			return;	
 		}
 		
@@ -238,19 +244,32 @@ public class RoomSetOrder extends HttpServlet {
     	 StringBuffer QRcode = new StringBuffer();
     	
     	 QRcode.append("Dua Dee Dou訂單");
+    	 QRcode.append(",");
     	 QRcode.append("訂單明細如下 : ");
-    	 QRcode.append("\n");
+    	 QRcode.append(",");
     	 QRcode.append("訂購人 : ");
+    	 QRcode.append(",");
     	 QRcode.append(memName);   	 
-    	 QRcode.append("\n");
+    	 QRcode.append(",");
     	 QRcode.append("旅館名稱 : ");
+    	 QRcode.append(",");
     	 QRcode.append(hotelName);   
-    	 QRcode.append("\n");
+    	 QRcode.append(",");
 		 QRcode.append("房型名稱 : ");
+		 QRcode.append(",");
 		 QRcode.append(roomName);
-		 QRcode.append("\n");
+		 QRcode.append(",");
 		 QRcode.append("房價 : ");
+		 QRcode.append(",");
 		 QRcode.append(ordPrice);
+		 QRcode.append(",");
+		 QRcode.append("訂單編號 : ");
+		 QRcode.append(",");
+		 QRcode.append(firstOrdVO.getOrdId());
+		 QRcode.append(",");
+		 QRcode.append("會員編號 : ");
+		 QRcode.append(",");
+		 QRcode.append(ordMemId);
 	
     	String QRUrl =new String(QRcode);; 		
 		
@@ -317,7 +336,7 @@ public class RoomSetOrder extends HttpServlet {
 		        
 		         public void run(){
 		         	//排程器要執行的任務	
-//		        	 Send.send(tel,telMessage);	//傳簡訊
+		        	 Send.send(tel,telMessage);	//傳簡訊
 		        	 MailService.gotMail(ordMail, subject, message); 
 		        	
 		         }
