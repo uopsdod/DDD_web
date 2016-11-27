@@ -38,7 +38,6 @@ public class WishDAO implements WishDAO_interface {
 	private static final String GET_ONE ="select o.roomPhotoRoomId,o.roomPhotoPic,h.hotelid,h.hotelName,r.roomPrice,r.roomid,r.roomDisccountPercent,r.roomName,r.roomRemainNo,r.roomDiscountStartDate,r.roomDiscountEndDate,h.hotelRatingResult from wish w,room r,roomphoto o,hotel h where w.wishMemId=? and r.roomId = w.wishRoomId and r.roomid=o.roomPhotoRoomId and r.roomHotelId = h.hotelId";
 	private static final Base64.Encoder encoder = Base64.getEncoder();
 	
-	
 	@Override
 	public void insert(WishVO aWishVO) {
 		Connection con = null;
@@ -322,7 +321,9 @@ public class WishDAO implements WishDAO_interface {
 		List<Map> list = new ArrayList<Map>();//LISTMAP
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		PreparedStatement pstmt1 = null;
 		ResultSet rs = null;
+		ResultSet rs1 = null;
 
 		try {
 
@@ -331,6 +332,7 @@ public class WishDAO implements WishDAO_interface {
 
 			pstmt.setString(1,wishMemId);
 			rs = pstmt.executeQuery();
+			
 			
 			while (rs.next()) {
 				Map<Object,Object> map = new HashMap<Object,Object>();//MAP

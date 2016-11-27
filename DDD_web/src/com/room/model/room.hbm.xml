@@ -34,7 +34,7 @@
         <property name="roomOneBed" column="roomOneBed" />
         <property name="roomTwoBed" column="roomTwoBed" />
         
-		<set name="roomOrds" table="ord" lazy="true" cascade="all"  inverse="true"  order-by="ordId asc">			
+		<set name="roomOrds" table="ord" lazy="false" cascade="all"  inverse="true"  order-by="ordId asc">			
 			<key>
 				<column name="ordRoomId" />
 			</key>

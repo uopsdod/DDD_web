@@ -53,6 +53,7 @@ import com.memrep.model.MemRepService;
 //import com.memrep.model.MemRepService;
 import com.memrep.model.MemRepVO;
 import com.ord.model.OrdService;
+import com.ord.model.OrdVO;
 
 import util.CompositeQuery_anyDB_Hibernate;
 import util.HibernateUtil;
@@ -377,9 +378,21 @@ public class Testing_yo extends HttpServlet {
 //		deptVO.setEmps(set);
 //		dao.insert(deptVO);
 		
+//		MemRepService dao_memRep = new MemRepService();
+//		MemRepVO memRepVO = dao_memRep.findByMemRepOrdId("201611100x"); // 2016111002
+//		out.println((memRepVO != null)?memRepVO.getMemRepContent():null);
+		
+//		OrdService dao_ord = new OrdService();
+//		OrdVO myVO = dao_ord.getOneOrd("2016111007");
+//		out.print(myVO.getOrdStatus());
+		
+		
 		MemRepService dao_memRep = new MemRepService();
-		MemRepVO memRepVO = dao_memRep.findByMemRepOrdId("201611100x"); // 2016111002
-		out.println((memRepVO != null)?memRepVO.getMemRepContent():null);
+		String ordId = "2016111011";
+		String content = "test 1126";
+		MemRepVO memRepVO = dao_memRep.findByMemRepOrdId(ordId); // 2016111002
+		out.println(memRepVO.getMemRepContent());
+		//dao_memRep.insert(ordId, content);
 		
 	
 	}

@@ -23,6 +23,12 @@ http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
                 <value>com/mem/model/mem.hbm.xml</value>
                 <value>com/hotel/model/hotel.hbm.xml</value>
                 <value>com/room/model/room.hbm.xml</value>
+                <value>com/memrep/model/memRep.hbm.xml</value>
+                <value>com/hotelrep/model/hotelRep.hbm.xml</value>
+                <value>com/emp/model/emp.hbm.xml</value>
+                <value>com/auth/model/auth.hbm.xml</value>
+                <value>com/chat/model/chat.hbm.xml</value>
+                <value>com/memchat/model/memChat.hbm.xml</value>    
             </list> 
         </property> 
         <property name="hibernateProperties"> 

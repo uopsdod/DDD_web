@@ -36,6 +36,7 @@
     <url-pattern>/frontend_hotel/index.jsp</url-pattern>
     <url-pattern>/frontend_hotel/hotel/findByPrimaryKey.jsp</url-pattern>
     <url-pattern>/frontend_hotel/hotel/updatesecess.jsp</url-pattern>
+    <url-pattern>/frontend_hotel/hotel/Status_1.jsp</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
@@ -49,8 +50,6 @@
   <filter-mapping>
     <filter-name>LoginFilter_mem</filter-name>
     <url-pattern>/frontend_mem/mem/member.jsp</url-pattern>
-    <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
-    <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
     <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
     <url-pattern>/frontend_mem/chat/MapAndChat.jsp</url-pattern>
     <url-pattern>/frontend_mem/ord/listAllOrdByMemId.jsp</url-pattern>
@@ -128,7 +127,7 @@
   
   <servlet>
     <servlet-name>HotelRepServlet</servlet-name>
-    <servlet-class>com.hotelRep.controller.HotelRepServlet</servlet-class>
+    <servlet-class>com.hotelrep.controller.HotelRepServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>HotelRepServlet</servlet-name>
@@ -218,5 +217,8 @@
   </listener>
   <listener>
     <listener-class>com.listener.InitializeOrdStatusTransListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>com.listener.InitializeHotelRepStatusTransListener</listener-class>
   </listener>
 </web-app>

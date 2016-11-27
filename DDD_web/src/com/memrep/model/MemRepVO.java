@@ -86,14 +86,16 @@ public class MemRepVO implements Serializable {
 		ordVO.setOrdId(memRepOrdId);
 		this.setMemRepOrdVO(ordVO);
 	}
-	public String getMemRepEmpId() {
-		return this.getMemRepEmpVO().getEmpId();
-	}
-	public void setMemRepEmpId(String aMemRepEmpId) {
-		EmpVO empVO = new EmpVO();
-		empVO.setEmpId(aMemRepEmpId);
-		this.setMemRepEmpVO(empVO);
-	}	
+	// 在使用memRepService的findByMemRepOrdId方法時，如果把過度方法打開，則會出現JsonMappingException  NullPointerException
+	// com.memrep.model.MemRepVO.getMemRepEmpId(MemRepVO.java:90)會被呼叫:
+//	public String getMemRepEmpId() { 
+//		return this.getMemRepEmpVO().getEmpId();
+//	}
+//	public void setMemRepEmpId(String aMemRepEmpId) {
+//		EmpVO empVO = new EmpVO();
+//		empVO.setEmpId(aMemRepEmpId);
+//		this.setMemRepEmpVO(empVO);
+//	}	
 	
 	
 	
