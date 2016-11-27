@@ -108,7 +108,7 @@ public class OrdServlet extends HttpServlet {
 		 
 			outStr = gson.toJson(ordVO);
 			res.setContentType(CONTENT_TYPE);
-			PrintWriter out = res.getWriter();
+			PrintWriter out = res.getWriter(); 
 			System.out.println("outStr:" + outStr);
 			out.println(outStr);
 
