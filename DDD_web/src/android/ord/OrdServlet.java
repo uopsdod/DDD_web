@@ -133,6 +133,12 @@ public class OrdServlet extends HttpServlet {
 			
 			os.write(image);
 			
+		}else if("checked".equals(action)){
+			String key = jsonObject.get("key").getAsString();
+			RoomSetOrder setOrd = new RoomSetOrder();
+			setOrd.checkOrder(key, ordId);
+			OrdVO ordVO = dao_ord.getOneOrd(ordId);
+			if(ordVO.getOrdStatus().equals(0)){}
 		}
 		
 	}
