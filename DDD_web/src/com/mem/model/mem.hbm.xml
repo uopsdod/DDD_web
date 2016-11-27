@@ -33,7 +33,7 @@
 			<one-to-many class="com.ord.model.OrdVO" />
 		</set>
 		
-		<set name="memHotelReps" table="hotrlRep" lazy="false" cascade="all"  inverse="true"  order-by="hotrlRepId asc">			
+		<set name="memHotelReps" table="hotelRep" lazy="false" cascade="all"  inverse="true"  order-by="hotelRepId asc">			
 			<key>
 				<column name="hotelRepMemId" />
 			</key>
