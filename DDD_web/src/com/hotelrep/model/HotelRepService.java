@@ -45,13 +45,12 @@ public class HotelRepService {
 		return dao.findByPrimaryKey(hotelRepId);
 	}
 	
-	public HotelRepVO updateHotelRep(HotelRepVO aHotelRepVO){
-		
-		 dao.update(aHotelRepVO);
-		 
+	public HotelRepVO updateHotelRep(HotelRepVO aHotelRepVO){		 
 		/* 處理的時間就是現在時間 */
-		aHotelRepVO.setHotelRepReviewDate(new java.sql.Date( new java.util.Date().getTime() ));
+		aHotelRepVO.setHotelRepReviewDate( new java.sql.Date( new java.util.Date().getTime() ));
  
+		dao.update(aHotelRepVO);
+		
 		return dao.findByPrimaryKey(aHotelRepVO.getHotelRepId());
 	}
 	
