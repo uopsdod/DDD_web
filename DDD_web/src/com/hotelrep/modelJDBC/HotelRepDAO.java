@@ -1,4 +1,4 @@
-package com.hotelrep.model;
+package com.hotelrep.modelJDBC;
 
 import java.util.*;
 
