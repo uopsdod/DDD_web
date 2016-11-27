@@ -105,7 +105,7 @@ public class OrdServlet extends HttpServlet {
 			int roomPrice = Integer.parseInt(price);
 			
 			ordVO = setOrd.setOrder(hotelId, roomId, memId, roomPrice, memAccount, memPhone, getServletContext());
-		
+		 
 			outStr = gson.toJson(ordVO);
 			res.setContentType(CONTENT_TYPE);
 			PrintWriter out = res.getWriter();
