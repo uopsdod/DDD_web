@@ -384,11 +384,35 @@ window.onload=function(){
 		
 	}	
 	
-	
+	addMan(hotelPageId);
 // 	console.log(remainMap);
 	
 }
-window.onunload=disconnect;
 
+function addMan(hotelId){
+	var xhr = new XMLHttpRequest();
+	  
+	  //建立好Post連接
+	  var url = "<%=request.getContextPath()%>/countMan";
+	  var data_info = "hotelId=" +hotelId+"&action=add";
+	  xhr.open("Post",url,true);
+	  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	  xhr.send(data_info);	
+	
+}
+
+window.onunload=function(){
+	
+	  var xhr2 = new XMLHttpRequest();
+	  
+	  //建立好Post連接
+	  var url = "<%=request.getContextPath()%>/countMan";
+	  var data_info = "hotelId=" +hotelPageId+"&action=cut";
+	  xhr2.open("Post",url,true);
+	  xhr2.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	  xhr2.send(data_info);
+   	  disconnect();
+   	  console.log("aaaaa");
+}
 </script>
 </html>
