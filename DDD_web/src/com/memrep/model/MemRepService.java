@@ -1,8 +1,13 @@
 package com.memrep.model;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.emp.model.EmpVO;
+import com.hotel.model.HotelVO;
+import com.mem.model.MemVO;
+import com.ord.model.OrdService;
 import com.ord.model.OrdVO;
 
 public class MemRepService {
@@ -12,11 +17,24 @@ public class MemRepService {
 	}
 	public void insert(String aMemRepOrdId, String aMemRepContent){
 		MemRepVO memRepVO = new MemRepVO();
-		OrdVO memRepOrdVO = new OrdVO();
-		memRepOrdVO.setOrdId(aMemRepOrdId);
+//		HotelVO hotelVO = new HotelVO();
+//		MemVO memVO = new MemVO();
 		
-		memRepVO.setMemRepOrdVO(memRepOrdVO);
+		OrdService dao_ord = new OrdService();
+		OrdVO ordVO = dao_ord.getOneOrd(aMemRepOrdId);
+//		hotelVO.setHotelId(ordVO.getOrdHotelId());
+//		memVO.setMemId(ordVO.getOrdMemId());
+		
+		
+		memRepVO.setMemRepOrdVO(ordVO); // FK
+		memRepVO.setMemRepHotelVO(ordVO.getOrdHotelVO()); // FK
+		memRepVO.setMemRepMemVO(ordVO.getOrdMemVO()); // FK
 		memRepVO.setMemRepContent(aMemRepContent);
+		memRepVO.setMemRepStatus("0");// 0.未審核 1.已審核未通過 2.已審核已通過
+		memRepVO.setMemRepDate(new java.sql.Date(new java.util.Date().getTime()));
+		memRepVO.setMemRepEmpVO(null);
+		memRepVO.setMemRepReviewDate(null);
+		
 		this.dao.insert(memRepVO);
 	}
 	
