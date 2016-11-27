@@ -105,7 +105,7 @@ public class OrdServlet extends HttpServlet {
 			int roomPrice = Integer.parseInt(price);
 			
 			ordVO = setOrd.setOrder(hotelId, roomId, memId, roomPrice, memAccount, memPhone, getServletContext());
-		
+		 
 			outStr = gson.toJson(ordVO);
 			res.setContentType(CONTENT_TYPE);
 			PrintWriter out = res.getWriter();
@@ -133,6 +133,12 @@ public class OrdServlet extends HttpServlet {
 			
 			os.write(image);
 			
+		}else if("checked".equals(action)){
+			String key = jsonObject.get("key").getAsString();
+			RoomSetOrder setOrd = new RoomSetOrder();
+			setOrd.checkOrder(key, ordId);
+			OrdVO ordVO = dao_ord.getOneOrd(ordId);
+			if(ordVO.getOrdStatus().equals(0)){}
 		}
 		
 	}

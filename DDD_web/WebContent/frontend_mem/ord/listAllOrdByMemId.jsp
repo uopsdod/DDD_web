@@ -27,7 +27,8 @@
 	           <c:choose>
 				    <c:when test="${list.size()!=0}">				     
 	                <h1 id="WishH2">- 管理你的預定          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
-	                	                
+	                
+	                <div>${OrdMessage}</div>	                
 					<table class="table table-hover" border="1">
 						<thead>
 							<tr style="background-color: #B0C4DE;">
@@ -60,10 +61,11 @@
 	
 									<td>${ordVO.ordMsgNo}</td>
 									<td>
-										<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
+										<form method="post" action="<%=request.getContextPath()%>/OrdCheckAndCancel">
 												<input type="submit" value="X刪除" id="buttnOnimg1">
 												<input type="hidden" name="ordId" value="${ordVO.ordId}">
-												<input type="hidden" name="action" value="getOneForUpdate">
+												<input type="hidden" name="ordMsgNo" value="${ordVO.ordMsgNo}">
+												<input type="hidden" name="action" value="cancel">
 										</form>
 									</td>
 								</tr>

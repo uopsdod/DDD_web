@@ -33,15 +33,15 @@ private static final Set<Session> allSessions = Collections.synchronizedSet(new 
 		allSessions.add(userSession);
 		System.out.println(userSession.getId() + ": 已連線");
 		System.out.println(myName + ": 已連線");
-		System.out.println(HotelId + ": 房號");
+		System.out.println(HotelId + ": hotel");
 		
-		if(!"1".equals(HotelId)){
-		hotelPeople(HotelId,1);
-		}
+//		if(!"1".equals(HotelId)){
+//		hotelPeople(HotelId,1);
+//		}
 //		userSession.getBasicRemote().sendText("WebSocket 連線成功");
 	}
 	
-	synchronized private void hotelPeople(String HotelId,int change){
+	synchronized public static void hotelPeople(String HotelId,int change){
 		
 		Integer howMany;
 		try{			
@@ -154,7 +154,7 @@ private static final Set<Session> allSessions = Collections.synchronizedSet(new 
 	
 	@OnClose
 	public void onClose(Session userSession, CloseReason reason,@PathParam("myRoom") String HotelId) {
-		hotelPeople(HotelId,-1);
+//		hotelPeople(HotelId,-1);
 		allSessions.remove(userSession);
 		System.out.println(userSession.getId() + ": Disconnected: " + Integer.toString(reason.getCloseCode().getCode()));
 	}
