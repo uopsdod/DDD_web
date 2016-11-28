@@ -14,22 +14,33 @@
 
 <style>
 	#listinfor{
-		 font-family:Tahoma, Verdana, 微軟正黑體;
+		font-family:Tahoma, Verdana, 微軟正黑體;
+	}
+	
+	#view th{
+		font-family:Tahoma, Verdana, 微軟正黑體;
+		font-size:18px;
+		
+	}
+	#view tr{
+		font-family:Tahoma, Verdana, 微軟正黑體;
+		font-size:20px;
+		
 	}
 </style>
 
     <section>
        <div class="col-xs-12 col-sm-12 ">
-           <div class="col-xs-12 col-sm-3">
+           <div class="col-xs-12 col-sm-1">
                
            </div>          
-           <div class="col-xs-12 col-sm-6" id="view">
+           <div class="col-xs-12 col-sm-10" id="view">
 	           <c:choose>
 				    <c:when test="${list.size()!=0}">				     
 	                <h1 id="WishH2">- 管理你的預定          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
 	                
 	                <div>${OrdMessage}</div>	                
-					<table class="table table-hover" border="1">
+					<table class="table table-hover " >
 						<thead>
 							<tr style="background-color: #B0C4DE;">
 								<th>訂單編號</th>
@@ -85,7 +96,7 @@
 			       </c:otherwise>
 		       </c:choose>   
            </div>
-           <div class="col-xs-12 col-sm-3">
+           <div class="col-xs-12 col-sm-1">
                
            </div>
        </div>
