@@ -34,8 +34,8 @@
 	        	
 	       		if(one.childNodes[0].childNodes[0]!=jsonObj[1]){	//價錢有變才換價錢
 	       		
-	       			$(one.childNodes[0]).toggle("fast",showPrice.bind(null, one,jsonObj[1]));    	
-	       			$(one.childNodes[0]).toggle("slow");
+	       			$(one.childNodes[0]).fadeOut("slow",showPrice.bind(null, one,jsonObj[1]));    	
+	       			$(one.childNodes[0]).fadeIn("slow");
 	       		
 	       		}
 		    }//if
