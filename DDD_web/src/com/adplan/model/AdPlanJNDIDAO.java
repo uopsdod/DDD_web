@@ -28,11 +28,11 @@ public class AdPlanJNDIDAO implements AdPlanDAO_interface {
 		}
 	}
 
-	private static final String INSERT_STMT = "INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPic,adPicContent,adHit) VALUES (Ad_adId.NEXTVAL,Ad_adAdPlanId.NEXTVAL, adHotelId.NEXTVAL, ?, ?, ?, ?, ?)";
-	private static final String GET_ALL_STMT = "SELECT adId,adAdPlanId,adHotelId,adStatus,to_char(adPayDate,'yyyy-mm-dd') adPayDate,adPic,adPicContent,adHit FROM Ad order by adId";
-	private static final String GET_ONE_STMT = "SELECT adId,adAdPlanId,adHotelId,adStatus,to_char(adPayDate,'yyyy-mm-dd') adPayDate,adPic,adPicContent,adHit FROM Ad where adId = ?";
-	private static final String DELETE = "DELETE FROM Ad where AdId = ?";
-	private static final String UPDATE = "UPDATE Ad set adId=?, adAdPlanId=?, adStatus=?, adPayDate=?, adPic=?, adPicContent=?, adHit=? where AdId = ?";
+	private static final String INSERT_STMT = "INSERT INTO AdPlan (adPlanId,adPlanName,adPlanStartDate,adPlanEndDate,adPlanPrice,adPlanRemainNo) VALUES (adPlan_seq.NEXTVAL,?, ?, ?, ?, ?)";
+	private static final String GET_ALL_STMT = "SELECT adPlanId,adPlanName,to_char(adPlanStartDate,'yyyy-mm-dd') adPlanStartDate,to_char(adPlanEndDate,'yyyy-mm-dd') adPlanEndDate,adPlanPrice,adPlanRemainNo FROM AdPlan order by adPlanId";
+	private static final String GET_ONE_STMT = "SELECT adPlanId,adPlanName,to_char(adPlanStartDate,'yyyy-mm-dd') adPlanStartDate,to_char(adPlanEndDate,'yyyy-mm-dd') adPlanEndDate,adPlanPrice,adPlanRemainNo FROM AdPlan where adPlanId = ?";
+	private static final String DELETE = "DELETE FROM AdPlan where adPlanId = ?";
+	private static final String UPDATE = "UPDATE AdPlan set  adPlanName=?, adPlanStartDate=?, adPlanEndDate=?, adPlanPrice=?, adPlanRemainNo=? where adPlanId = ?";
 
 	@Override
 	public void insert(AdPlanVO aAdPlanVO) {
@@ -228,15 +228,15 @@ public class AdPlanJNDIDAO implements AdPlanDAO_interface {
 			con = ds.getConnection();
 			pstmt = con.prepareStatement(AdPlanJNDIDAO.GET_ALL_STMT);
 			rs = pstmt.executeQuery();
-			ResultSetMetaData rsmd = rs.getMetaData();
+		/*	ResultSetMetaData rsmd = rs.getMetaData();
 			int len = rsmd.getColumnCount();
 			for (int i = 1; i <= len; i++) {
 				System.out.println("rsmd.getColumnName(i)" + rsmd.getColumnName(i));
-			}
+			}*/
 
 			while (rs.next()) {
 				// adPlanVO ¤]ºÙ¬° Domain objects
-				System.out.println("rs.getDate(\"adPayDate\"): " + rs.getDate("adPayDate"));
+				//System.out.println("rs.getDate(\"adPayDate\"): " + rs.getDate("adPayDate"));
 
 				adPlanVO = new AdPlanVO();
 				adPlanVO.setAdPlanId(rs.getString("adPlanId"));

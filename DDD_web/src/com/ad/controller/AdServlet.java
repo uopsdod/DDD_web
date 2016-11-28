@@ -39,6 +39,7 @@ public class AdServlet extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8"); /* 處理編碼 */
 		String action = request.getParameter("action");
+		System.out.println("action: " + action);
 
 		if ("getOne_For_Display".equals(action)) {
 
@@ -87,11 +88,11 @@ public class AdServlet extends HttpServlet {
 			 String Adid = new String (request.getParameter("Adid"));
 			 AdService adSvc = new AdService();
 			 AdVO adVO = adSvc.getOneAd(Adid);
-			System.out.println(adVO);
+			
 			adSvc.updateAd(adVO.getAdId(), adVO.getAdAdPlanId(), adVO.getAdStatus(), adVO.getAdPayDate(), adVO.getAdPic(), adVO.getAdPicContent(), adVO.getAdHit()+1);
 			String url=adVO.getAdPicContent();
-			response.sendRedirect(url);
-
+			
+			   response.sendRedirect(url);
  			 
 		 }
 
@@ -114,7 +115,9 @@ public class AdServlet extends HttpServlet {
 				 * 3.查詢完成,準備轉交(Send the Success view)
 				 ************/
 				request.setAttribute("adVO", adVO); // 資料庫取出的empVO物件,存入req
+				
 				String url = "/backend/Ad/update_ad_inputpage.jsp";
+//				response.sendRedirect(url);
 				RequestDispatcher successView = request.getRequestDispatcher(url);// 成功轉交
 																					// update_emp_input.jsp
 				successView.forward(request, response);
@@ -164,6 +167,7 @@ public class AdServlet extends HttpServlet {
 				 * InputStream in = part.getInputStream(); byte[] buf = new
 				 * byte[in.available()]; in.read(buf); in.close();
 				 */
+				
 
 				String adPicContent = request.getParameter("adPicContent").trim();
 				Integer adHit = null;
@@ -180,7 +184,7 @@ public class AdServlet extends HttpServlet {
 				adVO.setAdHotelId(adHotelId);
 				adVO.setAdStatus(adStatus);
 				adVO.setAdPayDate(adPayDate);
-				// adVO.setAdPic(buf);
+				 //adVO.setAdPic(buf);
 				adVO.setAdPicContent(adPicContent);
 				adVO.setAdHit(adHit);
 				
@@ -190,7 +194,7 @@ public class AdServlet extends HttpServlet {
 				AdPlanVO adPlanVO = adPlanSvc.getOneAd(adAdPlanId);/* 用ID去資料庫找同樣的資料 用service去取出物件 */
 				int i = adPlanVO.getAdPlanRemainNo();
 				i -= 1;
-				adPlanSvc.updateAd(adPlanVO.getAdPlanId(), adPlanVO.getAdPlanStartDate(),
+				adPlanSvc.updateAd(adPlanVO.getAdPlanId(), adPlanVO.getAdPlanName(), adPlanVO.getAdPlanStartDate(),
 						adPlanVO.getAdPlanEndDate(), adPlanVO.getAdPlanPrice(), i);
 				}
 				
@@ -208,8 +212,8 @@ public class AdServlet extends HttpServlet {
 				/*************************** 2.開始修改資料 *****************************************/
 
 				AdService adSvc = new AdService();
+				
 				byte[] buf = adSvc.getOneAd(adId).getAdPic();
-
 				adSvc.updateAd(adId, adAdPlanId, adStatus, adPayDate, buf, adPicContent, adHit);
 				// 設定傳送郵件:至收信人的Email信箱,Email主旨,Email內容
 				if (adStatus.equals("2")) {
@@ -224,10 +228,12 @@ public class AdServlet extends HttpServlet {
 				/***************************
 				 * 3.修改完成,準備轉交(Send the Success view)
 				 *************/
-				request.setAttribute("adVO", adVO); // 資料庫update成功後,正確的的empVO物件,存入req
-				String url = "/backend/Ad/listAllAdPage.jsp";
-				RequestDispatcher successView = request.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
-				successView.forward(request, response);
+			
+				//request.setAttribute("adVO", adVO); // 資料庫update成功後,正確的的empVO物件,存入req
+				String url = "http://localhost:8081/DDD_web/backend/Ad/listAllAdPage.jsp";
+				response.sendRedirect(url);
+//				RequestDispatcher successView = request.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+//				successView.forward(request, response);
 
 				/*************************** 其他可能的錯誤處理 *************************************/
 			} catch (Exception e) {/* 不可預期的錯誤 */
@@ -318,15 +324,18 @@ public class AdServlet extends HttpServlet {
 			System.out.println("buf=" + buf);
 			System.out.println("adPicContent=" + adPicContent);
 			System.out.println("adHit=" + adHit);
+			System.out.println("新增一筆 AdServlet");
 			adVO = adSvc.addAd(adAdPlanId, adHotelId, adStatus, adPayDate, buf, adPicContent, adHit);/* 以新增置資料庫 */
 
 			/***************************
 			 * 3.新增完成,準備轉交(Send the Success view)
 			 ***********/
-			String url = "/frontend_hotel/ad/clientBannerinfo.jsp";/* 要跳轉頁面 */
-			RequestDispatcher successView = request.getRequestDispatcher(url); // 轉交
-																				// 新增成功後轉交listAllEmp.jsp
-			successView.forward(request, response);
+			String url = "http://localhost:8081/DDD_web/frontend_hotel/ad/listAllByHotelIdPage.jsp";/* 要跳轉頁面 */
+			response.sendRedirect(url);
+			
+//			RequestDispatcher successView = request.getRequestDispatcher(url); // 轉交
+//																				// 新增成功後轉交listAllEmp.jsp
+//			successView.forward(request, response);
 
 			/*************************** 其他可能的錯誤處理 **********************************/
 			// } catch (Exception e) {
@@ -410,6 +419,135 @@ public class AdServlet extends HttpServlet {
 				failureView.forward(request, response);
 			}
 		}
+		
+		if ("updatesStatus".equals(action)) { // 來自update_emp_input.jsp的請求
+
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			request.setAttribute("errorMsgs", errorMsgs);
+
+			try {
+				/***********************
+				 * 1.接收請求參數 - 輸入格式的錯誤處理
+				 *************************/
+				String adId = request.getParameter("adId").trim();
+				String adAdPlanId = request.getParameter("adAdPlanId").trim();
+				// String adAdPlanId = "10000001";
+				String adHotelId = request.getParameter("adHotelId").trim();
+				// String adHotelId = "10001";
+				String adStatus = "3";
+				
+				System.out.println("adId: " + adId);
+				System.out.println("adAdPlanId: " + adAdPlanId);
+				System.out.println("adHotelId: " + adHotelId);
+				
+				Date adPayDate = new java.sql.Date(System.currentTimeMillis());
+				int hasin=0;
+				byte[] buf=null;
+
+				/*
+				 * Part part = request.getPart("adPic"); //
+				 * Servlet3.0新增了Part介面，讓我們方便的進行檔案上傳處理
+				 * 
+				 * InputStream in = part.getInputStream(); byte[] buf = new
+				 * byte[in.available()]; in.read(buf); in.close();
+				 */
+
+				String adPicContent = request.getParameter("adPicContent").trim();
+				Integer adHit = 0;
+				
+
+				AdVO adVO = new AdVO();
+				adVO.setAdId(adId);
+				adVO.setAdAdPlanId(adAdPlanId);
+				adVO.setAdHotelId(adHotelId);
+				adVO.setAdStatus(adStatus);
+				adVO.setAdPayDate(adPayDate);
+				 //adVO.setAdPic(buf);
+				adVO.setAdPicContent(adPicContent);
+				adVO.setAdHit(adHit);
+				
+				
+			/*	if (adStatus.equals("3")) {
+				AdPlanService adPlanSvc = new AdPlanService(); 建service物件 
+				AdPlanVO adPlanVO = adPlanSvc.getOneAd(adAdPlanId); 用ID去資料庫找同樣的資料 用service去取出物件 
+				int i = adPlanVO.getAdPlanRemainNo();
+				i -= 1;
+				adPlanSvc.updateAd(adPlanVO.getAdPlanId(), adPlanVO.getAdPlanName(), adPlanVO.getAdPlanStartDate(),
+						adPlanVO.getAdPlanEndDate(), adPlanVO.getAdPlanPrice(), i);
+				}
+				*/
+				
+
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {/* 輸入錯誤 */
+					
+					request.setAttribute("adVO", adVO); // 含有輸入格式錯誤的adVO物件,也存入req
+					RequestDispatcher failureView = request.getRequestDispatcher("/frontend_hotel/ad/pay.jsp");
+					failureView.forward(request, response);
+					
+					return;
+					
+				}
+
+				/*************************** 2.開始修改資料 *****************************************/
+
+				AdService adSvc = new AdService();
+				if(hasin==0){
+					 buf = adSvc.getOneAd(adId).getAdPic();
+				}
+				
+				
+				
+
+				adSvc.updateAd(adId, adAdPlanId, adStatus, adPayDate, buf, adPicContent, adHit);
+			/*	// 設定傳送郵件:至收信人的Email信箱,Email主旨,Email內容
+				if (adStatus.equals("2")) {
+					Util_psw.sendMail(hotelAccount, "Dua Dee Duo旅宿平台",
+							hotelName + "廠商您好，經審核您的廣告資料符合本公司規定 ，請至Dua Dee Dao平台填寫繳費資料，並於期限內完成繳費 ，再次感謝您的購買。");
+				}
+
+				if (adStatus.equals("1")) {
+					Util_psw.sendMail(hotelAccount, "Dua Dee Duo旅宿平台",
+							hotelName + "廠商您好，經審核您的廣告圖片或圖片說明資料未符合本公司規定 ，請重新上傳相關資料，如有任何疑問歡迎與Dua Dee Dao平台聯絡，再次感謝您的購買。");
+				}*/
+				/***************************
+				 * 3.修改完成,準備轉交(Send the Success view)
+				 *************/
+			
+				//request.setAttribute("adVO", adVO); // 資料庫update成功後,正確的的empVO物件,存入req
+				String url = "/frontend_hotel/ad/listAllByHotelIdPage.jsp";
+				
+			RequestDispatcher successView = request.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+				successView.forward(request, response);
+
+				/*************************** 其他可能的錯誤處理 *************************************/
+			} catch (Exception e) {/* 不可預期的錯誤 */
+				errorMsgs.add("修改資料失敗:" + e.getMessage());
+				RequestDispatcher failureView = request.getRequestDispatcher("/frontend_hotel/ad/pay.jsp");
+				e.printStackTrace();
+				failureView.forward(request, response);
+				
+				
+			}
+		}
+		/*if("payCheck".equals(action)){
+			
+			String adid = request.getParameter("adid").trim();
+			
+			String url = "/frontend_hotel/ad/listAllByHotelIdPage.jsp";
+				
+			RequestDispatcher successView = request.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+				successView.forward(request, response);
+
+		
+
+			
+			
+		}*/
+	
+		
 
 	}
 
