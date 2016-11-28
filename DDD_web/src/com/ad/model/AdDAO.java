@@ -35,7 +35,6 @@ public class AdDAO implements AdDAO_interface {
 	private static final String UPDATE = "UPDATE Ad set adStatus=?, adPayDate=?, adPic=?, adPicContent=?, adHit=? where AdId = ?";
 	private static final String GET_ALL_STMT_HOTELID = "SELECT adId,adAdPlanId,adHotelId,adStatus,to_char(adPayDate,'yyyy-mm-dd') adPayDate,adPic,adPicContent,adHit FROM Ad where adHotelId=? order by adId";
 	private static final Base64.Encoder encoder = Base64.getEncoder();
-	
 	@Override
 	public void insert(AdVO aAdVO) {
 		// TODO Auto-generated method stub
@@ -240,7 +239,7 @@ public class AdDAO implements AdDAO_interface {
 
 			while (rs.next()) {
 				// AdVO �]�٬� Domain objects
-				System.out.println("rs.getDate(\"adPayDate\"): " + rs.getDate("adPayDate"));
+				//System.out.println("rs.getDate(\"adPayDate\"): " + rs.getDate("adPayDate"));
 
 				AdVO = new AdVO();
 				AdVO.setAdId(rs.getString("adId"));
@@ -254,7 +253,6 @@ public class AdDAO implements AdDAO_interface {
 				} else {
 					AdVO.setBs64(encoder.encodeToString(AdVO.getAdPic()));
 				}
-
 				AdVO.setAdPicContent(rs.getString("adPicContent"));
 				AdVO.setAdHit(rs.getInt("adHit"));
 				list.add(AdVO); // Store the row in the list
@@ -312,8 +310,7 @@ public class AdDAO implements AdDAO_interface {
 
 			while (rs.next()) {
 				// AdVO �]�٬� Domain objects
-				System.out.println("rs.getDate(\"adPayDate\"): " + rs.getDate("adPayDate"));
-
+				
 				AdVO = new AdVO();
 				AdVO.setAdId(rs.getString("adId"));
 				AdVO.setAdAdPlanId(rs.getString("adAdPlanId"));

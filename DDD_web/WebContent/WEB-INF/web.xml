@@ -21,6 +21,9 @@
     <url-pattern>/backend/hotel/get_need_check.jsp</url-pattern>
     <url-pattern>/backend/mem/listAllMem.jsp</url-pattern>
     <url-pattern>/backend/mem/getonemem.jsp</url-pattern>
+    <url-pattern>/backend/ord/*</url-pattern>
+    <url-pattern>/backend/Ad/*</url-pattern>
+    <url-pattern>/backend/adPlan/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>

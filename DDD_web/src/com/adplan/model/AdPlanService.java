@@ -29,11 +29,11 @@ public class AdPlanService {//跟DAO要資料 然後DAO再回傳資料給自己
 		return adPlanVO;
 	}
 
-	public AdPlanVO updateAd(String aAdPlanName,java.sql.Date aAdPlanStartDate, java.sql.Date aAdPlanEndDate,
+	public AdPlanVO updateAd(String aAdPlanId, String aAdPlanName,java.sql.Date aAdPlanStartDate, java.sql.Date aAdPlanEndDate,
 			Integer aAdPlanPrice, Integer aAdPlanRemainNo) {
 
 		AdPlanVO adPlanVO = new AdPlanVO();
-
+		adPlanVO.setAdPlanId(aAdPlanId); 
 		adPlanVO.setAdPlanName(aAdPlanName);
 		adPlanVO.setAdPlanStartDate(aAdPlanStartDate);
 		adPlanVO.setAdPlanEndDate(aAdPlanEndDate);
