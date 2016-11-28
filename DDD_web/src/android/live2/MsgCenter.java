@@ -44,7 +44,7 @@ public class MsgCenter extends HttpServlet {
 	// <memId,tokenId> // 注意:要加上static，不然實體每次都會消失
 	private static HashMap<String, String> tokenMap = new HashMap<>();
 	// <memId,session> // 注意:要加上static，不然實體每次都會消失
-	private static BiMap<String, Session> sessionMap = new HashBiMap();
+	private static BiMap<String, Session> sessionMap = new HashBiMap<>();
 	private static HashMap<String, String> chatIdMap = new HashMap<>();
 	private MemChatService dao_memChat;
 
@@ -66,11 +66,13 @@ public class MsgCenter extends HttpServlet {
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss.S").create();
 		PartnerMsg partnerMsg = gson.fromJson(aMessage, PartnerMsg.class);
 
-		String action = partnerMsg.getAction();
+		String action = (partnerMsg.getAction() != null) ? partnerMsg.getAction(): null;
 		String fromMemId = (partnerMsg.getMemChatMemVO() != null) ? partnerMsg.getMemChatMemVO().getMemId() : null;
-		String tokenId = partnerMsg.getTokenId();
+		String tokenId = (partnerMsg.getTokenId() != null) ? partnerMsg.getTokenId(): null;
 		String toMemId = (partnerMsg.getMemChatToMemVO() != null) ? partnerMsg.getMemChatToMemVO().getMemId() : null;
-		String message = partnerMsg.getMemChatContent();
+		String message = (partnerMsg.getMemChatContent() != null) ? partnerMsg.getMemChatContent(): null;
+		String fromMobile = (partnerMsg.getFromMobile() != null) ? partnerMsg.getFromMobile(): null;
+		String resend = (partnerMsg.getResend() != null) ? partnerMsg.getResend(): null;
 
 		System.out.println("tokenId: " + tokenId);
 		System.out.println("fromMemId: " + fromMemId);
@@ -94,7 +96,16 @@ public class MsgCenter extends HttpServlet {
 			String chatId = dao_memChat.getChatIdBtwenTwoMems(fromMemId, toMemId);
 			System.out.println("bindMemIdWithSession - chat id: " + chatId);
 			this.chatIdMap.put(fromMemId, chatId);
+			if (resend != null){
+				System.out.println("resend matched *************");
+				aUserSession.getAsyncRemote().sendText(aMessage);
+			}
 			return;
+		}else if ("bindMemIdWithSession".equals(action)){
+			System.out.println("sessionMap.size(): " + sessionMap.size());
+			String chatId = dao_memChat.getChatIdBtwenTwoMems(fromMemId, toMemId);
+			System.out.println("bindMemIdWithSession(Web) - chat id: " + chatId);
+			this.chatIdMap.put(fromMemId, chatId);			
 		}
 
 		// 使用者要傳送訊息給對方
@@ -173,22 +184,33 @@ public class MsgCenter extends HttpServlet {
 				
 			} else {// end if - 將資料傳給對方
 				System.out.println(toMemId + " is not online and not logged in yet.");
-				Session toMemSession = sessionMap.get(toMemId);
+				if (fromMobile != null){
+					return;
+				}
 				
-				JSONObject memChatMemVO = new JSONObject();
-				JSONObject memChatToMemVO = new JSONObject();
-				JSONObject offlineObject = new JSONObject();
+				// 網頁端專用:
+				if (sessionMap.get(toMemId) != null){
+					Session toMemSession = sessionMap.get(toMemId);
+					
+					JSONObject memChatMemVO = new JSONObject();
+					JSONObject memChatToMemVO = new JSONObject();
+					JSONObject offlineObject = new JSONObject();
+					
+					memChatMemVO.put("memId", fromMemId);
+					memChatToMemVO.put("memId", toMemId);
+					
+					offlineObject.put("action", "offlineMessage");
+					offlineObject.put("memChatMemVO",memChatMemVO);
+					offlineObject.put("memChatToMemVO",memChatToMemVO);
+					offlineObject.put("memChatContent", message);
+					
+					//JSONObject notifyJSON = new JSONObject("{\"action\":\"talkToYou\",\"fromMemId\":\"" + fromMemId +  + toMemId +"\"}");
+					toMemSession.getAsyncRemote().sendText(offlineObject.toString());
+				}else{
+					System.out.println(toMemId + " 不在共住頁面");
+				}
 				
-				memChatMemVO.put("memId", fromMemId);
-				memChatToMemVO.put("memId", toMemId);
-				
-				offlineObject.put("action", "offlineMessage");
-				offlineObject.put("memChatMemVO",memChatMemVO);
-				offlineObject.put("memChatToMemVO",memChatToMemVO);
-				offlineObject.put("memChatContent", message);
-				
-				//JSONObject notifyJSON = new JSONObject("{\"action\":\"talkToYou\",\"fromMemId\":\"" + fromMemId +  + toMemId +"\"}");
-				toMemSession.getAsyncRemote().sendText(offlineObject.toString());
+				// end of 網頁端專用
 			}
 			return;
 		} // end if "chat"
