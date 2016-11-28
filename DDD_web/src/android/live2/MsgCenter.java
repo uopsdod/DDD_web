@@ -101,6 +101,11 @@ public class MsgCenter extends HttpServlet {
 				aUserSession.getAsyncRemote().sendText(aMessage);
 			}
 			return;
+		}else if ("bindMemIdWithSession".equals(action)){
+			System.out.println("sessionMap.size(): " + sessionMap.size());
+			String chatId = dao_memChat.getChatIdBtwenTwoMems(fromMemId, toMemId);
+			System.out.println("bindMemIdWithSession(Web) - chat id: " + chatId);
+			this.chatIdMap.put(fromMemId, chatId);			
 		}
 
 		// 使用者要傳送訊息給對方
@@ -184,22 +189,27 @@ public class MsgCenter extends HttpServlet {
 				}
 				
 				// 網頁端專用:
-				Session toMemSession = sessionMap.get(toMemId);
+				if (sessionMap.get(toMemId) != null){
+					Session toMemSession = sessionMap.get(toMemId);
+					
+					JSONObject memChatMemVO = new JSONObject();
+					JSONObject memChatToMemVO = new JSONObject();
+					JSONObject offlineObject = new JSONObject();
+					
+					memChatMemVO.put("memId", fromMemId);
+					memChatToMemVO.put("memId", toMemId);
+					
+					offlineObject.put("action", "offlineMessage");
+					offlineObject.put("memChatMemVO",memChatMemVO);
+					offlineObject.put("memChatToMemVO",memChatToMemVO);
+					offlineObject.put("memChatContent", message);
+					
+					//JSONObject notifyJSON = new JSONObject("{\"action\":\"talkToYou\",\"fromMemId\":\"" + fromMemId +  + toMemId +"\"}");
+					toMemSession.getAsyncRemote().sendText(offlineObject.toString());
+				}else{
+					System.out.println(toMemId + " 不在共住頁面");
+				}
 				
-				JSONObject memChatMemVO = new JSONObject();
-				JSONObject memChatToMemVO = new JSONObject();
-				JSONObject offlineObject = new JSONObject();
-				
-				memChatMemVO.put("memId", fromMemId);
-				memChatToMemVO.put("memId", toMemId);
-				
-				offlineObject.put("action", "offlineMessage");
-				offlineObject.put("memChatMemVO",memChatMemVO);
-				offlineObject.put("memChatToMemVO",memChatToMemVO);
-				offlineObject.put("memChatContent", message);
-				
-				//JSONObject notifyJSON = new JSONObject("{\"action\":\"talkToYou\",\"fromMemId\":\"" + fromMemId +  + toMemId +"\"}");
-				toMemSession.getAsyncRemote().sendText(offlineObject.toString());
 				// end of 網頁端專用
 			}
 			return;

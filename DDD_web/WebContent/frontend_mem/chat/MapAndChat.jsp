@@ -348,7 +348,7 @@ function getListForUploader(){
 			
 			var jsonObj = JSON.parse(event.data);
 
-			//console.log("Debug: "+jsonObj);
+			console.log("Debug: "+jsonObj);
 
 			//var yourChatTime = "13 mins ago";	
 			var NowDate = new Date();
