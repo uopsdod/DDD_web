@@ -16,6 +16,8 @@ import java.security.Timestamp;
 public class PartnerMsg extends MemChatVO{
     String action;
     String tokenId;
+    String fromMobile;
+    String resend;
     // MemChatVO
 //    private String memChatChatId; // NOT NULL
 //    private String memChatMemId; // NOT NULL
@@ -52,4 +54,22 @@ public class PartnerMsg extends MemChatVO{
     public void setTokenId(String tokenId) {
         this.tokenId = tokenId;
     }
+
+	public String getFromMobile() {
+		return fromMobile;
+	}
+
+	public void setFromMobile(String fromMobile) {
+		this.fromMobile = fromMobile;
+	}
+
+	public String getResend() {
+		return resend;
+	}
+
+	public void setResend(String resend) {
+		this.resend = resend;
+	}
+    
+	
 }

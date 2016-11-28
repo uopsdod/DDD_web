@@ -44,7 +44,7 @@ public class MsgCenter extends HttpServlet {
 	// <memId,tokenId> // 注意:要加上static，不然實體每次都會消失
 	private static HashMap<String, String> tokenMap = new HashMap<>();
 	// <memId,session> // 注意:要加上static，不然實體每次都會消失
-	private static BiMap<String, Session> sessionMap = new HashBiMap();
+	private static BiMap<String, Session> sessionMap = new HashBiMap<>();
 	private static HashMap<String, String> chatIdMap = new HashMap<>();
 	private MemChatService dao_memChat;
 
@@ -66,11 +66,13 @@ public class MsgCenter extends HttpServlet {
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd hh:mm:ss.S").create();
 		PartnerMsg partnerMsg = gson.fromJson(aMessage, PartnerMsg.class);
 
-		String action = partnerMsg.getAction();
+		String action = (partnerMsg.getAction() != null) ? partnerMsg.getAction(): null;
 		String fromMemId = (partnerMsg.getMemChatMemVO() != null) ? partnerMsg.getMemChatMemVO().getMemId() : null;
-		String tokenId = partnerMsg.getTokenId();
+		String tokenId = (partnerMsg.getTokenId() != null) ? partnerMsg.getTokenId(): null;
 		String toMemId = (partnerMsg.getMemChatToMemVO() != null) ? partnerMsg.getMemChatToMemVO().getMemId() : null;
-		String message = partnerMsg.getMemChatContent();
+		String message = (partnerMsg.getMemChatContent() != null) ? partnerMsg.getMemChatContent(): null;
+		String fromMobile = (partnerMsg.getFromMobile() != null) ? partnerMsg.getFromMobile(): null;
+		String resend = (partnerMsg.getResend() != null) ? partnerMsg.getResend(): null;
 
 		System.out.println("tokenId: " + tokenId);
 		System.out.println("fromMemId: " + fromMemId);
@@ -94,6 +96,10 @@ public class MsgCenter extends HttpServlet {
 			String chatId = dao_memChat.getChatIdBtwenTwoMems(fromMemId, toMemId);
 			System.out.println("bindMemIdWithSession - chat id: " + chatId);
 			this.chatIdMap.put(fromMemId, chatId);
+			if (resend != null){
+				System.out.println("resend matched *************");
+				aUserSession.getAsyncRemote().sendText(aMessage);
+			}
 			return;
 		}
 
@@ -173,6 +179,11 @@ public class MsgCenter extends HttpServlet {
 				
 			} else {// end if - 將資料傳給對方
 				System.out.println(toMemId + " is not online and not logged in yet.");
+				if (fromMobile != null){
+					return;
+				}
+				
+				// 網頁端專用:
 				Session toMemSession = sessionMap.get(toMemId);
 				
 				JSONObject memChatMemVO = new JSONObject();
@@ -189,6 +200,7 @@ public class MsgCenter extends HttpServlet {
 				
 				//JSONObject notifyJSON = new JSONObject("{\"action\":\"talkToYou\",\"fromMemId\":\"" + fromMemId +  + toMemId +"\"}");
 				toMemSession.getAsyncRemote().sendText(offlineObject.toString());
+				// end of 網頁端專用
 			}
 			return;
 		} // end if "chat"
