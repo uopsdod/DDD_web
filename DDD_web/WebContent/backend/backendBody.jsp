@@ -24,7 +24,7 @@ session.setAttribute("authorityList",authorityList);
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#"><span class="glyphicon glyphicon-heart-empty"></span> DDD後端管理介面</a>
+					<a class="navbar-brand" href="<%=request.getContextPath()%>/backend/emp_index.jsp"><span class="glyphicon glyphicon-heart-empty"></span> DDD後端管理介面</a>
 				</div>
 			
 				<!-- 手機隱藏選單區 -->
