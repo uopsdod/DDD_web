@@ -30,7 +30,6 @@
 				<li class="active">旅客入住驗證</li>
 			</ol>
 
-			<h1>訂單驗證:</h1>
 			<%-- 錯誤表列 --%>
 			<c:if test="${not empty errorMsgs}">
 				請修正以下錯誤:

@@ -59,6 +59,7 @@ session.setAttribute("authorityList",authorityList);
 									<ul style="list-style-type: none">
 										<li><a href="<%=request.getContextPath()%>/backend/ord/listAllOrd.jsp">所有訂單查詢</a></li>
 										<li><a href="<%=request.getContextPath()%>/backend/selectPage.jsp">訂單條件搜尋</a></li>
+										<li><a href="<%=request.getContextPath()%>/backend/hotel/listAllHotel2.jsp">廠商訂單查詢</a></li>
 									</ul>
 								</div>
 							</div>
@@ -118,7 +119,6 @@ session.setAttribute("authorityList",authorityList);
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
 					        		<a href="<%=request.getContextPath()%>/backend/mem/listAllMem.jsp"><li>一般會員維護</li></a>
-					        		<li>對話紀錄維護</li>
 					        	</ul>
 					      </div>
 					    </div>

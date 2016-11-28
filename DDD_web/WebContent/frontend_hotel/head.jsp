@@ -89,8 +89,8 @@ session.setAttribute("hotelId", hotelVO.getHotelId());
 					    <div id="aaa" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="tab1">
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
-					        		<li>今日訂單維護</li>
-					        		<li>歷史訂單維護</li>
+					        		<li><a href="<%=request.getContextPath()%>/frontend_hotel/ord/listAllOrdByHotelId.jsp">所有訂單查詢</a></li>
+					        		<li><a href="<%=request.getContextPath()%>/frontend_hotel/ord/simpleCheckIn_Input.jsp">旅客入住驗證</a></li>
 					        	</ul>
 					      </div>
 					    </div>
