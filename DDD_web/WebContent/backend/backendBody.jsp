@@ -41,30 +41,28 @@ session.setAttribute("authorityList",authorityList);
 		</div> 
 
 		<div class="container-fluid">
-			<div class="row">
+			<div class="row"> 
 				<div class="col-xs-12 col-sm-2 aaa" style="background-color: #DCDCDC;">
 					<div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
 					  <!-- 區塊1 -->
 					  <c:if test="${fn:contains(authorityList,'102')}"> <%-- 行政業務管理 --%>
-					  <div class="panel panel-default">
-					    <div class="panel-heading" role="tab" id="tab1" style="background-color:#B0C4DE;">
-					      <h4 class="panel-title">
-					        <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#aaa" aria-expanded="true" aria-controls="aaa">
-							 
-							 <span class="glyphicon glyphicon-list-alt"></span> 訂單
-					        </a>
-					      </h4>
-					    </div>
-					    
-					    <div id="aaa" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="tab1" >
-					      <div class="panel-body">
-					        	<ul style="list-style-type: none">
-					        		<li>今日訂單維護</li>
-					        		<li>歷史訂單維護</li>
-					        	</ul>
-					      </div>
-					    </div>
-					  </div>
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="tab1" style="background-color: #B0C4DE;">
+								<h4 class="panel-title">
+									<a role="button" data-toggle="collapse" data-parent="#accordion2" href="#aaa" aria-expanded="true" aria-controls="aaa">
+										<span class="glyphicon glyphicon-list-alt"></span> 訂單
+									</a>
+								</h4>
+							</div>
+							<div id="aaa" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="tab1">
+								<div class="panel-body">
+									<ul style="list-style-type: none">
+										<li><a href="<%=request.getContextPath()%>/backend/ord/listAllOrd.jsp">所有訂單查詢</a></li>
+										<li><a href="<%=request.getContextPath()%>/backend/selectPage.jsp">訂單條件搜尋</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
 					   </c:if>
 					  <!-- 區塊4 -->
 					  <c:if test="${fn:contains(authorityList,'103')}"> <%-- 首頁管理 --%>
