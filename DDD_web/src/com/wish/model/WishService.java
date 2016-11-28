@@ -1,8 +1,14 @@
 package com.wish.model;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
-
+import com.hotel.model.*;
+import com.wish.controller.SocketOfWish;
 public class WishService {
 	private WishDAO_interface dao;
 	
@@ -10,12 +16,27 @@ public class WishService {
 		dao = new WishDAO();
 	}
 	
-	public WishVO addWish(String aWishMemId, String aWishRoomId){
+	
+	public WishVO addWish_web(String aWishMemId, String aWishRoomId){
 		WishVO wishVO = new WishVO();
-		
 		wishVO.setWishMemId(aWishMemId);
 		wishVO.setWishRoomId(aWishRoomId);
 		dao.insert(wishVO);
+				
+//		HotelService hotelSvc =new HotelService();
+//		String productCount =hotelSvc.GET_WISH_COUNT(aWishRoomId);
+//		SocketOfWish.getCount(aWishRoomId, productCount);
+  
+		return wishVO;
+		
+	}
+	
+	
+	public WishVO addWish(String aWishMemId, String aWishRoomId){
+		WishVO wishVO = new WishVO();
+		wishVO.setWishMemId(aWishMemId);
+		wishVO.setWishRoomId(aWishRoomId);
+		dao.insert(wishVO);      
 		return wishVO;
 	}
 	
@@ -40,6 +61,10 @@ public class WishService {
 	}
 
 	//--------------------------------------貴新增
+	public List<WishVO> getOneWishOfmem(String wishMemId) {
+		return dao.getOneWishOfmem(wishMemId);
+	}
+	
 	public List<Map> getOneWishOfmemNO(String wishMemId) {
 		
 		return dao.getOneWishOfmemNO(wishMemId);		

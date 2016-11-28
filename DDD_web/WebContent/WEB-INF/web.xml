@@ -21,6 +21,9 @@
     <url-pattern>/backend/hotel/get_need_check.jsp</url-pattern>
     <url-pattern>/backend/mem/listAllMem.jsp</url-pattern>
     <url-pattern>/backend/mem/getonemem.jsp</url-pattern>
+    <url-pattern>/backend/ord/*</url-pattern>
+    <url-pattern>/backend/Ad/*</url-pattern>
+    <url-pattern>/backend/adPlan/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
@@ -36,6 +39,7 @@
     <url-pattern>/frontend_hotel/index.jsp</url-pattern>
     <url-pattern>/frontend_hotel/hotel/findByPrimaryKey.jsp</url-pattern>
     <url-pattern>/frontend_hotel/hotel/updatesecess.jsp</url-pattern>
+    <url-pattern>/frontend_hotel/hotel/Status_1.jsp</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
@@ -49,8 +53,6 @@
   <filter-mapping>
     <filter-name>LoginFilter_mem</filter-name>
     <url-pattern>/frontend_mem/mem/member.jsp</url-pattern>
-    <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
-    <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
     <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
     <url-pattern>/frontend_mem/chat/MapAndChat.jsp</url-pattern>
     <url-pattern>/frontend_mem/ord/listAllOrdByMemId.jsp</url-pattern>
@@ -124,6 +126,16 @@
     <servlet-name>OrdServlet</servlet-name>
     <url-pattern>/ord/ord.do</url-pattern>
   </servlet-mapping>
+    <servlet>
+    <servlet-name>HotelRepServlet</servlet-name>
+    <servlet-class>com.hotelrep.controller.HotelRepServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HotelRepServlet</servlet-name>
+    <url-pattern>/hotelRep/hotelRep.do</url-pattern>
+  </servlet-mapping>
+  
+  
   <servlet>
     <servlet-name>DBGifReader4</servlet-name>
     <servlet-class>com.ord.controller.DBGifReader4</servlet-class>
@@ -206,5 +218,8 @@
   </listener>
   <listener>
     <listener-class>com.listener.InitializeOrdStatusTransListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>com.listener.InitializeHotelRepStatusTransListener</listener-class>
   </listener>
 </web-app>

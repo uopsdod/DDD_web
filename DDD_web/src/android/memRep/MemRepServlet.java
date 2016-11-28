@@ -61,7 +61,7 @@ public class MemRepServlet extends HttpServlet {
 		String action = (jsonObject.get("action") != null)?jsonObject.get("action").getAsString():null;
 		String ordId = (jsonObject.get("ordId") != null)?jsonObject.get("ordId").getAsString():null;
 		//String memId = (jsonObject.get("memId") != null)?jsonObject.get("memId").getAsString():null;
-		
+		System.out.println("ordId: " + ordId);
 		String outStr = null;
 		
 		if ("findByMemRepOrdId".equals(action)) {
@@ -75,8 +75,11 @@ public class MemRepServlet extends HttpServlet {
 				return;
 			}
 			
-			memRepVO.getMemRepEmpVO().setEmpProfile(null);
-			memRepVO.getMemRepEmpVO().setBs64(null);
+			if (memRepVO.getMemRepEmpVO() != null){
+				memRepVO.getMemRepEmpVO().setEmpProfile(null);
+				memRepVO.getMemRepEmpVO().setBs64(null);
+			}
+			
 			
 			memRepVO.getMemRepMemVO().setMemProfile(null);
 			memRepVO.getMemRepMemVO().setBs64(null);
@@ -107,6 +110,10 @@ public class MemRepServlet extends HttpServlet {
 			PrintWriter out = res.getWriter();
 			System.out.println("outStr:" + outStr);
 			out.println(outStr);
+		}else if ("insert".equals(action)){
+			System.out.println("insert match");
+			String content = (jsonObject.get("content") != null)?jsonObject.get("content").getAsString():null;
+			dao_memRep.insert(ordId, content);
 		}
 		
 	}

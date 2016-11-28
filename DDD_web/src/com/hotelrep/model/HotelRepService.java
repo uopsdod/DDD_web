@@ -7,7 +7,7 @@ public class HotelRepService {
 		this.dao = new HotelRepHibernateDAO();
 	}
 	
-	public HotelRepVO insert(String aHotelRepHotelId, String aHotelRepMemId, String aHotelRepOrdId, String aHotelRepEmpId, String aHotelRepContent){
+	public HotelRepVO addHotelRep(String aHotelRepHotelId, String aHotelRepMemId, String aHotelRepOrdId, String aHotelRepEmpId, String aHotelRepContent, String aHotelRepStatus){
 		HotelRepVO hotelRepVO = new HotelRepVO();
 		
 		//hotelRepVO.setHotelRepHotelId(aHotelRepHotelId);
@@ -35,33 +35,26 @@ public class HotelRepService {
 			hotelRepVO.setHotelRepContent(aHotelRepContent);
 		}
 		
-		/* 新增時 都是 0 (未審核) */
-		hotelRepVO.setHotelRepStatus("0");
+		hotelRepVO.setHotelRepStatus(aHotelRepStatus);
 		
-		/* 新增的時間就是現在時間 */
-		java.util.Date now = new java.util.Date();
-		java.sql.Date currentTime = new java.sql.Date(now.getTime());
-		hotelRepVO.setHotelRepDate(currentTime);
-		
-		/* 新增時 預設員工編號跟處理時間都是null */
-		
-		String hotelRepVOId  = dao.insert(hotelRepVO);
-		return dao.findByPrimaryKey(hotelRepVOId);
+		/* 新增的時間就是現在時間 */		
+		/* 新增時 預設員工處理時間是null */
+		hotelRepVO.setHotelRepDate( new java.sql.Date( new java.util.Date().getTime() ));
+				
+		String hotelRepId  = dao.insert(hotelRepVO);
+		return dao.findByPrimaryKey(hotelRepId);
 	}
 	
-	public HotelRepVO update(HotelRepVO aHotelRepVO){
-		
-		 dao.update(aHotelRepVO);
-		 
+	public HotelRepVO updateHotelRep(HotelRepVO aHotelRepVO){		 
 		/* 處理的時間就是現在時間 */
-		java.util.Date now = new java.util.Date();
-		java.sql.Date currentTime = new java.sql.Date(now.getTime());
-		aHotelRepVO.setHotelRepReviewDate(currentTime);
-		 
-		 return dao.findByPrimaryKey(aHotelRepVO.getHotelRepId());
+		aHotelRepVO.setHotelRepReviewDate( new java.sql.Date( new java.util.Date().getTime() ));
+ 
+		dao.update(aHotelRepVO);
+		
+		return dao.findByPrimaryKey(aHotelRepVO.getHotelRepId());
 	}
 	
-	public void delete(String aHotelRepId){
+	public void deleteHotelRep(String aHotelRepId){
 		dao.delete(aHotelRepId);
 	}
 	
@@ -71,7 +64,7 @@ public class HotelRepService {
 	public List<HotelRepVO> getAllByHotelRepStatus(String aHotelRepStatus){
 		return dao.getAllByHotelRepStatus(aHotelRepStatus);
 	}
-	public HotelRepVO findByPrimaryKey(String aHotelRepId){
+	public HotelRepVO getOneHotelRep(String aHotelRepId){
 		return dao.findByPrimaryKey(aHotelRepId);
 	}
 		

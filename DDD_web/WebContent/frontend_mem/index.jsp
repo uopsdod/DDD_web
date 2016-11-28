@@ -38,6 +38,7 @@ pageContext.setAttribute("list", list);
     <link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/css/1_css.css">
     <script src="<%=request.getContextPath()%>/frontend_mem/js/1_new.js"></script>
     <script src="<%=request.getContextPath()%>/frontend_mem/wish/socket.js"></script>
+<%--     <script src="<%=request.getContextPath()%>/frontend_mem/indexSocket.js"></script> --%>
     <title>Dua Dee Dou:晚鳥有優惠</title>
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/frontend_mem/images/index.jpg">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/bs/bootstrap.css">
@@ -47,6 +48,8 @@ pageContext.setAttribute("list", list);
     <script src="<%=request.getContextPath()%>/jq/jquery-ui.js"></script>
     <script src="<%=request.getContextPath()%>/jq/jquery-cycle-all.js"></script>
     <script src="<%=request.getContextPath()%>/bs/bootstrap.min.js"></script>
+    <script src="http://cdn.bootcss.com/gsap/1.19.0/TweenMax.min.js"></script>
+    <script src="http://cdn.bootcss.com/gsap/1.19.0/plugins/ScrollToPlugin.min.js"></script>
     
     <!-- <script src="jq/jquery.cycle.lite.js"></script> -->
 </head>
@@ -70,6 +73,8 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 		console.log(roomMap);
 		},false);
 	window.addEventListener('load',connect,false);
+// 	window.addEventListener('load',connect_B,false);
+// 	window.onunload =disconnect_B;
 	
 	function formSubmit()
 	  {
@@ -120,6 +125,35 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 		document.getElementById("myForm11").submit();
 	  }
 	
+	$(function() {
+        $("#gotop1,#gotop2").click(function(e) {
+            TweenMax.to(window, 1.5, {
+                scrollTo: 0,
+                ease: Expo.easeInOut
+            });
+            var huojian = new TimelineLite();
+            huojian.to("#gotop1", 1, {
+                    rotationY: 720,
+                    scale: 0.6,
+                    y: "+=40",
+                    ease: Power4.easeOut
+                })
+                .to("#gotop1", 1, {
+                    y: -1000,
+                    opacity: 0,
+                    ease: Power4.easeOut
+                }, 0.6)
+                .to("#gotop1", 1, {
+                    y: 0,
+                    rotationY: 0,
+                    opacity: 1,
+                    scale: 1,
+                    ease: Expo.easeOut,
+                    clearProps: "all"
+                }, "1.4");
+        });
+
+    });
 </script>
 <body>
     <!-- 開始導覽列 -->
@@ -134,8 +168,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="indexPage.html">我的訂單</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">QRCODE</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId.jsp">我的預訂</a></li>
                 </ul>
             </div>
             <div class="dropdown" style='display: inline-block;'>
@@ -215,8 +248,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="indexPage.html">我的訂單</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">QRCODE</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId.jsp">我的預訂</a></li>
                     </ul>
                 </div>
                 <div class="dropdown" style='display: inline-block;'>
@@ -306,15 +338,22 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
     <!-- -------------------------------------------------------------------------------->
     <!-- <div id="img" align="center"></div> <!-- 首頁大圖 -->
     <!-- 圖上大字 -->
+    <div id="shangxia2">
+      <span id="gotop1" style="font-family:Tahoma, Verdana, 微軟正黑體;text-align:center;font-weight:bold;">
+		<img src="<%=request.getContextPath()%>/frontend_mem/img/plane.png" alt="">
+
+	  </span>
+    </div>
     <section>
         <h2 id='searchTitle'>
         	<img src="<%=request.getContextPath()%>/frontend_mem/img/location.png" style="margin-top:-11px;"/>
         	訂飯店、住Villa、找共住、找便宜 包山包海國內外各類住宿
         	<img src="<%=request.getContextPath()%>/frontend_mem/img/house.png" style="margin-top:-11px;"/>
         </h2>
+<!--         -------------------------嘉鴻你的搜尋------------------------------ -->
         <div id="searchbgcolor" class="col-md-12">
             <table>
-                <form action="嘉鴻map/map.html" method="get">
+                <form action="" method="get">
                     <tr>
                         <th>想住哪?就搜哪!?</th>
                         <th>↓入住人數</th>
@@ -326,20 +365,18 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                         <td>
                             <select name="skill" class="option">
                                 <option value="1" class="option">1間客房,兩位大人</option>
-                                <option value="2" class="option">1間客房,四位大人</option>
-                                
+                                <option value="2" class="option">1間客房,四位大人</option>                          
                             </select>
                         </td>
                         <td>
-                            <input type="submit" name="sure" value="搜出好價" id="submit">
+                            <input type="submit" name="sure" value="搜出好價" id="mapSubmit">
                         </td>
-                        <td>
-                            <input type="submit" name="sure" value="地圖搜尋" id="mapSubmit">
-                        </td>
+                        
                     </tr>
                 </form>
             </table>
         </div>
+ <!--         -------------------------嘉鴻你的搜尋------------------------------ -->     
          <h1 class="title1">
          	<img src="<%=request.getContextPath()%>/frontend_mem/img/left.jpg" />
          	提供給您的超值方案
@@ -564,16 +601,22 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
         	提供最優惠的今晚價格
         	<img src="<%=request.getContextPath()%>/frontend_mem/img/right.jpg" />
         </h1>
+        <c:if test="${not empty errorMsgs}">
+			<div  class="error" align="center" style='color:red;font-family:Tahoma, Verdana, 微軟正黑體;'> 
+			${errorMsgs}		
+			</div>
+		</c:if>   
         <div class="container" style="width: 97%">
             <div class="row">
                 <div class="col-xs-12 col-sm-12">
                     <div class="container" style="width: 97%">
                         <div class="row">
-                        <c:forEach var="room" items="${list}">	
-                            <div class="borderOfBanner col-xs-12 col-sm-3" style="position:relative">
+                        <c:forEach var="room" items="${list}">
+                           <FORM METHOD="post"  ACTION="<%=request.getContextPath()%>/wish/wish.do">
+                            <div class="borderOfBanner col-xs-12 col-sm-3" style="position:relative">                            	
                                 <div class="item onsaledemo" style="border-bottom: gray double">
                                     <img src='data:image/jpeg;base64,${room.roomPhotoPic}' class="img-responsive" width="100%">
-                                    <h4>${room.hotelName}/${room.roomName}</h4>
+                                    <h4 style='font-weight: bold;'>${room.hotelName}/${room.roomName}</h4>
                                     
                                     	<c:choose>
                                     	 <c:when test='${room.hotelRatingResult==0}'>
@@ -605,11 +648,16 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 									     	<img src='<%=request.getContextPath()%>/frontend_mem/img/star.png' width='16px' height="16px">
 									     </c:otherwise>
 									   </c:choose> 
-                                    
+                                       
                                 </div>    
                                    
-                                    <div style="margin-top:-24%;" align="RIGHT">
+                                    <div style="margin-top:-29%;" align="RIGHT">
+                                    
+                                    	<div id ='${room.roomid}+"_forCount"' class="count">
                                     	
+                                    	   ${room.count}                           
+                                    	
+                                    	</div>
                                         <del id="del">原價${room.roomPrice}</del>
                                         <br>
                                         <b id="tonight">↓今晚低至↓</b>
@@ -636,9 +684,23 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 											</span>
                                         </div>                                     
                                     </div>
-                            	</div>
-                          </c:forEach>  
-                         
+                                    
+	                                     <c:choose>
+	                                    	 <c:when test='${!empty memVO}'> 
+	                                    	 <div style='margin-top:-8%;'>	                                    	 
+	                                    	 	<input type="submit" value="加入清單" class="btnwish">
+		                                        <input type="hidden" name="WISHMEMID" value='${memVO.memId}'>
+		                                        <input type="hidden" name="WISHROOMID" value='${room.roomid}'>
+		                                        <input type="hidden" name="action" value="insertWish"> 
+		                                        </div>                                   	 	
+										     </c:when>					        
+										     <c:otherwise>
+										     
+										     </c:otherwise>
+										</c:choose>                                                                                                        
+                            	 </div>
+                             </FORM>
+                          </c:forEach>                                                  
                         </div>
                     </div>
                 </div>
@@ -664,17 +726,17 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
             <ul class="cityList">
                 <li class="sectionAddress">
                     <div id="address7">
-                        <img src='<%=request.getContextPath()%>/frontend_mem/images/japen.jpg' width='329px' height='328px' ;>
+                        <img src='<%=request.getContextPath()%>/frontend_mem/images/japen.jpg' width='329px' height='328px' >
                     </div>
                 </li>
                 <li class="sectionAddress">
                     <div id="address">
-                        <img src='<%=request.getContextPath()%>/frontend_mem/images/paris.jpg' width='761px' height='328px' ;>
+                        <img src='<%=request.getContextPath()%>/frontend_mem/images/paris.jpg' width='761px' height='328px' >
                     </div>
                 </li>
                 <li class="sectionAddress">
                     <div id="address1">
-                        <img src='<%=request.getContextPath()%>/frontend_mem/images/newyork.jpg' width='329px' height='328px' ;>
+                        <img src='<%=request.getContextPath()%>/frontend_mem/images/newyork.jpg' width='329px' height='328px' >
                     </div>
                 </li>
             </ul>
@@ -683,17 +745,17 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
             <ul class="cityList">
                 <li class="sectionAddress">
                     <div id="address2">
-                        <img src='<%=request.getContextPath()%>/frontend_mem/images/londan.jpg' width='330px' height='328px' ;>
+                        <img src='<%=request.getContextPath()%>/frontend_mem/images/londan.jpg' width='330px' height='328px' >
                     </div>
                 </li>
                 <li class="sectionAddress">
                     <div id="address3">
-                        <img src='<%=request.getContextPath()%>/frontend_mem/images/moniblack.jpg' width='760px' height='328px' ;>
+                        <img src='<%=request.getContextPath()%>/frontend_mem/images/moniblack.jpg' width='760px' height='328px' >
                     </div>
                 </li>
                 <li class="sectionAddress">
                     <div id="address8">
-                        <img src='<%=request.getContextPath()%>/frontend_mem/images/japen1.jpg' width='330px' height='328px' ;>
+                        <img src='<%=request.getContextPath()%>/frontend_mem/images/japen1.jpg' width='330px' height='328px' >
                     </div>
                 </li>
             </ul>
@@ -702,12 +764,12 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
             <ul class="cityList">
                 <li class="sectionAddress">
                     <div id="address4">
-                        <img src='<%=request.getContextPath()%>/frontend_mem/images/manko.jpg' width='330px' height='328px' ;>
+                        <img src='<%=request.getContextPath()%>/frontend_mem/images/manko.jpg' width='330px' height='328px' >
                     </div>
                 </li>
                 <li class="sectionAddress">
                     <div id="address5">
-                        <img src='<%=request.getContextPath()%>/frontend_mem/images/mila.jpg' width='375px' height='328px' ;>
+                        <img src='<%=request.getContextPath()%>/frontend_mem/images/mila.jpg' width='375px' height='328px' >
                     </div>
                 </li>
                 <li class="sectionAddress">

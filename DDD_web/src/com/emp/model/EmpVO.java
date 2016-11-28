@@ -1,5 +1,10 @@
 package com.emp.model;
 import java.sql.Date;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hotelrep.model.HotelRepVO;
 
 
 public class EmpVO implements java.io.Serializable{
@@ -19,7 +24,9 @@ public class EmpVO implements java.io.Serializable{
 	private String empROCId;
 	private String empAddress;
 	
-	
+	@JsonIgnore
+	private Set<HotelRepVO> empHotelReps = new LinkedHashSet<HotelRepVO>();
+		
 	public String getBs64() {
 		return this.bs64;
 	}
@@ -99,6 +106,13 @@ public class EmpVO implements java.io.Serializable{
 		this.empAddress = aEmpAddress;
 	}
 	
+	/* 韓哥hibernate練習用 */
+	public Set<HotelRepVO> getEmpHotelReps() {
+		return this.empHotelReps;
+	}
+	public void setEmpHotelReps(Set<HotelRepVO> aEmpHotelReps) {
+		this.empHotelReps = aEmpHotelReps;
+	}
 	
 }
 

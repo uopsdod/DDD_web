@@ -187,7 +187,7 @@ public class AdPlanJDBCDAO implements AdPlanDAO_interface {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				// adPlanVO ï¿½]ï¿½Ù¬ï¿½ Domain objects
+				// adPlanVO ¤]ºÙ¬° Domain objects
 				adPlanVO = new AdPlanVO();
 				adPlanVO.setAdPlanId(rs.getString("adPlanId"));
 				adPlanVO.setAdPlanName(rs.getString("adPlanName"));
@@ -257,7 +257,7 @@ public class AdPlanJDBCDAO implements AdPlanDAO_interface {
 			
 
 			while (rs.next()) {
-				// adPlanVO ï¿½]ï¿½Ù¬ï¿½ Domain objects
+				// adPlanVO ¤]ºÙ¬° Domain objects
 			
 		
 				
@@ -312,9 +312,9 @@ public class AdPlanJDBCDAO implements AdPlanDAO_interface {
 
 		AdPlanJDBCDAO dao = new AdPlanJDBCDAO();
 
-		// ï¿½sï¿½W
+		// ·s¼W
 //		AdPlanVO adPlanVO1 = new AdPlanVO();
-//		adPlanVO1.setAdPlanName("11ï¿½ï¿½ï¿½ï¿½");
+//		adPlanVO1.setAdPlanName("11¤ë¤è®×");
 //		adPlanVO1.setAdPlanStartDate(java.sql.Date.valueOf("2016-11-01"));
 //		adPlanVO1.setAdPlanEndDate(java.sql.Date.valueOf("2016-11-30"));
 //		adPlanVO1.setAdPlanPrice(new Integer(50000));
@@ -322,19 +322,19 @@ public class AdPlanJDBCDAO implements AdPlanDAO_interface {
 //		
 //		dao.insert(adPlanVO1);
 
-		// ï¿½×§ï¿½
+		// ­×§ï
 //		AdPlanVO adPlanVO2 = new AdPlanVO();
-//		adPlanVO1.setAdPlanName("12ï¿½ï¿½ï¿½ï¿½");
+//		adPlanVO1.setAdPlanName("12¤ë¤è®×");
 //		adPlanVO1.setAdPlanStartDate(java.sql.Date.valueOf("2016-12-01"));
 //		adPlanVO1.setAdPlanEndDate(java.sql.Date.valueOf("2016-12-31"));
 //		adPlanVO1.setAdPlanPrice(new Integer(50000));
 //		adPlanVO1.setAdPlanRemainNo(new Integer(3));
 //		dao.update(adPlanVO2);
 
-		// ï¿½Rï¿½ï¿½
+		// §R°£
 //		dao.delete("10000001");
 
-		// ï¿½dï¿½ï¿½
+		// ¬d¸ß
 //		AdPlanVO adPlanVO3 = dao.findByPrimaryKey("10000001");
 //		System.out.print(adPlanVO3.getAdPlanId() + ",");
 //		System.out.print(adPlanVO3.getAdPlanName() + ",");
@@ -344,8 +344,8 @@ public class AdPlanJDBCDAO implements AdPlanDAO_interface {
 //		System.out.print(adPlanVO3.getAdPlanRemainNo() + ",");
 //		System.out.println("---------------------");
 
-		// ï¿½dï¿½ï¿½
-		List<AdPlanVO> list = dao.getAll();
+		// ¬d¸ß
+		/*List<AdPlanVO> list = dao.getAll();
 		for (AdPlanVO adPlanVO3 : list) {
 			System.out.print(adPlanVO3.getAdPlanId() + ",");
 			System.out.print(adPlanVO3.getAdPlanName() + ",");
@@ -354,7 +354,7 @@ public class AdPlanJDBCDAO implements AdPlanDAO_interface {
 			System.out.print(adPlanVO3.getAdPlanPrice() + ",");
 			System.out.print(adPlanVO3.getAdPlanRemainNo() + ",");
 			System.out.println();
-		}
+		}*/
 	}
 	
 	

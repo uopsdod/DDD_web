@@ -14,6 +14,11 @@ public class HotelService {
 		dao = new HotelDAO();
 	}
 	
+	public String GET_WISH_COUNT(String aRooid) {
+		
+		return dao.GET_WISH_COUNT(aRooid);		
+	}
+	
 	//亂數FOR展示
 	public List<Map> GET_RANDOM_HOTEL_TO_VIEW() {	
 		return dao.GET_RANDOM_HOTEL_TO_VIEW();		
