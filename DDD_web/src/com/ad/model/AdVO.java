@@ -1,5 +1,6 @@
 package com.ad.model;
 import java.sql.Date;
+import java.util.Arrays;
 
 public class AdVO implements java.io.Serializable {
 	private String bs64;
@@ -9,7 +10,6 @@ public class AdVO implements java.io.Serializable {
 	public void setBs64(String bs64) {
 		this.bs64 = bs64;
 	}
-	//貴新增上
 	private String adId;
 	private String adAdPlanId;
 	private String adHotelId;
@@ -67,7 +67,12 @@ public class AdVO implements java.io.Serializable {
 	public void setAdHit(Integer aAdHit) {
 		this.adHit = aAdHit;
 	}
-	
+	@Override
+	public String toString() {
+		return "AdVO [adId=" + adId + ", adAdPlanId=" + adAdPlanId + ", adHotelId=" + adHotelId + ", adStatus="
+				+ adStatus + ", adPayDate=" + adPayDate + ", adPic=" + Arrays.toString(adPic) + ", adPicContent="
+				+ adPicContent + ", adHit=" + adHit + "]";
+	}
 	
 	
 }
