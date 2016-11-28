@@ -42,8 +42,8 @@ session.setAttribute("memVO", memVO);
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">我的訂單</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">QRCODE</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId.jsp">我的預訂</a></li>
+                   
                 </ul>
             </div>
             <div class="dropdown" style='display: inline-block;'>
@@ -125,8 +125,7 @@ session.setAttribute("memVO", memVO);
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="indexPage.html">我的訂單</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">QRCODE</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId.jsp">我的預訂</a></li>
                     </ul>
                 </div>
                 <div class="dropdown" style='display: inline-block;'>

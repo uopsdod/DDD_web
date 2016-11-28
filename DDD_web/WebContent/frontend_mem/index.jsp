@@ -168,8 +168,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="indexPage.html">我的訂單</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">QRCODE</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId.jsp">我的預訂</a></li>
                 </ul>
             </div>
             <div class="dropdown" style='display: inline-block;'>
@@ -249,8 +248,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="indexPage.html">我的訂單</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">QRCODE</a></li>
+                        <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId.jsp">我的預訂</a></li>
                     </ul>
                 </div>
                 <div class="dropdown" style='display: inline-block;'>
@@ -352,6 +350,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
         	訂飯店、住Villa、找共住、找便宜 包山包海國內外各類住宿
         	<img src="<%=request.getContextPath()%>/frontend_mem/img/house.png" style="margin-top:-11px;"/>
         </h2>
+<!--         -------------------------嘉鴻你的搜尋------------------------------ -->
         <div id="searchbgcolor" class="col-md-12">
             <table>
                 <form action="" method="get">
@@ -366,20 +365,18 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                         <td>
                             <select name="skill" class="option">
                                 <option value="1" class="option">1間客房,兩位大人</option>
-                                <option value="2" class="option">1間客房,四位大人</option>
-                                
+                                <option value="2" class="option">1間客房,四位大人</option>                          
                             </select>
                         </td>
                         <td>
-                            <input type="submit" name="sure" value="搜出好價" id="submit">
+                            <input type="submit" name="sure" value="搜出好價" id="mapSubmit">
                         </td>
-                        <td>
-                            <input type="submit" name="sure" value="地圖搜尋" id="mapSubmit">
-                        </td>
+                        
                     </tr>
                 </form>
             </table>
         </div>
+ <!--         -------------------------嘉鴻你的搜尋------------------------------ -->     
          <h1 class="title1">
          	<img src="<%=request.getContextPath()%>/frontend_mem/img/left.jpg" />
          	提供給您的超值方案
@@ -615,7 +612,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                     <div class="container" style="width: 97%">
                         <div class="row">
                         <c:forEach var="room" items="${list}">
-                           <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/wish/wish.do">
+                           <FORM METHOD="post"  ACTION="<%=request.getContextPath()%>/wish/wish.do">
                             <div class="borderOfBanner col-xs-12 col-sm-3" style="position:relative">                            	
                                 <div class="item onsaledemo" style="border-bottom: gray double">
                                     <img src='data:image/jpeg;base64,${room.roomPhotoPic}' class="img-responsive" width="100%">
