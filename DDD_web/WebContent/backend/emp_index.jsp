@@ -232,7 +232,6 @@
 					<th class="text-center">縣市</th>
 					<th class="text-center">負責人</th>
 					<th class="text-center">電話</th>
-					<th class="text-center">連結</th>
 					<th class="text-center">地址</th>
 				</tr>
 				
@@ -245,8 +244,7 @@
 						<td>${HotelVO.hotelAccount}</td>						
 						<td>${HotelVO.hotelCity}</td>
 						<td>${HotelVO.hotelOwner}</td>
-						<td>${HotelVO.hotelPhone}</td>						
-						<td>${HotelVO.hotelLink}</td>						
+						<td>${HotelVO.hotelPhone}</td>												
 						<td>${HotelVO.hotelCity}${HotelVO.hotelCounty}${HotelVO.hotelRoad}</td>						
 
 				</tr>
