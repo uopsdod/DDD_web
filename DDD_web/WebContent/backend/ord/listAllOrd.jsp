@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.*, com.ord.model.*, java.text.SimpleDateFormat"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.ord.model.*, java.text.SimpleDateFormat"%>
 
 <%-- 用EL練習寫 --%>
 
@@ -33,6 +33,12 @@
 <body>
 
 <%@ include file="/backend/backendBody.jsp"%>
+
+<%
+if(!authorityList.contains("102")){
+	response.sendRedirect(request.getContextPath()+"/backend/emp_index.jsp");
+}
+%>	
 
 			<!-- 右邊的主要區塊 -->
 			<div class="col-xs-12 col-sm-10 bb"
