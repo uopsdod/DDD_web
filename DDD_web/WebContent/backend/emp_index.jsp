@@ -3,7 +3,14 @@
 <%@ page import="com.hotelrep.model.*"%>
 <%@ page import="com.memrep.model.*"%>
 <%@ page import="com.ad.model.*"%>
+<%@ page import="com.hotel.model.*"%>
 <%@ page import="util.adStatusTransform"%>
+
+<%
+	HotelService dao = new HotelService();
+	List<HotelVO> hotellist = dao.getAll_NEED_CHECK();
+	pageContext.setAttribute("hotellist", hotellist);
+%>
 
 <%
     HotelRepService hotelRepSvc = new HotelRepService();
@@ -210,8 +217,43 @@
 </c:when>
 </c:choose> 
 
+<a href="<%=request.getContextPath()%>/backend/hotel/get_need_check.jsp"><h3>廠商審核</h3></a>
+<h4>有 <%=hotellist.size()%>筆未處理</h4>
+<!-- Banner-->
+<c:choose>
+<c:when test="${hotellist.size()!=0}">
+<table border="1" class="" >	
+				<tr>			
+					<th class="text-center">編號</th>
+					<th class="text-center">種類</th>
+					<th class="text-center">廠商名稱</th>
+					<th class="text-center">統編</th>
+					<th class="text-center">信箱</th>
+					<th class="text-center">縣市</th>
+					<th class="text-center">負責人</th>
+					<th class="text-center">電話</th>
+					<th class="text-center">連結</th>
+					<th class="text-center">地址</th>
+				</tr>
+				
+				<c:forEach var="HotelVO" items="${hotellist}" >			
+				<tr align='center' valign='middle'>			
+						<td>${HotelVO.hotelId}</td>
+						<td>${HotelVO.hotelType}</td>
+						<td>${HotelVO.hotelName}</td>
+						<td>${HotelVO.hotelTaxId}</td>
+						<td>${HotelVO.hotelAccount}</td>						
+						<td>${HotelVO.hotelCity}</td>
+						<td>${HotelVO.hotelOwner}</td>
+						<td>${HotelVO.hotelPhone}</td>						
+						<td>${HotelVO.hotelLink}</td>						
+						<td>${HotelVO.hotelCity}${HotelVO.hotelCounty}${HotelVO.hotelRoad}</td>						
 
-
+				</tr>
+			</c:forEach>
+		</table>
+</c:when>
+</c:choose> 
 				</div>	
 			</div>
 		</div>	
