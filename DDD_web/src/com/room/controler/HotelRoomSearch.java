@@ -19,6 +19,8 @@ import com.hotel.model.HotelService;
 import com.hotel.model.HotelVO;
 import com.hotelserv.model.HotelServService;
 import com.hotelserv.model.HotelServVO;
+import com.ord.model.OrdService;
+import com.ord.model.OrdVO;
 import com.room.model.RoomService;
 import com.room.model.RoomVO;
 import com.roomphoto.model.RoomPhotoService;
@@ -104,7 +106,20 @@ public class HotelRoomSearch extends HttpServlet {
 				AllRoomPhotoMap.put(roomId,roomPhotoList);
 			}
 			
-		
+			OrdService ordSvc = new OrdService();
+			List<OrdVO> ordList = (List)ordSvc.getAllByOrdHotelId(hotelId);
+			
+			List<OrdVO> commentList = new ArrayList();
+			for(OrdVO ordVO:ordList){
+				if(ordVO.getOrdRatingContent()!=null){
+					commentList.add(ordVO);
+					
+				}
+			}
+			
+			
+			
+			req.setAttribute("commentList", commentList);
 			req.setAttribute("servList", servList);
 			req.setAttribute("hotelVO", hotelVO);
 			req.setAttribute("roomVOlist", roomVOlist);
@@ -367,7 +382,7 @@ public class HotelRoomSearch extends HttpServlet {
 			System.out.println("array.toString(): " + array.toString());
 			out.write(array.toString());	//輸出所搜尋到符合條件的旅館資料
 //			System.out.println(array.toString());
-			
+			out.close();
 				
 		}// if search
 		

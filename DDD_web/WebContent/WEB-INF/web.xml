@@ -126,9 +126,7 @@
     <servlet-name>OrdServlet</servlet-name>
     <url-pattern>/ord/ord.do</url-pattern>
   </servlet-mapping>
-  
-  
-  <servlet>
+    <servlet>
     <servlet-name>HotelRepServlet</servlet-name>
     <servlet-class>com.hotelrep.controller.HotelRepServlet</servlet-class>
   </servlet>
