@@ -354,7 +354,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
         </h2>
         <div id="searchbgcolor" class="col-md-12">
             <table>
-                <form action="嘉鴻map/map.html" method="get">
+                <form action="" method="get">
                     <tr>
                         <th>想住哪?就搜哪!?</th>
                         <th>↓入住人數</th>

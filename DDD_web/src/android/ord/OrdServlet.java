@@ -65,10 +65,11 @@ public class OrdServlet extends HttpServlet {
 		String ordId = (jsonObject.get("ordId") != null)?jsonObject.get("ordId").getAsString():null;
 		String ordRatingStarNo = (jsonObject.get("ordRatingStarNo") != null)?jsonObject.get("ordRatingStarNo").getAsString():null;
 		String ordRatingContent = (jsonObject.get("ordRatingContent") != null)?jsonObject.get("ordRatingContent").getAsString():null;
+		String ordMsgNo = (jsonObject.get("ordMsgNo") != null)?jsonObject.get("ordMsgNo").getAsString():null;
 		
 		String outStr = "";
 		
-		if ("getAllOld".equals(action)) {
+		if ("getAll".equals(action)) {
 			System.out.println("getAllOld match");
 			// 去掉圖片資料 & bs64資料，提升效能
 			//List<OrdVO> tmpOrdVOList = dao_ord.getAll();
@@ -91,29 +92,6 @@ public class OrdServlet extends HttpServlet {
 			System.out.println("outStr:" + outStr);
 			out.println(outStr);
 
-		}else if ("getAllNow".equals(action)){
-			System.out.println("getAllNow match");
-			// 去掉圖片資料 & bs64資料，提升效能
-			//List<OrdVO> tmpOrdVOList = dao_ord.getAll();
-			List<OrdVO> tmpOrdVOList = dao_ord.getAllByOrdMemId(memId);
-			for (OrdVO myVO: tmpOrdVOList){
-				myVO.setOrdQrPic(null);
-				myVO.setOrdMemVO(new MemVO());
-				myVO.setOrdRoomVO(new RoomVO());
-				myVO.getOrdHotelVO().setHotelCoverPic(null);
-			}
-			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.setDateFormat(df);
-			// 此處特別注意: 為了讓hibernate的VO可以轉成JSON字串，必須在每個一對多的set變數上加上@JsonIgnore
-			outStr = mapper.writeValueAsString(tmpOrdVOList);
-			
-//			outStr = gson.toJson(tmpOrdVOList);
-			res.setContentType(CONTENT_TYPE);
-			PrintWriter out = res.getWriter();
-			System.out.println("outStr:" + outStr);
-			out.println(outStr);			
-			
 		}else if("Insert".equals(action)){
 			String hotelId = jsonObject.get("hotelId").getAsString();
 			String roomId = jsonObject.get("roomId").getAsString();
@@ -135,7 +113,7 @@ public class OrdServlet extends HttpServlet {
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.setDateFormat(df);
 			// 此處特別注意: 為了讓hibernate的VO可以轉成JSON字串，必須在每個一對多的set變數上加上@JsonIgnore
-			outStr = mapper.writeValueAsString(outStr);
+			outStr = mapper.writeValueAsString(ordVO);
 			
 			//outStr = gson.toJson(ordVO);
 			PrintWriter out = res.getWriter();
@@ -177,6 +155,26 @@ public class OrdServlet extends HttpServlet {
 			}
 			outStr = gson.toJson(check);
 			System.out.println("Q*-------------------*Q" + check);
+			res.setContentType(CONTENT_TYPE);
+			PrintWriter out = res.getWriter();
+			System.out.println("outStr:" + outStr);
+			out.println(outStr);
+		}else if("cancel".equals(action)){
+			RoomSetOrder.cancelOrder(ordMsgNo,ordId);
+		}else if("getOneText".equals(action)){
+			OrdVO ordVO = dao_ord.getOneOrd(ordId);
+			ordVO.setOrdQrPic(null);
+			ordVO.setOrdMemVO(new MemVO());
+			ordVO.setOrdRoomVO(new RoomVO());
+			ordVO.getOrdHotelVO().setHotelCoverPic(null);	
+			
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.setDateFormat(df);
+			// 此處特別注意: 為了讓hibernate的VO可以轉成JSON字串，必須在每個一對多的set變數上加上@JsonIgnore
+			outStr = mapper.writeValueAsString(ordVO);
+			
+//			outStr = gson.toJson(tmpOrdVOList);
 			res.setContentType(CONTENT_TYPE);
 			PrintWriter out = res.getWriter();
 			System.out.println("outStr:" + outStr);

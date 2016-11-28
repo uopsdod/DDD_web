@@ -247,11 +247,13 @@ public class HotelRepServlet extends HttpServlet {
 				String hotelRepStatus = aReq.getParameter("hotelRepStatus").trim();
 
 				
-				/* 包成物件 */
-				hotelRepVO = new HotelRepVO(); 
-				
+				HotelRepService hotelRepSvc = new HotelRepService();
+					
 				//hotelReplId
-				hotelRepVO.setHotelRepId(hotelRepId);
+				//hotelRepVO.setHotelRepId(hotelRepId);
+				
+				/*從資料庫取出要被修改的 */
+				hotelRepVO = hotelRepSvc.getOneHotelRep(hotelRepId); 
 				
 				//hotelRepHotelId
 				HotelVO hotelVO = new HotelVO();
@@ -293,10 +295,11 @@ public class HotelRepServlet extends HttpServlet {
 				}
 				
 				/***************************2.開始修改資料*****************************************/
-				HotelRepService hotelRepSvc = new HotelRepService();
-				
+
 				hotelRepVO = hotelRepSvc.updateHotelRep(hotelRepVO);	
 
+				System.out.println(" (update) 檢舉時間 " + hotelRepVO.getHotelRepDate());
+				System.out.println(" (update) 處理時間 " + hotelRepVO.getHotelRepReviewDate());
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/				
 				aReq.setAttribute("hotelRepVO", hotelRepVO);
@@ -452,7 +455,7 @@ public class HotelRepServlet extends HttpServlet {
 				errorMsgs.add(e.getMessage());
 				aReq.setAttribute("hotelRepVO", hotelRepVO);
 				RequestDispatcher failureView = aReq
-						.getRequestDispatcher("/backend/hotelrep/addHotelrep.jsp");
+						.getRequestDispatcher("/backend/hotelRep/addHotelrep.jsp");
 				failureView.forward(aReq, aRes);
 			}
 		}
@@ -477,20 +480,20 @@ public class HotelRepServlet extends HttpServlet {
         		
         		if(!errorMsgs.isEmpty()){
     				RequestDispatcher failureView = aReq
-    						.getRequestDispatcher("/backend/hotelrep/selectPage.jsp");
+    						.getRequestDispatcher("/backend/hotelRep/selectPage.jsp");
     				failureView.forward(aReq, aRes);
     				return;
         		}
         		
         		aReq.setAttribute("list", list);
-        		RequestDispatcher successViews = aReq.getRequestDispatcher("/backend/hotelrep/listAllHotelRepByHotelRepStatus.jsp");
+        		RequestDispatcher successViews = aReq.getRequestDispatcher("/backend/hotelRep/listAllHotelRepByHotelRepStatus.jsp");
         		successViews.forward(aReq, aRes);
         	}
         	catch(Exception e){
         		e.printStackTrace();
 				errorMsgs.add("無法取得資料:" + e.getMessage());
 				RequestDispatcher failureView = aReq
-						.getRequestDispatcher("/backend/hotelrep/selectPage.jsp");
+						.getRequestDispatcher("/backend/hotelRep/selectPage.jsp");
 				failureView.forward(aReq, aRes);        		
         		
         	}
