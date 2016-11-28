@@ -41,7 +41,7 @@ session.setAttribute("authorityList",authorityList);
 		</div> 
 
 		<div class="container-fluid">
-			<div class="row">
+			<div class="row"> 
 				<div class="col-xs-12 col-sm-2 aaa" style="background-color: #DCDCDC;">
 					<div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
 					  <!-- 區塊1 -->
