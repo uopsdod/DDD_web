@@ -146,8 +146,12 @@ public class OrdServlet extends HttpServlet {
 			System.out.println("R*--------------------------*R : " + key);
 			boolean check = true;
 			RoomSetOrder setOrd = new RoomSetOrder();
-			setOrd.checkOrder(key, ordId);
 			OrdVO ordVO = dao_ord.getOneOrd(ordId);
+			if(ordVO.getOrdStatus().equals("0")){
+				setOrd.checkOrder(key, ordId);
+			}
+			
+			ordVO = dao_ord.getOneOrd(ordId);
 			if(ordVO.getOrdStatus().equals("2")){
 				check = true;
 			}else{
