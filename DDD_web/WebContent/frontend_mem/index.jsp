@@ -615,7 +615,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                     <div class="container" style="width: 97%">
                         <div class="row">
                         <c:forEach var="room" items="${list}">
-                           <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/wish/wish.do">
+                           <FORM METHOD="post"  ACTION="<%=request.getContextPath()%>/wish/wish.do">
                             <div class="borderOfBanner col-xs-12 col-sm-3" style="position:relative">                            	
                                 <div class="item onsaledemo" style="border-bottom: gray double">
                                     <img src='data:image/jpeg;base64,${room.roomPhotoPic}' class="img-responsive" width="100%">
