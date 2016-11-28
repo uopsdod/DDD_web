@@ -78,9 +78,8 @@ session.setAttribute("authorityList",authorityList);
 					    <div id="ddd" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab4">
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
-					        		<li>Banner方案管理</li>
-					        		<li>Banner審核作業</li>
-					        		<li>Banner管理作業</li>
+									<li><a href="<%=request.getContextPath()%>/backend/adPlan/adPlanPage.jsp">Banner方案管理</a></li>
+									<li><a href="<%=request.getContextPath()%>/backend/Ad/listAllAdPage.jsp">Banner審核作業</a></li>
 					        	</ul>
 					      </div>
 					    </div>

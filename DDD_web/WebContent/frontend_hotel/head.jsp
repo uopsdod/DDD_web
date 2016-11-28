@@ -8,7 +8,7 @@ session.getAttribute("account_hotel");
 
 HotelVO hotelVO =(HotelVO)session.getAttribute("hotelVO");
 session.setAttribute("hotelVO", hotelVO);
-// session.setAttribute("hotelId", hotelVO.getHotelId());
+//session.setAttribute("hotelId", hotelVO.getHotelId());
 session.setAttribute("hotelId","10002");
 %>
 
@@ -107,9 +107,8 @@ session.setAttribute("hotelId","10002");
 					    <div id="ddd" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab4">
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
-					        		<li>Banner方案管理</li>
-					        		<li>Banner審核作業</li>
-					        		<li>Banner管理作業</li>
+									<li><a href="<%=request.getContextPath()%>/frontend_hotel/ad/bannerProject.jsp">Banner廣告購買</a></li>
+					        		<li><a href="<%=request.getContextPath()%>/frontend_hotel/ad/listAllByHotelIdPage.jsp">購買紀錄</li>
 					        	</ul>
 					      </div>
 					    </div>
