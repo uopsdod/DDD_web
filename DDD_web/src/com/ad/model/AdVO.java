@@ -3,6 +3,13 @@ import java.sql.Date;
 import java.util.Arrays;
 
 public class AdVO implements java.io.Serializable {
+	private String bs64;
+	public String getBs64() {
+		return bs64;
+	}
+	public void setBs64(String bs64) {
+		this.bs64 = bs64;
+	}
 	private String adId;
 	private String adAdPlanId;
 	private String adHotelId;
