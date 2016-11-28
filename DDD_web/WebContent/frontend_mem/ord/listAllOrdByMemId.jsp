@@ -73,7 +73,7 @@
 									<td>${ordVO.ordMsgNo}</td>
 									<td>
 										<form method="post" action="<%=request.getContextPath()%>/OrdCheckAndCancel">
-												<input type="submit" value="X刪除" id="buttnOnimg1">
+												<input type="submit" value="取消訂單" id="buttnOnimg1">
 												<input type="hidden" name="ordId" value="${ordVO.ordId}">
 												<input type="hidden" name="ordMsgNo" value="${ordVO.ordMsgNo}">
 												<input type="hidden" name="action" value="cancel">
