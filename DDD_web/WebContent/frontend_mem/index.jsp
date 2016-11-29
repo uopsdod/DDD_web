@@ -415,7 +415,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                         <th>想住哪?就搜哪!?</th>
                         <th>
                             <input type="submit" name="sure" value="搜出好價" id="mapSubmit">
-                            <img src="<%=request.getContextPath()%>/frontend_mem/img/houseckick.png" alt="GO" width="50px" height="50px">
+                            <img src="<%=request.getContextPath()%>/frontend_mem/img/houseckick.png" alt="GO" width="40px" height="40px">
                         </th>
                     </tr>
                   

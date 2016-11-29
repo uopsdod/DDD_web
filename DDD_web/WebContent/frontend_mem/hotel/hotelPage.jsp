@@ -8,6 +8,8 @@
 <!DOCTYPE html>
 <html lang="">
 	<head>
+		<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/auth/css/sweet-alert.css">
+		<script src="<%=request.getContextPath()%>/backend/auth/js/sweet-alert.js"></script>
 		<script src="<%=request.getContextPath()%>/frontend_mem/hotel/js/socket.js"></script>
 		
 		<meta charset="utf-8">
