@@ -165,7 +165,7 @@ session.setAttribute("authorityList",authorityList);
 					  </div>		
 					  </c:if>				  					  					  
 					  <!-- 區塊6 -->
-					  <c:if test="${fn:contains(authorityList,'104')}"> <%-- 人事管理 --%>
+					  <c:if test="${fn:contains(authorityList,'104')}"> <%-- 客服管理 --%>
 					  <div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="tab6" style="background-color:#B0C4DE;">
 					      <h4 class="panel-title">

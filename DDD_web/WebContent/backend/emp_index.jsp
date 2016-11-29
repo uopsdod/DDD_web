@@ -79,181 +79,100 @@
 #empName{
 	color:white;
 }
-
+#emptableth th{
+	text-align:center;
+	background-color:#b0c4de;
+	
+}
+#emptableth th h3{
+	
+	font-weight:bold;
+}
+#list th{
+	text-align:center;
+	background-color:#b0c4de;
+	font-size:24px;
+}
+#list td{
+	
+	font-size:18px;
+}
+#up{
+	font-family:Tahoma,Verdana,Arial,微軟正黑體;
+	font-size:18px;	
+	font-weight:bold;
+}
 </style>
 </head>
 
 <%@ include file="/backend/backendBody.jsp"%>
 
-				<div class="col-xs-12 col-sm-10 bb" style="background-color:#FFFAF0;">
+<div class="col-xs-12 col-sm-10 bb text-center" style="background-color:#FFFFFF;">
 
-			<h2>待辦事項</h2>
-			<hr  size="10" align="center" style="border-top: 3px solid #000000">
-
-
-<a href="#"><h3>廠商檢舉單 </h3></a>
-<h4>有 <%=hotelRepTodolist.size()%>筆未處理 </h4>
-<!-- 廠商檢舉單 -->
-<c:choose>
-<c:when test="${hotelRepTodolist.size()!=0}">	
-<table border='1' width='800'>
-	<tr>
-		<th>廠商檢舉單編號</th>
-		<th>(檢舉人) 廠商名稱</th>
-		<th>(被檢舉人) 旅客姓名</th>
-		<th>訂單編號</th>
-		<th>處理的員工姓名</th>
-		<th>檢舉內容</th>
-		<th>處理狀態</th>
-		<th>檢舉時間</th>
-		<th>處理時間</th>
-	</tr>
-		
-
-	<c:forEach var="hotelRepVO" items="${hotelRepTodolist}">
-		<tr align='center' valign='middle'>
-			<td>${hotelRepVO.hotelRepId}</td>
-			<td>${hotelRepVO.hotelRepHotelVO.hotelName}</td>
-			<td>${hotelRepVO.hotelRepMemVO.memName}</td>
-			<td>${hotelRepVO.hotelRepOrdVO.ordId}</td>
-			<td><c:out value="${hotelRepVO.hotelRepEmpVO.empName}" default="尚無員工處理"/></td>
-			
-			<td><c:out value="${hotelRepVO.hotelRepContent}" default="無檢舉內容"/></td>
-			
-			<td>${hotelRepStatusTrans.get(hotelRepVO.hotelRepStatus)}</td>
-
-			
-			<td>${hotelRepVO.hotelRepDate}</td>
-			
-			<td><c:out value="${hotelRepVO.hotelRepReviewDate}" default="尚未處理"/></td>
+	<h1>後端首頁管理系統</h1>
+	<hr  size="10" align="center" style="border-top: 3px solid #000000">
+	<img src="<%=request.getContextPath()%>/frontend_mem/images/DDD_NEW_LOGO.png" id="register" width="400" height="230">	
+	<div id="up">熱情服務、轉變觀念、增強知識、迎接挑戰。</div>
+	<h2 align="left"><img src="<%=request.getContextPath()%>/backend/images/promotion.png" width="30px" height="30px">公告</h2>
+	<table class="table table-hover text-center" id="list">
+		<tr>
+			<th>公告日期</th>
+			<th>主題</th>
+			<th>類型</th>
+			<th>實施日期</th>
 		</tr>
-	</c:forEach>
-</table>
-</c:when>
-</c:choose> 
-
-<a href="#"><h3>旅客檢舉單 </h3></a>
-<h4>有 <%=memRepTodolist.size()%>筆未處理</h4>
-<!-- 旅客檢舉單 -->
-<c:choose>
-<c:when test="${memRepTodolist.size()!=0}">
-<table border='1' width='800'>
-	<tr>
-		<th>旅客檢舉單編號</th>
-		<th>(檢舉人) 旅客姓名</th>
-		<th>(被檢舉人) 廠商名稱</th>
-		<th>訂單編號</th>
-		<th>處理的員工姓名</th>
-		<th>檢舉內容</th>
-		<th>處理狀態</th>
-		<th>檢舉時間</th>
-		<th>處理時間</th>
-	</tr>
 		
-
-	<c:forEach var="memRepVO" items="${memRepTodolist}">
-		<tr align='center' valign='middle'>
-			<td>${memRepVO.memRepId}</td>
-			<td>${memRepVO.memRepMemVO.memName}</td>
-			<td>${memRepVO.memRepHotelVO.hotelName}</td>
-			<td>${memRepVO.memRepOrdVO.ordId}</td>
-			<td><c:out value="${memRepVO.memRepEmpVO.empName}" default="尚無員工處理"/></td>
-			
-			<td><c:out value="${memRepVO.memRepContent}" default="無檢舉內容"/></td>
-			
-			<td>${hotelRepStatusTrans.get(memRepVO.memRepStatus)}</td>
-
-			
-			<td>${memRepVO.memRepDate}</td>
-			
-			<td><c:out value="${memRepVO.memRepReviewDate}" default="尚未處理"/></td>
+		<tr>			
+			<td><a href="">2016-11-29</a></td>
+			<td><a href="">家庭日(清境兩日遊)</a></td>
+			<td><a href="">活動</a></td>
+			<td><a href="">2016-12-24</a></td>			
 		</tr>
-	</c:forEach>
-</table>
-</c:when>
-</c:choose> 
-
-<a href="#"><h3>Banner</h3></a>
-<h4>有 <%=adTodolist.size()%>筆未處理</h4>
-<!-- Banner-->
-<c:choose>
-<c:when test="${adTodolist.size()!=0}">
-<table border='1' width='800'>
-	<tr>
-		<th>Banner編號</th>
-		<th>Banner方案名稱</th>
-		<th>廠商名稱</th>
-		<th>處理狀態</th>
-
-	</tr>
 		
-
-	<c:forEach var="adVO" items="${adTodolist}">
-		<tr align='center' valign='middle'>
-			<td>${adVO.adId}</td>
-			
-			<jsp:useBean id="adPlanSvc" scope="page" class="com.adplan.model.AdPlanService" />
-			
-			<c:forEach var="adPlanVO" items="${adPlanSvc.all}">						
-				<c:if test="${adVO.adAdPlanId == adPlanVO.adPlanId}">	
-					<td>${adPlanVO.adPlanName}</td>
-				</c:if>
-			</c:forEach>
-			
-			<jsp:useBean id="hotelSvc" scope="page" class="com.hotel.model.HotelService" />
-			
-			<c:forEach var="hotelVO" items="${hotelSvc.all}">
-				<c:if test="${adVO.adHotelId == hotelVO.hotelId}">	
-					<td>${hotelVO.hotelName}</td>
-				</c:if>
-			</c:forEach>
-
-
-			<td><%=adStatusTransform.status( ((AdVO)(pageContext.getAttribute("adVO"))).getAdStatus()  ) %></td>
-
+		<tr>			
+			<td><a href="">2016-11-29</a></td>
+			<td><a href="">例行開會於四樓大會議室(請準時與會)</a></td>
+			<td><a href="">公告</a></td>
+			<td><a href="">2016-12-09</a></td>			
 		</tr>
-	</c:forEach>
-</table>
-</c:when>
-</c:choose> 
-
-<a href="<%=request.getContextPath()%>/backend/hotel/get_need_check.jsp"><h3>廠商審核</h3></a>
-<h4>有 <%=hotellist.size()%>筆未處理</h4>
-<!-- Banner-->
-<c:choose>
-<c:when test="${hotellist.size()!=0}">
-<table border="1" class="" >	
-				<tr>			
-					<th class="text-center">編號</th>
-					<th class="text-center">種類</th>
-					<th class="text-center">廠商名稱</th>
-					<th class="text-center">統編</th>
-					<th class="text-center">信箱</th>
-					<th class="text-center">縣市</th>
-					<th class="text-center">負責人</th>
-					<th class="text-center">電話</th>
-					<th class="text-center">地址</th>
-				</tr>
-				
-				<c:forEach var="HotelVO" items="${hotellist}" >			
-				<tr align='center' valign='middle'>			
-						<td>${HotelVO.hotelId}</td>
-						<td>${HotelVO.hotelType}</td>
-						<td>${HotelVO.hotelName}</td>
-						<td>${HotelVO.hotelTaxId}</td>
-						<td>${HotelVO.hotelAccount}</td>						
-						<td>${HotelVO.hotelCity}</td>
-						<td>${HotelVO.hotelOwner}</td>
-						<td>${HotelVO.hotelPhone}</td>												
-						<td>${HotelVO.hotelCity}${HotelVO.hotelCounty}${HotelVO.hotelRoad}</td>						
-
-				</tr>
-			</c:forEach>
-		</table>
-</c:when>
-</c:choose> 
-				</div>	
-			</div>
-		</div>	
-	</body>
+		
+		<tr>			
+			<td><a href="">2016-11-22</a></td>
+			<td><a href="">員工獎金申請辦法</a></td>
+			<td><a href="">公告</a></td>
+			<td><a href="">2016-12-01</a></td>			
+		</tr>
+		
+		<tr>
+			<td><a href="">2016-10-22</a></td>
+			<td><a href="">審核廠商規範(相關人員請詳讀)</a></td>
+			<td><a href="">公告</a></td>
+			<td><a href="">2016-10-22</a></td>
+		</tr>
+		<tr>
+			<td><a href="">2016-10-22</a></td>
+			<td><a href="">BANNER作業流程(相關人員請詳讀)</a></td>
+			<td><a href="">公告</a></td>
+			<td><a href="">2016-10-22</a></td>
+		</tr>
+	</table>
+	
+	<h2 align="left"><img src="<%=request.getContextPath()%>/backend/images/list.png" width="30px" height="30px">待辦事項</h2>
+	<table  class="table table-hover text-center" id="emptableth">
+		<tr>
+			<th><c:if test="${fn:contains(authorityList,'104')}"> <%-- 客服管理 --%><a href="#" style="color:black;"></c:if><h3>廠商檢舉單 <img src="<%=request.getContextPath()%>/backend/images/click.png" width="25px" height="25px"></h3></a></th>
+			<th><c:if test="${fn:contains(authorityList,'104')}"> <%-- 客服管理 --%><a href="#" style="color:black;"></c:if><h3>旅客檢舉單 <img src="<%=request.getContextPath()%>/backend/images/click.png" width="25px" height="25px"></h3></a></th>
+			<th><c:if test="${fn:contains(authorityList,'103')}"> <%-- 首頁管理 --%><a href="#" style="color:black;"></c:if><h3>Banner<img src="<%=request.getContextPath()%>/backend/images/click.png" width="25px" height="25px"></h3></a></th>
+			<th><c:if test="${fn:contains(authorityList,'101')}"> <%-- 人事管理 --%><a href="<%=request.getContextPath()%>/backend/hotel/get_need_check.jsp"  style="color:black;"></c:if><h3>廠商審核<img src="<%=request.getContextPath()%>/backend/images/click.png" width="25px" height="25px"></h3></a></th>
+		</tr>
+		<tr>
+			<td><h4>目前有 <%=hotelRepTodolist.size()%>筆未處理 </h4></td>
+			<td><h4>目前有 <%=memRepTodolist.size()%>筆未處理</h4></td>
+			<td><h4>目前有 <%=adTodolist.size()%>筆未處理</h4></td>
+			<td><h4>目前有 <%=hotellist.size()%>筆未處理</h4></td>
+		</tr>
+	</table>
+</div>	
+		
+</body>
 </html>
