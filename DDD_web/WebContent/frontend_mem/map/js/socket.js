@@ -1,16 +1,26 @@
 
-    var MyPoint = "/MyEchoServer/nina/1";
+    var MyPoint = "/MyEchoServer";
     var host = window.location.host;
     var path = window.location.pathname;
     var webCtx = path.substring(0, path.indexOf('/', 1));
-    var endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
+    var endPointURL;
     
 	var statusOutput = document.getElementById("statusOutput");
 	
 	var webSocket; 
 	
-	function connect() {
+	function connect(memId) {
 		// 建立 websocket 物件
+	
+		endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
+		if(memId!=null){
+			endPointURL = endPointURL + "/" + memId + "/1";
+			console.log("aaa");
+		}else{
+			endPointURL = endPointURL + "/xxx/1";
+			console.log("bbb");
+		}
+		
 		webSocket = new WebSocket(endPointURL);
 
 		webSocket.onopen = function(event) {
@@ -71,13 +81,16 @@
 				    	}	
 				    }
 				    
-				    if(one.childNodes[0]!=null){
-				    one.childNodes[0].remove();
-				    }
+				    if(one!=null){
+					    if(one.childNodes[0]!=null){
+					    one.childNodes[0].remove();
+					    }
 				    
-				    if(val!=0){
-				    var nowPeople = document.createTextNode("正在瀏覽"+val+"人");	
-				    one.appendChild(nowPeople);	
+				    
+					    if(val!=0){
+					    var nowPeople = document.createTextNode("正在瀏覽"+val+"人");	
+					    one.appendChild(nowPeople);	
+					    }
 				    }
 				    
 				  }

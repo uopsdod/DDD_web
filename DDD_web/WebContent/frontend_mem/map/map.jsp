@@ -294,15 +294,19 @@ function construct(hotel){
 // 	</div>
 	
 }
-
-
+<%	MemVO WsMemVO = (MemVO)session.getAttribute("memVO");
+	if(WsMemVO!=null){
+		String memId = WsMemVO.getMemId();
+		pageContext.setAttribute("memId",memId);
+	}
+%>
 
 </script>
 </head>
-<body onload="connect();" onunload="disconnect();">
+<body onload="connect(${memId});" onunload="disconnect();">
 
    <!--  ------------------------------------------------------------------- -->
-   
+    
 
    	<% Map item = (HashMap)session.getAttribute("item");%>
   

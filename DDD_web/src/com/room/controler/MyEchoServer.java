@@ -9,6 +9,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.ord.model.OrdService;
+import com.ord.model.OrdVO;
+
 import javax.websocket.Session;
 import javax.websocket.OnOpen;
 import javax.websocket.OnMessage;
@@ -24,22 +27,44 @@ public static JSONObject onTimePeople = new JSONObject();
 private static JSONObject RoomRemainNo = new JSONObject();
 
 
+
 private static final Set<Session> allSessions = Collections.synchronizedSet(new HashSet<Session>());
-	
+public static final Map<String,Session> memIdSessions = Collections.synchronizedMap(new HashMap<String,Session>());	
 	
 
 	@OnOpen
 	public void onOpen(@PathParam("myName") String myName, @PathParam("myRoom") String HotelId, Session userSession) throws IOException {
+		
 		allSessions.add(userSession);
 		System.out.println(userSession.getId() + ": 已連線");
 		System.out.println(myName + ": 已連線");
 		System.out.println(HotelId + ": hotel");
+		if(!"xxx".equals(myName)){
+		memIdSessions.put(myName,userSession);
+		getMemOrdRoomList(myName);
+		}
 		
 //		if(!"1".equals(HotelId)){
 //		hotelPeople(HotelId,1);
 //		}
 //		userSession.getBasicRemote().sendText("WebSocket 連線成功");
 	}
+	
+	static void getMemOrdRoomList(String memId){
+		OrdService ordSvc = new OrdService();
+		List<OrdVO> ordVOlist = ordSvc.getAllByOrdMemId(memId);
+		List<String> roomIdList = new ArrayList();
+		for(OrdVO ordVO: ordVOlist){
+			
+			ordVO.getOrdRoomId();
+			
+			
+		}
+		
+	}
+	
+	
+	
 	
 	synchronized public static void hotelPeople(String HotelId,int change){
 		
@@ -67,6 +92,19 @@ private static final Set<Session> allSessions = Collections.synchronizedSet(new 
 		
 		
 	}
+	
+	
+	synchronized public static void AdRoom(String roomId){
+		
+		
+//		for (Session session : allSessions) {
+//			if (session.isOpen())
+//				session.getAsyncRemote().sendText(AllBag.toString());				
+//		}
+		
+		
+	}
+	
 	
 	
 	synchronized static public void changeRemainNo(String roomId,int remainNo){
@@ -153,10 +191,13 @@ private static final Set<Session> allSessions = Collections.synchronizedSet(new 
 	}
 	
 	@OnClose
-	public void onClose(Session userSession, CloseReason reason,@PathParam("myRoom") String HotelId) {
+	public void onClose(Session userSession, CloseReason reason,@PathParam("myRoom") String HotelId,@PathParam("myName") String myName) {
 
 //		hotelPeople(HotelId,-1);
-
+		if(!"xxx".equals(myName)){
+		memIdSessions.remove(myName);
+		}
+		
 		allSessions.remove(userSession);
 		System.out.println(userSession.getId() + ": Disconnected: " + Integer.toString(reason.getCloseCode().getCode()));
 	}
