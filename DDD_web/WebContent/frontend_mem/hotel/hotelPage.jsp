@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>	
 <%@ page import="java.util.*"%>
+<%@ page import="com.ord.model.*"%>
 <%@ page import="com.room.model.*"%>
 <%@ page import="com.hotel.model.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -37,7 +38,7 @@
  				 
  				 background-repeat:inherit;
  				 background-repeat: no-repeat;
- 				 height:900px;
+ 				 height:700px;
 				} 
 				
 			#c-bigscreenAnchor{position:absolute;top:650px;left:30px;}
@@ -71,20 +72,305 @@
 			}
 		</style>
 		
-		
-		
-		
-		
-		
-		
+<style type="text/css">
+	#c-bgBox{
+	 	display:none;
+	 	position:fixed;
+		 width:100%;
+		 height:100%;
+	 	background:#000;
+		 z-index:5;
+		 top:0;
+		 left:0;
+	 	opacity:0.5;
+	}
+	#c-contentBox{
+		 display:none;
+		 width:1100px;
+		 height:500px;
+		 position:fixed;
+		 top:50%;
+		 margin-top:-250px;
+		 background:#fff;
+		 z-index:6;
+		 left:50%;
+		 margin-left:-550px;
+	}
+</style>
+<script>
+var imgArray;
+var count = 100;
 
+
+function showHeart(e){
+// 	console.log(e);
+
+	e.style = "position:absolute;z-index:4;top:5%;left:80%;opacity:1"
+}
+function outHeart(e){
+// 	console.log(e);	
+	
+	e.style = "position:absolute;z-index:4;top:5%;left:80%;opacity:0.3"
+}
+function addWishRoom(e){
+// 	console.log(e);	
+	var memId = document.getElementById("xxmemId");
+	var val = memId.className;
+	console.log(val);
+	
+	if(val!=null){
+	var xhr = new XMLHttpRequest();
+    
+    xhr.onreadystatechange = function (){
+		if( xhr.readyState == 4){
+	      if( xhr.status == 200){
+		     alert(xhr.responseText);		 <!--因後端JSP傳出emp(JSON物件)的JSON字串--><!--因而前端用xhr.responseText取出傳送的JSON字串-->
+		  }else{
+		    alert( xhr.status );
+		  }
+	    }
+	  };//function 
+	  
+    var url = "<%=request.getContextPath()%>/RoomDetail";
+ 	  var data_info = "roomId=" +e.name+"&action=setLove&memId="+val;
+ 	  xhr.open("Post",url,true);
+ 	  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+ 	  xhr.send(data_info);
+ 	  
+	}else{
+		alert("請先登入會員");
+	}
+}
+
+
+
+
+function showRoom(roomId){
+// 		console.log(roomId);
+	 var xhr = new XMLHttpRequest();
+	  //設定好回呼函數   
+	  xhr.onreadystatechange = function (){
+		if( xhr.readyState == 4){
+	      if( xhr.status == 200){
+		     RoomDetail(xhr.responseText);		 <!--因後端JSP傳出emp(JSON物件)的JSON字串--><!--因而前端用xhr.responseText取出傳送的JSON字串-->
+		  }else{
+		    alert( xhr.status );
+		  }
+	    }
+	  };//function 
+	  
+	  //建立好Get連接與送出請求 	  
+	  var url = "<%=request.getContextPath()%>/RoomDetail";
+	  var data_info = "roomId=" +roomId+"&action=getDetail";
+	  xhr.open("Post",url,true);
+	  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	  xhr.send(data_info);
+
+}
+
+function RoomDetail(data){
+// 	console.log(data);
+	var allBag	= JSON.parse(data);
+	
+    var bgBox = document.getElementById("c-bgBox");
+    var contentBox = document.getElementById("c-contentBox");
+	
+    bgBox.style="display:inline";
+    contentBox.style="display:inline";
+    
+
+    
+    bgBox.onclick=function(){   	
+   	bgBox.style="display:none";
+    contentBox.style="display:none";   	
+    }
+    
+    
+    var photoIdArray = allBag.roomPhotoId;
+	
+    var contentArrray = contentBox.childNodes;
+    for(var i=0;i<contentArrray.length;i++){
+    	contentBox.removeChild(contentArrray[i]);	
+    }
+    
+    
+    var img = document.createElement("img");
+    img.src="<%=request.getContextPath()%>/RoomPhotoServlet?action=getOne_For_Display&roomPhotoId=" + photoIdArray[0]; 
+ 	img.style = "height:400px;top:11%;left:3%;position:absolute";	
+    contentBox.appendChild(img);
+    
+    var rightImg = document.createElement("img");
+    rightImg.src = "<%=request.getContextPath()%>/frontend_mem/hotel/image/rightArrow.png";
+    rightImg.style = "position:absolute;z-index:10;top:50%;left:66%";
+    contentBox.appendChild(rightImg);
+    rightImg.onclick = function(){
+    	count ++;
+    	var number = count%(photoIdArray.length);
+    	img.src = "<%=request.getContextPath()%>/RoomPhotoServlet?action=getOne_For_Display&roomPhotoId=" +photoIdArray[number];	
+    }
+    
+    
+    var leftImg = document.createElement("img");
+    leftImg.src = "<%=request.getContextPath()%>/frontend_mem/hotel/image/leftArrow.png";
+    leftImg.style = "position:absolute;z-index:10;top:50%;left:4%";
+    contentBox.appendChild(leftImg);
+    leftImg.onclick = function(){
+    	count --;
+    	var number = count%(photoIdArray.length);
+    	img.src = "<%=request.getContextPath()%>/RoomPhotoServlet?action=getOne_For_Display&roomPhotoId=" +photoIdArray[number];	
+    }
+    
+    
+    
+    var heartImg = document.createElement("img");
+    heartImg.src = "<%=request.getContextPath()%>/frontend_mem/hotel/image/hearts.png";
+    heartImg.style = "position:absolute;z-index:10;top:14%;left:65%;opacity:0.3";
+    contentBox.appendChild(heartImg);
+    heartImg.onclick = function(){	//加入願望清單
+    	
+      if(allBag.memId!="null"){	
+      var xhr = new XMLHttpRequest();
+      
+      xhr.onreadystatechange = function (){
+  		if( xhr.readyState == 4){
+  	      if( xhr.status == 200){
+  		     alert(xhr.responseText);		 <!--因後端JSP傳出emp(JSON物件)的JSON字串--><!--因而前端用xhr.responseText取出傳送的JSON字串-->
+  		  }else{
+  		    alert( xhr.status );
+  		  }
+  	    }
+  	  };//function 
+  	  
+      var url = "<%=request.getContextPath()%>/RoomDetail";
+   	  var data_info = "roomId=" +allBag.roomId+"&action=setLove&memId="+allBag.memId;
+   	  xhr.open("Post",url,true);
+   	  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+   	  xhr.send(data_info);
+      }else{
+    	  alert("請登入會員");
+      }
+    }//onclick
+    heartImg.onmouseover=function(){
+    	heartImg.style = "position:absolute;z-index:10;top:14%;left:65%;opacity:1";
+    }//onmouseover
+    heartImg.onmouseout=function(){
+    	heartImg.style = "position:absolute;z-index:10;top:14%;left:65%;opacity:0.3";
+    }//onmouseout
+    
+    
+    
+    var textDiv =  document.createElement("div");
+    textDiv.style = "top:10%;left:72%;position:absolute;font-family:Microsoft JhengHei;";
+    contentBox.appendChild(textDiv);
+    
+    
+    var nameDiv = document.createElement("div");
+    var name = document.createTextNode(""+allBag.name+"/"+capacityMap.get(allBag.capacity));
+    nameDiv.style="font-size:25px;font-weight:bold";
+    nameDiv.appendChild(name);
+    textDiv.appendChild(nameDiv);
+   
+    var br = document.createElement("br");
+    textDiv.appendChild(br);
+    
+    
+    var MealDiv = document.createElement("div");
+    var Meal = document.createTextNode("餐飲 : ");
+    MealDiv.style="font-size:20px;font-weight:bold";
+    MealDiv.appendChild(Meal);
+    textDiv.appendChild(MealDiv);
+    
+    
+    
+    var MealContentDiv = document.createElement("div");
+    var MealContent = document.createTextNode(""+allBag.meal);
+    MealContentDiv.style="font-size:16px;width:280px ";
+    MealContentDiv.appendChild(MealContent);
+    textDiv.appendChild(MealContentDiv);
+    
+    
+    
+    
+    var funDiv = document.createElement("div");
+    var fun = document.createTextNode("娛樂 : ");
+    funDiv.style="font-size:20px;margin-top:5px;font-weight:bold";
+    funDiv.appendChild(fun);
+    textDiv.appendChild(funDiv);
+    
+    
+    
+    var funContentDiv = document.createElement("div");
+    var funContent = document.createTextNode(""+allBag.fun);
+    funContentDiv.style="font-size:16px;width:280px ";
+    funContentDiv.appendChild(funContent);
+    textDiv.appendChild(funContentDiv);
+    
+    var facilityDiv = document.createElement("div");
+    var facility = document.createTextNode("設施 : ");
+    facilityDiv.style="font-size:20px;margin-top:5px;font-weight:bold";
+    facilityDiv.appendChild(facility);
+    textDiv.appendChild(facilityDiv);
+    
+    
+    
+    var facilityDiv = document.createElement("div");
+    var facility = document.createTextNode(""+allBag.facility);
+    facilityDiv.style="font-size:16px;width:280px ";
+    facilityDiv.appendChild(facility);
+    textDiv.appendChild(facilityDiv);
+    
+    
+    var sleepDiv = document.createElement("div");
+    var sleep = document.createTextNode("舒適睡眠 : ");
+    sleepDiv.style="font-size:20px;margin-top:5px;font-weight:bold";
+    sleepDiv.appendChild(sleep);
+    textDiv.appendChild(sleepDiv);
+    
+    
+    
+    var sleepDiv = document.createElement("div");
+    var sleep = document.createTextNode(""+allBag.sleep);
+    sleepDiv.style="font-size:16px;width:280px ";
+    sleepDiv.appendChild(sleep);
+    textDiv.appendChild(sleepDiv);
+    
+    var sweetDiv = document.createElement("div");
+    var sweet = document.createTextNode("貼心服務 : ");
+    sweetDiv.style="font-size:20px;margin-top:5px;font-weight:bold";
+    sweetDiv.appendChild(sweet);
+    textDiv.appendChild(sweetDiv);
+    
+    
+    
+    var sweetDiv = document.createElement("div");
+    var sweet = document.createTextNode(""+allBag.sweet);
+    sweetDiv.style="font-size:16px;width:280px ";
+    sweetDiv.appendChild(sweet);
+    textDiv.appendChild(sweetDiv);
+    
+    imgArray = allBag.roomPhotoId;
+   	
+    
+//     var outDiv = document.createElement("div");
+    
+    
+    
+}
+
+</script>		
 		</head>
 		<body>
+			
 	
 	<!--==主導覽列=====================================================================================================-->	
 	
 			<%@ include file="/frontend_mem/indexHeader.jsp"%>
-<!--==大螢幕=====================================================================================================-->
+<!--==燈箱=====================================================================================================-->
+	
+	<div id="c-bgBox"></div>
+	<div id="c-contentBox"></div>
+	
+<!--=燈箱=====================================================================================================-->	
 	<%	
 		List<String> servList = (List)request.getAttribute("servList");
 		HotelVO hotelVO = (HotelVO)request.getAttribute("hotelVO");		
@@ -101,7 +387,9 @@
 	response.setHeader("Pragma", "no-cache");//http1.0
 	response.setDateHeader("Expires", 0);	
 	%>	
-	
+<!--==會員編號=====================================================================================================-->	
+	<div id="xxmemId" class="${memVO.memId}"> </div>
+<!--==大螢幕=====================================================================================================-->	
 	<div class="jumbotron" id="c-bigscreen">
 	  <div class="container">
 	   
@@ -205,6 +493,8 @@
 					<%}%>
 				    </h3>
 				  </div>
+				
+				
 				  
 				</div>
 				<!--房型陳列- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -215,9 +505,10 @@
 				<div class="row c-room">
 					
 						<div class="col-xs-12 col-sm-5">
-							<div class="col-xs-12 col-sm-12">
+							<div class="col-xs-12 col-sm-12" style="position:relative">
 							<img src="<%=request.getContextPath()%>/RoomPhotoServlet?action=getOne_For_Display&roomPhotoId=${AllRoomPhotoMap.get(roomVO.getRoomId()).get(0).getRoomPhotoId()}"	class="c-roomImg">
-							</div>
+							<img name="${roomVO.roomId}" src = "<%=request.getContextPath()%>/frontend_mem/hotel/image/hearts.png"; style = "position:absolute;z-index:4;top:5%;left:80%;opacity:0.3" onmouseover="showHeart(this)" onmouseout="outHeart(this)" onclick="addWishRoom(this)" >
+							</div>																																																																		
 						</div>
 						<div class="col-xs-12 col-sm-7">
 							
@@ -225,6 +516,7 @@
 							
 							<div >
 							<span >${roomVO.roomName}</span>
+							<div><input type="button" class="btn btn-info"  value="查看"  onclick="showRoom(${roomVO.roomId})" ></div>
 							</div>
 							
 							</div>
@@ -267,10 +559,10 @@
 																																											
 								<%if(oneRoom!=null){ %>
 								<span style="display:inline" id="xx${roomVO.roomId}"><input type="submit" class="btn btn-success"  value="下訂"></span>
-								<span style="display:none"><input type="button" class="btn btn-success"  value="待上架"  ></span>
+								<span style="display:none"><input type="button" class="btn btn-warning"  value="待上架"  ></span>
 								<%}else{ %>
 								<span style="display:none" id="xx${roomVO.roomId}"><input type="submit" class="btn btn-success"  value="下訂"></span>
-								<span style="display:inline"><input type="button" class="btn btn-success"  value="待上架"  ></span>	
+								<span style="display:inline"><input type="button" class="btn btn-warning"  value="待上架"  ></span>	
 								<%} %>
 	
 							</div>
@@ -280,10 +572,49 @@
 				</div>
 					<hr>					 
 					</c:forEach>
-	
-			
+					
+				<%List<OrdVO> listOne= (List)request.getAttribute("commentList"); %>	
+				<%if(listOne.size()!=0){ %>
 				
-
+					
+				<div class="panel panel-success col-xs-12 col-sm-12">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">評論
+				 
+					
+				
+				    </h3>
+				  </div>		  
+				</div>
+					<br>
+					
+					<div 
+						class="col-xs-12 col-sm-12"
+						style="
+						font-size:18px;
+						position:absolute;					
+						height: 600px;
+						overflow: scroll;
+						overflow-x: hidden;
+						font-family:Microsoft JhengHei;">
+					
+					<c:forEach var="ordVO" items="${commentList}"  >
+						
+						<div class="row c-room" style="height:60px">
+							<div class="col-xs-12 col-sm-2">
+								<img src="<%=request.getContextPath()%>/RoomDetail?memId=${ordVO.ordMemId}" style="width:80px;border-radius: 50%">
+								
+							</div>
+							
+							<div class="col-xs-12 col-sm-10">
+								${ordVO.ordRatingContent}
+							</div>
+						</div>
+						<hr>
+				    </c:forEach>
+				    
+				    </div>
+				<%} %>
 <!-- 				<div class="row c-room"> -->
 					
 <!-- 						<div class="col-xs-12 col-sm-3"> -->
@@ -342,10 +673,11 @@
 	
 	
 <script>
-
+var capacityMap = new Map();
 var roomMap;
 var XspanMap;
 var remainMap;
+
 var FirstRoomId = [<%for(RoomVO roomVO3:roomList){%> <%=roomVO3.getRoomId()%>, <%}%>  <%=roomList.get(0).getRoomId()%> ];
 //
 var XspanId = [<%for(RoomVO roomVO3:roomList){%> <%="xx"+roomVO3.getRoomId()%>, <%}%>  <%="xx"+roomList.get(0).getRoomId()%> ];
@@ -384,9 +716,35 @@ window.onload=function(){
 		
 	}	
 	
-	addMan(hotelPageId);
+	addMan(hotelPageId);	//增加即時觀看一人
 // 	console.log(remainMap);
 	
+	capacityMap.set(1,"單人房");
+	capacityMap.set(2,"雙人房");
+	capacityMap.set(4,"四人房");
+	capacityMap.set(6,"六人房");
+	capacityMap.set(8,"八人房");
+	
+	
+	
+
+	
+	
+}
+
+<%
+String wishId = request.getParameter("wishLookId");
+System.out.println(wishId);
+if(wishId!=null){
+%>	
+window.addEventListener( "DOMContentLoaded", function(){ready(<%=wishId%>)}, false );	
+<%}%>	
+
+
+function ready(wishId){
+	
+	console.log(wishId);
+	showRoom(wishId);
 }
 
 function addMan(hotelId){
@@ -401,7 +759,7 @@ function addMan(hotelId){
 	
 }
 
-window.onunload=function(){
+window.onbeforeunload=function(){
 	
 	  var xhr2 = new XMLHttpRequest();
 	  
@@ -412,7 +770,7 @@ window.onunload=function(){
 	  xhr2.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	  xhr2.send(data_info);
    	  disconnect();
-   	  console.log("aaaaa");
+   	
 }
 </script>
 </html>

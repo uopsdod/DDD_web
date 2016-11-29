@@ -147,6 +147,8 @@ footer #list {
     border-radius: 10px;
     padding: 2px;
     font-size: 20px;
+    float:left;
+    margin-right:5px;
     
 }
 #buttnOnimg1 {

@@ -8,7 +8,16 @@
 
 <%
 	OrdService ordSvc = new OrdService();
-	List<OrdVO> list = ordSvc.getAllByOrdMemId(memVO.getMemId());
+	List<OrdVO> allList = ordSvc.getAllByOrdMemId(memVO.getMemId());
+    List<OrdVO> list = new ArrayList<OrdVO>();
+    
+    /* 篩選出已下單的 */
+    for(OrdVO aOrdVO : allList){
+    	if( "0".equals( aOrdVO.getOrdStatus() ) ){
+    		list.add(aOrdVO);
+    	}
+    }
+	
 	pageContext.setAttribute("list",list);
 %>
 
@@ -59,7 +68,7 @@
 						</thead>
 						<tbody>
 						<c:forEach var="ordVO" items="${list}">
-							<c:if test="${ordVO.ordStatus == '0'}">
+
 								<tr>
 									<td>${ordVO.ordId}</td>
 									<td>${ordVO.ordHotelVO.hotelName}</td>
@@ -80,7 +89,7 @@
 										</form>
 									</td>
 								</tr>
-							</c:if>	
+
 						</c:forEach>
 						<tbody>
 					</table>

@@ -57,7 +57,7 @@ session.setAttribute("hotelId", hotelVO.getHotelId());
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#"><span class="glyphicon glyphicon-heart-empty" style="font-size:30px">DDD廠商</span> </a>
+					<a class="navbar-brand" href="<%=request.getContextPath()%>/frontend_hotel/index.jsp"><span class="glyphicon glyphicon-heart-empty" style="font-size:30px">DDD廠商</span> </a>
 				</div>
 			
 				<!-- 手機隱藏選單區 -->
@@ -89,8 +89,8 @@ session.setAttribute("hotelId", hotelVO.getHotelId());
 					    <div id="aaa" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="tab1">
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
-					        		<li>今日訂單維護</li>
-					        		<li>歷史訂單維護</li>
+					        		<li><a href="<%=request.getContextPath()%>/frontend_hotel/ord/listAllOrdByHotelId.jsp">所有訂單查詢</a></li>
+					        		<li><a href="<%=request.getContextPath()%>/frontend_hotel/ord/simpleCheckIn_Input.jsp">旅客入住驗證</a></li>
 					        	</ul>
 					      </div>
 					    </div>
@@ -200,8 +200,8 @@ session.setAttribute("hotelId", hotelVO.getHotelId());
 					    <div id="fff" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab6">
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
-					        		<li>一般會員檢舉</li>
-					        		<li>廠商會員檢舉</li>
+					        		<li>新增廠商檢舉單</li>
+					        		<li><a href="<%=request.getContextPath()%>/hotelRep/listAllHotelRepByHotelId.jsp">廠商檢舉單查詢</a></li>
 					        	</ul>
 					      </div>
 					    </div>

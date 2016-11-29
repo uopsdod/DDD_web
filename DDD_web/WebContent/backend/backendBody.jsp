@@ -24,7 +24,7 @@ session.setAttribute("authorityList",authorityList);
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#"><span class="glyphicon glyphicon-heart-empty"></span> DDD後端管理介面</a>
+					<a class="navbar-brand" href="<%=request.getContextPath()%>/backend/emp_index.jsp"><span class="glyphicon glyphicon-heart-empty"></span> DDD後端管理介面</a>
 				</div>
 			
 				<!-- 手機隱藏選單區 -->
@@ -59,6 +59,7 @@ session.setAttribute("authorityList",authorityList);
 									<ul style="list-style-type: none">
 										<li><a href="<%=request.getContextPath()%>/backend/ord/listAllOrd.jsp">所有訂單查詢</a></li>
 										<li><a href="<%=request.getContextPath()%>/backend/selectPage.jsp">訂單條件搜尋</a></li>
+										<li><a href="<%=request.getContextPath()%>/backend/hotel/listAllHotel2.jsp">廠商訂單查詢</a></li>
 									</ul>
 								</div>
 							</div>
@@ -118,7 +119,6 @@ session.setAttribute("authorityList",authorityList);
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
 					        		<a href="<%=request.getContextPath()%>/backend/mem/listAllMem.jsp"><li>一般會員維護</li></a>
-					        		<li>對話紀錄維護</li>
 					        	</ul>
 					      </div>
 					    </div>
@@ -165,7 +165,7 @@ session.setAttribute("authorityList",authorityList);
 					  </div>		
 					  </c:if>				  					  					  
 					  <!-- 區塊6 -->
-					  <c:if test="${fn:contains(authorityList,'104')}"> <%-- 人事管理 --%>
+					  <c:if test="${fn:contains(authorityList,'104')}"> <%-- 客服管理 --%>
 					  <div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="tab6" style="background-color:#B0C4DE;">
 					      <h4 class="panel-title">

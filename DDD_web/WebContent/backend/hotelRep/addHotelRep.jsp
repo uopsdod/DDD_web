@@ -5,14 +5,34 @@
 
 <html>
 <head>
-<title>廠商檢舉單新增 - addHotelRep.jsp</title></head>
+		<!-- 請輸入標題 -->
+		<title>廠商檢舉單新增 - addHotelRep.jsp</title>
+
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+		
+		<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/css/bootstrap.css">
+		<link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_hotel/css/sweetalert.css">
+		
+		<!-- 自訂CSS -->
+		<link rel="stylesheet" href="">		
+		
+		<script src="<%=request.getContextPath()%>/backend/js/jquery.js"></script>
+		<script src="<%=request.getContextPath()%>/backend/js/bootstrap.js"></script>
+		<script src="<%=request.getContextPath()%>/frontend_hotel/js/sweetalert.min.js"></script>
+		<!-- 自訂JavaScript --> 	
+		<script src=""></script>
+
+</head>
 
 <body bgcolor='white'>
 
 <table border='1' cellpadding='5' cellspacing='0' width='400'>
 	<tr bgcolor='#CCCCFF' align='center' valign='middle' height='20'>
 		<td>
-		<h3>員工資料新增 - addEmp.jsp</h3>
+		<h3>廠商檢舉單新增  - addHotelRep.jsp</h3>
 		</td>
 		<td>
 		   <a href="<%=request.getContextPath()%>/backend/hotelRep/selectPage.jsp"><img src="<%=request.getContextPath()%>/backend/hotelRep/images/back1.gif" width="100" height="32" border="0">回首頁</a>
@@ -99,7 +119,65 @@
 </table>
 <br>
 <input type="hidden" name="action" value="insert">
-<input type="submit" value="送出新增"></FORM>
+<input type="submit" value="送出新增" class="btn-submit"></FORM>
+
+<button type="button" id="magicButton" >神奇小按鈕</button>
+
 </body>
 
 </html>
+
+<script>
+
+	var magicData = {
+			hotelRepHotelId: '10003',
+			hotelRepMemId: '10000004',
+			hotelRepOrdId: '2016111012',
+			hotelRepEmpId: '',
+			hotelRepContent: '沒有問題',
+			hotelRepStatus: '0',
+	};
+	
+	var magicButton = document.getElementById("magicButton"); 
+
+	magicButton.addEventListener('click',function(e){
+// 		var inputList = document.querySelectorAll('input');
+
+// 		for(var i=0 ; i<inputList.length ; i++){
+// 			var input = inputList[i];
+// 			if(magicData.hasOwnProperty(input.name)){
+// 				input.value = magicData[input.name];
+// 			}		
+// 		}
+
+		$("select[name=hotelRepHotelId]").val('10003');
+			
+		$("select[name=hotelRepMemId]").val('10000004');
+			
+		$("select[name=hotelRepOrdId]").val('2016111012');
+			
+				
+		$("textarea[name=hotelRepContent]").val('沒有問題');
+				
+		$("select[name=hotelRepStatus]").val('0');
+	
+	});
+	
+	$('.btn-submit').on('click',function(e){
+	    e.preventDefault();
+	    var form = $(this).parents('form');
+	    swal({
+	        title: "Are you sure?",
+	        text: "You will not be able to recover this imaginary file!",
+	        type: "warning",
+	        showCancelButton: true,
+	        confirmButtonColor: "#DD6B55",
+	        confirmButtonText: "Yes, delete it!",
+	        closeOnConfirm: false
+	    }, function(isConfirm){
+	        if (isConfirm) form.submit();
+	    });
+	})
+	
+
+</script>

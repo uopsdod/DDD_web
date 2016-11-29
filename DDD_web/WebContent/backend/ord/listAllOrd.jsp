@@ -110,7 +110,9 @@ if(!authorityList.contains("102")){
 								<%-- 			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td> --%>
 								<td>
 									<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
-										<input type="submit" value="修改" class="btn btn-primary">
+										<button type="submit" class="btn btn-primary ">
+											<span class="glyphicon glyphicon-pencil">修改</span>
+										</button>
 										<input type="hidden" name="ordId" value="${ordVO.ordId}">
 										<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
 										<input type="hidden" name="whichPage" value="<%=whichPage%>">

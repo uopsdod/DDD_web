@@ -40,6 +40,8 @@
     <url-pattern>/frontend_hotel/hotel/findByPrimaryKey.jsp</url-pattern>
     <url-pattern>/frontend_hotel/hotel/updatesecess.jsp</url-pattern>
     <url-pattern>/frontend_hotel/hotel/Status_1.jsp</url-pattern>
+    <url-pattern>/frontend_hotel/ord/*</url-pattern>
+    <url-pattern>/frontend_hotel/hotelRep/*</url-pattern>    
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
@@ -126,9 +128,7 @@
     <servlet-name>OrdServlet</servlet-name>
     <url-pattern>/ord/ord.do</url-pattern>
   </servlet-mapping>
-  
-  
-  <servlet>
+    <servlet>
     <servlet-name>HotelRepServlet</servlet-name>
     <servlet-class>com.hotelrep.controller.HotelRepServlet</servlet-class>
   </servlet>
