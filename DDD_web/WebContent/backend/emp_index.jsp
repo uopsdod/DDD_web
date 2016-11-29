@@ -100,7 +100,7 @@
 #up{
 	font-family:Tahoma,Verdana,Arial,微軟正黑體;
 	font-size:18px;	
-	font-weight:bold;
+	font-weight:bold; 
 }
 </style>
 </head>
