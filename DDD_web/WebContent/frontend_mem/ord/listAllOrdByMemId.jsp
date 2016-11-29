@@ -5,7 +5,8 @@
 
 <link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/css/wishList.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/css/0_main.css">
-
+<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/auth/css/sweet-alert.css">
+<script src="<%=request.getContextPath()%>/backend/auth/js/sweet-alert.js"></script>
 <%
 	OrdService ordSvc = new OrdService();
 	List<OrdVO> allList = ordSvc.getAllByOrdMemId(memVO.getMemId());
@@ -20,6 +21,8 @@
 	
 	pageContext.setAttribute("list",list);
 %>
+
+
 
 <style>
 	#listinfor{
@@ -82,7 +85,7 @@
 									<td>${ordVO.ordMsgNo}</td>
 									<td>
 										<form method="post" action="<%=request.getContextPath()%>/OrdCheckAndCancel">
-												<input type="submit" value="取消訂單" id="buttnOnimg1">
+												<input type="submit" value="取消訂單" id="buttnOnimg1" onClick="alert()">
 												<input type="hidden" name="ordId" value="${ordVO.ordId}">
 												<input type="hidden" name="ordMsgNo" value="${ordVO.ordMsgNo}">
 												<input type="hidden" name="action" value="cancel">
@@ -93,7 +96,12 @@
 						</c:forEach>
 						<tbody>
 					</table>
-	                
+	                <script>
+						    function alert() {     			
+							    setTimeout('document.theForm.submit();', 2200);
+								swal("你已成功取消此訂單", "謝謝您", "success");
+						    }
+					</script>
 	                
 	           	   </c:when>		  
 			       <c:otherwise>

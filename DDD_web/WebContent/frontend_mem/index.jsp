@@ -45,6 +45,8 @@ pageContext.setAttribute("list", list);
     <link rel="stylesheet" href="<%=request.getContextPath()%>/bs/bootstrap.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/bs/bootstrap-theme.min.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/css/style.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/auth/css/sweet-alert.css">
+<script src="<%=request.getContextPath()%>/backend/auth/js/sweet-alert.js"></script>
     <script src="<%=request.getContextPath()%>/jq/jquery-3.1.1.min.js"></script>
     <script src="<%=request.getContextPath()%>/jq/jquery-ui.js"></script>
     <script src="<%=request.getContextPath()%>/jq/jquery-cycle-all.js"></script>
@@ -172,7 +174,14 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 //			 		    	  alert(xhr.responseText);                               
                               var member = JSON.parse(xhr.responseText);
                               var value= member.MESSAGE;
-                              alert(value);
+                                 			       
+                              swal({
+                            	  title: '願望清單',
+                            	  text: value,
+                            	  timer: 1700
+                            	})
+                      	    
+                              
 					      }else{
 					        alert("加入成功");
 					      }
