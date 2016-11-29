@@ -207,7 +207,7 @@
 }
 
 #searchbgcolor th {
-    font-size: 18px;
+    font-size: 27px;
     font-family: Tahoma, Verdana, 微軟正黑體;
 }
 .option{
@@ -248,9 +248,9 @@
     font-family: Tahoma, Verdana, 微軟正黑體;
     border: 0px;
     border-radius: 10px;
-    padding: 2px;
+    padding: 4px;
     color: #ffffff;
-    font-size: 18px;
+    font-size: 24px;
 }
 
 #searchbgcolor table {
