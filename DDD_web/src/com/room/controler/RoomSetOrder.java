@@ -340,7 +340,7 @@ public class RoomSetOrder extends HttpServlet {
 		        
 		         public void run(){
 		         	//排程器要執行的任務	
-		        	 Send.send(tel,telMessage);	//傳簡訊
+		        	// Send.send(tel,telMessage);	//傳簡訊
 		        	 MailService.gotMail(ordMail, subject, message); 
 		        	
 		         }

@@ -200,8 +200,7 @@ session.setAttribute("hotelId", hotelVO.getHotelId());
 					    <div id="fff" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab6">
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
-					        		<li>新增廠商檢舉單</li>
-					        		<li><a href="<%=request.getContextPath()%>/hotelRep/listAllHotelRepByHotelId.jsp">廠商檢舉單查詢</a></li>
+					        		<li><a href="<%=request.getContextPath()%>/frontend_hotel/hotelRep/listAllHotelRepByHotelId.jsp">廠商檢舉單查詢</a></li>
 					        	</ul>
 					      </div>
 					    </div>

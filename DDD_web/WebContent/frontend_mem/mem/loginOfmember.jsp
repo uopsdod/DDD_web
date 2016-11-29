@@ -103,7 +103,7 @@ session.setAttribute("memVO", memVO);
         </div>
         <div>
             <h2>會員登入</h2>
-            <h4>Welcome to Back</h4>
+            <h4>Welcome Back</h4>
             <div class="col-sm-12 text-center">
 			<c:if test="${not empty errorMsgs}">
 				<font color='red' style="font-family: Tahoma, Verdana, 微軟正黑體;">									

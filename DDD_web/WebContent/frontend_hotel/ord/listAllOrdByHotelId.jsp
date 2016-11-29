@@ -19,15 +19,11 @@
 						<th>訂單編號</th>
 						<th>房型名稱</th>
 						<th>一般會員名稱</th>
-<!-- 						<th>廠商會員編號</th> -->
 						<th>訂單金額</th>
 						<th>入住日期</th>
 						<th>下訂日期</th>
 						<th>訂單狀態名稱</th>
-<!-- 						<th>評價內容</th> -->
-<!-- 						<th>評價星星數</th> -->
-						<th>簡訊驗證碼</th>
-<!-- 						<th>QR Code圖片</th> -->
+						<th>操作</th>
 				      </tr>
 				    </thead>
 					
@@ -85,10 +81,8 @@
 							<td>${ordVO.ordId}</td>
 							<td>${ordVO.ordRoomVO.roomName}</td>
 							<td>${ordVO.ordMemVO.memName}</td>
-<%-- 							<td>${ordVO.ordHotelVO.hotelId}</td> --%>
-							<td>${ordVO.ordPrice}</td>
-<%-- 							<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdLiveDate())%></td> --%>
 
+							<td>${ordVO.ordPrice}</td>
 
 							<% OrdVO ordVO = ((OrdVO)(pageContext.getAttribute("ordVO"))); %>
 							<% if(ordVO.getOrdLiveDate() != null  ) {%>
@@ -98,12 +92,11 @@
 							<% } %>
 
 
-							<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdDate())%></td>		
+							<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdDate())%></td>		
 							<td>${ordStatusTrans.get(ordVO.ordStatus)}</td>
-<%-- 							<td>${ordVO.ordRatingContent}</td> --%>
-<%-- 							<td>${ordVO.ordRatingStarNo}</td> --%>
-							<td>${ordVO.ordMsgNo}</td>
-<%-- 							<td><img src="<%=request.getContextPath()%>/ord/DBGifReader4?ordId=${ordVO.ordId}" width="50"></td> --%>
+							<td>
+					 			<button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">檢舉</button>
+							</td>
 						</tr>
 							</tbody>
 					</c:forEach>
@@ -151,6 +144,26 @@
 
 		</div>	
 		
+		
+
+		  <!-- Modal -->
+		  <div class="modal fade" id="myModal" role="dialog">
+		    <div class="modal-dialog modal-lg">
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          <h4 class="modal-title">建立廠商檢舉單</h4>
+		        </div>
+		        <div class="modal-body">
+		          <p>This is a large modal.</p>
+		        </div>
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-warning" data-dismiss="modal">取消</button>
+		          <button type="button" class="btn btn-primary" data-dismiss="modal">提交</button>
+		        </div>
+		      </div>
+		    </div>
+		  </div>		
 		
 		
 		
