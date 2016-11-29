@@ -3,6 +3,27 @@
 <%@ page import="com.ord.model.*, java.text.SimpleDateFormat" %>	
 		<%@ include file="../head.jsp"%>
 
+<style type="text/css">
+		
+	#hotelRepWindow textarea {
+    	width: 700px;
+    	height: 300px;
+    	resize: both;
+    	overflow: auto;
+	}
+	
+	#hotelRepWindow th {
+		font-family: Tahoma, Verdana, 微軟正黑體;
+		font-size: 18px;
+	}	
+	
+	#hotelRepWindow td {
+		font-family: Tahoma, Verdana, 微軟正黑體;
+		font-size: 18px;
+	}
+	
+
+</style>	
 		
 		
 		<div class="col-xs-12 col-sm-10 bb" style="background-color:#FFFAF0;postion:relative;top:220px">
@@ -94,11 +115,21 @@
 
 							<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdDate())%></td>		
 							<td>${ordStatusTrans.get(ordVO.ordStatus)}</td>
-							<td>
-					 			<button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">檢舉</button>
-							</td>
+							
+							<c:choose>
+								<c:when test="${ordVO.ordHotelReps.isEmpty()}">	
+									<td>
+							 			<button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#${ordVO.ordId}"><span class="glyphicon glyphicon-thumbs-down">檢舉</span></button>
+									</td>
+								</c:when>		  
+			       				<c:otherwise>
+			       					<td>已檢舉</td>
+								</c:otherwise>
+							 </c:choose>  
 						</tr>
 							</tbody>
+							
+							
 					</c:forEach>
 				  </table>
 <!-- 					*****************************換頁*************************************** -->
@@ -145,26 +176,85 @@
 		</div>	
 		
 		
-
+		  <!-- 彈出視窗 -->							
+<c:forEach var="ordVO" items="${list}">
+		
 		  <!-- Modal -->
-		  <div class="modal fade" id="myModal" role="dialog">
+	<div id="hotelRepWindow">  
+		  <div class="modal fade" id="${ordVO.ordId}" role="dialog">
 		    <div class="modal-dialog modal-lg">
 		      <div class="modal-content">
 		        <div class="modal-header">
 		          <button type="button" class="close" data-dismiss="modal">&times;</button>
 		          <h4 class="modal-title">建立廠商檢舉單</h4>
-		        </div>
-		        <div class="modal-body">
-		          <p>This is a large modal.</p>
-		        </div>
-		        <div class="modal-footer">
-		          <button type="button" class="btn btn-warning" data-dismiss="modal">取消</button>
-		          <button type="button" class="btn btn-primary" data-dismiss="modal">提交</button>
-		        </div>
+		        </div> <!-- modal-header -->
+		        
+				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/hotelRep/hotelRep.do" name="form1">      
+			        <div class="modal-body">
+	
+						<!-- (開始)檢舉單內容 -->
+						<table border="0">
+							<tr>
+								<th>廠商名稱:</th>
+								<td>
+									${ordVO.ordHotelVO.hotelName}
+								</td>
+							</tr>
+							
+						
+							<tr>
+								<th>旅客名稱:</th>
+								<td>
+									${ordVO.ordMemVO.memName}
+								</td>
+							</tr>	
+							
+						
+							<tr>
+								<th>訂單編號:</th>
+								<td>
+									${ordVO.ordId}
+								</td>
+							</tr>	
+							
+							<tr>
+								<th>檢舉內容:</th>
+							
+								<td>						
+									<textarea name="hotelRepContent"></textarea>
+								</td>
+							</tr>	
+						</table>
+						
+						<!-- (結束)檢舉單內容 -->
+	
+			        </div> <!-- modal-body -->
+			        <div class="modal-footer">
+			        
+			          <input type="hidden" name="hotelRepHotelId" value="${ordVO.ordHotelVO.hotelId}">	
+			          <input type="hidden" name="hotelRepMemId" value="${ordVO.ordMemVO.memId}">	
+			          <input type="hidden" name="hotelRepOrdId" value="${ordVO.ordId}">
+			          <input type="hidden" name="hotelRepStatus" value="0">		        
+			          <input type="hidden" name="action" value="insert">
+	
+	
+			          <button type="button" class="btn btn-warning" data-dismiss="modal">
+					  	<span class="glyphicon glyphicon-remove">取消</span>
+					  </button>
+	
+			        
+			          <button type="submit" class="btn btn-primary">
+					  	<span class="glyphicon glyphicon-ok">提交</span>
+					  </button>
+					  
+			        </div> <!-- modal-footer -->
+		       </FORM>
+		       
 		      </div>
 		    </div>
-		  </div>		
-		
-		
+		  </div>					
+	</div>
+</c:forEach>	
+	
 		
 		<%@ include file="../footer.jsp" %>
