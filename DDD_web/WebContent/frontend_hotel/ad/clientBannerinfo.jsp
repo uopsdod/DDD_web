@@ -84,8 +84,7 @@
 
 
 
-
-<div class="col-xs-12 col-sm-10 tablediv" align="center">
+<div class="col-xs-12 col-sm-10 bb" style="background-color:#FFFAF0;postion:relative;top:220px" >
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3">
