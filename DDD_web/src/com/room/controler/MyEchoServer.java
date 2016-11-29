@@ -129,7 +129,7 @@ private static final Set<Session> allSessions = Collections.synchronizedSet(new 
 					session.getAsyncRemote().sendText(AllBag.toString());				
 			}
 			
-			System.out.println(AllBag.toString());
+//			System.out.println(AllBag.toString());
 
 //			for(int i =0;i<Bag.length();i++){
 //			Bag.remove(i);
