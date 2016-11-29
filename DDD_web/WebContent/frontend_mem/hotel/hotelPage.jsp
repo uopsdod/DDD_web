@@ -8,8 +8,11 @@
 <!DOCTYPE html>
 <html lang="">
 	<head>
+		<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/auth/css/sweet-alert.css">
+		<script src="<%=request.getContextPath()%>/backend/auth/js/sweet-alert.js"></script>
 		<script src="<%=request.getContextPath()%>/frontend_mem/hotel/js/socket.js"></script>
-		
+		<title>Dua Dee Dou:晚鳥有優惠</title>
+    	<link rel="shortcut icon" href="<%=request.getContextPath()%>/frontend_mem/images/index.jpg">
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -118,7 +121,7 @@ function addWishRoom(e){
 	var val = memId.className;
 	console.log(val);
 	
-	if(val!=null){
+	if(val!=""){
 	var xhr = new XMLHttpRequest();
     
     xhr.onreadystatechange = function (){

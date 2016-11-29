@@ -1,5 +1,5 @@
 
-    var MyPoint = "/MyEchoServer";
+    var MyPoint = "/MyEchoServer/nina/1";
     var host = window.location.host;
     var path = window.location.pathname;
     var webCtx = path.substring(0, path.indexOf('/', 1));
@@ -9,17 +9,11 @@
 	
 	var webSocket; 
 	
-	function connect(memId) {
+	function connect() {
 		// 建立 websocket 物件
 	
 		endPointURL = "ws://" + window.location.host + webCtx + MyPoint;
-		if(memId!=null){
-			endPointURL = endPointURL + "/" + memId + "/1";
-			console.log("aaa");
-		}else{
-			endPointURL = endPointURL + "/xxx/1";
-			console.log("bbb");
-		}
+		
 		
 		webSocket = new WebSocket(endPointURL);
 

@@ -45,6 +45,8 @@ pageContext.setAttribute("list", list);
     <link rel="stylesheet" href="<%=request.getContextPath()%>/bs/bootstrap.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/bs/bootstrap-theme.min.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/css/style.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/auth/css/sweet-alert.css">
+<script src="<%=request.getContextPath()%>/backend/auth/js/sweet-alert.js"></script>
     <script src="<%=request.getContextPath()%>/jq/jquery-3.1.1.min.js"></script>
     <script src="<%=request.getContextPath()%>/jq/jquery-ui.js"></script>
     <script src="<%=request.getContextPath()%>/jq/jquery-cycle-all.js"></script>
@@ -172,7 +174,14 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 //			 		    	  alert(xhr.responseText);                               
                               var member = JSON.parse(xhr.responseText);
                               var value= member.MESSAGE;
-                              alert(value);
+                                 			       
+                              swal({
+                            	  title: '願望清單',
+                            	  text: value,
+                            	  timer: 1700
+                            	})
+                      	    
+                              
 					      }else{
 					        alert("加入成功");
 					      }
@@ -247,7 +256,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">FAQ</a></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">連絡我們</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">訂房需知</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/bookingProcess/bookingProcess.jsp">訂房需知</a></li>
                 </ul>
             </div>
             <div class="dropdown" style='display: inline-block;'>
@@ -327,7 +336,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">FAQ</a></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">連絡我們</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#">訂房需知</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/bookingProcess/bookingProcess.jsp">訂房需知</a></li>
                 </ul>
                     
                 </div>
@@ -378,7 +387,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
         </div>
         <!-- <div id="title">LIVE THERE</div>  -->
         <div class="hidden-xs">
-            <a href="http://bit.ly/2dQ6Xmk ">
+            <a href="<%=request.getContextPath()%>/frontend_mem/bookingProcess/bookingProcess.jsp">
                 <button id="buttnOnimg">如何使用DDD</button>
             </a>
         </div>
@@ -388,7 +397,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
     <!-- 圖上大字 -->
     <div id="shangxia2">
       <span id="gotop1" style="font-family:Tahoma, Verdana, 微軟正黑體;text-align:center;font-weight:bold;">
-		<img src="<%=request.getContextPath()%>/frontend_mem/img/plane.png" alt="">
+		<img src="<%=request.getContextPath()%>/frontend_mem/img/plane (2).png" alt="" width="45px" height="45px">
 
 	  </span>
     </div>
@@ -399,13 +408,14 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
         	<img src="<%=request.getContextPath()%>/frontend_mem/img/house.png" style="margin-top:-11px;"/>
         </h2>
 <!--         -------------------------嘉鴻你的搜尋------------------------------ -->
-        <div id="searchbgcolor" class="col-md-12">
+        <div id="searchbgcolor" class="col-md-12" >
             <table>
                 <form action="<%=request.getContextPath()%>/frontend_mem/map/map.jsp" method="get">
                     <tr>
                         <th>想住哪?就搜哪!?</th>
                         <th>
                             <input type="submit" name="sure" value="搜出好價" id="mapSubmit">
+                            <img src="<%=request.getContextPath()%>/frontend_mem/img/houseckick.png" alt="GO" width="40px" height="40px">
                         </th>
                     </tr>
                   

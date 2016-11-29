@@ -3233,6 +3233,7 @@ tbody.collapse.in {
   line-height: 1.42857143;
   color: #333;
   white-space: nowrap;
+  font-family: Tahoma, Verdana, 微軟正黑體;
 }
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus {
