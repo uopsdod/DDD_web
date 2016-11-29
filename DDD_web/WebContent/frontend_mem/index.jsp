@@ -388,7 +388,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
     <!-- 圖上大字 -->
     <div id="shangxia2">
       <span id="gotop1" style="font-family:Tahoma, Verdana, 微軟正黑體;text-align:center;font-weight:bold;">
-		<img src="<%=request.getContextPath()%>/frontend_mem/img/plane.png" alt="">
+		<img src="<%=request.getContextPath()%>/frontend_mem/img/plane (2).png" alt="" width="45px" height="45px">
 
 	  </span>
     </div>
@@ -399,13 +399,14 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
         	<img src="<%=request.getContextPath()%>/frontend_mem/img/house.png" style="margin-top:-11px;"/>
         </h2>
 <!--         -------------------------嘉鴻你的搜尋------------------------------ -->
-        <div id="searchbgcolor" class="col-md-12">
+        <div id="searchbgcolor" class="col-md-12" >
             <table>
                 <form action="<%=request.getContextPath()%>/frontend_mem/map/map.jsp" method="get">
                     <tr>
                         <th>想住哪?就搜哪!?</th>
                         <th>
                             <input type="submit" name="sure" value="搜出好價" id="mapSubmit">
+                            <img src="<%=request.getContextPath()%>/frontend_mem/img/houseckick.png" alt="GO" width="50px" height="50px">
                         </th>
                     </tr>
                   
