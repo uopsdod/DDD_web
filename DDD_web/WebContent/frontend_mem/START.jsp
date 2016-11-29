@@ -16,7 +16,7 @@
 <body>
     <div>
         <div>
-            <a href="index.html"><img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg" class="animsition" ></a>
+            <img src="<%=request.getContextPath()%>/frontend_mem/images/4.png" id="LogoImg" class="animsition" >
             
         </div>
         <div id="title"><img src="<%=request.getContextPath()%>/frontend_mem/images/LIVE THERE-logo.png" class="animsition"></div>
