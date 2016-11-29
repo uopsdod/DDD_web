@@ -183,7 +183,7 @@ public class OrdDAO implements OrdDAO_interface {
 //		ordRoomId
 //		ordMemId
 //		ordHotelId
-//		ordStatus
+//		ordStatus 
 //		ordMsgNo
 		
 		else if("ordId".equals(aColumnName) || "ordRoomVO.roomId".equals(aColumnName) || "ordMemVO.memId".equals(aColumnName) ||
