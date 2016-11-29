@@ -21,25 +21,27 @@
 			
 		 var allBag = JSON.parse(event.data);	
 		 var PriceBox = allBag.Bag;
-	
-		 for(var i =0;i<PriceBox.length;i++){
-	        var jsonObj = PriceBox[i];
-//	        alert(jsonObj[0] + " : " +jsonObj[1]);
-	        
-	        
-	        var one = roomMap.get(jsonObj[0]);
-	        
-	       
-	        if(one!=null){//版面上有這個id才更新降價
-	        	
-	       		if(one.childNodes[0].childNodes[0]!=jsonObj[1]){	//價錢有變才換價錢
-	       		
-	       			$(one.childNodes[0]).fadeOut("slow",showPrice.bind(null, one,jsonObj[1]));    	
-	       			$(one.childNodes[0]).fadeIn("slow");
-	       		
-	       		}
-		    }//if
-		 }//for each	
+		 if(PriceBox!=null){
+		 
+			 for(var i =0;i<PriceBox.length;i++){
+		        var jsonObj = PriceBox[i];
+	//	        alert(jsonObj[0] + " : " +jsonObj[1]);
+		        
+		        
+		        var one = roomMap.get(jsonObj[0]);
+		        
+		       
+		        if(one!=null){//版面上有這個id才更新降價
+		        	
+		       		if(one.childNodes[0].childNodes[0]!=jsonObj[1]){	//價錢有變才換價錢
+		       		
+		       			$(one.childNodes[0]).fadeOut("slow",showPrice.bind(null, one,jsonObj[1]));    	
+		       			$(one.childNodes[0]).fadeIn("slow");
+		       		
+		       		}
+			    }//if
+			 }//for each	
+		 }//if
 		 };//onmessage
 
 		webSocket.onclose = function(event) {
