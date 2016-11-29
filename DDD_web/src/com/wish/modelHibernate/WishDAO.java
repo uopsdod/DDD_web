@@ -23,7 +23,7 @@ import util.HibernateUtil;
 import java.sql.*;
 
 public class WishDAO implements WishDAO_interface {
-	private static final String GET_ONE ="select o.roomPhotoRoomId,o.roomPhotoPic,h.hotelid,h.hotelName,r.roomPrice,r.roomid,r.roomDisccountPercent,r.roomName,r.roomRemainNo,r.roomDiscountStartDate,r.roomDiscountEndDate,h.hotelRatingResult from wish w,room r,roomphoto o,hotel h where w.wishMemId=? and r.roomId = w.wishRoomId and r.roomid=o.roomPhotoRoomId and r.roomHotelId = h.hotelId";
+	private static final String GET_ONE ="select * from(select o.roomPhotoRoomId,o.roomPhotoPic,h.hotelid,h.hotelName,r.roomPrice,r.roomid,r.roomDisccountPercent,r.roomName,r.roomRemainNo,r.roomDiscountStartDate,r.roomDiscountEndDate,h.hotelRatingResult,row_number() over (partition by o.roomPhotoRoomId,h.hotelid,h.hotelName,r.roomPrice,r.roomid,r.roomDisccountPercent,r.roomName,r.roomRemainNo,r.roomDiscountStartDate,r.roomDiscountEndDate,h.hotelRatingResult order by o.roomPhotoRoomId)RW from wish w,room r,roomphoto o,hotel h where  w.wishMemId=? and r.roomId = w.wishRoomId and r.roomid=o.roomPhotoRoomId and r.roomHotelId = h.hotelId)where RW = 1";
 	private static final Base64.Encoder encoder = Base64.getEncoder();
 	
 	

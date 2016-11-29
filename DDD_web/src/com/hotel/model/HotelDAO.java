@@ -66,7 +66,7 @@ public class HotelDAO implements HotelDAO_interface {
 	private static final Base64.Encoder encoder1 = Base64.getEncoder();
 	public static final String CHECK_MEMBER = "SELECT hotelAccount, hotelPwd FROM hotel where hotelAccount = ?";
 	public static final String GET_RANDOM_HOTEL_TO_VIEW ="SELECT * FROM "
-			+ "(select h.hotelName,h.hotelRatingResult,r.roomName,r.roomid,r.roomPrice,o.roomPhotoPic "
+			+ "(select h.hotelid,h.hotelName,h.hotelRatingResult,r.roomName,r.roomid,r.roomPrice,o.roomPhotoPic "
 			+ "from room r,roomphoto o,hotel h where r.roomforsell = '1' and r.roomid=o.roomPhotoRoomId and r.roomHotelId = h.hotelId "
 			+ "ORDER BY dbms_random.value) where rownum <= 8";
 	private static final String GET_WISH_COUNT="select count(wishmemid)as count from wish where wishroomid=?";
@@ -157,7 +157,7 @@ public class HotelDAO implements HotelDAO_interface {
 			while (rs.next()) {
 				Map<Object,Object> map = new HashMap<Object,Object>();//MAP
 				  byte[] roomPhotoPic = rs.getBytes("roomPhotoPic");
-				  
+				map.put("hotelId",rs.getString("hotelId"));//廠商名  
 				map.put("hotelName",rs.getString("hotelName"));//廠商名
 				map.put("hotelRatingResult",rs.getString("hotelRatingResult")); //廠商評價
 				map.put("roomName",rs.getString("roomName"));//廠商的房名

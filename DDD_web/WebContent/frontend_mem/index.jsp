@@ -186,21 +186,22 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 					  xhr.open("Post",url,true);
 					  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 					  xhr.send(data_info);
-					  //送出請求
-// 				   $.ajax({
-// 						 type:"POST",
-<%-- 						 url:"<%=request.getContextPath()%>/wish/wish.do?WISHMEMID="+memid+"&WISHROOMID="+roomid+"&action="+check, --%>
-						 
-// 						 dataType:"json",
-// 						 success:function (data){
-							 
-// 							 obj = JSON.parse(data);
-// 							 alert(obj);
-// 					     },
-// 			             error:function(){alert("error")}
-// 		             })
-			   
+
 		}
+
+			 function openRoomData(roomId,hotelId){
+			 	
+			 	window.open("/DDD_web/HotelRoomSearch?action=hotelPage&wishLookId=" + roomId + "&hotelId=" + hotelId);
+			 	
+			 }
+
+</script>
+<script>
+	function openRoomData(roomId,hotelId){
+	 	
+	 	window.open("/DDD_web/HotelRoomSearch?action=hotelPage&wishLookId=" + roomId + "&hotelId=" + hotelId);
+	 	
+	 }
 </script>
 <body>
     <!-- 開始導覽列 -->
@@ -647,7 +648,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                     <div class="container" style="width: 97%">
                         <div class="row">
                         <c:forEach var="room" items="${list}">
-                           <FORM METHOD="post"  >
+                          
                             <div class="borderOfBanner col-xs-12 col-sm-3" style="position:relative">                            	
                                 <div class="item onsaledemo" style="border-bottom: gray double">
                                     <img src='data:image/jpeg;base64,${room.roomPhotoPic}' class="img-responsive" width="100%">
@@ -720,21 +721,29 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                                         </div>                                     
                                     </div>
                                     
+                                    <div style='margin-top:-8%;margin-left:10px;'>
+                                    	 <div style='float:left;margin-right:5px;' >
+                                    	 	<button id="btnwish" onclick="openRoomData(${room.roomid},${room.hotelId})" class="btnwish1">查看詳情</button> 
+                                    	 </div>   
 	                                     <c:choose>
-	                                    	 <c:when test='${!empty memVO}'> 
-	                                    	 <div style='margin-top:-8%;' id="start">	                                    	 
+	                                    	 <c:when test='${!empty memVO}'>
+	                                    	 <FORM METHOD="post"> 
+	                                    	 <div  id="start">	                                    	 
 	                                    	 	<input type="button" value="加入清單" class="btnwish " id="${room.roomid}" onclick="test(this)" >
 		                                        <input type="hidden" name="WISHMEMID" value='${memVO.memId}' class="WISHMEMID">
 		                                        <input type="hidden" name="WISHROOMID" value='${room.roomid}' class="WISHROOMID">
 		                                        <input type="hidden" name="action" value="insertWish" class="action"> 
-		                                        </div>                                   	 	
+		                                        </div> 
+		                                     </FORM>                                  	 	
 										     </c:when>					        
 										     <c:otherwise>
 										     
 										     </c:otherwise>
-										</c:choose>                                                                                                        
+										</c:choose>  																				
+									</div>
+									<BR>	                                                                                                   
                             	 </div>
-                             </FORM>
+                             
                           </c:forEach>                                                  
                         </div>
                     </div>
