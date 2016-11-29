@@ -23,16 +23,22 @@
 <meta name="keywords" content="">
 <link href="" rel="stylesheet">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<style>
-	.tablediv{
-		margin-top:10%;
-	}
-</style>
+
 </head>
 <body>
-<div class="col-xs-12 col-sm-10 tablediv" >
+<div class="col-xs-12 col-sm-10 bb" style="background-color:#FFFAF0;postion:relative;top:220px" >
+	<ol class="breadcrumb">
+		<li>
+			Banner
+		</li>
+		<li class="active">Banner廣告購買</li>
+	</ol>
    <div class="container">
    	<div class="row">
+   	
+   	
+   	
+   	
    	<c:forEach var="adPlanVO" items="${list}">
    		<div class="col-xs-12 col-sm-4">
    			<div class="thumbnail">
@@ -66,6 +72,7 @@
    		
    		</c:forEach>
    	</div>
+   </div>
    </div>
    </div>
 </body>
