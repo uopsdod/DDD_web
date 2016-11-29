@@ -40,6 +40,8 @@
     <url-pattern>/frontend_hotel/hotel/findByPrimaryKey.jsp</url-pattern>
     <url-pattern>/frontend_hotel/hotel/updatesecess.jsp</url-pattern>
     <url-pattern>/frontend_hotel/hotel/Status_1.jsp</url-pattern>
+    <url-pattern>/frontend_hotel/ord/*</url-pattern>
+    <url-pattern>/frontend_hotel/hotelRep/*</url-pattern>    
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
