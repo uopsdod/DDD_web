@@ -7,7 +7,7 @@ public class HotelRepService {
 		this.dao = new HotelRepHibernateDAO();
 	}
 	
-	public HotelRepVO addHotelRep(String aHotelRepHotelId, String aHotelRepMemId, String aHotelRepOrdId, String aHotelRepEmpId, String aHotelRepContent, String aHotelRepStatus){
+	public HotelRepVO addHotelRep(String aHotelRepHotelId, String aHotelRepMemId, String aHotelRepOrdId, String aHotelRepContent, String aHotelRepStatus){
 		HotelRepVO hotelRepVO = new HotelRepVO();
 		
 		//hotelRepVO.setHotelRepHotelId(aHotelRepHotelId);
@@ -25,11 +25,11 @@ public class HotelRepService {
 		ordVO.setOrdId(aHotelRepOrdId);
 		hotelRepVO.setHotelRepOrdVO(ordVO);
 		
-		if(!aHotelRepEmpId.isEmpty()){
-			com.emp.model.EmpVO empVO = new com.emp.model.EmpVO();
-			empVO.setEmpId(aHotelRepEmpId);
-			hotelRepVO.setHotelRepOrdVO(ordVO);
-		}
+//		if(!aHotelRepEmpId.isEmpty()){
+//			com.emp.model.EmpVO empVO = new com.emp.model.EmpVO();
+//			empVO.setEmpId(aHotelRepEmpId);
+//			hotelRepVO.setHotelRepOrdVO(ordVO);
+//		}
 		
 		if(!aHotelRepContent.isEmpty()){
 			hotelRepVO.setHotelRepContent(aHotelRepContent);
