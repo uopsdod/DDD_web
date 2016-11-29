@@ -36,7 +36,19 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 
 </script>
 
+<!-- 			/********************阿貴我加在這邊******************************************************************/ -->
+<script>
 
+function openRoomData(roomId,hotelId){
+	
+	window.open("/DDD_web/HotelRoomSearch?action=hotelPage&wishLookId=" + roomId + "&hotelId=" + hotelId);
+	
+}
+
+
+
+</script>
+<!-- 			/********************阿貴我加在這邊******************************************************************/ -->
 <!-- //查看詳情還沒做 -->
 <style>
 	#listinfor{
@@ -120,8 +132,20 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 							</span>
 			                </u></div>
 			                <br>
-			                <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/wish/wish.do">
-				                <button id="buttnOnimg" >查看詳情</button>
+<!-- 			/********************阿貴我加在這邊******************************************************************/                 -->
+			                <% 
+			                Map wishVO = (Map)pageContext.getAttribute("wish");
+			                RoomService roomSvc = new RoomService();
+			                RoomVO roomVO = roomSvc.findByPrimaryKey((String)wishVO.get("roomid"));
+			                String hotelId  = roomVO.getRoomHotelId();
+			                pageContext.setAttribute("hotelId", hotelId);
+			                %>
+                    
+			                
+			                <button id="buttnOnimg" onclick="openRoomData(${wish.roomid},${hotelId})" >查看詳情</button>
+<!-- 			/********************阿貴我加在這邊******************************************************************/                 -->
+
+			                <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/wish/wish.do">    
 				                <input type="hidden" name="action" value="delect"> 
 				                <input type="hidden" name="memid" value="${memVO.getMemId()}"> 
 				                <input type="hidden" name="roomPhotoRoomId" value="${wish.roomPhotoRoomId}"> 

@@ -725,6 +725,26 @@ window.onload=function(){
 	capacityMap.set(6,"六人房");
 	capacityMap.set(8,"八人房");
 	
+	
+	
+
+	
+	
+}
+
+<%
+String wishId = request.getParameter("wishLookId");
+System.out.println(wishId);
+if(wishId!=null){
+%>	
+window.addEventListener( "DOMContentLoaded", function(){ready(<%=wishId%>)}, false );	
+<%}%>	
+
+
+function ready(wishId){
+	
+	console.log(wishId);
+	showRoom(wishId);
 }
 
 function addMan(hotelId){
@@ -739,7 +759,7 @@ function addMan(hotelId){
 	
 }
 
-window.onunload=function(){
+window.onbeforeunload=function(){
 	
 	  var xhr2 = new XMLHttpRequest();
 	  

@@ -9,6 +9,7 @@
 <%@ page import="java.util.*"%>
 	<%@ page import="com.room.model.*"%>
 	<%@ page import="com.room.controler.*"%>
+	
 <!DOCTYPE html>
 
 <%
@@ -353,26 +354,14 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 <!--         -------------------------嘉鴻你的搜尋------------------------------ -->
         <div id="searchbgcolor" class="col-md-12">
             <table>
-                <form action="" method="get">
+                <form action="<%=request.getContextPath()%>/frontend_mem/map/map.jsp" method="get">
                     <tr>
                         <th>想住哪?就搜哪!?</th>
-                        <th>↓入住人數</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="text" name="searchs" placeholder="Taipei" id="seach">
-                        </td>
-                        <td>
-                            <select name="skill" class="option">
-                                <option value="1" class="option">1間客房,兩位大人</option>
-                                <option value="2" class="option">1間客房,四位大人</option>                          
-                            </select>
-                        </td>
-                        <td>
+                        <th>
                             <input type="submit" name="sure" value="搜出好價" id="mapSubmit">
-                        </td>
-                        
+                        </th>
                     </tr>
+                  
                 </form>
             </table>
         </div>
