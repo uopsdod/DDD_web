@@ -154,6 +154,52 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
         });
 
     });
+	
+	
+			 function test(room){
+				 
+				 	
+				   var memid = $('.WISHMEMID').val();                        					
+				   var roomid = room.id;         
+				   var check = $('.action').val(); 
+				   
+				   var xhr = new XMLHttpRequest();
+					  //設定好回呼函數 
+					  xhr.onreadystatechange = function (){
+					    if( xhr.readyState == 4 ){
+					      if(xhr.status == 200){
+//			 		    	  alert(xhr.responseText);                               
+                              var member = JSON.parse(xhr.responseText);
+                              var value= member.MESSAGE;
+                              alert(value);
+					      }else{
+					        alert("加入成功");
+					      }
+					    }
+					  }
+					  
+					  
+					//建立好Post連接
+					  var url = "<%=request.getContextPath()%>/wish/wish.do";
+					  var data_info = "WISHMEMID="+memid+"&WISHROOMID="+roomid+"&action="+check;
+					  xhr.open("Post",url,true);
+					  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					  xhr.send(data_info);
+					  //送出請求
+// 				   $.ajax({
+// 						 type:"POST",
+<%-- 						 url:"<%=request.getContextPath()%>/wish/wish.do?WISHMEMID="+memid+"&WISHROOMID="+roomid+"&action="+check, --%>
+						 
+// 						 dataType:"json",
+// 						 success:function (data){
+							 
+// 							 obj = JSON.parse(data);
+// 							 alert(obj);
+// 					     },
+// 			             error:function(){alert("error")}
+// 		             })
+			   
+		}
 </script>
 <body>
     <!-- 開始導覽列 -->
@@ -612,7 +658,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                     <div class="container" style="width: 97%">
                         <div class="row">
                         <c:forEach var="room" items="${list}">
-                           <FORM METHOD="post"  ACTION="<%=request.getContextPath()%>/wish/wish.do">
+                           <FORM METHOD="post"  >
                             <div class="borderOfBanner col-xs-12 col-sm-3" style="position:relative">                            	
                                 <div class="item onsaledemo" style="border-bottom: gray double">
                                     <img src='data:image/jpeg;base64,${room.roomPhotoPic}' class="img-responsive" width="100%">
@@ -687,11 +733,11 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                                     
 	                                     <c:choose>
 	                                    	 <c:when test='${!empty memVO}'> 
-	                                    	 <div style='margin-top:-8%;'>	                                    	 
-	                                    	 	<input type="submit" value="加入清單" class="btnwish">
-		                                        <input type="hidden" name="WISHMEMID" value='${memVO.memId}'>
-		                                        <input type="hidden" name="WISHROOMID" value='${room.roomid}'>
-		                                        <input type="hidden" name="action" value="insertWish"> 
+	                                    	 <div style='margin-top:-8%;' id="start">	                                    	 
+	                                    	 	<input type="button" value="加入清單" class="btnwish " id="${room.roomid}" onclick="test(this)" >
+		                                        <input type="hidden" name="WISHMEMID" value='${memVO.memId}' class="WISHMEMID">
+		                                        <input type="hidden" name="WISHROOMID" value='${room.roomid}' class="WISHROOMID">
+		                                        <input type="hidden" name="action" value="insertWish" class="action"> 
 		                                        </div>                                   	 	
 										     </c:when>					        
 										     <c:otherwise>

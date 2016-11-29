@@ -1,7 +1,7 @@
 package com.wish.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,15 +10,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
-import com.hotel.model.HotelService;
-import com.hotel.model.HotelVO;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.wish.model.WishService;
 import com.wish.model.WishVO;
-
-import util.AddressToLat;
-import util.Util_psw;
 
 
 public class WishServlet extends HttpServlet {
@@ -43,8 +40,9 @@ public class WishServlet extends HttpServlet {
 			
 			request.setAttribute("errorMsgs", errorMsgs);
 			String requestURL = request.getParameter("requestURL");
-			try {
-				
+//			try {
+				JSONObject obj = new JSONObject();
+				JSONObject obj_A = new JSONObject();
 				String WISHMEMID = request.getParameter("WISHMEMID").trim();
 				String WISHROOMID = request.getParameter("WISHROOMID").trim();
 						
@@ -55,28 +53,57 @@ public class WishServlet extends HttpServlet {
 				List<WishVO> list =wishsvc.getOneWishOfmem(WISHMEMID);
 				for(WishVO a:list){
 					if(a.getWishRoomId().contains(WISHROOMID)){
-						errorMsgs.add("您已經加入過此房型了!");
+						try {
+							obj.put("MESSAGE", "您已經加入過此房型了!");
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
-				if (!errorMsgs.isEmpty()) {
-					
-					RequestDispatcher failureView = request.getRequestDispatcher("/frontend_mem/index.jsp");
-					failureView.forward(request, response);
+				if(obj.length()!=0){
+				response.setContentType("text/plain");
+				response.setCharacterEncoding("UTF-8");
+				PrintWriter out = response.getWriter();
+				out.write(obj.toString());
+				out.flush();
+				out.close();
+				return;
+				}else{
+					wishsvc.addWish_web(WISHMEMID, WISHROOMID);
+					try {
+						obj_A.put("MESSAGE", "加入成功");
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					response.setContentType("text/plain");
+					response.setCharacterEncoding("UTF-8");
+					PrintWriter out = response.getWriter();
+					out.write(obj_A.toString());
+					out.flush();
+					out.close();
 					return;
 				}
+//				if (!errorMsgs.isEmpty()) {
+//					
+//					RequestDispatcher failureView = request.getRequestDispatcher("/frontend_mem/index.jsp");
+//					failureView.forward(request, response);
+//					return;
+//				}
 				
-				wishsvc.addWish_web(WISHMEMID, WISHROOMID);
 				
-				String url="/frontend_mem/index.jsp";
-				RequestDispatcher successView = request.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
-				successView.forward(request, response);
-
+				
+//				String url="/frontend_mem/index.jsp";
+//				RequestDispatcher successView = request.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
+//				successView.forward(request, response);
+				
 				/*************************** 其他可能的錯誤處理 **********************************/
-			} catch (Exception e) {
-				errorMsgs.add(e.getMessage());
-				RequestDispatcher failureView = request.getRequestDispatcher("requestURL");
-				failureView.forward(request, response);
-			}
+//			} catch (Exception e) {
+//				errorMsgs.add(e.getMessage());
+//				RequestDispatcher failureView = request.getRequestDispatcher("requestURL");
+//				failureView.forward(request, response);
+//			}
 		}
 		
 		if ("delect".equals(action)) { // 來自/dept/listAllDept.jsp的請求
