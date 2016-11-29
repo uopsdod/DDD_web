@@ -160,8 +160,8 @@
 	<h2 align="left"><img src="<%=request.getContextPath()%>/backend/images/list.png" width="30px" height="30px">待辦事項</h2>
 	<table  class="table table-hover text-center" id="emptableth">
 		<tr>
-			<th><c:if test="${fn:contains(authorityList,'104')}"> <%-- 客服管理 --%><a href="#" style="color:black;"></c:if><h3>廠商檢舉單 <img src="<%=request.getContextPath()%>/backend/images/click.png" width="25px" height="25px"></h3></a></th>
-			<th><c:if test="${fn:contains(authorityList,'104')}"> <%-- 客服管理 --%><a href="#" style="color:black;"></c:if><h3>旅客檢舉單 <img src="<%=request.getContextPath()%>/backend/images/click.png" width="25px" height="25px"></h3></a></th>
+			<th><c:if test="${fn:contains(authorityList,'104')}"> <%-- 客服管理 --%><a href="<%=request.getContextPath()%>/backend/hotelRep/checkHotelRep.jsp" style="color:black;"></c:if><h3>廠商檢舉單 <img src="<%=request.getContextPath()%>/backend/images/click.png" width="25px" height="25px"></h3></a></th>
+			<th><c:if test="${fn:contains(authorityList,'104')}"> <%-- 客服管理 --%><a href="<%=request.getContextPath()%>/backend/hotelRep/checkHotelRep.jsp" style="color:black;"></c:if><h3>旅客檢舉單 <img src="<%=request.getContextPath()%>/backend/images/click.png" width="25px" height="25px"></h3></a></th>
 			<th><c:if test="${fn:contains(authorityList,'103')}"> <%-- 首頁管理 --%><a href="<%=request.getContextPath()%>/backend/Ad/listAllAdPage.jsp" style="color:black;"></c:if><h3>Banner<img src="<%=request.getContextPath()%>/backend/images/click.png" width="25px" height="25px"></h3></a></th>
 			<th><c:if test="${fn:contains(authorityList,'101')}"> <%-- 人事管理 --%><a href="<%=request.getContextPath()%>/backend/hotel/get_need_check.jsp"  style="color:black;"></c:if><h3>廠商審核<img src="<%=request.getContextPath()%>/backend/images/click.png" width="25px" height="25px"></h3></a></th>
 		</tr>
