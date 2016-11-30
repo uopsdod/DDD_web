@@ -584,7 +584,7 @@ public class HotelRepServlet extends HttpServlet {
 						
 				String memBlackList = aReq.getParameter("memBlackList");
 				
-				if(hotelRepStatus == null || (hotelRepStatus.trim()).length() == 0 ){
+				if(memBlackList == null || (memBlackList.trim()).length() == 0 ){
 					errorMsgs.add("請輸入旅客黑名單狀態");
 				}      		
         		
