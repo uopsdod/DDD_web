@@ -183,7 +183,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                       	    
                               
 					      }else{
-					        alert("加入成功");
+					        alert("");
 					      }
 					    }
 					  }

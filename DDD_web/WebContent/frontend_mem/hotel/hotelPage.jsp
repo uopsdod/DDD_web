@@ -127,7 +127,12 @@ function addWishRoom(e){
     xhr.onreadystatechange = function (){
 		if( xhr.readyState == 4){
 	      if( xhr.status == 200){
-		     alert(xhr.responseText);		 <!--因後端JSP傳出emp(JSON物件)的JSON字串--><!--因而前端用xhr.responseText取出傳送的JSON字串-->
+	    	  swal({
+	          	  title: '願望清單',
+	          	  text: xhr.responseText,
+	          	  timer: 1700
+	          	});
+// 		     alert(xhr.responseText);		 <!--因後端JSP傳出emp(JSON物件)的JSON字串--><!--因而前端用xhr.responseText取出傳送的JSON字串-->
 		  }else{
 		    alert( xhr.status );
 		  }
@@ -141,7 +146,12 @@ function addWishRoom(e){
  	  xhr.send(data_info);
  	  
 	}else{
-		alert("請先登入會員");
+		swal({
+      	  title: '加入願望清單',
+      	  text: '請先登入會員',
+      	  timer: 1700
+      	});
+		
 	}
 }
 
@@ -199,7 +209,7 @@ function RoomDetail(data){
     
     var img = document.createElement("img");
     img.src="<%=request.getContextPath()%>/RoomPhotoServlet?action=getOne_For_Display&roomPhotoId=" + photoIdArray[0]; 
- 	img.style = "height:400px;top:11%;left:3%;position:absolute";	
+ 	img.style = "height:400px;width:730px;top:11%;left:3%;position:absolute";
     contentBox.appendChild(img);
     
     var rightImg = document.createElement("img");
@@ -237,7 +247,12 @@ function RoomDetail(data){
       xhr.onreadystatechange = function (){
   		if( xhr.readyState == 4){
   	      if( xhr.status == 200){
-  		     alert(xhr.responseText);		 <!--因後端JSP傳出emp(JSON物件)的JSON字串--><!--因而前端用xhr.responseText取出傳送的JSON字串-->
+  	    	swal({
+	          	  title: '願望清單',
+	          	  text: xhr.responseText,
+	          	  timer: 1700
+	          	});
+//   		     alert(xhr.responseText);		 <!--因後端JSP傳出emp(JSON物件)的JSON字串--><!--因而前端用xhr.responseText取出傳送的JSON字串-->
   		  }else{
   		    alert( xhr.status );
   		  }
@@ -250,7 +265,11 @@ function RoomDetail(data){
    	  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
    	  xhr.send(data_info);
       }else{
-    	  alert("請登入會員");
+    	  swal({
+          	  title: '加入願望清單',
+          	  text: '請先登入會員',
+          	  timer: 1700
+          	});
       }
     }//onclick
     heartImg.onmouseover=function(){
