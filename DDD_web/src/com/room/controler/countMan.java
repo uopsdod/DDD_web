@@ -12,7 +12,7 @@ import java.util.*;
  
 /**
  * Servlet implementation class countMan
- */
+ */ 
 @WebServlet("/countMan")
 public class countMan extends HttpServlet {
 
