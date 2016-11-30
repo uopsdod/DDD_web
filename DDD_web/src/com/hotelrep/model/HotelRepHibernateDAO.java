@@ -6,11 +6,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -122,7 +119,6 @@ public class HotelRepHibernateDAO implements HotelRepDAO_interface {
 		return hotelRepVO;
 	}
 
-
 	@Override
 	public List<HotelRepVO> getAllByHotelRepStatus(String aHotelRepStatus){
 
@@ -141,8 +137,6 @@ public class HotelRepHibernateDAO implements HotelRepDAO_interface {
 		return list;		
 		
 	}
-	
-	/* =============== */
 	
 	@Override
 	public void setMemBlackList(HotelRepVO aHotelRepVO,MemVO aMemVO) {

@@ -3,6 +3,8 @@ package com.memrep.model;
 import java.util.List;
 import java.util.Map;
 
+import com.hotel.model.HotelVO;
+
 public interface MemRepDAO_interface {
 	public static final String tableName = "memRep"; // 萬用查詢用
 	public void insert(MemRepVO aMemrepVO);
@@ -18,4 +20,6 @@ public interface MemRepDAO_interface {
 	//查詢一筆訂單所對到的旅客檢舉單:
 	public MemRepVO findByMemRepOrdId(String aMemRepOrdId);
 	
+	/* 改旅客檢舉單狀態  + 改廠商黑名單狀態*/
+	public void setHotelBlackList(MemRepVO aMemRepVO,HotelVO aHotelVO);
 }

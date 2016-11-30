@@ -34,7 +34,7 @@
 	<script src="<%=request.getContextPath()%>/backend/js/jquery.js"></script>
 	<script src="<%=request.getContextPath()%>/backend/js/bootstrap.js"></script>
 	<!-- 自訂JavaScript -->
-	<script src="<%=request.getContextPath()%>/backend/css/0_new.js"></script>
+	<script src=""></script>
 </head>
 
 <body>
@@ -58,7 +58,7 @@ if(!authorityList.contains("104")){
 				</ol>
 
 				<!-- 主要的table -->
-				<h2 align="left">廠商檢舉單</h2>
+				<h2 align="left">廠商檢舉單查詢</h2>
 				<table class="table table-hover" border="1">
 					<!-- table標題 -->
 					<thead>
@@ -101,7 +101,7 @@ if(!authorityList.contains("104")){
 				
 	
 				<!-- 主要的table -->
-				<h2 align="left">旅客檢舉單</h2>
+				<h2 align="left">旅客檢舉單查詢</h2>
 				<table class="table table-hover" border="1">
 					<!-- table標題 -->
 					<thead>
