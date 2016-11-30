@@ -2,6 +2,12 @@
 <%@ include file="../indexHeader.jsp"%>
 
 		<style type="text/css">
+			.panel{
+				background:#b0c4de;
+			}
+			*{
+				font-family: Tahoma, Verdana, 微軟正黑體;
+			}
 			.checkbox-inline{
 				margin-right: 1em;
 			}
@@ -29,7 +35,7 @@
 
 		</style>
 	
-      <center> <h1>訂房須知</h1></center>
+      <center> <h1>訂房須知 <img src="<%=request.getContextPath()%>/frontend_mem/bookingProcess/images/question.png" /></h1></center>
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12 col-sm-8 col-sm-offset-2"  >
