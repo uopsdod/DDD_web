@@ -748,7 +748,7 @@ function getListForUploader(){
 
 		map = new google.maps.Map(document.getElementById('map-canvas'),{
 			center:latlng,
-			zoom:18,
+			zoom:16,
 			mapTypeId:google.maps.MapTypeId.ROADMAP
 		});
 		

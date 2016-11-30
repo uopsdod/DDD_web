@@ -1,83 +1,150 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.hotelrep.model.*"%>
-<%-- 此頁練習採用 EL 的寫法取值 --%>
+<%@ page import="com.memrep.model.*"%>
+
+<%-- 用EL練習寫 --%>
 
 <%
     HotelRepService hotelRepSvc = new HotelRepService();
-    List<HotelRepVO> list = hotelRepSvc.getAll();
-    pageContext.setAttribute("list",list);
+    List<HotelRepVO> hotelRepList = hotelRepSvc.getAll();
+    pageContext.setAttribute("hotelRepList",hotelRepList);
 %>
 
-<html>
+<%
+    MemRepService memRepSvc = new MemRepService();
+    List<MemRepVO> memRepList = memRepSvc.getAll();
+    pageContext.setAttribute("memRepList",memRepList);
+%>
+
+<!DOCTYPE html>
+<html lang="">
 <head>
-<title>所有廠商檢舉單資料 - listAllHotelRep.jsp</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<!-- 請輸入標題 -->
+	<title>所有檢舉單查詢 - listAllHotelRep.jsp</title>
+	
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/css/bootstrap.css">
+	<!-- 自訂CSS -->
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/css/0_main.css">
+	
+	<script src="<%=request.getContextPath()%>/backend/js/jquery.js"></script>
+	<script src="<%=request.getContextPath()%>/backend/js/bootstrap.js"></script>
+	<!-- 自訂JavaScript -->
+	<script src=""></script>
 </head>
-<body bgcolor='white'>
-<b><font color=red>此頁練習採用 EL 的寫法取值:</font></b>
-<table border='1' cellpadding='5' cellspacing='0' width='800'>
-	<tr bgcolor='#CCCCFF' align='center' valign='middle' height='20'>
-		<td>
-		<h3>所有廠商檢舉單資料 - ListAllHotelRep.jsp</h3>
-		<a href="<%=request.getContextPath()%>/backend/hotelRep/selectPage.jsp"><img src="<%=request.getContextPath()%>/backend/hotelRep/images/back1.gif" width="100" height="32" border="0">回首頁</a>
-		</td>
-	</tr>
-</table>
 
-<%-- 錯誤表列 --%>
-<c:if test="${not empty errorMsgs}">
-	<font color='red'>請修正以下錯誤:
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li>${message}</li>
-		</c:forEach>
-	</ul>
-	</font>
-</c:if>
+<body>
 
-<table border='1' bordercolor='#CCCCFF' width='800'>
-	<tr>
-		<th>廠商檢舉單編號</th>
-		<th>(原告)廠商名稱</th>
-		<th>(被告)一般會員姓名</th>
-		<th>訂單編號</th>
-		<th>處理的員工姓名</th>
-		<th>檢舉內容</th>
-		<th>處理狀態</th>
-		<th>檢舉時間</th>
-		<th>處理時間</th>
-		<th>修改</th>
-	</tr>
-		
-	<%@ include file="page1.file" %> 
-	<c:forEach var="hotelRepVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-		<tr align='center' valign='middle'>
-			<td>${hotelRepVO.hotelRepId}</td>
-			<td>${hotelRepVO.hotelRepHotelVO.hotelName}</td>
-			<td>${hotelRepVO.hotelRepMemVO.memName}</td>
-			<td>${hotelRepVO.hotelRepOrdVO.ordId}</td>
-			<td><c:out value="${hotelRepVO.hotelRepEmpVO.empName}" default="尚無員工處理"/></td>
-			
-			<td><c:out value="${hotelRepVO.hotelRepContent}" default="無檢舉內容"/></td>
-			
-			<td>${hotelRepStatusTrans.get(hotelRepVO.hotelRepStatus)}</td>
+<%@ include file="/backend/backendBody.jsp"%>
 
-			
-			<td>${hotelRepVO.hotelRepDate}</td>
-			
-			<td><c:out value="${hotelRepVO.hotelRepReviewDate}" default="尚未處理"/></td>
-			
-			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/hotelRep/hotelRep.do">
-			     <input type="submit" value="修改">
-			     <input type="hidden" name="hotelRepId" value="${hotelRepVO.hotelRepId}">
-			     <input type="hidden" name="action"	value="getOneForUpdate"></FORM>
-			</td>
-		</tr>
-	</c:forEach>
-</table>
-<%@ include file="page2.file" %>
+<%
+if(!authorityList.contains("104")){
+	response.sendRedirect(request.getContextPath()+"/backend/emp_index.jsp");
+}
+%>	
 
+			<!-- 右邊的主要區塊 -->
+			<div class="col-xs-12 col-sm-10 bb"
+				style="background-color: #FFFAF0;">
+
+				<!-- 麵包屑(當前路徑) -->
+				<ol class="breadcrumb">
+					<li>檢舉</li>
+					<li class="active">所有檢舉單查詢</li>
+				</ol>
+
+				<!-- 主要的table -->
+				<h2 align="left">廠商檢舉單查詢</h2>
+				<table class="table table-hover" border="1">
+					<!-- table標題 -->
+					<thead>
+						<tr style="background-color: #B0C4DE;">
+							<th class="text-center">廠商檢舉單編號</th>
+							<th class="text-center">(原告)廠商名稱</th>
+							<th class="text-center">(被告)旅客姓名</th>
+							<th class="text-center">訂單編號</th>
+							<th class="text-center">處理的員工姓名</th>
+							<th class="text-center">檢舉內容</th>
+							<th class="text-center">處理狀態</th>
+							<th class="text-center">檢舉時間</th>
+							<th class="text-center">處理時間</th>
+						</tr>
+					</thead>
+
+					<!-- table內容 -->
+					<tbody>
+
+						<c:forEach var="hotelRepVO" items="${hotelRepList}">
+							<tr align='center' valign='middle'>
+								<td>${hotelRepVO.hotelRepId}</td>
+								<td>${hotelRepVO.hotelRepHotelVO.hotelName}</td>
+								<td>${hotelRepVO.hotelRepMemVO.memName}</td>
+								<td>${hotelRepVO.hotelRepOrdVO.ordId}</td>
+								<td><c:out value="${hotelRepVO.hotelRepEmpVO.empName}" default="尚無員工處理"/></td>
+								
+								<td><c:out value="${hotelRepVO.hotelRepContent}" default="無檢舉內容"/></td>
+								
+								<td>${hotelRepStatusTrans.get(hotelRepVO.hotelRepStatus)}</td>
+					
+								
+								<td>${hotelRepVO.hotelRepDate}</td>
+								
+								<td><c:out value="${hotelRepVO.hotelRepReviewDate}" default="尚未處理"/></td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+				
+	
+				<!-- 主要的table -->
+				<h2 align="left">旅客檢舉單查詢</h2>
+				<table class="table table-hover" border="1">
+					<!-- table標題 -->
+					<thead>
+						<tr style="background-color: #B0C4DE;">
+							<th class="text-center">旅客檢舉單編號</th>
+							<th class="text-center">(原告)旅客姓名</th>
+							<th class="text-center">(被告)廠商名稱</th>
+							<th class="text-center">訂單編號</th>
+							<th class="text-center">處理的員工姓名</th>
+							<th class="text-center">檢舉內容</th>
+							<th class="text-center">處理狀態</th>
+							<th class="text-center">檢舉時間</th>
+							<th class="text-center">處理時間</th>
+						</tr>
+					</thead>
+
+					<!-- table內容 -->
+					<tbody>
+
+						<c:forEach var="memRepVO" items="${memRepList}">
+							<tr align='center' valign='middle'>
+								<td>${memRepVO.memRepId}</td>
+								<td>${memRepVO.memRepMemVO.memName}</td>
+								<td>${memRepVO.memRepHotelVO.hotelName}</td>
+								<td>${memRepVO.memRepOrdVO.ordId}</td>
+								<td><c:out value="${memRepVO.memRepEmpVO.empName}" default="尚無員工處理"/></td>
+								
+								<td><c:out value="${memRepVO.memRepContent}" default="無檢舉內容"/></td>
+								
+								<td>${hotelRepStatusTrans.get(memRepVO.memRepStatus)}</td>
+					
+								
+								<td>${memRepVO.memRepDate}</td>
+								
+								<td><c:out value="${memRepVO.memRepReviewDate}" default="尚未處理"/></td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>				
+				
+				
+			</div>
+		</div>
+	</div>
 </body>
 </html>

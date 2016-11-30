@@ -228,7 +228,9 @@ session.setAttribute("memVO", memVO);
 						 </c:choose> 
 					</c:when>		
 					<c:otherwise>
-           					 <img src='data:image/jpeg;base64,${memvo.bs64}' width="180px" height="190px" id="myphoto" >     
+							
+           					 <img src='data:image/jpeg;base64,${memvo.bs64}'  id="myphoto" width="190px" height="190px">     
+           					
            			</c:otherwise>  
 			  </c:choose>                
            </div>

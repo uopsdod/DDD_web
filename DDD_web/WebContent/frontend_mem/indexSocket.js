@@ -24,7 +24,7 @@
 			 var productCount =countName.productCount;
 			 
 			 
-			 if(document.getElementById(aWishRoomId+"_forCount")!=null){
+			 if(document.getElementById(aWishRoomId+"_forCount")!=null){			 
 				 document.getElementById(aWishRoomId+"_forCount").innerHTML=productCount; 
 			 }
 			 

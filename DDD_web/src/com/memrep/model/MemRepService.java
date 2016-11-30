@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.emp.model.EmpVO;
+import com.hotel.model.HotelService;
 import com.hotel.model.HotelVO;
+import com.hotelrep.model.HotelRepVO;
+import com.mem.model.MemService;
 import com.mem.model.MemVO;
 import com.ord.model.OrdService;
 import com.ord.model.OrdVO;
@@ -64,4 +67,32 @@ public class MemRepService {
 	public MemRepVO findByMemRepOrdId(String aMemRepOrdId){
 		return this.dao.findByMemRepOrdId(aMemRepOrdId);
 	}
+	
+	
+	/* 改旅客檢舉單狀態  + 改廠商狀態*/
+	public void setHotelBlackList(String aHotelId, String aHotelBlackList, String aMemRepId, String aMemRepStatus, String aMemRepEmpId){
+				
+		/* 取得hotelVO */
+		HotelService hotelSvc = new HotelService();
+		HotelVO hotelVO = hotelSvc.getOne(aHotelId);
+		hotelVO.setHotelBlackList(aHotelBlackList);
+			
+		/* 取得memRepVO */
+		MemRepVO memRepVO = dao.findByPrimaryKey(aMemRepId);
+		memRepVO.setMemRepStatus(aMemRepStatus);
+		
+		/* 設定處理的員工 */
+		com.emp.model.EmpVO empVO = new com.emp.model.EmpVO();
+		empVO.setEmpId(aMemRepEmpId);
+		memRepVO.setMemRepEmpVO(empVO);
+		
+		/* 處理的時間就是現在時間 */
+		memRepVO.setMemRepReviewDate( new java.sql.Date( new java.util.Date().getTime() ));
+				
+		dao.setHotelBlackList(memRepVO, hotelVO);
+				
+	}	
+	
+	
+	
 }
