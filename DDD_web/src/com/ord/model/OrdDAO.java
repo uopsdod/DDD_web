@@ -168,6 +168,8 @@ public class OrdDAO implements OrdDAO_interface {
 		return list;
 	}	
 	
+	
+	
 	public static DetachedCriteria getACriteriaForAntDB(DetachedCriteria aQuery, String aColumnName, String aValue){
 	
 		/* 數字(Integer) */
