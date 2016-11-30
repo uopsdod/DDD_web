@@ -377,24 +377,46 @@ public class HotelRepServlet extends HttpServlet {
 				}				
 				
 				//hotelRepEmpId
-				String hotelRepEmpId = aReq.getParameter("hotelRepEmpId").trim();
-
-				if(hotelRepEmpId != null && (hotelRepEmpId.trim()).length()!=0){
-					try{
-						checkFormat = new Integer(hotelRepOrdId); 
-					}
-					catch(NumberFormatException e){
-						e.printStackTrace();
-						hotelRepOrdId = null;
-						errorMsgs.add("員工編號格式不正確");
-					}
-				}
+//				String hotelRepEmpId = aReq.getParameter("hotelRepEmpId").trim();
+//
+//				if(hotelRepEmpId != null && (hotelRepEmpId.trim()).length()!=0){
+//					try{
+//						checkFormat = new Integer(hotelRepOrdId); 
+//					}
+//					catch(NumberFormatException e){
+//						e.printStackTrace();
+//						hotelRepOrdId = null;
+//						errorMsgs.add("員工編號格式不正確");
+//					}
+//				}
 				
 				//hotelRepContent
-				String hotelRepContent = aReq.getParameter("hotelRepContent").trim();
+				String hotelRepContent = null;
+				
+				try{
+					hotelRepContent = aReq.getParameter("hotelRepContent").trim();
+				}
+				catch(Exception e){
+					System.out.println(aReq.getParameter("hotelRepContent"));
+					e.printStackTrace();
+					RequestDispatcher failureView = aReq
+							.getRequestDispatcher("/backend/hotelRep/addHotelRep.jsp");
+					failureView.forward(aReq, aRes);
+				}
 				
 				//hotelRepStatus
-				String hotelRepStatus = aReq.getParameter("hotelRepStatus").trim();
+				String hotelRepStatus = null;
+				
+				try{
+					hotelRepStatus = aReq.getParameter("hotelRepStatus").trim();
+				}
+				catch(Exception e){
+					System.out.println(aReq.getParameter("hotelRepStatus"));
+					e.printStackTrace();
+					RequestDispatcher failureView = aReq
+							.getRequestDispatcher("/backend/hotelRep/addHotelRep.jsp");
+					failureView.forward(aReq, aRes);
+				}
 				
 				/* 包成物件 */
 				hotelRepVO = new HotelRepVO(); 
@@ -415,11 +437,11 @@ public class HotelRepServlet extends HttpServlet {
 				hotelRepVO.setHotelRepOrdVO(ordVO);
 				
 				//hotelRepEmpId
-				if(hotelRepEmpId != null && (hotelRepEmpId.trim()).length()!=0){
-					EmpVO empVO = new EmpVO();
-					empVO.setEmpId(hotelRepEmpId);
-					hotelRepVO.setHotelRepEmpVO(empVO);
-				}
+//				if(hotelRepEmpId != null && (hotelRepEmpId.trim()).length()!=0){
+//					EmpVO empVO = new EmpVO();
+//					empVO.setEmpId(hotelRepEmpId);
+//					hotelRepVO.setHotelRepEmpVO(empVO);
+//				}
 				
 				//hotelRepContent
 				if(!hotelRepContent.isEmpty()){
@@ -442,10 +464,10 @@ public class HotelRepServlet extends HttpServlet {
 				/***************************2.開始新增資料***************************************/
 				HotelRepService hotelRepSvc = new HotelRepService();
 				
-				hotelRepVO = hotelRepSvc.addHotelRep(hotelRepHotelId, hotelRepMemId, hotelRepOrdId, hotelRepEmpId, hotelRepContent, hotelRepStatus);
+				hotelRepVO = hotelRepSvc.addHotelRep(hotelRepHotelId, hotelRepMemId, hotelRepOrdId, hotelRepContent, hotelRepStatus);
 								
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/backend/hotelRep/listAllHotelRep.jsp";
+				String url = "/frontend_hotel/ord/listAllOrdByHotelId.jsp";
 				RequestDispatcher successView = aReq.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
 				successView.forward(aReq, aRes);				
 				
@@ -455,7 +477,7 @@ public class HotelRepServlet extends HttpServlet {
 				errorMsgs.add(e.getMessage());
 				aReq.setAttribute("hotelRepVO", hotelRepVO);
 				RequestDispatcher failureView = aReq
-						.getRequestDispatcher("/backend/hotelRep/addHotelrep.jsp");
+						.getRequestDispatcher("/backend/hotelRep/addHotelRep.jsp");
 				failureView.forward(aReq, aRes);
 			}
 		}
@@ -468,7 +490,7 @@ public class HotelRepServlet extends HttpServlet {
         		String hotelRepStatus = aReq.getParameter("hotelRepStatus");
         		
         		if(hotelRepStatus == null || (hotelRepStatus.trim()).length() == 0 ){
-        			errorMsgs.add("請輸入訂單處理狀態");
+        			errorMsgs.add("請輸入檢舉單處理狀態");
         		}
         		
         		HotelRepService hotelRepSvc = new HotelRepService();
@@ -497,6 +519,100 @@ public class HotelRepServlet extends HttpServlet {
 				failureView.forward(aReq, aRes);        		
         		
         	}
+        	
+        }
+        
+        if("setMemBlackList".equals(action)){
+        	
+        	List<String> errorMsgs = new LinkedList<String>();
+        	aReq.setAttribute("errorMsgs", errorMsgs);
+        	
+        	try{
+        		/* 檢舉單相關 */
+				String hotelRepId = aReq.getParameter("hotelRepId");
+				if (hotelRepId == null || (hotelRepId.trim()).length() == 0) {
+					errorMsgs.add("請輸入廠商檢舉單編號");
+				}
+				
+				checkFormat = null;
+
+				try {
+					checkFormat = new Integer(hotelRepId);
+				} catch (Exception e) {
+					e.printStackTrace();
+					errorMsgs.add("廠商檢舉單編號格式不正確");
+				}
+        		
+				String hotelRepStatus = aReq.getParameter("hotelRepStatus");
+				
+				if(hotelRepStatus == null || (hotelRepStatus.trim()).length() == 0 ){
+					errorMsgs.add("請輸入檢舉單處理狀態");
+				}
+        		
+				String hotelRepEmpId = aReq.getParameter("hotelRepEmpId").trim();
+
+				if(hotelRepEmpId == null || (hotelRepEmpId.trim()).length()==0){
+					errorMsgs.add("請輸入員工編號");
+				}				
+				
+				try{
+					checkFormat = new Integer(hotelRepEmpId); 
+				}
+				catch(NumberFormatException e){
+					e.printStackTrace();
+					hotelRepEmpId = null;
+					errorMsgs.add("員工編號格式不正確");
+				}					
+				
+				
+        		/* 旅客相關 */
+				String memId = aReq.getParameter("memId").trim();
+
+				if(memId == null || (memId.trim()).length()==0){
+					errorMsgs.add("請輸入旅客編號");
+				}				
+				
+				try{
+					checkFormat = new Integer(memId); 
+				}
+				catch(NumberFormatException e){
+					e.printStackTrace();
+					memId = null;
+					errorMsgs.add("旅客編號格式不正確");
+				}	       		
+        		
+						
+				String memBlackList = aReq.getParameter("memBlackList");
+				
+				if(hotelRepStatus == null || (hotelRepStatus.trim()).length() == 0 ){
+					errorMsgs.add("請輸入旅客黑名單狀態");
+				}      		
+        		
+        		
+        		/* 送回原地方 */
+        		if(!errorMsgs.isEmpty()){
+    				RequestDispatcher failureView = aReq
+    						.getRequestDispatcher("/backend/hotelRep/selectPage.jsp");
+    				failureView.forward(aReq, aRes);
+    				return;
+        		}
+        		
+        		HotelRepService hotelRepSvc = new HotelRepService();
+
+        		hotelRepSvc.setMemBlackList(memId, memBlackList, hotelRepId, hotelRepStatus, hotelRepEmpId);
+        		
+        		RequestDispatcher successViews = aReq.getRequestDispatcher("/backend/hotelRep/checkHotelRep.jsp");
+        		successViews.forward(aReq, aRes);
+        	}
+        	catch(Exception e){
+        		e.printStackTrace();
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = aReq
+						.getRequestDispatcher("/backend/hotelRep/selectPage.jsp");
+				failureView.forward(aReq, aRes);        		
+        		
+        	}       	
+        	
         	
         }
 		

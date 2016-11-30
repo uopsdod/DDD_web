@@ -177,8 +177,8 @@ session.setAttribute("authorityList",authorityList);
 					    <div id="fff" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab6">
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
-					        		<li>一般會員檢舉</li>
-					        		<li>廠商會員檢舉</li>
+					        		<li><a href="<%=request.getContextPath()%>/backend/hotelRep/checkHotelRep.jsp">檢舉單審核作業</a></li>
+					        		<li><a href="<%=request.getContextPath()%>/backend/hotelRep/listAllHotelRep.jsp">所有檢舉單查詢</a></li>
 					        	</ul>
 					      </div>
 					    </div>

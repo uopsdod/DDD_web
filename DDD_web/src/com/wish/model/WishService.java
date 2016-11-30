@@ -23,9 +23,9 @@ public class WishService {
 		wishVO.setWishRoomId(aWishRoomId);
 		dao.insert(wishVO);
 				
-//		HotelService hotelSvc =new HotelService();
-//		String productCount =hotelSvc.GET_WISH_COUNT(aWishRoomId);
-//		SocketOfWish.getCount(aWishRoomId, productCount);
+		HotelService hotelSvc =new HotelService();
+		String productCount =hotelSvc.GET_WISH_COUNT(aWishRoomId);
+		SocketOfWish.getCount(aWishRoomId, productCount);
   
 		return wishVO;
 		

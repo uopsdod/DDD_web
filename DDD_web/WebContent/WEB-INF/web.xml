@@ -22,6 +22,7 @@
     <url-pattern>/backend/mem/listAllMem.jsp</url-pattern>
     <url-pattern>/backend/mem/getonemem.jsp</url-pattern>
     <url-pattern>/backend/ord/*</url-pattern>
+    <url-pattern>/backend/hotelRep/*</url-pattern>
     <url-pattern>/backend/Ad/*</url-pattern>
     <url-pattern>/backend/adPlan/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
@@ -58,6 +59,7 @@
     <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
     <url-pattern>/frontend_mem/chat/MapAndChat.jsp</url-pattern>
     <url-pattern>/frontend_mem/ord/listAllOrdByMemId.jsp</url-pattern>
+    <url-pattern>/frontend_mem/hotel/addOrd.jsp</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>

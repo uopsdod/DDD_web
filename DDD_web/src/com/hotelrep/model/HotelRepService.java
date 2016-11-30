@@ -1,13 +1,15 @@
 package com.hotelrep.model;
 import java.util.List;
 
+import com.mem.model.*;
+
 public class HotelRepService {
 	private HotelRepDAO_interface dao;
 	public HotelRepService(){
 		this.dao = new HotelRepHibernateDAO();
 	}
 	
-	public HotelRepVO addHotelRep(String aHotelRepHotelId, String aHotelRepMemId, String aHotelRepOrdId, String aHotelRepEmpId, String aHotelRepContent, String aHotelRepStatus){
+	public HotelRepVO addHotelRep(String aHotelRepHotelId, String aHotelRepMemId, String aHotelRepOrdId, String aHotelRepContent, String aHotelRepStatus){
 		HotelRepVO hotelRepVO = new HotelRepVO();
 		
 		//hotelRepVO.setHotelRepHotelId(aHotelRepHotelId);
@@ -25,11 +27,11 @@ public class HotelRepService {
 		ordVO.setOrdId(aHotelRepOrdId);
 		hotelRepVO.setHotelRepOrdVO(ordVO);
 		
-		if(!aHotelRepEmpId.isEmpty()){
-			com.emp.model.EmpVO empVO = new com.emp.model.EmpVO();
-			empVO.setEmpId(aHotelRepEmpId);
-			hotelRepVO.setHotelRepOrdVO(ordVO);
-		}
+//		if(!aHotelRepEmpId.isEmpty()){
+//			com.emp.model.EmpVO empVO = new com.emp.model.EmpVO();
+//			empVO.setEmpId(aHotelRepEmpId);
+//			hotelRepVO.setHotelRepEmpVO(empVO);
+//		}
 		
 		if(!aHotelRepContent.isEmpty()){
 			hotelRepVO.setHotelRepContent(aHotelRepContent);
@@ -66,6 +68,30 @@ public class HotelRepService {
 	}
 	public HotelRepVO getOneHotelRep(String aHotelRepId){
 		return dao.findByPrimaryKey(aHotelRepId);
+	}
+	
+	/* 改廠商檢舉單狀態  + 改廠商狀態*/
+	public void setMemBlackList(String aMemId, String aMemBlackList, String aHotelRepId, String aHotelRepStatus, String aHotelRepEmpId){
+		
+		/* 取得hotelVO */
+		MemService memSvc = new MemService();
+		MemVO memVO = memSvc.getOneMem(aMemId);
+		memVO.setMemBlackList(aMemBlackList);
+		
+		/* 取得hotelRepVO */
+		HotelRepVO hotelRepVO = dao.findByPrimaryKey(aHotelRepId);
+		hotelRepVO.setHotelRepStatus(aHotelRepStatus);
+
+		if(!aHotelRepEmpId.isEmpty()){
+			com.emp.model.EmpVO empVO = new com.emp.model.EmpVO();
+			empVO.setEmpId(aHotelRepEmpId);
+			hotelRepVO.setHotelRepEmpVO(empVO);
+		}		
+		
+		/* 處理的時間就是現在時間 */
+		hotelRepVO.setHotelRepReviewDate( new java.sql.Date( new java.util.Date().getTime() ));
+		
+		dao.setMemBlackList(hotelRepVO, memVO);
 	}
 		
 }

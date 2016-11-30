@@ -8,8 +8,11 @@
 <!DOCTYPE html>
 <html lang="">
 	<head>
+		<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/auth/css/sweet-alert.css">
+		<script src="<%=request.getContextPath()%>/backend/auth/js/sweet-alert.js"></script>
 		<script src="<%=request.getContextPath()%>/frontend_mem/hotel/js/socket.js"></script>
-		
+		<title>Dua Dee Dou:晚鳥有優惠</title>
+    	<link rel="shortcut icon" href="<%=request.getContextPath()%>/frontend_mem/images/index.jpg">
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -73,6 +76,9 @@
 		</style>
 		
 <style type="text/css">
+	*{
+		font-family: Tahoma, Verdana, 微軟正黑體;
+	}
 	#c-bgBox{
 	 	display:none;
 	 	position:fixed;
@@ -118,13 +124,18 @@ function addWishRoom(e){
 	var val = memId.className;
 	console.log(val);
 	
-	if(val!=null){
+	if(val!=""){
 	var xhr = new XMLHttpRequest();
     
     xhr.onreadystatechange = function (){
 		if( xhr.readyState == 4){
 	      if( xhr.status == 200){
-		     alert(xhr.responseText);		 <!--因後端JSP傳出emp(JSON物件)的JSON字串--><!--因而前端用xhr.responseText取出傳送的JSON字串-->
+	    	  swal({
+	          	  title: '願望清單',
+	          	  text: xhr.responseText,
+	          	  timer: 1700
+	          	});
+// 		     alert(xhr.responseText);		 <!--因後端JSP傳出emp(JSON物件)的JSON字串--><!--因而前端用xhr.responseText取出傳送的JSON字串-->
 		  }else{
 		    alert( xhr.status );
 		  }
@@ -138,7 +149,12 @@ function addWishRoom(e){
  	  xhr.send(data_info);
  	  
 	}else{
-		alert("請先登入會員");
+		swal({
+      	  title: '加入願望清單',
+      	  text: '請先登入會員',
+      	  timer: 1700
+      	});
+		
 	}
 }
 
@@ -196,7 +212,7 @@ function RoomDetail(data){
     
     var img = document.createElement("img");
     img.src="<%=request.getContextPath()%>/RoomPhotoServlet?action=getOne_For_Display&roomPhotoId=" + photoIdArray[0]; 
- 	img.style = "height:400px;top:11%;left:3%;position:absolute";	
+ 	img.style = "height:400px;width:730px;top:11%;left:3%;position:absolute";
     contentBox.appendChild(img);
     
     var rightImg = document.createElement("img");
@@ -234,7 +250,12 @@ function RoomDetail(data){
       xhr.onreadystatechange = function (){
   		if( xhr.readyState == 4){
   	      if( xhr.status == 200){
-  		     alert(xhr.responseText);		 <!--因後端JSP傳出emp(JSON物件)的JSON字串--><!--因而前端用xhr.responseText取出傳送的JSON字串-->
+  	    	swal({
+	          	  title: '願望清單',
+	          	  text: xhr.responseText,
+	          	  timer: 1700
+	          	});
+//   		     alert(xhr.responseText);		 <!--因後端JSP傳出emp(JSON物件)的JSON字串--><!--因而前端用xhr.responseText取出傳送的JSON字串-->
   		  }else{
   		    alert( xhr.status );
   		  }
@@ -247,7 +268,11 @@ function RoomDetail(data){
    	  xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
    	  xhr.send(data_info);
       }else{
-    	  alert("請登入會員");
+    	  swal({
+          	  title: '加入願望清單',
+          	  text: '請先登入會員',
+          	  timer: 1700
+          	});
       }
     }//onclick
     heartImg.onmouseover=function(){
