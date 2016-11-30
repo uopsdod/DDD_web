@@ -23,10 +23,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.mem.model.MemVO;
-import com.ord.model.OrdHibernateDAO;
-import com.ord.model.OrdVO;
 
-import util.CompositeQuery_anyDB_Hibernate;
 import util.HibernateUtil;
 
 
@@ -143,7 +140,23 @@ public class HotelRepHibernateDAO implements HotelRepDAO_interface {
 		}
 		return list;		
 		
-	}	
+	}
+	
+	/* =============== */
+	
+	@Override
+	public void setMemBlackList(HotelRepVO aHotelRepVO,MemVO aMemVO) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			session.saveOrUpdate(aHotelRepVO);
+			session.saveOrUpdate(aMemVO);			
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
+		}		
+	}
 
 	
 }

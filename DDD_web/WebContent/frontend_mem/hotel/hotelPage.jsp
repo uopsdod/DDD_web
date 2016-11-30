@@ -121,7 +121,7 @@ function addWishRoom(e){
 	var val = memId.className;
 	console.log(val);
 	
-	if(val!=null){
+	if(val!=""){
 	var xhr = new XMLHttpRequest();
     
     xhr.onreadystatechange = function (){

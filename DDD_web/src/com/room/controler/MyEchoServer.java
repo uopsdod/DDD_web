@@ -39,10 +39,7 @@ public static final Map<String,Session> memIdSessions = Collections.synchronized
 		System.out.println(userSession.getId() + ": 已連線");
 		System.out.println(myName + ": 已連線");
 		System.out.println(HotelId + ": hotel");
-		if(!"xxx".equals(myName)){
-		memIdSessions.put(myName,userSession);
-		getMemOrdRoomList(myName);
-		}
+	
 		
 //		if(!"1".equals(HotelId)){
 //		hotelPeople(HotelId,1);
@@ -50,18 +47,7 @@ public static final Map<String,Session> memIdSessions = Collections.synchronized
 //		userSession.getBasicRemote().sendText("WebSocket 連線成功");
 	}
 	
-	static void getMemOrdRoomList(String memId){
-		OrdService ordSvc = new OrdService();
-		List<OrdVO> ordVOlist = ordSvc.getAllByOrdMemId(memId);
-		List<String> roomIdList = new ArrayList();
-		for(OrdVO ordVO: ordVOlist){
-			
-			ordVO.getOrdRoomId();
-			
-			
-		}
-		
-	}
+
 	
 	
 	
@@ -94,16 +80,7 @@ public static final Map<String,Session> memIdSessions = Collections.synchronized
 	}
 	
 	
-	synchronized public static void AdRoom(String roomId){
-		
-		
-//		for (Session session : allSessions) {
-//			if (session.isOpen())
-//				session.getAsyncRemote().sendText(AllBag.toString());				
-//		}
-		
-		
-	}
+
 	
 	
 	
