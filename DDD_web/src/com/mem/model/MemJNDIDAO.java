@@ -27,7 +27,7 @@ public class MemJNDIDAO implements MemDAO_interface {
 	public static final String GET_ONE_STMT = "SELECT memId,memAccount,memPsw,memName,memGender,memTwId,to_char(memBirthDate,'yyyy-mm-dd') memBirthDate,memPhone,memLiveBudget,memIntro,memProfile,memBlackList,memCreditCardNo,memCreditCheckNo,memCreditDueDate FROM mem where memId=?";
 	public static final String DELETE = "DELETE FROM mem where memId = ?";
 	public static final String UPDATE = "UPDATE mem set memAccount=?,memPsw=?,memName=?,memGender=?,memTwId=?,memBirthDate=?,memPhone=?,memLiveBudget=?,memIntro=?,memProfile=?,memBlackList=?,memCreditCardNo=?,memCreditCheckNo=?,memCreditDueDate=? where memId = ?";
-	public static final String CHECK_MEMBER = "SELECT memId, memAccount, memPsw FROM mem where memAccount = ?";
+	public static final String CHECK_MEMBER = "SELECT memId, memAccount, memPsw, memName FROM mem where memAccount = ?";
 	//-----------------------------------------------------------貴新增
 	private static final String INSERT_BASIC = "INSERT INTO mem (memId,memAccount,memPsw,memName,memGender,memTwId,"
 			+ "memBirthDate,memPhone,memBlackList) VALUES (mem_seq.NEXTVAL, ?, ?, ?, ?,?,?,?,?)";//註冊
@@ -302,6 +302,7 @@ public class MemJNDIDAO implements MemDAO_interface {
 				memVO.setMemAccount(rs.getString("memAccount"));
 				memVO.setMemPsw(rs.getString("memPsw"));
 				memVO.setMemId(rs.getString("memId"));
+				memVO.setMemName(rs.getString("memName"));
 			}
 		} catch (SQLException se) {
 			throw new RuntimeException("A database error occured. " + se.getMessage());
