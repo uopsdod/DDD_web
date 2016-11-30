@@ -32,7 +32,12 @@
 		  .panel-title a{
 			font-size: large;
 		  }
-
+		  .panel-title .titleForDown{
+		  	font-size:28px;
+		  }
+		  a.list-group-item{
+		  	font-size:22px;
+		  }
 		</style>
 	
       <center> <h1>訂房須知 <img src="<%=request.getContextPath()%>/frontend_mem/bookingProcess/images/question.png" /></h1></center>
@@ -44,7 +49,7 @@
 					 <div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="tab1" >
 					      <h4 class="panel-title">
-					        <a href="#aaa" data-parent="#accordion2" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="aaa">
+					        <a href="#aaa" data-parent="#accordion2" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="aaa" class="titleForDown">
 					         1.房價包括什麼？
 					        </a>
 					      </h4>
@@ -59,7 +64,7 @@
 					  <div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="tab2">
 					      <h4 class="panel-title">
-					        <a href="#bbb" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="bbb">
+					        <a href="#bbb" data-parent="#accordion2" class="titleForDown" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="bbb">
 					         2.我可以使用信用卡預訂客房嗎？
 					        </a>
 					      </h4>
@@ -77,7 +82,7 @@
 					  <div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="tab3">
 					      <h4 class="panel-title">
-					        <a href="#ccc" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="ccc">
+					        <a href="#ccc" data-parent="#accordion2" class="titleForDown" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="ccc">
 					      3.我如何能知道我的預訂已成功
 					        </a>
 					      </h4>
@@ -97,7 +102,7 @@
 					  <div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="tab4">
 					      <h4 class="panel-title">
-					        <a href="#ddd" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="ddd">
+					        <a href="#ddd" data-parent="#accordion2" class="titleForDown" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="ddd">
 					        4.哪裡可以找到住宿的聯絡資訊？
 					        </a>
 					      </h4>
@@ -117,7 +122,7 @@
 					  <div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="tab5">
 					      <h4 class="panel-title">
-					        <a href="#eee" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="eee">
+					        <a href="#eee" data-parent="#accordion2" class="titleForDown" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="eee">
 					        5.如何查詢住宿費用
 					        </a>
 					      </h4>
@@ -136,14 +141,14 @@
 					  <div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="tab6">
 					      <h4 class="panel-title">
-					        <a href="#fff" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="fff">
+					        <a href="#fff" data-parent="#accordion2" class="titleForDown" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="fff">
 					         6.如何取消我的訂單？
 					        </a>
 					      </h4>
 					    </div>
 					    <div id="fff" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab6">
 					      <div class="list-group">
-					      	<a href="#" class="list-group-item ">您可以在\我的訂單\現有訂單\取消訂單，完成上述步驟 即可取消該筆訂單 ;
+					      	<a href="#" class="list-group-item ">您可以在我的訂單/我的預定/取消訂單，完成上述步驟 即可取消該筆訂單 ;
              
                              </a>
 					      	
@@ -154,7 +159,7 @@
 					  <div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="tab7">
 					      <h4 class="panel-title">
-					        <a href="#ggg" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="ggg">
+					        <a href="#ggg" data-parent="#accordion2" class="titleForDown" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="ggg">
 					         7.我可以使用信用卡預訂客房嗎？
 					        </a>
 					      </h4>
@@ -172,7 +177,7 @@
 					  <div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="tab8">
 					      <h4 class="panel-title">
-					        <a href="#hhh" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="hhh">
+					        <a href="#hhh" data-parent="#accordion2" class="titleForDown" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="hhh">
 					        8. 若我無法在預定時間內抵達，飯店會預留房間或是被設為黑名單嗎？
 					        </a>
 					      </h4>
@@ -191,7 +196,7 @@
 					  <div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="tab9">
 					      <h4 class="panel-title">
-					        <a href="#iii" data-parent="#accordion2" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="iii">
+					        <a href="#iii" data-parent="#accordion2" class="titleForDown" data-toggle="collapse" role="button" class="collapsed" aria-expanded="false" aria-controls="iii">
 					        9.我該如何使用篩選條件
 					        </a>
 					      </h4>
