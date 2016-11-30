@@ -84,8 +84,8 @@
 	
 									<td>${ordVO.ordMsgNo}</td>
 									<td>
-										<form method="post" action="<%=request.getContextPath()%>/OrdCheckAndCancel">
-												<input type="submit" value="取消訂單" id="buttnOnimg1" onClick="alert()">
+										<form method="post" action="<%=request.getContextPath()%>/OrdCheckAndCancel" name="theForm">
+												<input type="button" value="取消訂單" id="buttnOnimg1" onClick="alert()">
 												<input type="hidden" name="ordId" value="${ordVO.ordId}">
 												<input type="hidden" name="ordMsgNo" value="${ordVO.ordMsgNo}">
 												<input type="hidden" name="action" value="cancel">
@@ -98,7 +98,7 @@
 					</table>
 	                <script>
 						    function alert() {     			
-							    setTimeout('document.theForm.submit();', 2200);
+							    setTimeout('document.theForm.submit();', 1500);
 								swal("你已成功取消此訂單", "謝謝您", "success");
 						    }
 					</script>
