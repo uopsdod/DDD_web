@@ -39,7 +39,7 @@ pageContext.setAttribute("list", list);
     <link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/css/1_css.css">
     <script src="<%=request.getContextPath()%>/frontend_mem/js/1_new.js"></script>
     <script src="<%=request.getContextPath()%>/frontend_mem/wish/socket.js"></script>
-<%--     <script src="<%=request.getContextPath()%>/frontend_mem/indexSocket.js"></script> --%>
+    <script src="<%=request.getContextPath()%>/frontend_mem/indexSocket.js"></script>
     <title>Dua Dee Dou:晚鳥有優惠</title>
     <link rel="shortcut icon" href="<%=request.getContextPath()%>/frontend_mem/images/index.jpg">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/bs/bootstrap.css">
@@ -76,8 +76,8 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
 		console.log(roomMap);
 		},false);
 	window.addEventListener('load',connect,false);
-// 	window.addEventListener('load',connect_B,false);
-// 	window.onunload =disconnect_B;
+	window.addEventListener('load',connect_B,false);
+	window.onunload =disconnect_B;
 	
 	function formSubmit()
 	  {
@@ -699,7 +699,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                                    
                                     <div style="margin-top:-29%;" align="RIGHT">
                                     
-                                    	<div id ='${room.roomid}+"_forCount"' class="count">
+                                    	<div id ='${room.roomid}_forCount' class="count">
                                     	
                                     	   ${room.count}                           
                                     	
