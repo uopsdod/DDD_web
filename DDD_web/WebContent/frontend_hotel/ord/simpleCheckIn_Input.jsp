@@ -20,9 +20,10 @@
 		<link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_hotel/ord/css/select2.css">		
 		<!-- 自訂JavaScript --> 	
 		<script src="<%=request.getContextPath()%>/frontend_hotel/ord/js/select2.js"></script>
-
-		<div class="col-xs-12 col-sm-10 bb" style="background-color:#FFFAF0;postion:relative;top:220px">
 		
+		<div class="col-xs-12 col-sm-10 bb " style="background-color:#FFFAF0;postion:relative;top:220px" >
+		<div class="col-xs-12 col-sm-2"></div>
+		<div class="col-xs-12 col-sm-8" style="margin-left:2%;">
 			<ol class="breadcrumb">
 				<li>
 					訂單
@@ -39,31 +40,37 @@
 					</c:forEach>
 				</ul>
 			</c:if>
+			<div >
+				<img src="<%=request.getContextPath()%>/frontend_hotel/ord/img/smartphone.png" id="LogoImg" width="156px" height="156px" style="float:left;margin-top:6%; ">
+				<img src="<%=request.getContextPath()%>/frontend_hotel/ord/img/right-arrow.png" id="LogoImg" width="40px" height="40px" style="float:left;margin-right:4%;margin-top:12%;">			
+				<img src="<%=request.getContextPath()%>/frontend_hotel/ord/img/monitor.png" id="LogoImg" width="256px" height="256px" style="float:left;margin-right:5%;">
+			</div>
+			<div >
+				<form method="post" action="<%=request.getContextPath()%>/OrdCheckAndCancel">
+					<h2>輸入旅客姓名:</h2>
+					
 	
-			<form method="post" action="<%=request.getContextPath()%>/OrdCheckAndCancel">
-				<h2>輸入旅客姓名:</h2>
-				
-
-				
-				<select id="ordId" name="ordId">
-					<c:forEach var="ordVO" items="${list}">
-						<c:if test="${ordVO.ordStatus == '0'}">
-							<option value="${ordVO.ordId}">${ordVO.ordMemVO.memName} [${ordVO.ordHotelVO.hotelName}]</option>
-						</c:if>
-					</c:forEach>
-				</select>
-				<br>
-				
-				<h2>輸入簡訊驗證碼:</h2>
-				<input type="text" name="ordMsgNo">
-				<br>
-				<br>
-				<input type="submit" value="送出">
-				<input type="hidden" name="action" value="confirm">
-			</form>
-
+					
+					<select id="ordId" name="ordId">
+						<c:forEach var="ordVO" items="${list}">
+							<c:if test="${ordVO.ordStatus == '0'}">
+								<option value="${ordVO.ordId}">${ordVO.ordMemVO.memName} [${ordVO.ordHotelVO.hotelName}]</option>
+							</c:if>
+						</c:forEach>
+					</select>
+					<br>
+					
+					<h2>輸入簡訊驗證碼:</h2>
+					<input type="text" name="ordMsgNo">
+					<br>
+					<br>
+					<input type="submit" value="送出">
+					<input type="hidden" name="action" value="confirm">
+				</form>
+			</div>
+		 </div>
+		 <div class="col-xs-12 col-sm-2"></div>
 		</div>	
-
 <%@ include file="../footer.jsp" %>
 
 
