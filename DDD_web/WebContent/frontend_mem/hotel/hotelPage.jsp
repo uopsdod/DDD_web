@@ -76,6 +76,9 @@
 		</style>
 		
 <style type="text/css">
+	*{
+		font-family: Tahoma, Verdana, 微軟正黑體;
+	}
 	#c-bgBox{
 	 	display:none;
 	 	position:fixed;
