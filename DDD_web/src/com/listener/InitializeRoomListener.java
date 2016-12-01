@@ -126,7 +126,7 @@ public class InitializeRoomListener implements ServletContextListener {
 			         }
 			     };
 			  System.out.println("伺服器啟動");
-			     WsPush.schedule(WsTaskDown, 0, 10*1000); 
+			     WsPush.schedule(WsTaskDown, 0, 3*1000); 
 		
 		
 	}
