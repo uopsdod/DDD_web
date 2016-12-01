@@ -61,9 +61,11 @@ public class RoomDetail extends HttpServlet {
 			String gender = memVO.getMemGender();
 			FileInputStream img =null;
 			if("f".equals(gender)){
-				img = new FileInputStream(req.getContextPath()+"/frontend_mem/images/girlhead.png");
+				System.out.println(req.getRequestURI());
+				img = new FileInputStream("C:\\Users\\cuser\\git\\DDD_web\\DDD_web\\WebContent\\frontend_mem\\images\\girlhead.png");
 			}else if("m".equals(gender)){
-			    img = new FileInputStream(req.getContextPath()+"/frontend_mem/images/man.png");
+				System.out.println(req.getRequestURI());
+			    img = new FileInputStream("C:\\Users\\cuser\\git\\DDD_web\\DDD_web\\WebContent\\frontend_mem\\images\\man.png");
 			}
 			BufferedInputStream in = new BufferedInputStream(img);
 			byte[] buf1 = new byte[4 * 1024]; // 4K buffer

@@ -40,6 +40,7 @@
 					</c:forEach>
 				</ul>
 			</c:if>
+			<div style="color:red">${OrdMessage}</div>	<!-- 訂單確認與取消的回傳訊息 -->
 			<div >
 				<img src="<%=request.getContextPath()%>/frontend_hotel/ord/img/smartphone.png" id="LogoImg" width="156px" height="156px" style="float:left;margin-top:6%; ">
 				<img src="<%=request.getContextPath()%>/frontend_hotel/ord/img/right-arrow.png" id="LogoImg" width="40px" height="40px" style="float:left;margin-right:4%;margin-top:12%;">			
@@ -66,6 +67,7 @@
 					<br>
 					<input type="submit" value="送出">
 					<input type="hidden" name="action" value="confirm">
+					<input type="hidden" name="location" value="fromHotel">
 				</form>
 			</div>
 		 </div>

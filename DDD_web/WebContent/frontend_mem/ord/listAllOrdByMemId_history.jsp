@@ -77,8 +77,15 @@
 									<td>${ordVO.ordRoomVO.roomName}</td>
 			
 									<td>${ordVO.ordPrice}</td>
+									
+									<% OrdVO ordVO = (OrdVO)(pageContext.getAttribute("ordVO")); %>
+									
+									<% if(ordVO.getOrdLiveDate()!= null){ %>
 																	
-									<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdLiveDate())%></td>		
+									<td><%= new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format( ordVO.getOrdLiveDate() ) %></td>		
+									<% } else { %>
+									<td>入住日期讀取中</td>
+									<% } %>
 									<td>${ordStatusTrans.get(ordVO.ordStatus)}</td>
 
 									<td>

@@ -486,7 +486,9 @@ public class RoomSetOrder extends HttpServlet {
 	
 	public synchronized static void checkOrder(String key,String ordId){
 		
-	
+		
+		System.out.println(key);
+		System.out.println(orderTimer);
 		orderTimer.get(key).cancel();
 		orderTimer.remove(key);
 		
@@ -501,6 +503,8 @@ public class RoomSetOrder extends HttpServlet {
 	
 	public synchronized static void cancelOrder(String key,String ordId){
 		
+		System.out.println(key);
+		System.out.println(orderTimer);
 		
 		
 		orderTimer.get(key).cancel();

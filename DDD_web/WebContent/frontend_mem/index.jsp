@@ -383,7 +383,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
        		<img src="<%=request.getContextPath()%>/frontend_mem/images/back23.jpg" class="img" />
        		<img src="<%=request.getContextPath()%>/frontend_mem/images/back24.jpg" class="img" />
         	<img src="<%=request.getContextPath()%>/frontend_mem/images/back29.jpg" class="img" />
-        	<img src="<%=request.getContextPath()%>/frontend_mem/images/back25.jpg" class="img" />            
+        	<img src="<%=request.getContextPath()%>/frontend_mem/images/back30.jpg" class="img" />            
             <img src="<%=request.getContextPath()%>/frontend_mem/images/back28.jpg" class="img" />
             <img src="<%=request.getContextPath()%>/frontend_mem/images/back27.jpg" class="img" />                                     
         </div>

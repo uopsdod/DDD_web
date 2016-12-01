@@ -66,10 +66,22 @@
 									
 							<input type=password name="password" value="" size=15 id="UserName" placeholder="Password">
 									
-							<button class="LoginButton">Login</button>					
+							<button class="LoginButton">Login</button><br><input type="button" id ="magic" style="background-color:white;border:0;">					
 			
 			</form>
 		</div>
-
+<script>
+	function load() {
+		document.getElementById("magic").onclick=magic;
+		
+	}
+	window.onload = load;
+	
+	function magic(){    	
+		$("[name~='account']").val("ck001583219@gmail.com");
+		$("[name~='password']").val("a123456");
+	
+	}
+</script>
 </body>
 </html>
