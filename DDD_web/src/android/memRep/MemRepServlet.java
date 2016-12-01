@@ -56,6 +56,9 @@ public class MemRepServlet extends HttpServlet {
 		while ((line = br.readLine()) != null) {
 			jsonIn.append(line);
 		}
+		
+		System.out.println("I got "+jsonIn.toString());
+		
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(),JsonObject.class);
 		
 		String action = (jsonObject.get("action") != null)?jsonObject.get("action").getAsString():null;

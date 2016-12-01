@@ -39,6 +39,26 @@
 		font-size:20px;
 		
 	}
+	
+	.memRepWindow textarea {
+    	width: 700px;
+    	height: 300px;
+    	resize: both;
+    	overflow: auto;
+	}
+	
+	.memRepWindow th {
+		font-size: 18px;
+	}	
+	
+	.memRepWindow td {
+		font-size: 18px;
+	}	
+	
+	.memRepWindow {
+		z-index: 5;
+	}
+	
 </style>
 
     <section>
@@ -89,12 +109,27 @@
 									<td>${ordStatusTrans.get(ordVO.ordStatus)}</td>
 
 									<td>
-										<input type="submit" value="給個分數" id="buttnOnimg" data-toggle="modal" data-target="#${ordVO.ordId}-score">
+										<input type="submit" value="給個分數" id="buttnOnimg" data-toggle="modal" data-target="#score-${ordVO.ordId}">
 									</td>
+																	
+									<c:choose>
+										<c:when test="${ordVO.ordMemReps.isEmpty()}">	
+											<td id="td-${ordVO.ordId}">
+												<input type="submit" value="檢舉廠商" id="buttnOnimg1" data-toggle="modal" data-target="#report-${ordVO.ordId}">
+											</td>	
+										</c:when>		  
+					       				<c:otherwise>
+					       					<td id="td-${ordVO.ordId}">
+									 			已檢舉
+											</td>
+										</c:otherwise>
+									 </c:choose>  									
 									
-									<td>
-										<input type="submit" value="檢舉廠商" id="buttnOnimg1" data-toggle="modal" data-target="#${ordVO.ordId}-report">
-									</td>									
+									
+									
+									
+									
+									
 									
 								</tr>
 
@@ -104,97 +139,22 @@
 					
 	                
 <c:forEach var="ordVO" items="${list}">
-	                
-<!-- 評論 -->	                
+
+<!--------------------  旅客評分   -------------------->	
+
+	                           
+<!--------------------  旅客檢舉單   -------------------->	                
 
 <!-- Modal -->
-<div id="memRepWindow">  
-<div class="modal fade" id="${ordVO.ordId}-score" role="dialog">
+<div class="memRepWindow">  
+<div class="modal fade" role="dialog" id="report-${ordVO.ordId}">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">建立廠商檢舉單</h4>
+        <h3 class="modal-title">建立旅客檢舉單</h3>
       </div> <!-- modal-header -->
       
-		<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/hotelRep/hotelRep.do" name="form1">      
-	        <div class="modal-body">
-
-				<!-- (開始)檢舉單內容 -->
-				<table border="0">
-					<tr>
-						<th>廠商名稱:</th>
-						<td>
-							${ordVO.ordHotelVO.hotelName}
-						</td>
-					</tr>
-					
-				
-					<tr>
-						<th>旅客名稱:</th>
-						<td>
-							${ordVO.ordMemVO.memName}
-						</td>
-					</tr>	
-					
-				
-					<tr>
-						<th>訂單編號:</th>
-						<td>
-							${ordVO.ordId}
-						</td>
-					</tr>	
-					
-					<tr>
-						<th>檢舉內容:</th>
-					
-						<td>						
-							<textarea name="hotelRepContent"></textarea>
-						</td>
-					</tr>	
-				</table>
-				
-				<!-- (結束)檢舉單內容 -->
-
-	        </div> <!-- modal-body -->
-	        <div class="modal-footer">
-	        
-	          <input type="hidden" name="hotelRepHotelId" value="${ordVO.ordHotelVO.hotelId}">	
-	          <input type="hidden" name="hotelRepMemId" value="${ordVO.ordMemVO.memId}">	
-	          <input type="hidden" name="hotelRepOrdId" value="${ordVO.ordId}">
-	          <input type="hidden" name="hotelRepStatus" value="0">		        
-	          <input type="hidden" name="action" value="insert">
-
-	          <button type="button" class="btn btn-warning" data-dismiss="modal">
-			  	取消
-			  </button>
-
-	        
-	          <button type="submit" class="btn btn-primary">
-			  	提交
-			  </button>
-			  
-	        </div> <!-- modal-footer -->
-     </FORM>
-     
-    </div>
-  </div>
-</div>					
-</div>	                
-	                
-<!-- 旅客檢舉單 -->	                
-
-<!-- Modal -->
-<div id="memRepWindow">  
-<div class="modal fade" id="${ordVO.ordId}-report" role="dialog">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">建立廠商檢舉單</h4>
-      </div> <!-- modal-header -->
-      
-		<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/android/memRep/memRep.do" name="form1">      
+		<FORM METHOD="post" id="jsonForm-${ordVO.ordId}" name="form1">      
 	        <div class="modal-body">
 
 				<!-- (開始)檢舉單內容 -->
@@ -224,7 +184,7 @@
 						<th>檢舉內容:</th>
 					
 						<td>						
-							<textarea name="hotelRepContent"></textarea>
+							<textarea name="content"></textarea>
 						</td>
 					</tr>	
 				</table>
@@ -233,23 +193,17 @@
 
 	        </div> <!-- modal-body -->
 	        <div class="modal-footer">
-	        
-	          <input type="hidden" name="memRepHotelId" value="${ordVO.ordHotelVO.hotelId}">	
-	          <input type="hidden" name="memRepMemId" value="${ordVO.ordMemVO.memId}">	
-	          <input type="hidden" name="memRepOrdId" value="${ordVO.ordId}">
-	          <input type="hidden" name="hotelRepStatus" value="0">		        
+	          <input type="hidden" name="ordId" value="${ordVO.ordId}">	        
 	          <input type="hidden" name="action" value="insert">
 
-
-	          <button type="button" class="btn btn-warning" data-dismiss="modal">
+	          <button type="button" id="jsonClose-${ordVO.ordId}" class="btn btn-warning" data-dismiss="modal">
 			  	取消
 			  </button>
 
-	        
-	          <button type="button" class="btn btn-primary">
+	          <button type="button" id="jsonPost-${ordVO.ordId}" class="btn btn-primary">
 			  	提交
 			  </button>
-			  
+			 			   
 	        </div> <!-- modal-footer -->
      </FORM>
      
@@ -257,6 +211,43 @@
   </div>
 </div>					
 </div>	                
+
+
+<script>
+ 
+var ctx ="${pageContext.request.contextPath}";
+ 
+var myRepForm = {
+		"action" : "",
+		"ordId" : "",
+		"content" : ""
+}; 
+ 
+ 
+$(document).ready(function(){
+
+	$("#jsonPost-${ordVO.ordId}").click(function(e){
+		
+		myRepForm.action = $("#jsonForm-${ordVO.ordId} input[name='action']").val();
+		myRepForm.content = $("#jsonForm-${ordVO.ordId} textarea").val();
+		myRepForm.ordId = $("#jsonForm-${ordVO.ordId} input[name='ordId']").val();
+		
+		//console.log(myRepForm);
+		
+		var url = ctx + "/android/memRep/memRep.do";
+		//console.log(url);
+		$.post(url,JSON.stringify(myRepForm));
+		
+		$("#jsonClose-${ordVO.ordId}").click();
+		
+		$("#td-${ordVO.ordId}").empty().append("已檢舉");
+		
+	});
+	 	 
+});
+ 
+</script>  
+
 	                
 </c:forEach>
 
@@ -277,4 +268,10 @@
        </div>
     </section>
    <!--  --------------------------------------------------------------------- -->
+   
+   
+
+   
+   
+   
 <%@ include file="../indexFooter.jsp" %>
