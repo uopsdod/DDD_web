@@ -35,12 +35,12 @@
 	
 	#view th{
 		font-family:Tahoma, Verdana, 微軟正黑體;
-		font-size:18px;
+		font-size:22px;
 		
 	}
 	#view tr{
 		font-family:Tahoma, Verdana, 微軟正黑體;
-		font-size:20px;
+		font-size:24px;
 		
 	}
 	
@@ -52,11 +52,11 @@
 	}
 	
 	.memRepWindow th, .memRatingWindow th {
-		font-size: 18px;
+		font-size: 22px;
 	}	
 	
 	.memRepWindow td, .memRatingWindow td {
-		font-size: 18px;
+		font-size: 22px;
 	}	
 	
 
@@ -165,7 +165,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">評分與意見</h3>
+        <h3 class="modal-title"><b>評分與意見</b></h3>
       </div> <!-- modal-header -->
       
 		<FORM METHOD="post" id="jsonForm2-${ordVO.ordId}" name="form1">      
@@ -295,7 +295,7 @@ $(document).ready(function(){
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">建立旅客檢舉單</h3>
+        <h3 class="modal-title"><b>建立旅客檢舉單</b></h3>
       </div> <!-- modal-header -->
       
 		<FORM METHOD="post" id="jsonForm-${ordVO.ordId}" name="form1">      

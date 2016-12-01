@@ -31,12 +31,12 @@
 	
 	#view th{
 		font-family:Tahoma, Verdana, 微軟正黑體;
-		font-size:18px;
+		font-size:22px;
 		
 	}
 	#view tr{
 		font-family:Tahoma, Verdana, 微軟正黑體;
-		font-size:20px;
+		font-size:24px;
 		
 	}
 </style>
