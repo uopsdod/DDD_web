@@ -56,15 +56,13 @@ public class MemRepServlet extends HttpServlet {
 		while ((line = br.readLine()) != null) {
 			jsonIn.append(line);
 		}
-		
-		System.out.println("I got "+jsonIn.toString());
-		
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(),JsonObject.class);
 		
 		String action = (jsonObject.get("action") != null)?jsonObject.get("action").getAsString():null;
 		String ordId = (jsonObject.get("ordId") != null)?jsonObject.get("ordId").getAsString():null;
 		//String memId = (jsonObject.get("memId") != null)?jsonObject.get("memId").getAsString():null;
 		System.out.println("ordId: " + ordId);
+		System.out.println("action: " + action);
 		String outStr = null;
 		
 		if ("findByMemRepOrdId".equals(action)) {
@@ -75,6 +73,7 @@ public class MemRepServlet extends HttpServlet {
 				res.setContentType(CONTENT_TYPE);
 				PrintWriter out = res.getWriter();
 				out.println(outStr);
+				System.out.println("此張訂單尚無檢舉單");
 				return;
 			}
 			
@@ -95,7 +94,9 @@ public class MemRepServlet extends HttpServlet {
 			
 			memRepVO.getMemRepOrdVO().getOrdMemVO().setBs64(null);
 			memRepVO.getMemRepOrdVO().getOrdMemVO().setMemProfile(null);
-
+			
+			// 特別注意-傳給手機的字串資料，似乎有上限，超過的話就會失敗，需再了解原因:
+			memRepVO.getMemRepOrdVO().setOrdQrPic(null);
 			
 //			memRepVO.setMemRepEmpVO(new EmpVO());
 //			memRepVO.setMemRepHotelVO(new HotelVO());
@@ -118,6 +119,8 @@ public class MemRepServlet extends HttpServlet {
 			String content = (jsonObject.get("content") != null)?jsonObject.get("content").getAsString():null;
 			dao_memRep.insert(ordId, content);
 		}
+		
+		System.out.println("------------------------------------------------------------------------");
 		
 	}
 }
