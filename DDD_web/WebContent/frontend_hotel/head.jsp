@@ -81,12 +81,12 @@ session.setAttribute("hotelId", hotelVO.getHotelId());
 					  <div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="tab1" style="background-color:#B0C4DE;">
 					      <h4 class="panel-title">
-					        <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#aaa" aria-expanded="true" aria-controls="aaa">
+					        <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#aaa" aria-expanded="false" aria-controls="aaa">
 							 <span class="glyphicon glyphicon-list-alt"></span> 訂單
 					        </a>
 					      </h4>
 					    </div>
-					    <div id="aaa" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="tab1">
+					    <div id="aaa" class="panel-collapse collapse " role="tabpanel" aria-labelledby="tab1">
 					      <div class="panel-body">
 					        	<ul style="list-style-type: none">
 					        		<li><a href="<%=request.getContextPath()%>/frontend_hotel/ord/listAllOrdByHotelId.jsp">所有訂單查詢</a></li>
@@ -114,22 +114,7 @@ session.setAttribute("hotelId", hotelVO.getHotelId());
 					    </div>
 					  </div>
 					  <!-- 區塊7 -->
-					  <div class="panel panel-default">
-					    <div class="panel-heading" role="tab" id="tab7" style="background-color:#B0C4DE;">
-					      <h4 class="panel-title">
-					        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion2" href="#ggg" aria-expanded="false" aria-controls="fff">
-					          <span class="glyphicon glyphicon-piggy-bank"></span> 上架月租費
-					        </a>
-					      </h4>
-					    </div>
-					    <div id="ggg" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab7">
-					      <div class="panel-body">
-					        	<ul style="list-style-type: none">
-					        		<li>月租管理作業</li>
-					        	</ul>
-					      </div>
-					    </div>
-					  </div>					  					  
+										  					  
 					  <!-- 區塊2 -->
 					  <div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="tab2" style="background-color:#B0C4DE;">
@@ -171,23 +156,7 @@ session.setAttribute("hotelId", hotelVO.getHotelId());
 					    </div>
 					  </div>					  
 					  <!-- 區塊5 -->
-					  <div class="panel panel-default">
-					    <div class="panel-heading" role="tab" id="tab5" style="background-color:#B0C4DE;">
-					      <h4 class="panel-title">
-					        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion2" href="#eee" aria-expanded="false" aria-controls="eee">
-					          <span class="glyphicon glyphicon-pawn"></span> 員工
-					        </a>
-					      </h4>
-					    </div>
-					    <div id="eee" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab5">
-					      <div class="panel-body">
-					        	<ul style="list-style-type: none">
-					        		<li>新增員工資料</li>
-					        		<li>員工資料維護</li>
-					        	</ul>
-					      </div>
-					    </div>
-					  </div>					  					  					  
+										  					  					  
 					  <!-- 區塊6 -->
 					  <div class="panel panel-default">
 					    <div class="panel-heading" role="tab" id="tab6" style="background-color:#B0C4DE;">
