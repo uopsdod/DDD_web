@@ -1,6 +1,8 @@
 package com.room.controler;
 
 import java.io.BufferedOutputStream;
+import java.io.*;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -52,8 +54,21 @@ public class RoomDetail extends HttpServlet {
 		res.setContentType("image/jpeg");
 		ServletOutputStream out = res.getOutputStream(); 
 		BufferedOutputStream buf = new BufferedOutputStream(out);	
-		buf.write(memVO.getMemProfile());//掃出照片
 		
+		if(memVO.getMemProfile()!=null){
+		buf.write(memVO.getMemProfile());//掃出照片
+		}else{
+			
+			FileInputStream img = new FileInputStream(req.getContextPath()+"/frontend_mem/images/girlhead.png");		
+			BufferedInputStream in = new BufferedInputStream(img);
+			byte[] buf1 = new byte[4 * 1024]; // 4K buffer
+			int len;
+			while ((len = in.read(buf1)) != -1) {
+				buf.write(buf1, 0, len);
+			}
+			img.close();
+			in.close();	
+		}
 		buf.close();
 		out.close();
 		return;
