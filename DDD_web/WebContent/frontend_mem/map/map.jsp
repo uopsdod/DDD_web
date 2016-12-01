@@ -60,13 +60,16 @@
   </script>
   
   <style type="text/css">
-
+	*{
+		font-family:Tahoma,Verdana,Arial,微軟正黑體;
+	}
 	#c-panel {
 		height: 150px;
 
 		display: none;
 	
 	}
+	
 </style>
 <script>
 	$(document).ready(function() {

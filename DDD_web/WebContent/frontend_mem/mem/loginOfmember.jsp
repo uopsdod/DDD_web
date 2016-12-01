@@ -121,7 +121,7 @@ session.setAttribute("memVO", memVO);
             </div>
             <br>
             <div id="forgotPaw"><a href="#">Forgot Password?</a>
-            <input type="hidden" name="action" value="login"> 
+            <input type="hidden" name="action" value="login"><input type="button" id ="magic"> 
                 <button id="LoginButton">Login</button>
             </div>
             </form>
@@ -134,6 +134,17 @@ session.setAttribute("memVO", memVO);
             <div id="Copyright">Copyright © Dua Dee Dou 2016</div>
         </div>
     </section>
+    <script>
+	    function load() {
+	    	document.getElementById("magic").onclick=magic;
+	    	
+	    }
+	    window.onload = load;
+		function magic(){
+			$("[name~='UserName']").val("ck001583219@gmail.com");	
+			$("[name~='Password']").val("a123456");	
+			
+		}
+	</script>
 </body>
-
 </html>

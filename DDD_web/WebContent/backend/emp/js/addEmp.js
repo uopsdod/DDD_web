@@ -5,7 +5,7 @@ function load() {
 window.onload = load;
 
 function magic(){
-	$("[name~='empName']").val("張西西");
+	$("[name~='empName']").val("Alice");
 	$("[name~='empAccount']").val("ck001583219@gmail.com");
 	$("[name~='empPhone']").val("0953589679");
 	$("[name~='empROCId']").val("H126301368");
