@@ -77,7 +77,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 													
 													
 													<input type="hidden" name="roomHotelId" size="45" 
-															value="<%= (roomVO==null)? "10001" : roomVO.getRoomHotelId()%>" />
+															value="<%= (roomVO==null)? hotelVO.getHotelId() : roomVO.getRoomHotelId()%>" />
 														
 													<div class="form-group">
 														<label class="col-sm-3 control-label">房型名稱</label>
