@@ -87,24 +87,24 @@ session.setAttribute("authorityList",authorityList);
 					  </div>
 					  </c:if>
 					  <!-- 區塊7 -->
-					  <c:if test="${fn:contains(authorityList,'102')}"> <%-- 行政業務管理 --%>
-					  <div class="panel panel-default">					  
-					    <div class="panel-heading" role="tab" id="tab7" style="background-color:#B0C4DE;">
-					      <h4 class="panel-title">
-					        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion2" href="#ggg" aria-expanded="false" aria-controls="fff">
-					          <span class="glyphicon glyphicon-piggy-bank"></span> 上架月租費
-					        </a>
-					      </h4>
-					    </div>
-					    <div id="ggg" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab7">
-					      <div class="panel-body">
-					        	<ul style="list-style-type: none">
-					        		<li>月租管理作業</li>
-					        	</ul>
-					      </div>
-					    </div>
-					  </div>		
-					  </c:if>			  					  
+<%-- 					  <c:if test="${fn:contains(authorityList,'102')}"> 行政業務管理 --%>
+<!-- 					  <div class="panel panel-default">					   -->
+<!-- 					    <div class="panel-heading" role="tab" id="tab7" style="background-color:#B0C4DE;"> -->
+<!-- 					      <h4 class="panel-title"> -->
+<!-- 					        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion2" href="#ggg" aria-expanded="false" aria-controls="fff"> -->
+<!-- 					          <span class="glyphicon glyphicon-piggy-bank"></span> 上架月租費 -->
+<!-- 					        </a> -->
+<!-- 					      </h4> -->
+<!-- 					    </div> -->
+<!-- 					    <div id="ggg" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab7"> -->
+<!-- 					      <div class="panel-body"> -->
+<!-- 					        	<ul style="list-style-type: none"> -->
+<!-- 					        		<li>月租管理作業</li> -->
+<!-- 					        	</ul> -->
+<!-- 					      </div> -->
+<!-- 					    </div> -->
+<!-- 					  </div>		 -->
+<%-- 					  </c:if>			  					   --%>
 					  <!-- 區塊2 -->
 					  <c:if test="${fn:contains(authorityList,'101')}"> <%-- 人事管理 --%>
 					  <div class="panel panel-default">
@@ -185,24 +185,24 @@ session.setAttribute("authorityList",authorityList);
 					  </div>
 					  </c:if>
 					  <!-- 區塊8 -->
-					  <c:if test="${fn:contains(authorityList,'102')}"> <%-- 行政業務管理 --%>
-					  <div class="panel panel-default">
-					    <div class="panel-heading" role="tab" id="tab8" style="background-color:#B0C4DE;">
-					      <h4 class="panel-title">
-					        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion2" href="#hhh" aria-expanded="false" aria-controls="hhh">
-					          <span class="glyphicon glyphicon-thumbs-up"></span> 留言評價
-					        </a>
-					      </h4>
-					    </div>
-					    <div id="hhh" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab8">
-					      <div class="panel-body">
-					        	<ul style="list-style-type: none">
-					        		<li>留言評價維護</li>
-					        	</ul>
-					      </div>
-					    </div>
-					  </div>
-					  </c:if>						  	
+<%-- 					  <c:if test="${fn:contains(authorityList,'102')}"> 行政業務管理 --%>
+<!-- 					  <div class="panel panel-default"> -->
+<!-- 					    <div class="panel-heading" role="tab" id="tab8" style="background-color:#B0C4DE;"> -->
+<!-- 					      <h4 class="panel-title"> -->
+<!-- 					        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion2" href="#hhh" aria-expanded="false" aria-controls="hhh"> -->
+<!-- 					          <span class="glyphicon glyphicon-thumbs-up"></span> 留言評價 -->
+<!-- 					        </a> -->
+<!-- 					      </h4> -->
+<!-- 					    </div> -->
+<!-- 					    <div id="hhh" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab8"> -->
+<!-- 					      <div class="panel-body"> -->
+<!-- 					        	<ul style="list-style-type: none"> -->
+<!-- 					        		<li>留言評價維護</li> -->
+<!-- 					        	</ul> -->
+<!-- 					      </div> -->
+<!-- 					    </div> -->
+<!-- 					  </div> -->
+<%-- 					  </c:if>						  	 --%>
 					</div>
 				</div>
 			<!-- 				bar結束 -->
