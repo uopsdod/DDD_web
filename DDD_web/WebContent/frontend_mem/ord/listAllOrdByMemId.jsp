@@ -89,6 +89,7 @@
 												<input type="hidden" name="ordId" value="${ordVO.ordId}">
 												<input type="hidden" name="ordMsgNo" value="${ordVO.ordMsgNo}">
 												<input type="hidden" name="action" value="cancel">
+												<input type="hidden" name="location" value="fromMan">
 										</form>
 									</td>
 								</tr>
