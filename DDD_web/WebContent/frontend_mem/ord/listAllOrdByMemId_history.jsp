@@ -58,11 +58,33 @@
 	.memRepWindow {
 		z-index: 5;
 	}
-	
+	#top_header {
+    background: gray;
+    /* border: 4px solid red; */
+    width: 100%;
+    height: 70px;
+    position: relative;
+    z-index: 0;
+	}
+	#the_footer {
+    background: #5B5B5B;
+    padding: 8px;
+    margin-top: 50px;
+    position: relative;
+    z-index: -1;
+	}
+	#the_footer1 {
+    clear: both;
+    border-top: 1px solid #aaa;
+    background: #3C3C3C;
+    padding: 8px;
+    position: relative;
+    z-index: -1;
+	}
 </style>
 
     <section>
-       <div class="col-xs-12 col-sm-12 ">
+       <div class="col-xs-12 col-sm-12 " style="z-index:-1;">
            <div class="col-xs-12 col-sm-1">
                
            </div>          

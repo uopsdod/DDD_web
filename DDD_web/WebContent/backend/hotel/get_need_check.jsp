@@ -117,8 +117,8 @@ body {
 				<table  cellspacing="0" cellpadding="1"
 				width='800' class="table table-hover" id="emptableth">	
 				<tr>
-					<th class="text-center">封面照片</th>
 					<th class="text-center">登記證</th>
+					<th class="text-center">封面照片</th>
 					
 					<th class="text-center">編號</th>
 					<th class="text-center">種類</th>
