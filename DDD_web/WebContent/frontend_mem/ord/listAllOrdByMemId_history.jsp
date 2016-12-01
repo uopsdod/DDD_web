@@ -40,47 +40,22 @@
 		
 	}
 	
-	.memRepWindow textarea {
+	.memRepWindow textarea,.memRatingWindow textarea {
     	width: 700px;
     	height: 300px;
     	resize: both;
     	overflow: auto;
 	}
 	
-	.memRepWindow th {
+	.memRepWindow th, .memRatingWindow th {
 		font-size: 18px;
 	}	
 	
-	.memRepWindow td {
+	.memRepWindow td, .memRatingWindow td {
 		font-size: 18px;
 	}	
 	
-	.memRepWindow {
-		z-index: 5;
-	}
-	#top_header {
-    background: gray;
-    /* border: 4px solid red; */
-    width: 100%;
-    height: 70px;
-    position: relative;
-    z-index: 0;
-	}
-	#the_footer {
-    background: #5B5B5B;
-    padding: 8px;
-    margin-top: 50px;
-    position: relative;
-    z-index: -1;
-	}
-	#the_footer1 {
-    clear: both;
-    border-top: 1px solid #aaa;
-    background: #3C3C3C;
-    padding: 8px;
-    position: relative;
-    z-index: -1;
-	}
+
 </style>
 
     <section>
@@ -130,10 +105,16 @@
 									<% } %>
 									<td>${ordStatusTrans.get(ordVO.ordStatus)}</td>
 
-									<td>
-										<input type="submit" value="給個分數" id="buttnOnimg" data-toggle="modal" data-target="#score-${ordVO.ordId}">
-									</td>
-																	
+									<% if(ordVO.getOrdRatingStarNo() == null && ordVO.getOrdRatingContent() == null ){ %>
+											<td id="td2-${ordVO.ordId}">
+												<input type="submit" value="給個分數" id="buttnOnimg" data-toggle="modal" data-target="#rating-${ordVO.ordId}">
+											</td>
+									<% } else { %>
+					       					<td id="td2-${ordVO.ordId}">
+									 			已給分
+											</td>
+									<% } %>
+							
 									<c:choose>
 										<c:when test="${ordVO.ordMemReps.isEmpty()}">	
 											<td id="td-${ordVO.ordId}">
@@ -146,24 +127,138 @@
 											</td>
 										</c:otherwise>
 									 </c:choose>  									
-									
-									
-									
-									
-									
-									
-									
 								</tr>
 
 						</c:forEach>
 						<tbody>
 					</table>
-					
-	                
+					 
+	           	   </c:when>		  
+			       <c:otherwise>
+			       	    <h1 id="WishH2">- 謝謝您的支持          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
+			        	<hr style="border-top:3px solid lightgray">				
+			        	<h4 id="listinfor">您目前沒有任何一筆清單資料<img src="<%=request.getContextPath()%>/frontend_mem/images/listwish.png"></h4>
+			        	<br><br><br><br><br><br><br>
+			        	
+			       </c:otherwise>
+		       </c:choose>   
+           </div>
+           <div class="col-xs-12 col-sm-1">
+               
+           </div>
+       </div>
+    </section>
+   <!--  --------------------------------------------------------------------- -->
+   
+   
 <c:forEach var="ordVO" items="${list}">
 
 <!--------------------  旅客評分   -------------------->	
 
+<!-- Modal -->
+<div class="memRatingWindow">  
+<div class="modal fade" role="dialog" id="rating-${ordVO.ordId}">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">評分與意見</h3>
+      </div> <!-- modal-header -->
+      
+		<FORM METHOD="post" id="jsonForm2-${ordVO.ordId}" name="form1">      
+	        <div class="modal-body">
+
+				<!-- (開始)檢舉單內容 -->
+				<table border="0">
+					<tr>
+						<th>旅客名稱:</th>
+						<td>
+							${ordVO.ordMemVO.memName}
+						</td>
+					</tr>
+						
+					<tr>
+						<th>廠商名稱:</th>
+						<td>
+							${ordVO.ordHotelVO.hotelName}
+						</td>
+					</tr>
+					
+					<tr>
+						<th>訂單編號:</th>
+						<td>
+							${ordVO.ordId}
+						</td>
+					</tr>	
+					
+					<tr>
+						<th>評論內容:</th>
+					
+						<td>						
+							<textarea name="ordRatingContent"></textarea>
+						</td>
+					</tr>	
+				</table>
+				
+				<!-- (結束)檢舉單內容 -->
+
+	        </div> <!-- modal-body -->
+	        <div class="modal-footer">
+	          <input type="hidden" name="ordId" value="${ordVO.ordId}">	        
+	          <input type="hidden" name="action" value="updateRating">
+
+	          <button type="button" id="jsonClose2-${ordVO.ordId}" class="btn btn-warning" data-dismiss="modal">
+			  	取消
+			  </button>
+
+	          <button type="button" id="jsonPost2-${ordVO.ordId}" class="btn btn-primary">
+			  	提交
+			  </button>
+			 			   
+	        </div> <!-- modal-footer -->
+     </FORM>
+     
+    </div>
+  </div>
+</div>					
+</div>	                
+
+
+<script>
+ 
+var ctx ="${pageContext.request.contextPath}";
+ 
+var myRatingForm = {
+		"action" : "",
+		"ordId" : "",
+		"ordRatingContent" : "",
+		"ordRatingStarNo" : "5"
+}; 
+ 
+ 
+$(document).ready(function(){
+
+	$("#jsonPost2-${ordVO.ordId}").click(function(e){
+		
+		myRatingForm.action = $("#jsonForm2-${ordVO.ordId} input[name='action']").val();
+		myRatingForm.ordRatingContent = $("#jsonForm2-${ordVO.ordId} textarea").val();
+		myRatingForm.ordId = $("#jsonForm2-${ordVO.ordId} input[name='ordId']").val();
+		
+		console.log(myRatingForm);
+		
+		var url = ctx + "/android/ord/ord.do";
+		//console.log(url);
+		$.post(url,JSON.stringify(myRatingForm));
+		
+		$("#jsonClose2-${ordVO.ordId}").click();
+		
+		$("#td2-${ordVO.ordId}").empty().append("已給分");
+				
+		
+	});
+	 	 
+});
+ 
+</script>  
 	                           
 <!--------------------  旅客檢舉單   -------------------->	                
 
@@ -237,7 +332,7 @@
 
 <script>
  
-var ctx ="${pageContext.request.contextPath}";
+//var ctx ="${pageContext.request.contextPath}";
  
 var myRepForm = {
 		"action" : "",
@@ -272,27 +367,6 @@ $(document).ready(function(){
 
 	                
 </c:forEach>
-
-	                
-	           	   </c:when>		  
-			       <c:otherwise>
-			       	    <h1 id="WishH2">- 謝謝您的支持          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
-			        	<hr style="border-top:3px solid lightgray">				
-			        	<h4 id="listinfor">您目前沒有任何一筆清單資料<img src="<%=request.getContextPath()%>/frontend_mem/images/listwish.png"></h4>
-			        	<br><br><br><br><br><br><br>
-			        	
-			       </c:otherwise>
-		       </c:choose>   
-           </div>
-           <div class="col-xs-12 col-sm-1">
-               
-           </div>
-       </div>
-    </section>
-   <!--  --------------------------------------------------------------------- -->
-   
-   
-
    
    
    
