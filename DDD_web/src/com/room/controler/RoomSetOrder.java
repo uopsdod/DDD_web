@@ -450,13 +450,15 @@ public class RoomSetOrder extends HttpServlet {
 		        	 boolean roomOnePrice = roomVO2.getRoomOnePrice(); 
 	        	     RoomServlet.DynamicPrice(ordRoomId,false,roomDiscountHr*10*1000,price,cutPriceInt,bottomPrice,roomOnePrice,downTime,remainNo2); 
 	        	     roomVO2.setRoomForSell(true);	
-	        	 }else{	//上架的推送房數資料,由DynamicPrice方法內來推送
+	        	 }else if(remainNo2!=1){	//上架的推送房數資料,由DynamicPrice方法內來推送
 	        		 MyEchoServer.changeRemainNo(ordRoomId,remainNo2); //將剩餘房數+1 並往前推
 	        	 }
 	        	 
 	        	 roomSvc2.update(roomVO2);	//房型修改剩餘房數
 	        	 
+	        	 if(remainNo2==1&&reUpTime<=(downTime-1000*60*30)){
 	        	 MyEchoServer.changeRemainNo(ordRoomId,roomVO2.getRoomRemainNo());
+	        	 }
 	        	 
 	        	 String addOrdId = newOrdVO.getOrdId();         	 
 	        	 OrdVO thisOrdVO = ordSvc.getOneOrd(addOrdId);
@@ -497,6 +499,9 @@ public class RoomSetOrder extends HttpServlet {
 		OrdService ordSvc = new OrdService();
 		OrdVO ordVO = ordSvc.getOneOrd(ordId);
 		ordVO.setOrdStatus("2");
+		
+		Timestamp currentTime = new Timestamp(new java.util.Date().getTime());
+		ordVO.setOrdDate(currentTime);
 		ordSvc.updateOrd(ordVO);
 	}
 	

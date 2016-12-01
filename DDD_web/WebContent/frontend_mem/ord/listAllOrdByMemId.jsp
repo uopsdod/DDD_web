@@ -100,14 +100,9 @@
 	                <script>
 						    function alert() {     			
 							    setTimeout('document.theForm.submit();', 1500);
-								swal("你已成功取消此訂單", "謝謝您", "success");
-								var targetTD = event.target.parentNode.parentNode;
-								while (targetTD.firstChild) {
-									targetTD.removeChild(targetTD.firstChild);
-								}
-								var textNode = document.createTextNode("已取消");
-								targetTD.appendChild(textNode);
- 						    }
+							    //swal("你已成功取消此訂單", "謝謝您", "success");
+							}
+
 					</script>
 	                
 	           	   </c:when>		  
@@ -126,4 +121,4 @@
        </div>
     </section>
    <!--  --------------------------------------------------------------------- -->
-<%@ include file="../indexFooter.jsp" %>
+<%-- <%@ include file="../indexFooter.jsp" %> --%>
