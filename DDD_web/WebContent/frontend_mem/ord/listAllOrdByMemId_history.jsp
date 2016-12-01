@@ -6,7 +6,11 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/css/wishList.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/css/0_main.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/auth/css/sweet-alert.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/ord/css/fontawesome-stars.css">
+
 <script src="<%=request.getContextPath()%>/backend/auth/js/sweet-alert.js"></script>
+<script src="<%=request.getContextPath()%>/frontend_mem/ord/js/jquery.barrating.min.js"></script>
 <%
 	OrdService ordSvc = new OrdService();
 	List<OrdVO> allList = ordSvc.getAllByOrdMemId(memVO.getMemId());
@@ -192,11 +196,27 @@
 					
 					<tr>
 						<th>評論內容:</th>
-					
 						<td>						
 							<textarea name="ordRatingContent"></textarea>
 						</td>
-					</tr>	
+					</tr>
+					
+					<tr>
+						<th>評價星星數:</th>
+						<td>
+							<div class="stars stars-example-bootstrap">
+								<select name="ordRatingStarNo">
+					  					<option value="1">1顆星</option>
+					  					<option value="2">2顆星</option>
+					  					<option value="3">3顆星</option>
+					  					<option value="4">4顆星</option>
+					    				<option value="5">5顆星</option>	
+								</select>
+							</div>				
+						</td>					
+					</tr>
+					
+						
 				</table>
 				
 				<!-- (結束)檢舉單內容 -->
@@ -231,7 +251,7 @@ var myRatingForm = {
 		"action" : "",
 		"ordId" : "",
 		"ordRatingContent" : "",
-		"ordRatingStarNo" : "5"
+		"ordRatingStarNo" : ""
 }; 
  
  
@@ -242,6 +262,7 @@ $(document).ready(function(){
 		myRatingForm.action = $("#jsonForm2-${ordVO.ordId} input[name='action']").val();
 		myRatingForm.ordRatingContent = $("#jsonForm2-${ordVO.ordId} textarea").val();
 		myRatingForm.ordId = $("#jsonForm2-${ordVO.ordId} input[name='ordId']").val();
+		myRatingForm.ordRatingStarNo = $("#jsonForm2-${ordVO.ordId} select[name='ordRatingStarNo']").val();
 		
 		console.log(myRatingForm);
 		
@@ -255,6 +276,12 @@ $(document).ready(function(){
 				
 		
 	});
+	
+	/* 評價星星數 */
+    $("select[name='ordRatingStarNo']").barrating({
+        theme: 'fontawesome-stars'
+    });
+	
 	 	 
 });
  
