@@ -52,6 +52,7 @@ session.getAttribute("account_mem");
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId.jsp">我的預訂</a></li>
+                	<li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId_history.jsp">歷史訂單</a></li>
                 </ul>
             </div>
             <div class="dropdown" style='display: inline-block;'>
