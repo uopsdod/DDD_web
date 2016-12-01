@@ -84,7 +84,7 @@
 </style>
 
     <section>
-       <div class="col-xs-12 col-sm-12 ">
+       <div class="col-xs-12 col-sm-12 " style="z-index:-1;">
            <div class="col-xs-12 col-sm-1">
                
            </div>          
