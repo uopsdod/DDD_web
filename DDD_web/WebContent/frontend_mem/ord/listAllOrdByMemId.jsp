@@ -49,7 +49,7 @@
            <div class="col-xs-12 col-sm-10" id="view">
 	           <c:choose>
 				    <c:when test="${list.size()!=0}">				     
-	                <h1 id="WishH2">- 管理你的預定          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
+	                <h1 id="WishH2">- 管理你的預訂          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
 	                
 	                <div>${OrdMessage}</div>	                
 					<table class="table table-hover " >
@@ -101,7 +101,13 @@
 						    function alert() {     			
 							    setTimeout('document.theForm.submit();', 1500);
 								swal("你已成功取消此訂單", "謝謝您", "success");
-						    }
+								var targetTD = event.target.parentNode.parentNode;
+								while (targetTD.firstChild) {
+									targetTD.removeChild(targetTD.firstChild);
+								}
+								var textNode = document.createTextNode("已取消");
+								targetTD.appendChild(textNode);
+ 						    }
 					</script>
 	                
 	           	   </c:when>		  
