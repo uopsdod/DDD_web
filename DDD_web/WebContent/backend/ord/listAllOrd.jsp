@@ -77,7 +77,7 @@ if(!authorityList.contains("102")){
 							<!-- 		<th>評價星星數</th> -->
 							<!-- 		<th>簡訊驗證碼</th> -->
 							<!-- 		<th>QR Code圖片</th> -->
-							<th colspan='2' class="text-center">操作</th>
+<!-- 							<th colspan='2' class="text-center">操作</th> -->
 						</tr>
 					</thead>
 
@@ -108,17 +108,17 @@ if(!authorityList.contains("102")){
 								<%-- 			<td>${ordVO.ordRatingStarNo}</td> --%>
 								<%-- 			<td>${ordVO.ordMsgNo}</td> --%>
 								<%-- 			<td><img src="DBGifReader4?ordId=${ordVO.ordId}"></td> --%>
-								<td>
-									<form method="post" action="<%=request.getContextPath()%>/ord/ord.do">
-										<button type="submit" class="btn btn-primary ">
-											<span class="glyphicon glyphicon-pencil">修改</span>
-										</button>
-										<input type="hidden" name="ordId" value="${ordVO.ordId}">
-										<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>">
-										<input type="hidden" name="whichPage" value="<%=whichPage%>">
-										<input type="hidden" name="action" value="getOneForUpdate">
-									</form>
-								</td>
+<!-- 								<td> -->
+<%-- 									<form method="post" action="<%=request.getContextPath()%>/ord/ord.do"> --%>
+<!-- 										<button type="submit" class="btn btn-primary "> -->
+<!-- 											<span class="glyphicon glyphicon-pencil">修改</span> -->
+<!-- 										</button> -->
+<%-- 										<input type="hidden" name="ordId" value="${ordVO.ordId}"> --%>
+<%-- 										<input type="hidden" name="requestURL" value="<%=request.getServletPath()%>"> --%>
+<%-- 										<input type="hidden" name="whichPage" value="<%=whichPage%>"> --%>
+<!-- 										<input type="hidden" name="action" value="getOneForUpdate"> -->
+<!-- 									</form> -->
+<!-- 								</td> -->
 <!-- 								<td> -->
 <%-- 									<form method="post" action="<%=request.getContextPath()%>/ord/ord.do"> --%>
 <!-- 										<input type="submit" value="刪除" class="btn btn-danger"> <input type="hidden" -->
