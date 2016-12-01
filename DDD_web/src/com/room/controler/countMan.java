@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.util.*;
-
+ 
 /**
  * Servlet implementation class countMan
- */
+ */ 
 @WebServlet("/countMan")
 public class countMan extends HttpServlet {
 

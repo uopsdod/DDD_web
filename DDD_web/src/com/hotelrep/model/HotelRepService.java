@@ -70,10 +70,10 @@ public class HotelRepService {
 		return dao.findByPrimaryKey(aHotelRepId);
 	}
 	
-	/* 改廠商檢舉單狀態  + 改廠商狀態*/
+	/* 改廠商檢舉單狀態  + 改旅客狀態*/
 	public void setMemBlackList(String aMemId, String aMemBlackList, String aHotelRepId, String aHotelRepStatus, String aHotelRepEmpId){
 		
-		/* 取得hotelVO */
+		/* 取得memVO */
 		MemService memSvc = new MemService();
 		MemVO memVO = memSvc.getOneMem(aMemId);
 		memVO.setMemBlackList(aMemBlackList);
@@ -82,11 +82,10 @@ public class HotelRepService {
 		HotelRepVO hotelRepVO = dao.findByPrimaryKey(aHotelRepId);
 		hotelRepVO.setHotelRepStatus(aHotelRepStatus);
 
-		if(!aHotelRepEmpId.isEmpty()){
-			com.emp.model.EmpVO empVO = new com.emp.model.EmpVO();
-			empVO.setEmpId(aHotelRepEmpId);
-			hotelRepVO.setHotelRepEmpVO(empVO);
-		}		
+		/* 設定處理的員工 */
+		com.emp.model.EmpVO empVO = new com.emp.model.EmpVO();
+		empVO.setEmpId(aHotelRepEmpId);
+		hotelRepVO.setHotelRepEmpVO(empVO);
 		
 		/* 處理的時間就是現在時間 */
 		hotelRepVO.setHotelRepReviewDate( new java.sql.Date( new java.util.Date().getTime() ));

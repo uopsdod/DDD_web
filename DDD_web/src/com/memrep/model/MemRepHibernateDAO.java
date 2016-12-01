@@ -22,6 +22,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import com.hotel.model.HotelVO;
 import com.mem.model.MemVO;
 import com.ord.model.OrdVO;
 
@@ -196,7 +197,19 @@ public class MemRepHibernateDAO implements MemRepDAO_interface {
 //		return memrepVOList;	
 //	}
 	
-
+	/* 韓哥新增 */
+	public void setHotelBlackList(MemRepVO aMemRepVO,HotelVO aHotelVO){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		try {
+			session.beginTransaction();
+			session.saveOrUpdate(aMemRepVO);
+			session.saveOrUpdate(aHotelVO);
+			session.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			session.getTransaction().rollback();
+			throw ex;
+		}		
+	}	
 		
 
 }

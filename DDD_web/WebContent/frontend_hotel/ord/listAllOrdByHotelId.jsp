@@ -123,7 +123,9 @@
 									</td>
 								</c:when>		  
 			       				<c:otherwise>
-			       					<td>已檢舉</td>
+			       					<td>
+							 			<button type="button" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-hourglass">已檢舉</span></button>
+									</td>
 								</c:otherwise>
 							 </c:choose>  
 						</tr>

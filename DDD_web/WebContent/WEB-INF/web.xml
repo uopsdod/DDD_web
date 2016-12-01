@@ -58,7 +58,7 @@
     <url-pattern>/frontend_mem/mem/member.jsp</url-pattern>
     <url-pattern>/frontend_mem/wish/wishList.jsp</url-pattern>
     <url-pattern>/frontend_mem/chat/MapAndChat.jsp</url-pattern>
-    <url-pattern>/frontend_mem/ord/listAllOrdByMemId.jsp</url-pattern>
+    <url-pattern>/frontend_mem/ord/*</url-pattern>
     <url-pattern>/frontend_mem/hotel/addOrd.jsp</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
@@ -130,7 +130,7 @@
     <servlet-name>OrdServlet</servlet-name>
     <url-pattern>/ord/ord.do</url-pattern>
   </servlet-mapping>
-    <servlet>
+  <servlet>
     <servlet-name>HotelRepServlet</servlet-name>
     <servlet-class>com.hotelrep.controller.HotelRepServlet</servlet-class>
   </servlet>
@@ -138,6 +138,15 @@
     <servlet-name>HotelRepServlet</servlet-name>
     <url-pattern>/hotelRep/hotelRep.do</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>MemRepServlet</servlet-name>
+    <servlet-class>com.memrep.controller.MemRepServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MemRepServlet</servlet-name>
+    <url-pattern>/memRep/memRep.do</url-pattern>
+  </servlet-mapping> 
   
   
   <servlet>

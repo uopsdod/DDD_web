@@ -46,13 +46,15 @@
 	<title>檢舉單審核作業 - checkHotelRep.jsp</title>
 	
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/css/bootstrap.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_hotel/css/sweetalert.css">
 	<!-- 自訂CSS -->
 	<link rel="stylesheet" href="<%=request.getContextPath()%>/backend/css/0_main.css">
 	
 	<script src="<%=request.getContextPath()%>/backend/js/jquery.js"></script>
 	<script src="<%=request.getContextPath()%>/backend/js/bootstrap.js"></script>
+	<script src="<%=request.getContextPath()%>/frontend_hotel/js/sweetalert.min.js"></script>
 	<!-- 自訂JavaScript -->
-	<script src="<%=request.getContextPath()%>/backend/css/0_new.js"></script>
+	<script src=""></script>
 </head>
 
 <body>
@@ -76,7 +78,7 @@ if(!authorityList.contains("104")){
 				</ol>
 
 				<!-- 主要的table -->
-				<h2 align="left">廠商檢舉單</h2>
+				<h2 align="left">廠商檢舉單審核</h2>
 <c:choose>
 <c:when test="${hotelRepTodolist.size()!=0}">				
 				<table class="table table-hover" border="1">
@@ -107,7 +109,7 @@ if(!authorityList.contains("104")){
 								
 								<td>
 									<form method="post" action="<%=request.getContextPath()%>/hotelRep/hotelRep.do">
-										<button type="submit" class="btn btn-warning ">
+										<button type="submit" class="btn btn-warning js-sweetAlert-fail">
 											<span class="glyphicon glyphicon-remove">不通過</span>
 										</button>
 										
@@ -123,7 +125,7 @@ if(!authorityList.contains("104")){
 								
 								<td>
 									<form method="post" action="<%=request.getContextPath()%>/hotelRep/hotelRep.do">
-										<button type="submit" class="btn btn-success ">
+										<button type="submit" class="btn btn-success js-sweetAlert-succ">
 											<span class="glyphicon glyphicon-ok">通過</span>
 										</button>
 										<input type="hidden" name="hotelRepId" value="${hotelRepVO.hotelRepId}">
@@ -147,7 +149,7 @@ if(!authorityList.contains("104")){
 </c:choose>				
 	
 				<!-- 主要的table -->
-				<h2 align="left">旅客檢舉單</h2>
+				<h2 align="left">旅客檢舉單審核</h2>
 
 <c:choose>
 <c:when test="${memRepTodolist.size()!=0}">				
@@ -178,16 +180,35 @@ if(!authorityList.contains("104")){
 								<td>${memRepVO.memRepDate}</td>
 								
 								<td>
-										<button type="button" class="btn btn-warning">
-											<span class="glyphicon glyphicon-remove">不通過</span>
+									<form method="post" action="<%=request.getContextPath()%>/memRep/memRep.do">
+										<button type="submit" class="btn btn-warning ">
+											<span class="glyphicon glyphicon-remove js-sweetAlert-fail">不通過</span>
 										</button>
+										
+										<input type="hidden" name="memRepId" value="${memRepVO.memRepId}">
+										<input type="hidden" name="memRepStatus" value="1">
+										<input type="hidden" name="hotelId" value="${memRepVO.memRepHotelVO.hotelId}">
+										<input type="hidden" name="memRepEmpId" value="${empvo.empId}">
+										<input type="hidden" name="hotelBlackList" value="0">
+									    <input type="hidden" name="action" value="setHotelBlackList">
+									    
+									</form>
 								</td>
+								
 								<td>
-
-										<button type="button" class="btn btn-success">
-											<span class="glyphicon glyphicon-ok">通過</span>
+									<form method="post" action="<%=request.getContextPath()%>/memRep/memRep.do">
+										<button type="submit" class="btn btn-success ">
+											<span class="glyphicon glyphicon-ok js-sweetAlert-succ">通過</span>
 										</button>
-								</td>								
+										<input type="hidden" name="memRepId" value="${memRepVO.memRepId}">
+										<input type="hidden" name="memRepStatus" value="2">
+										<input type="hidden" name="hotelId" value="${memRepVO.memRepHotelVO.hotelId}">
+										<input type="hidden" name="memRepEmpId" value="${empvo.empId}">
+										<input type="hidden" name="hotelBlackList" value="1">
+										
+										<input type="hidden" name="action" value="setHotelBlackList">
+									</form>
+								</td>							
 								
 							</tr>
 						</c:forEach>
@@ -195,7 +216,7 @@ if(!authorityList.contains("104")){
 				</table>
 </c:when>
 <c:otherwise>
-<h3>目前無待處理的旅客檢舉單</h3>
+<h3>目前無未處理的旅客檢舉單</h3>
 </c:otherwise>									
 </c:choose>					
 				
@@ -204,3 +225,38 @@ if(!authorityList.contains("104")){
 	</div>
 </body>
 </html>
+
+<script>
+
+/* SweetAlert */
+$(document).ready(function(){
+		
+	$(".js-sweetAlert-succ").on('click',function(e){
+	    e.preventDefault();
+	    var form = $(this).parents('form');
+	    sweetAlert({title: "APPROVED",
+	    			text: "審核通過",
+	    			type: "success",
+	    			closeOnConfirm: true}, 
+	    function(isConfirm){
+	    	if (isConfirm) form.submit();
+	    });
+
+	});
+ 	
+	$(".js-sweetAlert-fail").on('click',function(e){
+	    e.preventDefault();
+	    var form = $(this).parents('form');
+	    sweetAlert({title: "REJECTED",
+	    			text: "審核不通過",
+	    			type: "error",
+	    			closeOnConfirm: true}, 
+	    function(isConfirm){
+	    	if (isConfirm) form.submit();
+	    });
+
+	});
+});
+
+
+</script>

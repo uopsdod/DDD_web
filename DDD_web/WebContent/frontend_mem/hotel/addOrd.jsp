@@ -40,7 +40,37 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 	System.out.println(orderPrice);
 	%>
 	
-	
+	<style>
+	*{font-family: Tahoma, Verdana, 微軟正黑體;}	
+		.texta{
+		    font-size: 18px;
+		    margin-top: 20px;
+		    margin-right: 20px;
+		    padding:10px 35px; border:2 none;
+		    cursor:pointer;
+		    -webkit-border-radius: 5px;
+		    border-radius: 5px; 
+		
+		}
+		.tabgo{
+			font-size: 20px;
+		}
+		.control-label{
+			margin-top:15px;
+			font-size: 20px;
+		}
+		.btnwish1{
+			opacity: 0.9;
+			font-size: 20px;
+		    background: #0283df;
+		    color: #ffffff;
+		    margin-top:15px;
+		    margin-left:40%;
+		    font-weight: bold;
+		    font-family: Tahoma, Verdana, 微軟正黑體;
+		    border: 0px;	
+		}
+	</style>
 
 	
 		
@@ -196,33 +226,30 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 		
 		<form method="post" action="<%=request.getContextPath()%>/RoomSetOrder" name="form1" >
 
-						<div class="container">
+		<div class="container">
 			<div class="row">
-				<div class="col-sm-6 col-sm-offset-3">
-					
-
-						
-						<div class="form-horizontal">
-						
-								
+				<div class="col-sm-4"></div>
+					<div class="form-horizontal">
+		<!------------------------頁簽---------------------------->
 							
-							<!------------------------頁簽---------------------------->
-							<div class="col-xs-12 col-sm-8">
+							<div class="col-xs-12 col-sm-4">
 								<div role="tabpanel">
 							    <!-- 標籤面板：標籤區 -->
 									    <ul class="nav nav-tabs" role="tablist">
 									        <li role="presentation" class="active">
-									            <a href="#xx1" aria-controls="xx1" role="tab" data-toggle="tab">下定</a>
+									            <a href="#xx1" aria-controls="xx1" class="tabgo" role="tab" data-toggle="tab">下單</a>
 									        </li>
 									       
 									        <li role="presentation">
-									            <a href="<%=request.getContextPath()%>/HotelRoomSearch?action=hotelPage&hotelId=${orderHotelId}"  >回${hotelVO.hotelName}</a>
+									            <a href="<%=request.getContextPath()%>/HotelRoomSearch?action=hotelPage&hotelId=${orderHotelId}" class="tabgo" >回${hotelVO.hotelName}</a>
 									        </li>
 									    </ul>
 							
 							    <!-- 標籤面板：內容區 -->
 								    <div class="tab-content">
 								        <div role="tabpanel" class="tab-pane active" id="xx1">
+								        <div><img src='data:image/jpeg;base64,${hotelVO.bs64_2}' width="500px" height="250px"></div>
+								        
 													<div>
 														<c:if test="${not empty errorMsgs}">
 															<font color='red'>請修正以下錯誤:
@@ -237,7 +264,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 													<div class="form-group">
 														<label class="col-sm-3 control-label">業者名稱</label>
 														<div class="col-sm-9">
-																<input type="TEXT"  size="45" class="form-control" readonly="readonly"
+																<input type="TEXT"  size="45" class="form-control texta" readonly="readonly"
 																		value="${hotelVO.hotelName}" />
 																<input type="hidden" name="ordHotelId"
 																		value="${hotelVO.hotelId}" />		
@@ -247,7 +274,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 													<div class="form-group">
 														<label class="col-sm-3 control-label">房型名稱</label>
 														<div class="col-sm-9">
-																<input type="TEXT"  size="45" class="form-control" readonly="readonly"
+																<input type="TEXT"  size="45" class="form-control texta" readonly="readonly"
 																		value="${roomVO.roomName}" />
 																<input type="hidden" name="ordRoomId" 
 																		value="${roomVO.roomId}" />		
@@ -257,7 +284,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 													<div class="form-group">
 														<label class="col-sm-3 control-label">會員名稱</label>
 														<div class="col-sm-9">
-																<input type="TEXT" size="45" class="form-control" readonly="readonly"
+																<input type="TEXT" size="45" class="form-control texta" readonly="readonly"
 																		value="${memVO2.memName}" />
 																<input type="hidden" name="ordMemId" 
 																		value="${memVO2.memId}" />
@@ -267,7 +294,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 													<div class="form-group">
 														<label class="col-sm-3 control-label">訂單金額</label>
 														<div class="col-sm-9">
-																<input type="TEXT" name="ordPrice" size="45" class="form-control" readonly="readonly"
+																<input type="TEXT" name="ordPrice" size="45" class="form-control texta" readonly="readonly"
 																		value="${orderPrice}" />
 														</div>
 													</div>
@@ -276,7 +303,7 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 													<div class="form-group">
 														<label class="col-sm-3 control-label">聯絡信箱</label>
 														<div class="col-sm-9">
-																<input type="TEXT" name="ordMail" size="45" class="form-control" 
+																<input type="TEXT" name="ordMail" size="45" class="form-control texta" 
 																		value="${ordMail!=null?ordMail:memVO2.memAccount}" />
 														</div>
 													</div>
@@ -284,16 +311,16 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 													<div class="form-group">
 														<label class="col-sm-3 control-label">聯絡電話</label>
 														<div class="col-sm-9">
-																<input type="TEXT" name="ordPhone" size="45" class="form-control"													
+																<input type="TEXT" name="ordPhone" size="45" class="form-control texta"													
 																		value="${ordPhone!=null?ordPhone:memVO2.memPhone}" />
 														</div>
 													</div>
 <!-- 							/* *************************************************************************************************************/ -->
 													
 													<div class="form-group">
-														<label class="col-sm-5 control-label">請輸入驗證碼<img src="<%=request.getContextPath()%>/GetPicture?actionPicture=getPicture"></label>
+														<label class="col-sm-5 control-label">驗證碼<img src="<%=request.getContextPath()%>/GetPicture?actionPicture=getPicture"></label>
 														<div class="col-sm-7">
-																<input type="TEXT" name="picture" size="15" class="form-control"/>
+																<input type="TEXT" name="picture" size="15" class="form-control texta"/>
 														</div>
 													</div>
 													
@@ -301,37 +328,19 @@ OrdVO ordVO = (OrdVO) request.getAttribute("ordVO");
 													
 													
 													<input type="hidden" name="action" value="insert">
-													<input type="submit" value="確認下單">
-						
-										 </div>
-									 
-										 
-										 
-										        
-										        
-										  
-										    
-										        
-										        
-										        
-										        
-										        
-										        
-										 
+													<input type="submit" value="確認下單" class="btnwish1">
+					
+										 </div>			
 								    </div>
 								</div>
 							</div>
-								
-						
-
-						</div>
-	
+						<div class="col-sm-4"></div>	
+					</div>			
 				</div>
-			</div>
-		</div>	
+			</div>	
 		<br>
-		
 		</FORM>
 		
 	</body>
 </html>
+<%@ include file="../indexFooter.jsp" %>

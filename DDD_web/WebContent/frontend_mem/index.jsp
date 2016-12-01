@@ -226,6 +226,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId.jsp">我的預訂</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId_history.jsp">歷史訂單</a></li>
                 </ul>
             </div>
             <div class="dropdown" style='display: inline-block;'>
@@ -306,6 +307,7 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId.jsp">我的預訂</a></li>
+                    	<li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId_history.jsp">歷史訂單</a></li>
                     </ul>
                 </div>
                 <div class="dropdown" style='display: inline-block;'>
@@ -380,9 +382,9 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
         <div id="fade" class="col-md-12">
        		<img src="<%=request.getContextPath()%>/frontend_mem/images/back23.jpg" class="img" />
        		<img src="<%=request.getContextPath()%>/frontend_mem/images/back24.jpg" class="img" />
-        	<img src="<%=request.getContextPath()%>/frontend_mem/images/back15.jpg" class="img" />
+        	<img src="<%=request.getContextPath()%>/frontend_mem/images/back29.jpg" class="img" />
         	<img src="<%=request.getContextPath()%>/frontend_mem/images/back25.jpg" class="img" />            
-            <img src="<%=request.getContextPath()%>/frontend_mem/images/back26.jpg" class="img" />
+            <img src="<%=request.getContextPath()%>/frontend_mem/images/back28.jpg" class="img" />
             <img src="<%=request.getContextPath()%>/frontend_mem/images/back27.jpg" class="img" />                                     
         </div>
         <!-- <div id="title">LIVE THERE</div>  -->

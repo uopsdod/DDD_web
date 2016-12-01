@@ -9,6 +9,6 @@ public interface HotelRepDAO_interface {
 	public List<HotelRepVO> getAll();
 	public List<HotelRepVO> getAllByHotelRepStatus(String aHotelRepStatus);
 	public HotelRepVO findByPrimaryKey(String aHotelRepId);
-	/* 改廠商檢舉單狀態  + 改廠商黑名單狀態*/
+	/* 改廠商檢舉單狀態  + 改旅客黑名單狀態*/
 	public void setMemBlackList(HotelRepVO aHotelRepVO,MemVO aMemVO);
 }

@@ -55,6 +55,7 @@ session.setAttribute("memVO", memVO);
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId.jsp">我的預訂</a></li>
+                	<li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId_history.jsp">歷史訂單</a></li>
                 </ul>
             </div>
             <div class="dropdown" style='display: inline-block;'>
@@ -137,6 +138,7 @@ session.setAttribute("memVO", memVO);
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                         <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId.jsp">我的預訂</a></li>
+                    	<li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_mem/ord/listAllOrdByMemId_history.jsp">歷史訂單</a></li>
                     </ul>
                 </div>
                 <div class="dropdown" style='display: inline-block;'>
@@ -228,7 +230,9 @@ session.setAttribute("memVO", memVO);
 						 </c:choose> 
 					</c:when>		
 					<c:otherwise>
-           					 <img src='data:image/jpeg;base64,${memvo.bs64}' width="180px" height="190px" id="myphoto" >     
+							
+           					 <img src='data:image/jpeg;base64,${memvo.bs64}'  id="myphoto" width="190px" height="190px">     
+           					
            			</c:otherwise>  
 			  </c:choose>                
            </div>
