@@ -380,9 +380,9 @@ var a = [<c:forEach var="wish" items="${list}">"${wish.roomid}",</c:forEach> "${
         <div id="fade" class="col-md-12">
        		<img src="<%=request.getContextPath()%>/frontend_mem/images/back23.jpg" class="img" />
        		<img src="<%=request.getContextPath()%>/frontend_mem/images/back24.jpg" class="img" />
-        	<img src="<%=request.getContextPath()%>/frontend_mem/images/back15.jpg" class="img" />
+        	<img src="<%=request.getContextPath()%>/frontend_mem/images/back29.jpg" class="img" />
         	<img src="<%=request.getContextPath()%>/frontend_mem/images/back25.jpg" class="img" />            
-            <img src="<%=request.getContextPath()%>/frontend_mem/images/back26.jpg" class="img" />
+            <img src="<%=request.getContextPath()%>/frontend_mem/images/back28.jpg" class="img" />
             <img src="<%=request.getContextPath()%>/frontend_mem/images/back27.jpg" class="img" />                                     
         </div>
         <!-- <div id="title">LIVE THERE</div>  -->
