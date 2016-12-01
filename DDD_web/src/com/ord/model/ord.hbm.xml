@@ -38,6 +38,13 @@
 			<one-to-many class="com.hotelrep.model.HotelRepVO" />
 		</set>        
                       
+		<set name="ordMemReps" table="memRep" lazy="false" cascade="all"  inverse="true"  order-by="memRepId asc">			
+			<key>
+				<column name="memRepOrdId" />
+			</key>
+			<one-to-many class="com.memrep.model.MemRepVO" />
+		</set>          
+        
         
     </class>
 </hibernate-mapping>

@@ -2,6 +2,7 @@ package com.ord.model;
 
 import com.room.model.*;
 import com.mem.model.*;
+import com.memrep.model.MemRepVO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hotel.model.*;
 import com.hotelrep.model.HotelRepVO;
@@ -32,7 +33,10 @@ public class OrdVO implements java.io.Serializable {
 	
 	@JsonIgnore
 	private Set<HotelRepVO> ordHotelReps = new LinkedHashSet<HotelRepVO>();
-		
+
+	@JsonIgnore
+	private Set<MemRepVO> ordMemReps = new LinkedHashSet<MemRepVO>();	
+	
 	public String getOrdId() {
 		return this.ordId;
 	}
@@ -114,6 +118,14 @@ public class OrdVO implements java.io.Serializable {
 	public void setOrdHotelReps(Set<HotelRepVO> aOrdHotelReps) {
 		this.ordHotelReps = aOrdHotelReps;
 	}
+	
+	public Set<MemRepVO> getOrdMemReps() {
+		return this.ordMemReps;
+	}
+	
+	public void setOrdMemReps(Set<MemRepVO> aOrdMemReps) {
+		this.ordMemReps = aOrdMemReps;
+	}	
 	
 	/* 過渡方法  */
 	public String getOrdHotelId(){
