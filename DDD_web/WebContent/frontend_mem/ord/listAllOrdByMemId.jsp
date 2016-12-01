@@ -100,8 +100,9 @@
 	                <script>
 						    function alert() {     			
 							    setTimeout('document.theForm.submit();', 1500);
-								swal("你已成功取消此訂單", "謝謝您", "success");
-						    }
+							    swal("你已成功取消此訂單", "謝謝您", "success");
+							
+							}
 					</script>
 	                
 	           	   </c:when>		  
@@ -120,4 +121,4 @@
        </div>
     </section>
    <!--  --------------------------------------------------------------------- -->
-<%@ include file="../indexFooter.jsp" %>
+<%-- <%@ include file="../indexFooter.jsp" %> --%>

@@ -42,7 +42,7 @@
     <url-pattern>/frontend_hotel/hotel/updatesecess.jsp</url-pattern>
     <url-pattern>/frontend_hotel/hotel/Status_1.jsp</url-pattern>
     <url-pattern>/frontend_hotel/ord/*</url-pattern>
-    <url-pattern>/frontend_hotel/hotelRep/*</url-pattern>    
+    <url-pattern>/frontend_hotel/hotelRep/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
     <dispatcher>INCLUDE</dispatcher>
@@ -138,7 +138,6 @@
     <servlet-name>HotelRepServlet</servlet-name>
     <url-pattern>/hotelRep/hotelRep.do</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>MemRepServlet</servlet-name>
     <servlet-class>com.memrep.controller.MemRepServlet</servlet-class>
@@ -146,9 +145,7 @@
   <servlet-mapping>
     <servlet-name>MemRepServlet</servlet-name>
     <url-pattern>/memRep/memRep.do</url-pattern>
-  </servlet-mapping> 
-  
-  
+  </servlet-mapping>
   <servlet>
     <servlet-name>DBGifReader4</servlet-name>
     <servlet-class>com.ord.controller.DBGifReader4</servlet-class>
