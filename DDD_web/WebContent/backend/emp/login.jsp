@@ -98,7 +98,7 @@
 				</tr>
 				<tr>
 					<td colspan=2 align=center>							
-							<button class="LoginButton">Login</button>					
+							<button class="LoginButton">Login</button><br><input type="button" id ="magic" style="background-color:black;border:0;"> 					
 					</td>
 				</tr>
 			</table>
@@ -106,3 +106,16 @@
 	</div>
 </body>
 </html>
+<script>
+function load() {
+	document.getElementById("magic").onclick=magic;
+	
+}
+window.onload = load;
+
+function magic(){
+	$("[name~='account']").val("a12345@hotmail.com");
+	$("[name~='password']").val("AA104a123456");	
+}
+
+</script>
