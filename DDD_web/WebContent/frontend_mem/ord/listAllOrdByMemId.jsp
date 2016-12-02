@@ -39,6 +39,19 @@
 		font-size:24px;
 		
 	}
+	#view table,#view th,#view td {
+    	border: 2px solid white;
+    	text-align: center;
+	}
+	#h_buttnOnimg1 {
+	    opacity: 0.7;
+	    background: #dc6eab;
+	    color: #ffffff;
+	    font-family: Tahoma, Verdana, 微軟正黑體;
+	    border: 0px;
+	    border-radius: 10px;
+	    font-size: 20px;
+	}
 </style>
 
     <section>
@@ -85,7 +98,7 @@
 									<td>${ordVO.ordMsgNo}</td>
 									<td>
 										<form method="post" action="<%=request.getContextPath()%>/OrdCheckAndCancel" name="theForm">
-												<input type="submit" value="取消訂單" id="buttnOnimg1">
+												<input type="submit" value="取消訂單" id="h_buttnOnimg1">
 												<input type="hidden" name="ordId" value="${ordVO.ordId}">
 												<input type="hidden" name="ordMsgNo" value="${ordVO.ordMsgNo}">
 												<input type="hidden" name="action" value="cancel">
@@ -107,7 +120,7 @@
 	                
 	           	   </c:when>		  
 			       <c:otherwise>
-			       	    <h1 id="WishH2">- 管理你的預定          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
+			       	    <h1 id="WishH2">- 管理你的預訂          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
 			        	<hr style="border-top:3px solid lightgray">				
 			        	<h4 id="listinfor">您目前沒有任何一筆清單資料<img src="<%=request.getContextPath()%>/frontend_mem/images/listwish.png"></h4>
 			        	<br><br><br><br><br><br><br>
@@ -120,5 +133,9 @@
            </div>
        </div>
     </section>
+</body>
+
+</html>    
+    
    <!--  --------------------------------------------------------------------- -->
 <%-- <%@ include file="../indexFooter.jsp" %> --%>
