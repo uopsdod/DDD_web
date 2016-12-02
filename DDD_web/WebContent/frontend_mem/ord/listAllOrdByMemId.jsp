@@ -49,7 +49,7 @@
            <div class="col-xs-12 col-sm-10" id="view">
 	           <c:choose>
 				    <c:when test="${list.size()!=0}">				     
-	                <h1 id="WishH2">- 管理你的預定          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
+	                <h1 id="WishH2">- 管理你的預訂          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
 	                
 	                <div>${OrdMessage}</div>	                
 					<table class="table table-hover " >
