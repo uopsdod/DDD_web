@@ -61,8 +61,8 @@
 					<th class="text-center">員工生日</th>
 					<th class="text-center">員工電話</th>
 <!-- 					<th>empStatus</th> -->
-					<th class="text-center">身分證字號</th>
 					<th class="text-center">地址</th>
+					<th class="text-center">身分證字號</th>
 <!-- 					<th>empHireDate</th> -->
 <!-- 					<th>empFireDate</th> -->
 					<th class="text-center">修改資料</th>

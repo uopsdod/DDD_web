@@ -100,9 +100,9 @@ public class HotelServlet extends HttpServlet {
 					session.setAttribute("hotelVO", hotelVO);
 
 					try {
-						String location = (String) session.getAttribute("location");
+						String location = (String) session.getAttribute("location_hotel");
 						if (location != null) {
-							session.removeAttribute("location"); // *工作2:
+							session.removeAttribute("location_hotel"); // *工作2:
 																	// 看看有無來源網頁
 																	// (-->如有來源網頁:則重導至來源網頁)
 
@@ -359,7 +359,7 @@ public class HotelServlet extends HttpServlet {
 					 hotelSvc = new HotelService();
 					hotelSvc.update_status(hotelId, "1");
 				}
-				Util_psw.sendMail(hotel.getHotelAccount(),"您好在DDD公司的註冊資料尚未通過",other+ "http://localhost:8081/AA104G4/frontend_hotel/hotel/loginhotel.jsp"+"煩請修改資料謝謝您。");
+				Util_psw.sendMail(hotel.getHotelAccount(),"您好在DDD公司的註冊資料尚未通過",other+ "http://localhost:8081/DDD_web/frontend_hotel/hotel/loginhotel.jsp"+"煩請修改資料謝謝您。");
 				/***************************
 				 * 3.查詢完成,準備轉交(Send the Success view)
 				 ************/

@@ -72,8 +72,8 @@ session.setAttribute("memVO", memVO);
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/addhotel.jsp">成為夥伴</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/loginhotel.jsp">夥伴登入</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/addhotel.jsp" target="_blank">成為夥伴</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="<%=request.getContextPath()%>/frontend_hotel/hotel/loginhotel.jsp" target="_blank">夥伴登入</a></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">問題回報</a></li>
                 </ul>
             </div>
@@ -121,7 +121,7 @@ session.setAttribute("memVO", memVO);
             </div>
             <br>
             <div id="forgotPaw"><a href="#">Forgot Password?</a>
-            <input type="hidden" name="action" value="login"> 
+            <input type="hidden" name="action" value="login"><input type="button" id ="magic"> 
                 <button id="LoginButton">Login</button>
             </div>
             </form>
@@ -134,6 +134,17 @@ session.setAttribute("memVO", memVO);
             <div id="Copyright">Copyright © Dua Dee Dou 2016</div>
         </div>
     </section>
+    <script>
+	    function load() {
+	    	document.getElementById("magic").onclick=magic;
+	    	
+	    }
+	    window.onload = load;
+		function magic(){
+			$("[name~='UserName']").val("ck001583219@gmail.com");	
+			$("[name~='Password']").val("a123456");	
+			
+		}
+	</script>
 </body>
-
 </html>

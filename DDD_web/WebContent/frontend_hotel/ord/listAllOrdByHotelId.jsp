@@ -14,12 +14,12 @@
 	
 	#hotelRepWindow th {
 		font-family: Tahoma, Verdana, 微軟正黑體;
-		font-size: 18px;
+		font-size: 22px;
 	}	
 	
 	#hotelRepWindow td {
 		font-family: Tahoma, Verdana, 微軟正黑體;
-		font-size: 18px;
+		font-size: 22px;
 	}
 	
 
@@ -187,8 +187,7 @@
 		    <div class="modal-dialog modal-lg">
 		      <div class="modal-content">
 		        <div class="modal-header">
-		          <button type="button" class="close" data-dismiss="modal">&times;</button>
-		          <h4 class="modal-title">建立廠商檢舉單</h4>
+		          <h3 class="modal-title"><b>建立廠商檢舉單</b></h3>
 		        </div> <!-- modal-header -->
 		        
 				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/hotelRep/hotelRep.do" name="form1">      

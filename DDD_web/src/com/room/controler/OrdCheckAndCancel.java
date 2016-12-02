@@ -18,7 +18,7 @@ import com.ord.model.OrdService;
 @WebServlet("/OrdCheckAndCancel")
 public class OrdCheckAndCancel extends HttpServlet {
 	
-       
+ 
   
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -43,10 +43,21 @@ public class OrdCheckAndCancel extends HttpServlet {
 		com.ord.model.OrdVO ordVO = ordSvc.getOneOrd(ordIdCheckTime);
 		String status = ordVO.getOrdStatus();
 		if(!"0".equals(status)){		
+			
 			req.setAttribute("OrdMessage","訂單已逾期");
+			String location = req.getParameter("location");
+			if("fromHotel".equals(location)){
+			RequestDispatcher failureView = req
+					.getRequestDispatcher("/frontend_hotel/ord/simpleCheckIn_Input.jsp");
+			failureView.forward(req, res);
+			return;
+			}
+			if("fromMan".equals(location)){
 			RequestDispatcher failureView = req
 					.getRequestDispatcher("/frontend_mem/ord/listAllOrdByMemId.jsp");
 			failureView.forward(req, res);
+			return;
+			}
 			return;
 		}
 		
@@ -57,19 +68,26 @@ public class OrdCheckAndCancel extends HttpServlet {
 		
 		if("confirm".equals(action)){
 			
-			System.out.println("11111");
+			System.out.println("confirm");
 			String key = req.getParameter("ordMsgNo");
 			String ordId = req.getParameter("ordId");
 			
+			
+			if(key.equals(ordVO.getOrdMsgNo())){		
 			RoomSetOrder.checkOrder(key,ordId);
-			
-			
+			req.setAttribute("OrdMessage","訂單已確認");
+			}else{
+			req.setAttribute("OrdMessage","驗證碼錯誤");	
+			}		
+			RequestDispatcher failureView = req
+					.getRequestDispatcher("/frontend_hotel/ord/simpleCheckIn_Input.jsp");
+			failureView.forward(req, res);
 			return;
 		}
 		
 		
 		if("cancel".equals(action)){
-			
+			System.out.println("cancel");
 			String key = req.getParameter("ordMsgNo");
 			String ordId = req.getParameter("ordId");
 			

@@ -55,29 +55,22 @@ public class RoomDetail extends HttpServlet {
 		ServletOutputStream out = res.getOutputStream(); 
 		BufferedOutputStream buf = new BufferedOutputStream(out);	
 		
-		if(memVO.getMemProfile()!=null){
+		if(memVO.getMemProfile()!=null && memVO.getMemProfile().length!=0){
 		buf.write(memVO.getMemProfile());//掃出照片
 		}else{
 			String gender = memVO.getMemGender();
-			FileInputStream img =null;
+			InputStream in = null;
 			if("f".equals(gender)){
-				img = new FileInputStream(req.getContextPath()+"/frontend_mem/images/girlhead.png");
+				in = getServletContext().getResourceAsStream("/frontend_mem/images/girlhead.png");
 			}else if("m".equals(gender)){
-			    img = new FileInputStream(req.getContextPath()+"/frontend_mem/images/man.png");
+			    in = getServletContext().getResourceAsStream("/frontend_mem/images/man.png");
 			}
-			BufferedInputStream in = new BufferedInputStream(img);
-			byte[] buf1 = new byte[4 * 1024]; // 4K buffer
-			int len;
-			while ((len = in.read(buf1)) != -1) {
-				buf.write(buf1, 0, len);
-			}
-			img.close();
+			byte[] buf1 = new byte[in.available()]; // 4K buffer
+			in.read(buf1);
+			out.write(buf1);
 			in.close();	
 		}
-		buf.close();
-		out.close();
 		return;
-		
 	}
 
 

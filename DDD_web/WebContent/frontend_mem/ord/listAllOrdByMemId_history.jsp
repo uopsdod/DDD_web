@@ -6,7 +6,11 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/css/wishList.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/css/0_main.css">
 <link rel="stylesheet" href="<%=request.getContextPath()%>/backend/auth/css/sweet-alert.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/frontend_mem/ord/css/fontawesome-stars.css">
+
 <script src="<%=request.getContextPath()%>/backend/auth/js/sweet-alert.js"></script>
+<script src="<%=request.getContextPath()%>/frontend_mem/ord/js/jquery.barrating.min.js"></script>
 <%
 	OrdService ordSvc = new OrdService();
 	List<OrdVO> allList = ordSvc.getAllByOrdMemId(memVO.getMemId());
@@ -31,18 +35,35 @@
 	
 	#view th{
 		font-family:Tahoma, Verdana, 微軟正黑體;
-		font-size:18px;
+		font-size:22px;
 		
 	}
 	#view tr{
 		font-family:Tahoma, Verdana, 微軟正黑體;
-		font-size:20px;
+		font-size:24px;
 		
 	}
+	
+	.memRepWindow textarea,.memRatingWindow textarea {
+    	width: 700px;
+    	height: 300px;
+    	resize: both;
+    	overflow: auto;
+	}
+	
+	.memRepWindow th, .memRatingWindow th {
+		font-size: 22px;
+	}	
+	
+	.memRepWindow td, .memRatingWindow td {
+		font-size: 22px;
+	}	
+	
+
 </style>
 
     <section>
-       <div class="col-xs-12 col-sm-12 ">
+       <div class="col-xs-12 col-sm-12 " style="z-index:-1;">
            <div class="col-xs-12 col-sm-1">
                
            </div>          
@@ -77,44 +98,88 @@
 									<td>${ordVO.ordRoomVO.roomName}</td>
 			
 									<td>${ordVO.ordPrice}</td>
+									
+									<% OrdVO ordVO = (OrdVO)(pageContext.getAttribute("ordVO")); %>
+									
+									<% if(ordVO.getOrdLiveDate()!= null){ %>
 																	
-									<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdLiveDate())%></td>		
+									<td><%= new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format( ordVO.getOrdLiveDate() ) %></td>		
+									<% } else { %>
+									<td>入住日期讀取中</td>
+									<% } %>
 									<td>${ordStatusTrans.get(ordVO.ordStatus)}</td>
 
-									<td>
-										<input type="submit" value="給個分數" id="buttnOnimg" data-toggle="modal" data-target="#${ordVO.ordId}-score">
-									</td>
-									
-									<td>
-										<input type="submit" value="檢舉廠商" id="buttnOnimg1" data-toggle="modal" data-target="#${ordVO.ordId}-report">
-									</td>									
-									
+									<% if(ordVO.getOrdRatingStarNo() == null && ordVO.getOrdRatingContent() == null ){ %>
+											<td id="td2-${ordVO.ordId}">
+												<input type="submit" value="給個分數" id="buttnOnimg" data-toggle="modal" data-target="#rating-${ordVO.ordId}">
+											</td>
+									<% } else { %>
+					       					<td id="td2-${ordVO.ordId}">
+									 			已給分
+											</td>
+									<% } %>
+							
+									<c:choose>
+										<c:when test="${ordVO.ordMemReps.isEmpty()}">	
+											<td id="td-${ordVO.ordId}">
+												<input type="submit" value="檢舉廠商" id="buttnOnimg1" data-toggle="modal" data-target="#report-${ordVO.ordId}">
+											</td>	
+										</c:when>		  
+					       				<c:otherwise>
+					       					<td id="td-${ordVO.ordId}">
+									 			已檢舉
+											</td>
+										</c:otherwise>
+									 </c:choose>  									
 								</tr>
 
 						</c:forEach>
 						<tbody>
 					</table>
-					
-	                
+					 
+	           	   </c:when>		  
+			       <c:otherwise>
+			       	    <h1 id="WishH2">- 謝謝您的支持          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
+			        	<hr style="border-top:3px solid lightgray">				
+			        	<h4 id="listinfor">您目前沒有任何一筆清單資料<img src="<%=request.getContextPath()%>/frontend_mem/images/listwish.png"></h4>
+			        	<br><br><br><br><br><br><br>
+			        	
+			       </c:otherwise>
+		       </c:choose>   
+           </div>
+           <div class="col-xs-12 col-sm-1">
+               
+           </div>
+       </div>
+    </section>
+   <!--  --------------------------------------------------------------------- -->
+   
+   
 <c:forEach var="ordVO" items="${list}">
-	                
-<!-- 評論 -->	                
+
+<!--------------------  旅客評分   -------------------->	
 
 <!-- Modal -->
-<div id="memRepWindow">  
-<div class="modal fade" id="${ordVO.ordId}-score" role="dialog">
+<div class="memRatingWindow">  
+<div class="modal fade" role="dialog" id="rating-${ordVO.ordId}">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">建立廠商檢舉單</h4>
+        <h3 class="modal-title"><b>評分與意見</b></h3>
       </div> <!-- modal-header -->
       
-		<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/hotelRep/hotelRep.do" name="form1">      
+		<FORM METHOD="post" id="jsonForm2-${ordVO.ordId}" name="form1">      
 	        <div class="modal-body">
 
 				<!-- (開始)檢舉單內容 -->
 				<table border="0">
+					<tr>
+						<th>旅客名稱:</th>
+						<td>
+							${ordVO.ordMemVO.memName}
+						</td>
+					</tr>
+						
 					<tr>
 						<th>廠商名稱:</th>
 						<td>
@@ -122,15 +187,6 @@
 						</td>
 					</tr>
 					
-				
-					<tr>
-						<th>旅客名稱:</th>
-						<td>
-							${ordVO.ordMemVO.memName}
-						</td>
-					</tr>	
-					
-				
 					<tr>
 						<th>訂單編號:</th>
 						<td>
@@ -139,34 +195,45 @@
 					</tr>	
 					
 					<tr>
-						<th>檢舉內容:</th>
-					
+						<th>評論內容:</th>
 						<td>						
-							<textarea name="hotelRepContent"></textarea>
+							<textarea name="ordRatingContent"></textarea>
 						</td>
-					</tr>	
+					</tr>
+					
+					<tr>
+						<th>評價星星數:</th>
+						<td>
+							<div class="stars stars-example-bootstrap">
+								<select name="ordRatingStarNo">
+					  					<option value="1">1顆星</option>
+					  					<option value="2">2顆星</option>
+					  					<option value="3">3顆星</option>
+					  					<option value="4">4顆星</option>
+					    				<option value="5">5顆星</option>	
+								</select>
+							</div>				
+						</td>					
+					</tr>
+					
+						
 				</table>
 				
 				<!-- (結束)檢舉單內容 -->
 
 	        </div> <!-- modal-body -->
 	        <div class="modal-footer">
-	        
-	          <input type="hidden" name="hotelRepHotelId" value="${ordVO.ordHotelVO.hotelId}">	
-	          <input type="hidden" name="hotelRepMemId" value="${ordVO.ordMemVO.memId}">	
-	          <input type="hidden" name="hotelRepOrdId" value="${ordVO.ordId}">
-	          <input type="hidden" name="hotelRepStatus" value="0">		        
-	          <input type="hidden" name="action" value="insert">
+	          <input type="hidden" name="ordId" value="${ordVO.ordId}">	        
+	          <input type="hidden" name="action" value="updateRating">
 
-	          <button type="button" class="btn btn-warning" data-dismiss="modal">
+	          <button type="button" id="jsonClose2-${ordVO.ordId}" class="btn btn-warning" data-dismiss="modal">
 			  	取消
 			  </button>
 
-	        
-	          <button type="submit" class="btn btn-primary">
+	          <button type="button" id="jsonPost2-${ordVO.ordId}" class="btn btn-primary">
 			  	提交
 			  </button>
-			  
+			 			   
 	        </div> <!-- modal-footer -->
      </FORM>
      
@@ -174,20 +241,64 @@
   </div>
 </div>					
 </div>	                
-	                
-<!-- 旅客檢舉單 -->	                
+
+
+<script>
+ 
+var ctx ="${pageContext.request.contextPath}";
+ 
+var myRatingForm = {
+		"action" : "",
+		"ordId" : "",
+		"ordRatingContent" : "",
+		"ordRatingStarNo" : ""
+}; 
+ 
+ 
+$(document).ready(function(){
+
+	$("#jsonPost2-${ordVO.ordId}").click(function(e){
+		
+		myRatingForm.action = $("#jsonForm2-${ordVO.ordId} input[name='action']").val();
+		myRatingForm.ordRatingContent = $("#jsonForm2-${ordVO.ordId} textarea").val();
+		myRatingForm.ordId = $("#jsonForm2-${ordVO.ordId} input[name='ordId']").val();
+		myRatingForm.ordRatingStarNo = $("#jsonForm2-${ordVO.ordId} select[name='ordRatingStarNo']").val();
+		
+		console.log(myRatingForm);
+		
+		var url = ctx + "/android/ord/ord.do";
+		//console.log(url);
+		$.post(url,JSON.stringify(myRatingForm));
+		
+		$("#jsonClose2-${ordVO.ordId}").click();
+		
+		$("#td2-${ordVO.ordId}").empty().append("已給分");
+				
+		
+	});
+	
+	/* 評價星星數 */
+    $("select[name='ordRatingStarNo']").barrating({
+        theme: 'fontawesome-stars'
+    });
+	
+	 	 
+});
+ 
+</script>  
+	                           
+<!--------------------  旅客檢舉單   -------------------->	                
 
 <!-- Modal -->
-<div id="memRepWindow">  
-<div class="modal fade" id="${ordVO.ordId}-report" role="dialog">
+<div class="memRepWindow">  
+<div class="modal fade" role="dialog" id="report-${ordVO.ordId}">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">建立廠商檢舉單</h4>
+        <h3 class="modal-title"><b>建立旅客檢舉單</b></h3>
       </div> <!-- modal-header -->
       
-		<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/android/memRep/memRep.do" name="form1">      
+		<FORM METHOD="post" id="jsonForm-${ordVO.ordId}" name="form1">      
 	        <div class="modal-body">
 
 				<!-- (開始)檢舉單內容 -->
@@ -217,7 +328,7 @@
 						<th>檢舉內容:</th>
 					
 						<td>						
-							<textarea name="hotelRepContent"></textarea>
+							<textarea name="content"></textarea>
 						</td>
 					</tr>	
 				</table>
@@ -226,23 +337,17 @@
 
 	        </div> <!-- modal-body -->
 	        <div class="modal-footer">
-	        
-	          <input type="hidden" name="memRepHotelId" value="${ordVO.ordHotelVO.hotelId}">	
-	          <input type="hidden" name="memRepMemId" value="${ordVO.ordMemVO.memId}">	
-	          <input type="hidden" name="memRepOrdId" value="${ordVO.ordId}">
-	          <input type="hidden" name="hotelRepStatus" value="0">		        
+	          <input type="hidden" name="ordId" value="${ordVO.ordId}">	        
 	          <input type="hidden" name="action" value="insert">
 
-
-	          <button type="button" class="btn btn-warning" data-dismiss="modal">
+	          <button type="button" id="jsonClose-${ordVO.ordId}" class="btn btn-warning" data-dismiss="modal">
 			  	取消
 			  </button>
 
-	        
-	          <button type="button" class="btn btn-primary">
+	          <button type="button" id="jsonPost-${ordVO.ordId}" class="btn btn-primary">
 			  	提交
 			  </button>
-			  
+			 			   
 	        </div> <!-- modal-footer -->
      </FORM>
      
@@ -250,24 +355,46 @@
   </div>
 </div>					
 </div>	                
-	                
-</c:forEach>
+
+
+<script>
+ 
+//var ctx ="${pageContext.request.contextPath}";
+ 
+var myRepForm = {
+		"action" : "",
+		"ordId" : "",
+		"content" : ""
+}; 
+ 
+ 
+$(document).ready(function(){
+
+	$("#jsonPost-${ordVO.ordId}").click(function(e){
+		
+		myRepForm.action = $("#jsonForm-${ordVO.ordId} input[name='action']").val();
+		myRepForm.content = $("#jsonForm-${ordVO.ordId} textarea").val();
+		myRepForm.ordId = $("#jsonForm-${ordVO.ordId} input[name='ordId']").val();
+		
+		//console.log(myRepForm);
+		
+		var url = ctx + "/android/memRep/memRep.do";
+		//console.log(url);
+		$.post(url,JSON.stringify(myRepForm));
+		
+		$("#jsonClose-${ordVO.ordId}").click();
+		
+		$("#td-${ordVO.ordId}").empty().append("已檢舉");
+		
+	});
+	 	 
+});
+ 
+</script>  
 
 	                
-	           	   </c:when>		  
-			       <c:otherwise>
-			       	    <h1 id="WishH2">- 謝謝您的支持          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
-			        	<hr style="border-top:3px solid lightgray">				
-			        	<h4 id="listinfor">您目前沒有任何一筆清單資料<img src="<%=request.getContextPath()%>/frontend_mem/images/listwish.png"></h4>
-			        	<br><br><br><br><br><br><br>
-			        	
-			       </c:otherwise>
-		       </c:choose>   
-           </div>
-           <div class="col-xs-12 col-sm-1">
-               
-           </div>
-       </div>
-    </section>
-   <!--  --------------------------------------------------------------------- -->
+</c:forEach>
+   
+   
+   
 <%@ include file="../indexFooter.jsp" %>

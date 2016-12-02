@@ -31,12 +31,12 @@
 	
 	#view th{
 		font-family:Tahoma, Verdana, 微軟正黑體;
-		font-size:18px;
+		font-size:22px;
 		
 	}
 	#view tr{
 		font-family:Tahoma, Verdana, 微軟正黑體;
-		font-size:20px;
+		font-size:24px;
 		
 	}
 </style>
@@ -49,7 +49,7 @@
            <div class="col-xs-12 col-sm-10" id="view">
 	           <c:choose>
 				    <c:when test="${list.size()!=0}">				     
-	                <h1 id="WishH2">- 管理你的預定          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
+	                <h1 id="WishH2">- 管理你的預訂          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
 	                
 	                <div>${OrdMessage}</div>	                
 					<table class="table table-hover " >
@@ -85,10 +85,11 @@
 									<td>${ordVO.ordMsgNo}</td>
 									<td>
 										<form method="post" action="<%=request.getContextPath()%>/OrdCheckAndCancel" name="theForm">
-												<input type="button" value="取消訂單" id="buttnOnimg1" onClick="alert()">
+												<input type="submit" value="取消訂單" id="buttnOnimg1">
 												<input type="hidden" name="ordId" value="${ordVO.ordId}">
 												<input type="hidden" name="ordMsgNo" value="${ordVO.ordMsgNo}">
 												<input type="hidden" name="action" value="cancel">
+												<input type="hidden" name="location" value="fromMan">
 										</form>
 									</td>
 								</tr>
@@ -99,8 +100,9 @@
 	                <script>
 						    function alert() {     			
 							    setTimeout('document.theForm.submit();', 1500);
-								swal("你已成功取消此訂單", "謝謝您", "success");
-						    }
+							    swal("你已成功取消此訂單", "謝謝您", "success");
+							
+							}
 					</script>
 	                
 	           	   </c:when>		  
@@ -119,4 +121,4 @@
        </div>
     </section>
    <!--  --------------------------------------------------------------------- -->
-<%@ include file="../indexFooter.jsp" %>
+<%-- <%@ include file="../indexFooter.jsp" %> --%>

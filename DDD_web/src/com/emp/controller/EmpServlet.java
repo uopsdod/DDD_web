@@ -107,9 +107,9 @@ public class EmpServlet extends HttpServlet {
 					session.setAttribute("authorityList", authorityList);
 					
 					 try {                                                        
-				         String location = (String) session.getAttribute("location");
+				         String location = (String) session.getAttribute("location_back");
 				         if (location != null) {
-				           session.removeAttribute("location");   //*工作2: 看看有無來源網頁 (-->如有來源網頁:則重導至來源網頁)
+				           session.removeAttribute("location_back");   //*工作2: 看看有無來源網頁 (-->如有來源網頁:則重導至來源網頁)
 				           response.sendRedirect(location);            
 				           return;
 				         }
