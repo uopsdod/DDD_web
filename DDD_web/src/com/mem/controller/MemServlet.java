@@ -101,9 +101,9 @@ public class MemServlet extends HttpServlet {
 					session.setAttribute("memVO", memVO);
 					
 					try {                                                        
-				         String location = (String) session.getAttribute("location");
+				         String location = (String) session.getAttribute("location_mem");
 				         if (location != null) {
-				           session.removeAttribute("location");   //*工作2: 看看有無來源網頁 (-->如有來源網頁:則重導至來源網頁)
+				           session.removeAttribute("location_mem");   //*工作2: 看看有無來源網頁 (-->如有來源網頁:則重導至來源網頁)
 				           response.sendRedirect(location);            
 				           return;
 				         }

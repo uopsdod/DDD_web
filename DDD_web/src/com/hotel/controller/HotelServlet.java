@@ -100,9 +100,9 @@ public class HotelServlet extends HttpServlet {
 					session.setAttribute("hotelVO", hotelVO);
 
 					try {
-						String location = (String) session.getAttribute("location");
+						String location = (String) session.getAttribute("location_hotel");
 						if (location != null) {
-							session.removeAttribute("location"); // *工作2:
+							session.removeAttribute("location_hotel"); // *工作2:
 																	// 看看有無來源網頁
 																	// (-->如有來源網頁:則重導至來源網頁)
 

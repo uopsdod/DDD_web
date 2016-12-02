@@ -30,7 +30,7 @@ public class LoginFilter_mem implements Filter{
 		// 【從 session 判斷此user是否登入過】
 		Object account_mem = session.getAttribute("account_mem");
 		if (account_mem == null) {
-			session.setAttribute("location", req.getRequestURI());
+			session.setAttribute("location_mem", req.getRequestURI());
 			res.sendRedirect(req.getContextPath() + "/frontend_mem/mem/loginOfmember.jsp");
 			return;
 		} else {
