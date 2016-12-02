@@ -7,6 +7,7 @@
 session.getAttribute("account_hotel");
 
 HotelVO hotelVO =(HotelVO)session.getAttribute("hotelVO");
+System.out.println(hotelVO);
 session.setAttribute("hotelVO", hotelVO);
 session.setAttribute("hotelId", hotelVO.getHotelId());
 // session.setAttribute("hotelId","10002");

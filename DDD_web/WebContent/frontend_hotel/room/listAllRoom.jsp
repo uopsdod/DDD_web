@@ -48,6 +48,7 @@
 					
 					<%
 					String hotelId = (String)session.getAttribute("hotelId");
+					System.out.println(hotelId);
 					%>
 					
 					
@@ -121,8 +122,9 @@
 								<button type="button" class="btn btn-danger" id="${roomVO.roomId}" onclick="showImg(this)" >圖示</button>
 							</td>
 						</tr>
+						</c:forEach>
 							</tbody>
-					</c:forEach>
+					
 				  </table>
 					
 						<table border="0"   >    

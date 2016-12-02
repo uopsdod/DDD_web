@@ -28,8 +28,8 @@ public class LoginFilter_mem implements Filter{
 		// 【取得 session】
 		HttpSession session = req.getSession();
 		// 【從 session 判斷此user是否登入過】
-		Object account_hotel = session.getAttribute("account_mem");
-		if (account_hotel == null) {
+		Object account_mem = session.getAttribute("account_mem");
+		if (account_mem == null) {
 			session.setAttribute("location", req.getRequestURI());
 			res.sendRedirect(req.getContextPath() + "/frontend_mem/mem/loginOfmember.jsp");
 			return;
