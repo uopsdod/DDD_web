@@ -120,9 +120,9 @@ public class Member extends HttpServlet {
 			if(memVO.getMemBlackList().equals("0")){
 				memVO.setMemBlackList("0");
 			}else{
-				memVO.setMemBlackList("1");
+				memVO.setMemBlackList("1"); 
 			}
-			dao.updateAndroidMeminfo(memVO);
+			dao.updateAndroidMeminfo(memVO); 
 		}
 
 		// ��hotelVO�নJSON�r��A�^��

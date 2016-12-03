@@ -65,10 +65,7 @@ public class HotelDAO implements HotelDAO_interface {
 	private static final Base64.Encoder encoder = Base64.getEncoder();
 	private static final Base64.Encoder encoder1 = Base64.getEncoder();
 	public static final String CHECK_MEMBER = "SELECT hotelAccount, hotelPwd FROM hotel where hotelAccount = ?";
-	public static final String GET_RANDOM_HOTEL_TO_VIEW ="SELECT * FROM "
-			+ "(select h.hotelid,h.hotelName,h.hotelRatingResult,r.roomName,r.roomid,r.roomPrice,o.roomPhotoPic "
-			+ "from room r,roomphoto o,hotel h where r.roomforsell = '1' and r.roomid=o.roomPhotoRoomId and r.roomHotelId = h.hotelId "
-			+ "ORDER BY dbms_random.value) where rownum <= 8";
+	public static final String GET_RANDOM_HOTEL_TO_VIEW ="SELECT * FROM (select h.hotelid,h.hotelName,h.hotelRatingResult,r.roomName,r.roomid,r.roomPrice,o.roomPhotoPic,o.roomPhotoRoomId,row_number() over (partition by o.roomPhotoRoomId,h.hotelName,h.hotelRatingResult,r.roomName,r.roomid,r.roomPrice order by o.roomPhotoRoomId)RW from room r,roomphoto o,hotel h where r.roomid=o.roomPhotoRoomId and r.roomHotelId = h.hotelId ORDER BY dbms_random.value) where rownum <= 8 and RW = 1";
 	private static final String GET_WISH_COUNT="select count(wishmemid)as count from wish where wishroomid=?";
 
 	/*下面是韓哥需要的*/
