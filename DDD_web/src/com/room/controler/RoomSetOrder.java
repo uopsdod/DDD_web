@@ -54,7 +54,8 @@ public class RoomSetOrder extends HttpServlet {
 		
 		
 		String roomId = req.getParameter("orderRoomId");	//將下訂已下架房型的請求導向回原hotelPage網頁
-		if(!RoomServlet.OnData.containsKey(roomId)&&roomId!=null){	
+		String price = req.getParameter("ordPrice");	//將下訂已下架房型的請求導向回原hotelPage網頁
+		if((!RoomServlet.OnData.containsKey(roomId)&&roomId!=null)||"已售完".equals(price)||"未上架".equals(price)){	
 			res.setCharacterEncoding("UTF-8");
 			String hotelId = req.getParameter("orderHotelId");																				
 			res.sendRedirect(req.getContextPath()+"/HotelRoomSearch?action=hotelPage&hotelId="+hotelId+"&news=房型已下架");
@@ -501,7 +502,7 @@ public class RoomSetOrder extends HttpServlet {
 		ordVO.setOrdStatus("2");
 		
 		Timestamp currentTime = new Timestamp(new java.util.Date().getTime());
-		ordVO.setOrdDate(currentTime);
+		ordVO.setOrdLiveDate(currentTime);
 		ordSvc.updateOrd(ordVO);
 	}
 	

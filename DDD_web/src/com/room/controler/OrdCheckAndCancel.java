@@ -39,6 +39,25 @@ public class OrdCheckAndCancel extends HttpServlet {
 		
 		
 		String ordIdCheckTime = req.getParameter("ordId");
+		if(ordIdCheckTime==null||"".equals(ordIdCheckTime)){
+			req.setAttribute("OrdMessage","請輸入訂單");
+			String location = req.getParameter("location");
+			if("fromHotel".equals(location)){
+			RequestDispatcher failureView = req
+					.getRequestDispatcher("/frontend_hotel/ord/simpleCheckIn_Input.jsp");
+			failureView.forward(req, res);
+			return;
+			}
+			if("fromMan".equals(location)){
+			RequestDispatcher failureView = req
+					.getRequestDispatcher("/frontend_mem/ord/listAllOrdByMemId.jsp");
+			failureView.forward(req, res);
+			return;
+			}
+			return;
+					
+		}
+		
 		OrdService ordSvc = new OrdService();
 		com.ord.model.OrdVO ordVO = ordSvc.getOneOrd(ordIdCheckTime);
 		String status = ordVO.getOrdStatus();

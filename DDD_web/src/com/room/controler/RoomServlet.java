@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+
+import com.ord.model.OrdService;
 import com.room.controler.MyEchoServer;
 import com.room.model.RoomService;
 import com.room.model.RoomVO;
@@ -274,6 +276,10 @@ public class RoomServlet extends HttpServlet {
 				RoomService roomSvc = new RoomService();
 				RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);				
 				Boolean onSell = roomVO.getRoomForSell();
+				
+				
+				OrdService ordSvc = new OrdService();
+			
 				
 				
 				
