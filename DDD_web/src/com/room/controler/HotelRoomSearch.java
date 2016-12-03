@@ -173,7 +173,7 @@ public class HotelRoomSearch extends HttpServlet {
 			jsonIn_mobile.append(line_mobile);
 		}
 		
-		System.out.println("jsonIn_mobile*******: " + jsonIn_mobile);
+		//System.out.println("jsonIn_mobile*******: " + jsonIn_mobile);
 		JsonObject jsonObject_mobile = null;
 		try{
 			jsonObject_mobile = gson_mobile.fromJson(jsonIn_mobile.toString(),JsonObject.class);			
