@@ -58,7 +58,7 @@ session.setAttribute("authorityList",authorityList);
 								<div class="panel-body">
 									<ul style="list-style-type: none">
 										<li><a href="<%=request.getContextPath()%>/backend/ord/listAllOrd.jsp">所有訂單查詢</a></li>
-										<li><a href="<%=request.getContextPath()%>/backend/selectPage.jsp">訂單條件搜尋</a></li>
+										<li>萬用複合查詢</li>
 										<li><a href="<%=request.getContextPath()%>/backend/hotel/listAllHotel2.jsp">廠商訂單查詢</a></li>
 									</ul>
 								</div>

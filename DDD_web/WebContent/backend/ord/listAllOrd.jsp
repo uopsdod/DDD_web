@@ -27,7 +27,7 @@
 	<script src="<%=request.getContextPath()%>/backend/js/jquery.js"></script>
 	<script src="<%=request.getContextPath()%>/backend/js/bootstrap.js"></script>
 	<!-- 自訂JavaScript -->
-	<script src="<%=request.getContextPath()%>/backend/css/0_new.js"></script>
+	<script src=""></script>
 </head>
 
 <body>
@@ -68,8 +68,8 @@ if(!authorityList.contains("102")){
 							<th class="text-center">訂單編號</th>
 							<th class="text-center">房型名稱</th>
 							<th class="text-center">一般會員名稱</th>
-							<th class="text-center">廠商名稱名稱</th>
-							<th class="text-center">訂單金額</th>
+							<th class="text-center">廠商會員名稱</th>
+<!-- 							<th class="text-center">訂單金額</th> -->
 							<!-- 		<th>入住日期</th> -->
 							<th class="text-center">下訂日期</th>
 							<th class="text-center">訂單狀態名稱</th>
@@ -94,7 +94,7 @@ if(!authorityList.contains("102")){
 								<td>${ordVO.ordMemVO.memName}</td>
 								<td>${ordVO.ordHotelVO.hotelName}</td>
 
-								<td>${ordVO.ordPrice}</td>
+<%-- 								<td>${ordVO.ordPrice}</td> --%>
 								<%-- 			<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdLiveDate())%></td> --%>
 								
 								<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(((OrdVO)(pageContext.getAttribute("ordVO"))).getOrdDate())%></td>		
@@ -141,12 +141,12 @@ if(!authorityList.contains("102")){
 					
 				<div id="simpleTable" class="col-xs-12 col-sm-12">			
 					<% if (request.getAttribute("ordVO") != null) { %>
-							<div class="col-xs-12 col-sm-3"></div>
+							<div class="col-xs-2 col-sm-2"></div>
 						
-							<div class="col-xs-6 col-sm-6">	
+							<div class="col-xs-8 col-sm-8">	
 								<jsp:include page="listOneOrdSimple.jsp" />
 							</div>
-							<div class="col-xs-12 col-sm-3"></div>	
+							<div class="col-xs-2 col-sm-2"></div>	
 					<% } %>
 				<div>
 

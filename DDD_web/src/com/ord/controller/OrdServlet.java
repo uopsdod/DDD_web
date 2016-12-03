@@ -744,6 +744,7 @@ public class OrdServlet extends HttpServlet {
 			try{
 				/* 1.接收請求參數 - 輸入格式的錯誤處理 */
 				String requestURL = aReq.getParameter("requestURL");
+				String whichPage = aReq.getParameter("whichPage");
 				String ordId = aReq.getParameter("ordId");
 				OrdService ordSvc = new OrdService(); 	
 				OrdVO ordVO = ordSvc.getOneOrd(ordId);	
