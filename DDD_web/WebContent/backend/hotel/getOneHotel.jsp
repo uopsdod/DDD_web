@@ -110,12 +110,12 @@ body {
 				width='800' class="table table-hover " id="tablehotel" >	
 				<tr>
 					<td>
-					<H1>旅館照片</H1>
+					<H1>旅館登記證</H1>
 					<img src='data:image/jpeg;base64,${hotelvo.bs64}'
 							width="250" height="180" />
 					</td>
 					
-					<td><H2>旅館登記證</H2><img src='data:image/jpeg;base64,${hotelvo.bs64_2}'
+					<td><H2>旅館照片</H2><img src='data:image/jpeg;base64,${hotelvo.bs64_2}'
 							width="250" height="180" />
 					</td>
 				</tr>

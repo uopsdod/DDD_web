@@ -58,6 +58,13 @@
 .hwidad {
 	width: 200px;
 }
+.h_showImage:hover {
+transform: scale(5);
+ transition: 1s; /* 一秒後圖片變大 */
+
+}
+
+
 </style>
 </style>
 </head>
@@ -146,13 +153,13 @@ if(!authorityList.contains("103")){
 								<td>
 									<%-- <img
 									src="<%=request.getContextPath()%>/backend/Ad/AdPic?adId=${adVO.adId}"> --%>
-									<a id="thumb1"
+									<%-- <a id="thumb1"
 									href="<%=request.getContextPath()%>/Ad/AdPic?adId=${adVO.adId}"
 									class="highslide"
-									onclick="return hs.expand(this, { captionId: 'caption1', align: 'center' } )">
+									onclick="return hs.expand(this, { captionId: 'caption1', align: 'center' } )"> --%>
 										<img
 										src="<%=request.getContextPath()%>/Ad/AdPic?adId=${adVO.adId}"
-										title="點擊圖片放大" width="100px" height="100px" />
+										class="h_showImage" width="100px" height="100px" />
 								</a>
 								</td>
 								<td>${adVO.adPicContent}</td>

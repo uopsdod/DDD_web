@@ -30,7 +30,7 @@ public class LoginFilter_hotel implements Filter{
 		// 【從 session 判斷此user是否登入過】
 		Object account_hotel = session.getAttribute("account_hotel");
 		if (account_hotel == null) {
-			session.setAttribute("location", req.getRequestURI());
+			session.setAttribute("location_hotel", req.getRequestURI());
 			res.sendRedirect(req.getContextPath() + "/frontend_hotel/hotel/loginhotel.jsp");
 			return;
 		} else {

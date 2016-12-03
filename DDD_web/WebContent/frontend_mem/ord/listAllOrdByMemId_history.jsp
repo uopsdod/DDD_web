@@ -18,7 +18,7 @@
     
     /* 篩選出已入住的 */
     for(OrdVO aOrdVO : allList){
-    	if( "2".equals( aOrdVO.getOrdStatus() ) ){
+    	if( "1".equals( aOrdVO.getOrdStatus() ) || "2".equals( aOrdVO.getOrdStatus() ) || "3".equals( aOrdVO.getOrdStatus() ) || "4".equals( aOrdVO.getOrdStatus() )){
     		list.add(aOrdVO);
     	}
     }
@@ -35,29 +35,56 @@
 	
 	#view th{
 		font-family:Tahoma, Verdana, 微軟正黑體;
-		font-size:18px;
+		font-size:22px;
 		
 	}
 	#view tr{
 		font-family:Tahoma, Verdana, 微軟正黑體;
-		font-size:20px;
+		font-size:24px;
 		
 	}
 	
-	.memRepWindow textarea,.memRatingWindow textarea {
+	.memRepWindow textarea, .memRatingWindow textarea {
     	width: 700px;
-    	height: 300px;
+    	height: 250px;
     	resize: both;
     	overflow: auto;
 	}
 	
-	.memRepWindow th, .memRatingWindow th {
-		font-size: 18px;
+	.memRepWindow table, .memRatingWindow table, .memRepWindow th, .memRatingWindow th, .memRepWindow td, .memRatingWindow td {
+		font-size: 22px;
+		padding: 10px;
+		border: 2px solid white;
 	}	
 	
-	.memRepWindow td, .memRatingWindow td {
-		font-size: 18px;
+	.memRepWindow th, .memRatingWindow th, .memRepWindow .modal-title, .memRatingWindow .modal-title {
+		text-align: center;
 	}	
+	
+	
+	#view table, #view th, #view td {
+    	border: 2px solid white;
+    	text-align: center;
+	}
+	
+	#h_buttnOnimg {
+	    opacity: 0.7;
+	    background: #0283df;
+	    color: #ffffff;
+	    font-family: Tahoma, Verdana, 微軟正黑體;
+	    border: 0px;
+	    border-radius: 10px;
+	    font-size: 20px;
+	}
+	#h_buttnOnimg1 {
+	    opacity: 0.7;
+	    background: #dc6eab;
+	    color: #ffffff;
+	    font-family: Tahoma, Verdana, 微軟正黑體;
+	    border: 0px;
+	    border-radius: 10px;
+	    font-size: 20px;
+	}
 	
 
 </style>
@@ -73,9 +100,9 @@
 	                <h1 id="WishH2">- 謝謝您的支持          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
 	                
 	                <div>${OrdMessage}</div>	                
-					<table class="table table-hover " >
+					<table class="table table-hover">
 						<thead>
-							<tr style="background-color: #B0C4DE;">
+							<tr style="background-color: #B0C4DE;" >
 								<th>訂單編號</th>
 								<th>廠商會員名稱</th>
 								<th>房型名稱</th>
@@ -90,7 +117,12 @@
 							</tr>
 						</thead>
 						<tbody>
-						<c:forEach var="ordVO" items="${list}">
+	
+
+
+
+	<%@ include file="pages/page1.file" %> 
+	<c:forEach var="ordVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 
 								<tr>
 									<td>${ordVO.ordId}</td>
@@ -105,37 +137,43 @@
 																	
 									<td><%= new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format( ordVO.getOrdLiveDate() ) %></td>		
 									<% } else { %>
-									<td>入住日期讀取中</td>
+									<td>無入住日期</td>
 									<% } %>
 									<td>${ordStatusTrans.get(ordVO.ordStatus)}</td>
 
-									<% if(ordVO.getOrdRatingStarNo() == null && ordVO.getOrdRatingContent() == null ){ %>
-											<td id="td2-${ordVO.ordId}">
-												<input type="submit" value="給個分數" id="buttnOnimg" data-toggle="modal" data-target="#rating-${ordVO.ordId}">
-											</td>
-									<% } else { %>
-					       					<td id="td2-${ordVO.ordId}">
-									 			已給分
-											</td>
-									<% } %>
-							
-									<c:choose>
-										<c:when test="${ordVO.ordMemReps.isEmpty()}">	
-											<td id="td-${ordVO.ordId}">
-												<input type="submit" value="檢舉廠商" id="buttnOnimg1" data-toggle="modal" data-target="#report-${ordVO.ordId}">
-											</td>	
-										</c:when>		  
-					       				<c:otherwise>
-					       					<td id="td-${ordVO.ordId}">
-									 			已檢舉
-											</td>
-										</c:otherwise>
-									 </c:choose>  									
+									<% if("2".equals(ordVO.getOrdStatus()) ){ %>
+
+										<% if(ordVO.getOrdRatingStarNo() == null && ordVO.getOrdRatingContent() == null ){ %>
+												<td id="td2-${ordVO.ordId}">
+													<input type="submit" value="給個分數" id="h_buttnOnimg" data-toggle="modal" data-target="#rating-${ordVO.ordId}">
+												</td>
+										<% } else { %>
+						       					<td id="td2-${ordVO.ordId}">
+										 			已給分
+												</td>
+										<% } %>
+								
+										<c:choose>
+											<c:when test="${ordVO.ordMemReps.isEmpty()}">	
+												<td id="td-${ordVO.ordId}">
+													<input type="submit" value="檢舉廠商" id="h_buttnOnimg1" data-toggle="modal" data-target="#report-${ordVO.ordId}">
+												</td>	
+											</c:when>		  
+						       				<c:otherwise>
+						       					<td id="td-${ordVO.ordId}">
+										 			已檢舉
+												</td>
+											</c:otherwise>
+										 </c:choose> 
+									 <% } else { %>
+									 	<td colspan='2'>無法評分</td>
+									 <% } %>									
 								</tr>
 
 						</c:forEach>
 						<tbody>
 					</table>
+	<%@ include file="pages/page2.file" %>
 					 
 	           	   </c:when>		  
 			       <c:otherwise>
@@ -165,46 +203,47 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">評分與意見</h3>
+        <h2 class="modal-title"><b>評分意見表</b></h2>
       </div> <!-- modal-header -->
       
 		<FORM METHOD="post" id="jsonForm2-${ordVO.ordId}" name="form1">      
 	        <div class="modal-body">
 
-				<!-- (開始)檢舉單內容 -->
-				<table border="0">
+				<!-- (開始)意見表內容 -->
+				<table>
+					<tr></tr>
+					
 					<tr>
-						<th>旅客名稱:</th>
+						<th>訂單編號</th>
+						<td>
+							${ordVO.ordId}
+						</td>
+					</tr>						
+					
+					<tr>
+						<th>旅客名稱</th>
 						<td>
 							${ordVO.ordMemVO.memName}
 						</td>
 					</tr>
 						
 					<tr>
-						<th>廠商名稱:</th>
+						<th>廠商名稱</th>
 						<td>
 							${ordVO.ordHotelVO.hotelName}
 						</td>
 					</tr>
 					
 					<tr>
-						<th>訂單編號:</th>
-						<td>
-							${ordVO.ordId}
-						</td>
-					</tr>	
-					
-					<tr>
-						<th>評論內容:</th>
+						<th>評論內容</th>
 						<td>						
 							<textarea name="ordRatingContent"></textarea>
 						</td>
 					</tr>
 					
 					<tr>
-						<th>評價星星數:</th>
+						<th>評價星星數</th>
 						<td>
-							<div class="stars stars-example-bootstrap">
 								<select name="ordRatingStarNo">
 					  					<option value="1">1顆星</option>
 					  					<option value="2">2顆星</option>
@@ -212,14 +251,19 @@
 					  					<option value="4">4顆星</option>
 					    				<option value="5">5顆星</option>	
 								</select>
-							</div>				
 						</td>					
 					</tr>
-					
+<!-- 					<tr> -->
+<!-- 						<td colspan='2'> -->
+<!-- 							<span class="yourRating"> -->
+<!--                  					<span class="value"></span> -->
+<!--                				</span>	 -->
+<!-- 						</td> -->
+<!-- 					</tr>	 -->
 						
 				</table>
 				
-				<!-- (結束)檢舉單內容 -->
+				<!-- (結束)意見表內容 -->
 
 	        </div> <!-- modal-body -->
 	        <div class="modal-footer">
@@ -278,11 +322,15 @@ $(document).ready(function(){
 	});
 	
 	/* 評價星星數 */
-    $("select[name='ordRatingStarNo']").barrating({
-        theme: 'fontawesome-stars'
+    $("#jsonForm2-${ordVO.ordId} select[name='ordRatingStarNo']").barrating({
+        theme: 'fontawesome-stars',
+    
+//         onSelect: function(value, text) {
+// 			$('#rating-${ordVO.ordId} .yourRating .value').text("(" + text + ")");
+//          }
+        
     });
-	
-	 	 
+		 
 });
  
 </script>  
@@ -295,37 +343,39 @@ $(document).ready(function(){
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 class="modal-title">建立旅客檢舉單</h3>
+        <h2 class="modal-title"><b>旅客檢舉單</b></h2>
       </div> <!-- modal-header -->
       
 		<FORM METHOD="post" id="jsonForm-${ordVO.ordId}" name="form1">      
 	        <div class="modal-body">
 
 				<!-- (開始)檢舉單內容 -->
-				<table border="0">
+				<table>
+					<tr></tr>
+
 					<tr>
-						<th>旅客名稱:</th>
+						<th>訂單編號</th>
+						<td>
+							${ordVO.ordId}
+						</td>
+					</tr>	
+
+					<tr>
+						<th>旅客名稱</th>
 						<td>
 							${ordVO.ordMemVO.memName}
 						</td>
 					</tr>
 						
 					<tr>
-						<th>廠商名稱:</th>
+						<th>廠商名稱</th>
 						<td>
 							${ordVO.ordHotelVO.hotelName}
 						</td>
 					</tr>
 					
 					<tr>
-						<th>訂單編號:</th>
-						<td>
-							${ordVO.ordId}
-						</td>
-					</tr>	
-					
-					<tr>
-						<th>檢舉內容:</th>
+						<th>檢舉內容</th>
 					
 						<td>						
 							<textarea name="content"></textarea>
@@ -395,6 +445,8 @@ $(document).ready(function(){
 	                
 </c:forEach>
    
+</body>
+
+</html>   
    
-   
-<%@ include file="../indexFooter.jsp" %>
+<%-- <%@ include file="../indexFooter.jsp" %> --%>
