@@ -187,7 +187,7 @@
 		    <div class="modal-dialog modal-lg">
 		      <div class="modal-content">
 		        <div class="modal-header">
-		          <h3 class="modal-title"><b>建立廠商檢舉單</b></h3>
+		          <h3 class="modal-title"><b>廠商檢舉單</b></h3>
 		        </div> <!-- modal-header -->
 		        
 				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/hotelRep/hotelRep.do" name="form1">      
