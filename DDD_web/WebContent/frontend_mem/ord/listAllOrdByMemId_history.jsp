@@ -59,6 +59,30 @@
 		font-size: 22px;
 	}	
 	
+	#view table,#view th,#view td {
+    	border: 2px solid white;
+    	text-align: center;
+	}
+	
+	#h_buttnOnimg {
+	    opacity: 0.7;
+	    background: #0283df;
+	    color: #ffffff;
+	    font-family: Tahoma, Verdana, 微軟正黑體;
+	    border: 0px;
+	    border-radius: 10px;
+	    font-size: 20px;
+	}
+	#h_buttnOnimg1 {
+	    opacity: 0.7;
+	    background: #dc6eab;
+	    color: #ffffff;
+	    font-family: Tahoma, Verdana, 微軟正黑體;
+	    border: 0px;
+	    border-radius: 10px;
+	    font-size: 20px;
+	}
+	
 
 </style>
 
@@ -73,9 +97,9 @@
 	                <h1 id="WishH2">- 謝謝您的支持          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
 	                
 	                <div>${OrdMessage}</div>	                
-					<table class="table table-hover " >
+					<table class="table table-hover">
 						<thead>
-							<tr style="background-color: #B0C4DE;">
+							<tr style="background-color: #B0C4DE;" >
 								<th>訂單編號</th>
 								<th>廠商會員名稱</th>
 								<th>房型名稱</th>
@@ -90,7 +114,12 @@
 							</tr>
 						</thead>
 						<tbody>
-						<c:forEach var="ordVO" items="${list}">
+	
+
+
+
+	<%@ include file="pages/page1.file" %> 
+	<c:forEach var="ordVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 
 								<tr>
 									<td>${ordVO.ordId}</td>
@@ -111,7 +140,7 @@
 
 									<% if(ordVO.getOrdRatingStarNo() == null && ordVO.getOrdRatingContent() == null ){ %>
 											<td id="td2-${ordVO.ordId}">
-												<input type="submit" value="給個分數" id="buttnOnimg" data-toggle="modal" data-target="#rating-${ordVO.ordId}">
+												<input type="submit" value="給個分數" id="h_buttnOnimg" data-toggle="modal" data-target="#rating-${ordVO.ordId}">
 											</td>
 									<% } else { %>
 					       					<td id="td2-${ordVO.ordId}">
@@ -122,7 +151,7 @@
 									<c:choose>
 										<c:when test="${ordVO.ordMemReps.isEmpty()}">	
 											<td id="td-${ordVO.ordId}">
-												<input type="submit" value="檢舉廠商" id="buttnOnimg1" data-toggle="modal" data-target="#report-${ordVO.ordId}">
+												<input type="submit" value="檢舉廠商" id="h_buttnOnimg1" data-toggle="modal" data-target="#report-${ordVO.ordId}">
 											</td>	
 										</c:when>		  
 					       				<c:otherwise>
@@ -136,6 +165,7 @@
 						</c:forEach>
 						<tbody>
 					</table>
+	<%@ include file="pages/page2.file" %>
 					 
 	           	   </c:when>		  
 			       <c:otherwise>
@@ -204,15 +234,13 @@
 					<tr>
 						<th>評價星星數:</th>
 						<td>
-							<div class="stars stars-example-bootstrap">
 								<select name="ordRatingStarNo">
 					  					<option value="1">1顆星</option>
 					  					<option value="2">2顆星</option>
 					  					<option value="3">3顆星</option>
 					  					<option value="4">4顆星</option>
 					    				<option value="5">5顆星</option>	
-								</select>
-							</div>				
+								</select>			
 						</td>					
 					</tr>
 					
@@ -281,7 +309,7 @@ $(document).ready(function(){
     $("select[name='ordRatingStarNo']").barrating({
         theme: 'fontawesome-stars'
     });
-	
+		
 	 	 
 });
  
@@ -395,6 +423,8 @@ $(document).ready(function(){
 	                
 </c:forEach>
    
+</body>
+
+</html>   
    
-   
-<%@ include file="../indexFooter.jsp" %>
+<%-- <%@ include file="../indexFooter.jsp" %> --%>
