@@ -46,4 +46,9 @@ public class MemChatService {
 	public List<MemChatVO> getNewestMsgEachChatId(String aMemChatMemId){
 		return this.dao.getNewestMsgEachChatId(aMemChatMemId);
 	}
+	
+	public String getOldMsgCountBtwnTwoMems(String aMemChatMemId01, String aMemChatMemId02){
+		return this.dao.getOldMsgCountBtwnTwoMems(aMemChatMemId01,aMemChatMemId02);
+	}
+	
 }
