@@ -306,7 +306,7 @@ function getListForUploader(){
 	function connect() {
 		
 		// 建立 websocket 物件
-		console.log("body connect !");
+		//console.log("body connect !");
 
 		webSocket = new WebSocket(endPointURL);
 
@@ -348,7 +348,7 @@ function getListForUploader(){
 			
 			var jsonObj = JSON.parse(event.data);
 
-			console.log("Debug: "+jsonObj);
+			//console.log("Debug: "+jsonObj);
 
 			//var yourChatTime = "13 mins ago";	
 			var NowDate = new Date();
@@ -658,7 +658,7 @@ function getListForUploader(){
 		
 		card.appendChild(memIntro);
 		
-		var memName = document.createElement('h4');
+		var memName = document.createElement('h3');
 		memName.className = "card-title";
 		//memName.innerText = aObj.memName;
 		var memNameTextNode = document.createTextNode(aObj.memName);
