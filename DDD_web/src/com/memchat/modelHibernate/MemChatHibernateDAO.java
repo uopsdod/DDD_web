@@ -327,6 +327,11 @@ public class MemChatHibernateDAO implements MemChatDAO_interface {
 			}// end try-catch-finally	
 		return memChatVOList;
 	}
+	@Override
+	public String getOldMsgCountBtwnTwoMems(String aMemChatMemId01, String aMemChatMemId02) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 
