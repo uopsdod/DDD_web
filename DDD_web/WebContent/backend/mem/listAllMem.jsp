@@ -176,6 +176,8 @@ if(!authorityList.contains("101")){
         $('#dataTables-example').DataTable({
             responsive: true
         });
+        
+        $(".container-fluid .row #bbb").addClass("in");
     });
     </script>
 </body>

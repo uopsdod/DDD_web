@@ -173,3 +173,9 @@
 		alert("瀏覽器不支援 HTML 5");
 	}
 </script>
+
+<script>
+	$(document).ready(function(){
+		$(".container-fluid .row #eee").addClass("in");
+	});
+</script>

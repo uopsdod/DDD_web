@@ -46,3 +46,13 @@ tbody tr:nth-child(odd){
 #simpleTable{
 		margin-top: 30px;	
 }
+
+.h-table th{
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	font-size: 20px;
+}
+
+.h-table td{
+	font-family: Tahoma, Verdana, 微軟正黑體;
+	font-size: 18px;
+}

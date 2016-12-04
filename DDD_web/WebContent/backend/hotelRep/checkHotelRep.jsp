@@ -81,7 +81,7 @@ if(!authorityList.contains("104")){
 				<h2 align="left">廠商檢舉單審核</h2>
 <c:choose>
 <c:when test="${hotelRepTodolist.size()!=0}">				
-				<table class="table table-hover" border="1">
+				<table class="table table-hover h-table" border="1">
 					<!-- table標題 -->
 					<thead>
 						<tr style="background-color: #B0C4DE;">
@@ -153,7 +153,7 @@ if(!authorityList.contains("104")){
 
 <c:choose>
 <c:when test="${memRepTodolist.size()!=0}">				
-				<table class="table table-hover" border="1">
+				<table class="table table-hover h-table" border="1">
 					<!-- table標題 -->
 					<thead>
 						<tr style="background-color: #B0C4DE;">
@@ -231,6 +231,8 @@ if(!authorityList.contains("104")){
 /* SweetAlert */
 $(document).ready(function(){
 		
+	$(".container-fluid .row #fff").addClass("in");
+	
 	$(".js-sweetAlert-succ").on('click',function(e){
 	    e.preventDefault();
 	    var form = $(this).parents('form');
