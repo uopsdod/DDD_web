@@ -59,7 +59,7 @@ if(!authorityList.contains("104")){
 
 				<!-- 主要的table -->
 				<h2 align="left">廠商檢舉單查詢</h2>
-				<table class="table table-hover" border="1">
+				<table class="table table-hover h-table" border="1">
 					<!-- table標題 -->
 					<thead>
 						<tr style="background-color: #B0C4DE;">
@@ -102,7 +102,7 @@ if(!authorityList.contains("104")){
 	
 				<!-- 主要的table -->
 				<h2 align="left">旅客檢舉單查詢</h2>
-				<table class="table table-hover" border="1">
+				<table class="table table-hover h-table" border="1">
 					<!-- table標題 -->
 					<thead>
 						<tr style="background-color: #B0C4DE;">
@@ -148,3 +148,9 @@ if(!authorityList.contains("104")){
 	</div>
 </body>
 </html>
+
+<script>
+	$(document).ready(function(){
+		$(".container-fluid .row #fff").addClass("in");
+	});
+</script>

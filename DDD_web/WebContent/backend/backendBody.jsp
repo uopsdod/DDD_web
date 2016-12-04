@@ -49,16 +49,15 @@ session.setAttribute("authorityList",authorityList);
 						<div class="panel panel-default">
 							<div class="panel-heading" role="tab" id="tab1" style="background-color: #B0C4DE;">
 								<h4 class="panel-title">
-									<a role="button" data-toggle="collapse" data-parent="#accordion2" href="#aaa" aria-expanded="true" aria-controls="aaa">
+									<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion2" href="#aaa" aria-expanded="false" aria-controls="aaa">
 										<span class="glyphicon glyphicon-list-alt"></span> 訂單
 									</a>
 								</h4>
 							</div>
-							<div id="aaa" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="tab1">
+							<div id="aaa" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab1">
 								<div class="panel-body">
 									<ul style="list-style-type: none">
 										<li><a href="<%=request.getContextPath()%>/backend/ord/listAllOrd.jsp">所有訂單查詢</a></li>
-										<li>萬用複合查詢</li>
 										<li><a href="<%=request.getContextPath()%>/backend/hotel/listAllHotel2.jsp">廠商訂單查詢</a></li>
 									</ul>
 								</div>

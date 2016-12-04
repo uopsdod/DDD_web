@@ -22,7 +22,7 @@
 
 <body>
 	<!-- 主要的table -->
-	<table class="table table-hover" border="1">
+	<table class="table table-hover h-table" border="1">
 		<!-- table標題 -->
 		<thead style="text-align:center">
 			<tr style="background-color: #B0C4DE;">

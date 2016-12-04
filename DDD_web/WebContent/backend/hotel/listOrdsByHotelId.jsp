@@ -36,7 +36,7 @@
 
 <c:choose>
 	<c:when test="${listOrdsByHotelId.size()!=0}">	
-		<table class="table table-hover" border="1">
+		<table class="table table-hover h-table" border="1">
 			<!-- table標題 -->
 			<thead>
 				<tr style="background-color: #B0C4DE;">

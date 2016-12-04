@@ -61,7 +61,7 @@ if(!authorityList.contains("102")){
 				</c:if>
 
 				<!-- 主要的table -->
-				<table class="table table-hover" border="1">
+				<table class="table table-hover h-table" border="1">
 					<!-- table標題 -->
 					<thead>
 						<tr style="background-color: #B0C4DE;">
@@ -122,3 +122,9 @@ if(!authorityList.contains("102")){
 	</div>
 </body>
 </html>
+
+<script>
+	$(document).ready(function(){
+		$(".container-fluid .row #aaa").addClass("in");
+	});
+</script>
