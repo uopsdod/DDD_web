@@ -92,7 +92,7 @@ if(!authorityList.contains("103")){
 
 
 
-				<table class="table table-hover table-bordered  table-striped">
+				<table class="table table-hover table-bordered  table-striped h-table">
 					<thead>
 						<tr style="background-color: #B0C4DE;">
 
@@ -199,3 +199,9 @@ if(!authorityList.contains("103")){
 		src="https://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+<script>
+	$(document).ready(function(){
+		$(".container-fluid .row #ddd").addClass("in");
+	});
+</script>

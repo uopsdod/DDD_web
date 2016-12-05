@@ -103,7 +103,7 @@ if(!authorityList.contains("103")){
 
 
 
-				<table class="table table-hover table-bordered  table-striped">
+				<table class="table table-hover table-bordered  table-striped h-table">
 
 					<thead>
 						<tr style="background-color: #B0C4DE;">
@@ -200,3 +200,9 @@ if(!authorityList.contains("103")){
 	</div>
 </body>
 </html>
+
+<script>
+	$(document).ready(function(){
+		$(".container-fluid .row #ddd").addClass("in");
+	});
+</script>

@@ -113,3 +113,9 @@
 			<%@ include file="page2.file"%>
 </body>
 </html>
+
+<script>
+	$(document).ready(function(){
+		$(".container-fluid .row #ccc").addClass("in");
+	});
+</script>

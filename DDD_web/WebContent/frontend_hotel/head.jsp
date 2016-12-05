@@ -176,21 +176,6 @@ session.setAttribute("hotelId", hotelVO.getHotelId());
 					    </div>
 					  </div>
 					  <!-- 區塊8 -->
-					  <div class="panel panel-default">
-					    <div class="panel-heading" role="tab" id="tab8" style="background-color:#B0C4DE;">
-					      <h4 class="panel-title">
-					        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion2" href="#hhh" aria-expanded="false" aria-controls="hhh">
-					          <span class="glyphicon glyphicon-thumbs-up"></span> 留言評價
-					        </a>
-					      </h4>
-					    </div>
-					    <div id="hhh" class="panel-collapse collapse" role="tabpanel" aria-labelledby="tab8">
-					      <div class="panel-body">
-					        	<ul style="list-style-type: none">
-					        		<li>留言評價維護</li>
-					        	</ul>
-					      </div>
-					    </div>
-					  </div>						  	
+					  	
 					</div>
 				</div>

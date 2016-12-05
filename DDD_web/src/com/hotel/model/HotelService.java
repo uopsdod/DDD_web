@@ -203,6 +203,7 @@ public class HotelService {
 	/* 以下是韓哥需要 */
 	/* (廠商會員)列出該廠商會員的所有訂單 */
 	public Set<OrdVO> getOrdsByHotelId(String aOrdHotelId) {
+		/* 這個沒有特異功能 */
 		return dao.getOrdsByHotelId(aOrdHotelId);
 	}
 

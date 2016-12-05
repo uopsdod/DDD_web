@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+
+import com.ord.model.OrdService;
 import com.room.controler.MyEchoServer;
 import com.room.model.RoomService;
 import com.room.model.RoomVO;
@@ -24,7 +26,7 @@ import com.roomphoto.model.RoomPhotoService;
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
 public class RoomServlet extends HttpServlet {
 	
-	
+	public static Map<String,Boolean> downData =  Collections.synchronizedMap( new HashMap<String,Boolean>());
 	static Map<String,Timer> OnTimer = Collections.synchronizedMap( new HashMap<String,Timer>()); //存有各room的降價排程
 	public static Map<String,Map> OnData =  Collections.synchronizedMap( new HashMap<String,Map>());	//存有各room的即時價格	
 	static Map<String,Timer> DownTimer =  Collections.synchronizedMap( new HashMap<String,Timer>()); //存有各room的下架排程
@@ -274,6 +276,13 @@ public class RoomServlet extends HttpServlet {
 				RoomService roomSvc = new RoomService();
 				RoomVO roomVO = roomSvc.findByPrimaryKey(roomId);				
 				Boolean onSell = roomVO.getRoomForSell();
+				
+				
+				OrdService ordSvc = new OrdService();
+			
+				
+			
+				downData.put(roomId, false);	//用來防止在售完下架後,業者下架卻無法限制訂單取消再上架的問題
 				
 				
 				
@@ -1336,7 +1345,8 @@ public class RoomServlet extends HttpServlet {
 	        	 OnData.remove(roomId); 	//清空資料
 	        	 System.out.println("下架了");
 	        	 MyEchoServer.BufferBox(roomId,-500,"已下架",0); //第四個參數告訴方法,是要是要儲存資料到buffer
-	        	 MyEchoServer.changeRemainNo(roomId,0); //下架時將剩餘房數歸0往前端推	
+	        	 MyEchoServer.changeRemainNo(roomId,0); //下架時將剩餘房數歸0往前端推
+	        	 downData.put(roomId, false);	//用來防止在售完下架後,定時下架卻無法限制訂單取消再上架的問題
 	        	 /*************下架了***************/
 	        	 }//synchronized
 	        }
@@ -1471,6 +1481,7 @@ public class RoomServlet extends HttpServlet {
 	        	 System.out.println("下架了");
 	        	 MyEchoServer.BufferBox(roomId,-500,"已下架",0);  //第四個參數告訴方法,是要是要儲存資料到buffer
 	        	 MyEchoServer.changeRemainNo(roomId,0); //下架時,將剩餘房數歸0
+	        	 downData.put(roomId, false);	//用來防止在售完下架後,定時下架卻無法限制訂單取消再上架的問題
 	        	 } //synchronized
 	        	 /*************下架了***************/
 	         }

@@ -62,7 +62,7 @@
            <div class="col-xs-12 col-sm-10" id="view">
 	           <c:choose>
 				    <c:when test="${list.size()!=0}">				     
-	                <h1 id="WishH2">- 管理你的預訂          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
+	                <h1 id="WishH2">- 管理您的預訂          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
 	                
 	                <div>${OrdMessage}</div>	                
 					<table class="table table-hover " >
@@ -120,7 +120,7 @@
 	                
 	           	   </c:when>		  
 			       <c:otherwise>
-			       	    <h1 id="WishH2">- 管理你的預訂          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
+			       	    <h1 id="WishH2">- 管理您的預訂          <img src="<%=request.getContextPath()%>/frontend_mem/images/like.png"> - </h1>
 			        	<hr style="border-top:3px solid lightgray">				
 			        	<h4 id="listinfor">您目前沒有任何一筆清單資料<img src="<%=request.getContextPath()%>/frontend_mem/images/listwish.png"></h4>
 			        	<br><br><br><br><br><br><br>

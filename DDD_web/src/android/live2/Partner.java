@@ -82,8 +82,9 @@ public class Partner extends HttpServlet {
 				image = ImageUtil.shrink(image, imageSize);
 				res.setContentType("image/jpeg");
 				res.setContentLength(image.length);
+				os.write(image);
 			}
-			os.write(image);
+			
 		}else if("getOne".equals(action)){
 			MemVO memVO = dao_mem.getOneMem(toMemId);
 			memVO.setBs64(null); // 去掉bs64

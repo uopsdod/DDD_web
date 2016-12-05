@@ -77,7 +77,13 @@ public class PartnerMsgController extends HttpServlet {
 			res.setContentType(CONTENT_TYPE);
 			PrintWriter out = res.getWriter();
 			//outStr = gson.toJson(dao_memChat.getAll()); // no no no not get all
-			outStr = gson.toJson(dao_memChat.getNewestMsgEachChatId(memId));
+			List<MemChatVO> list = dao_memChat.getNewestMsgEachChatId(memId);
+			for (MemChatVO myVO: list) {
+				String msgCount = dao_memChat.getOldMsgCountBtwnTwoMems(myVO.getMemChatMemId(), myVO.getMemChatToMemId());
+				myVO.setMemChatId(msgCount); // 不合常理處，請特別注意且小心行事
+				System.out.println("msgCount: " + "(" + myVO.getMemChatMemId() + "," + myVO.getMemChatToMemId() + ") - " + msgCount);
+			}
+			outStr = gson.toJson(list);
 			
 			//System.out.println("outStr:" + outStr);
 			out.println(outStr);
