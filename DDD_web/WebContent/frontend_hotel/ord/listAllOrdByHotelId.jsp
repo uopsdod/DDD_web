@@ -5,22 +5,23 @@
 
 <style type="text/css">
 		
-	#hotelRepWindow textarea {
+	.hotelRepWindow textarea {
     	width: 700px;
-    	height: 300px;
+    	height: 250px;
     	resize: both;
     	overflow: auto;
 	}
 	
-	#hotelRepWindow th {
-		font-family: Tahoma, Verdana, 微軟正黑體;
+	
+	.hotelRepWindow table, .hotelRepWindow th, .hotelRepWindow td {
 		font-size: 22px;
+		padding: 10px;
+		border: 2px solid white;
 	}	
 	
-	#hotelRepWindow td {
-		font-family: Tahoma, Verdana, 微軟正黑體;
-		font-size: 22px;
-	}
+	.hotelRepWindow th, .hotelRepWindow .modal-title {
+		text-align: center;
+	}	
 	
 
 </style>	
@@ -182,44 +183,43 @@
 <c:forEach var="ordVO" items="${list}">
 		
 		  <!-- Modal -->
-	<div id="hotelRepWindow">  
+	<div class="hotelRepWindow">  
 		  <div class="modal fade" id="${ordVO.ordId}" role="dialog">
 		    <div class="modal-dialog modal-lg">
 		      <div class="modal-content">
 		        <div class="modal-header">
-		          <h3 class="modal-title"><b>廠商檢舉單</b></h3>
+		          <h2 class="modal-title"><b>廠商檢舉單</b></h2>
 		        </div> <!-- modal-header -->
 		        
 				<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/hotelRep/hotelRep.do" name="form1">      
 			        <div class="modal-body">
 	
 						<!-- (開始)檢舉單內容 -->
-						<table border="0">
+						<table>
+							<tr></tr>
 							<tr>
-								<th>廠商名稱:</th>
+								<th>訂單編號</th>
+								<td>
+									${ordVO.ordId}
+								</td>
+							</tr>							
+						
+							<tr>
+								<th>廠商名稱</th>
 								<td>
 									${ordVO.ordHotelVO.hotelName}
 								</td>
 							</tr>
 							
-						
 							<tr>
-								<th>旅客名稱:</th>
+								<th>旅客名稱</th>
 								<td>
 									${ordVO.ordMemVO.memName}
 								</td>
 							</tr>	
 							
-						
 							<tr>
-								<th>訂單編號:</th>
-								<td>
-									${ordVO.ordId}
-								</td>
-							</tr>	
-							
-							<tr>
-								<th>檢舉內容:</th>
+								<th>檢舉內容</th>
 							
 								<td>						
 									<textarea name="hotelRepContent"></textarea>

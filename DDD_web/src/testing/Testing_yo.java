@@ -387,12 +387,17 @@ public class Testing_yo extends HttpServlet {
 //		out.print(myVO.getOrdStatus());
 		
 		
-		MemRepService dao_memRep = new MemRepService();
-		String ordId = "2016111011";
-		String content = "test 1126";
-		MemRepVO memRepVO = dao_memRep.findByMemRepOrdId(ordId); // 2016111002
-		out.println(memRepVO.getMemRepContent());
+//		MemRepService dao_memRep = new MemRepService();
+//		String ordId = "2016111011";
+//		String content = "test 1126";
+//		MemRepVO memRepVO = dao_memRep.findByMemRepOrdId(ordId); // 2016111002
+//		out.println(memRepVO.getMemRepContent());
 		//dao_memRep.insert(ordId, content);
+		
+		MemChatService dao_memChat = new MemChatService();
+		String count = "";
+		count = dao_memChat.getOldMsgCountBtwnTwoMems("10000001", "10000002");
+		out.println("count: " + count);
 		
 	
 	}

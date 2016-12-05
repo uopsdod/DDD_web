@@ -21,7 +21,7 @@ import com.emp.model.EmpService;
 import com.emp.model.EmpVO;
 import com.hotel.model.HotelService;
 import com.hotel.model.HotelVO;
-import com.ord.model.OrdVO;
+import com.ord.model.*;
 
 import util.AddressToLat;
 import util.Util_psw;
@@ -1070,10 +1070,14 @@ public class HotelServlet extends HttpServlet {
 			request.setAttribute("errorMsgs", errorMsgs);
 			
 			try{
+				String requestURL = request.getParameter("requestURL");
+				String whichPage = request.getParameter("whichPage");
 				String hotelId = request.getParameter("hotelId");
-				HotelService hotelSvc = new HotelService();
-				Set<OrdVO> set = hotelSvc.getOrdsByHotelId(hotelId);
-				request.setAttribute("listOrdsByHotelId", set);
+				
+				OrdService ordlSvc = new OrdService();
+				List<OrdVO> list = ordlSvc.getAllByOrdHotelId(hotelId);
+				
+				request.setAttribute("listOrdsByHotelId", list);
 				
 				String url = null;
 				if("listOrdsByHotelIdA".equals(action)){

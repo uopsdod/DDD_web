@@ -23,7 +23,7 @@ public class OrdCheckAndCancel extends HttpServlet {
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		
-		System.out.println("阿宏好棒");
+		//System.out.println("阿宏好棒");
 	
 		doPost(req,res);
 		

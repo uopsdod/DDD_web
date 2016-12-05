@@ -43,6 +43,7 @@ public class MemChatHibernateDAO implements MemChatDAO_interface {
 	
 	private static final String GET_ALL_MEMCHATCHATID = "SELECT memChatChatId, memChatMemId, memChatDate, memChatContent, memChatPic, memChatStatus, memChatToMemId FROM memChat WHERE memChatChatId= ? ORDER BY memChatChatId";
 	private static final String GET_ALL_MSGBTWNTWOMEMS = "SELECT * FROM memchat WHERE memChatMemId IN (?,?) AND memChatToMemId IN (?,?) ORDER BY memChatDate";
+	private static final String GET_COUNT_MSGBTWNTWOMEMS = "SELECT COUNT(*) AS COUNT FROM memchat WHERE memChatMemId IN (?,?) AND memChatToMemId IN (?,?) ORDER BY memChatDate";
 	private static final String GET_CHAT_IDBTWNTWOMEMS = "SELECT distinct memChatChatId FROM memchat WHERE memChatMemId IN (?,?) AND memChatToMemId IN (?,?)";
 	private static final String GET_NEWESTMSG_CHATID = "SELECT * FROM memChat JOIN (SELECT memChatChatId as chatId_b, MAX(memChatDate) as date_b FROM memChat GROUP BY memChatChatId) ON memChatChatId = chatId_b AND memChatDate = date_b WHERE memChatMemId = ? OR memChatToMemId = ? ORDER BY memChatDate DESC";
 	//private static final String GET_NEWESTMSG_CHATID = "SELECT * FROM (SELECT * FROM memChat WHERE ROWID IN (SELECT MAX(ROWID) FROM memchat GROUP BY memChatChatId)) WHERE memChatMemId = ? OR memChatToMemId = ? ORDER BY memChatDate DESC";
@@ -361,6 +362,35 @@ public class MemChatHibernateDAO implements MemChatDAO_interface {
 //		return chatVO;
 //	}
 //
+	@Override
+	public String getOldMsgCountBtwnTwoMems(String aMemChatMemId01, String aMemChatMemId02) {
+		// GET_ALL_MSGBTWNTWOMEMS
+		String oldMsgCount = "";
+		ResultSet rs = null;
+		try(Connection con = ds.getConnection();
+			PreparedStatement pstmt = con.prepareStatement(MemChatHibernateDAO.GET_COUNT_MSGBTWNTWOMEMS);) {
+				pstmt.setString(1, aMemChatMemId01);
+				pstmt.setString(2, aMemChatMemId02);
+				pstmt.setString(3, aMemChatMemId01);
+				pstmt.setString(4, aMemChatMemId02);
+				rs = pstmt.executeQuery();
+				if(rs.next()){
+					oldMsgCount = rs.getString("COUNT");
+				}
+				
+			} catch (SQLException se) {
+				throw new RuntimeException("A database error occured. "+ se.getMessage());
+			} finally {
+				if (rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException se) {
+						se.printStackTrace(System.err);
+					}
+				}
+			}// end try-catch-finally	
+		return oldMsgCount;
+	}
 
 
 }

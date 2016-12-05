@@ -25,8 +25,39 @@
 
 .chat li .chat-body p
 {
-    margin: 0;
     color: #777777;
+}
+
+
+.chat-body p
+{
+	font-size: 20px;
+}
+
+.left .chat-body p
+{
+	margin-left: 50px;
+}
+
+.left .chat-body strong
+{
+	margin-left: 10px;
+}
+
+.right .chat-body p
+{
+	margin-right: 10px;
+}
+
+.right .chat-body strong
+{
+	margin-right: 10px;
+}
+
+
+.chat-body strong
+{
+	font-size: 14px;
 }
 
 .panel .slidedown .glyphicon, .chat .glyphicon
@@ -66,8 +97,16 @@
 }	
 
 
-#chatWindow{
+#chatWindow {
 	bottom:0px;
 	position:fixed;
 	width: 500px;
+}
+
+.thumbnail p {
+	font-size: 18px;
+}
+
+.memCard .card-text {
+	font-size: 18px;
 }

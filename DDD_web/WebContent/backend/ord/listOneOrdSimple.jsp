@@ -22,7 +22,7 @@
 
 <body>
 	<!-- 主要的table -->
-	<table class="table table-hover" border="1">
+	<table class="table table-hover h-table" border="1">
 		<!-- table標題 -->
 		<thead style="text-align:center">
 			<tr style="background-color: #B0C4DE;">
@@ -55,7 +55,7 @@
 				<% if(ordVO.getOrdLiveDate()!=null){ %>
 					<td><%=new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(ordVO.getOrdLiveDate())%></td>
 				<% } else { %>
-					<td>尚未入住</td>
+					<td>無入住日期</td>
 				<% } %>
 			</tr>
 			<tr>
@@ -90,10 +90,10 @@
 				<th class="text-center">簡訊驗證碼</th>
 				<td><%=ordVO.getOrdMsgNo()%></td>
 			</tr>
-			<tr>
-				<th class="text-center">QR Code圖片</th>
-				<td><img src="<%=request.getContextPath()%>/ord/DBGifReader4?ordId=<%=ordVO.getOrdId()%>" width="120"></td>
-			</tr>
+<!-- 			<tr> -->
+<!-- 				<th class="text-center">QR Code圖片</th> -->
+<%-- 				<td><img src="<%=request.getContextPath()%>/ord/DBGifReader4?ordId=<%=ordVO.getOrdId()%>" width="120"></td> --%>
+<!-- 			</tr> -->
 		</tbody>
 	</table>
 </body>

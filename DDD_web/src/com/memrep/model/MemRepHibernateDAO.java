@@ -35,8 +35,8 @@ public class MemRepHibernateDAO implements MemRepDAO_interface {
 	// 全部欄位名(複製用):
 	// memrepId memrepOrdId memrepMemId memrepHotelId memrepEmpId memrepContent memrepStatus memrepDate memrepReviewDate 
 	
-	private static final String GET_ALL_MEMREPSTATUS = "SELECT memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus, memrepDate, memrepReviewDate FROM memrep WHERE memrepStatus = ? ORDER BY memrepId";	
-	private static final String GET_ALL_STMT = "from MemRepVO order by memRepId";
+	private static final String GET_ALL_MEMREPSTATUS = "SELECT memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus, memrepDate, memrepReviewDate FROM memrep WHERE memrepStatus = ? ORDER BY memrepId desc";	
+	private static final String GET_ALL_STMT = "from MemRepVO order by memRepId desc";
 	private static final String GET_ONE_ORDID = "from MemRepVO WHERE memRepOrdId = ?";
 
 	@Override
