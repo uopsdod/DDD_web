@@ -9,6 +9,83 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 <head>
 <title>房型資料新增- addRoom.jsp</title>
 <script src="<%=request.getContextPath()%>/frontend_hotel/room/js/6_new.js"></script>
+<script>
+	function magic(){
+		var roomTwoBed = document.getElementById("roomTwoBed");		//雙人床
+	    for (var i = 0; i < roomTwoBed.options.length; i++) {        
+	        if (roomTwoBed.options[i].value == '2') {        
+	        	roomTwoBed.options[i].selected = true;              
+	            break;        
+	        }        
+	    }
+		
+	    var roomOneBed = document.getElementById("roomOneBed");		//單人床
+	    for (var i = 0; i < roomOneBed.options.length; i++) {        
+	        if (roomOneBed.options[i].value == '0') {        
+	        	roomOneBed.options[i].selected = true;              
+	            break;        
+	        }        
+	    } 
+		
+	    var roomCapacity = document.getElementById("roomCapacity");		//單人床
+	    for (var i = 0; i < roomCapacity.options.length; i++) {
+	    	console.log(roomCapacity.options[i]);
+	    	console.log(roomCapacity.options[i].value);
+	        if (roomCapacity.options[i].value == "4") {        
+	        	roomCapacity.options[i].selected = true;              
+	            break;        
+	        }        
+	    }
+	    
+	    
+	    var roomSweetFacility = document.getElementById("roomSweetFacility");
+	    while (roomSweetFacility.firstChild) {
+	    	roomSweetFacility.removeChild(roomSweetFacility.firstChild);
+	    }
+	    var roomSweetFacilityText = document.createTextNode("空調和每日客房清潔服務非吸煙客房");
+	    roomSweetFacility.appendChild(roomSweetFacilityText);
+	    
+	    
+	    var roomFacility = document.getElementById("roomFacility");
+	    while (roomFacility.firstChild) {
+	    	roomFacility.removeChild(roomFacility.firstChild);
+	    }
+	    var roomFacilityText = document.createTextNode("保險箱、書桌和電話，可要求提供 免費搖籃/嬰兒床");
+	    roomFacility.appendChild(roomFacilityText);
+	    
+	    var roomSleep = document.getElementById("roomSleep");
+	    while (roomSleep.firstChild) {
+	    	roomSleep.removeChild(roomSleep.firstChild);
+	    }
+	    var roomSleepText = document.createTextNode("高級寢具");
+	    roomSleep.appendChild(roomSleepText);
+	    
+	    var roomMeal = document.getElementById("roomMeal");
+	    while (roomMeal.firstChild) {
+	    	roomMeal.removeChild(roomSleep.firstChild);
+	    }
+	    var roomMealText = document.createTextNode("冰箱和免費瓶裝水");
+	    roomMeal.appendChild(roomMealText);
+	    
+	    var roomFun = document.getElementById("roomFun");
+	    while (roomFun.firstChild) {
+	    	roomFun.removeChild(roomFun.firstChild);
+	    }
+	    var roomFunText = document.createTextNode("免費無線上網、平面電視和有線電視頻道");
+	    roomFun.appendChild(roomFunText);
+	    
+	    var roomPrice = document.getElementById("roomPrice");
+	    roomPrice.value="7000";
+	    
+	    var roomTotalNo = document.getElementById("roomTotalNo");
+	    roomTotalNo.value="8";
+	    
+	    var roomName = document.getElementById("roomName");
+	    roomName.value="雅致家庭房";
+	    
+	    
+	}
+</script>
 </head>
 
 
@@ -82,7 +159,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 													<div class="form-group">
 														<label class="col-sm-3 control-label">房型名稱</label>
 														<div class="col-sm-9">
-																<input type="TEXT" name="roomName" size="45" class="form-control"
+																<input type="TEXT" id="roomName" name="roomName" size="45" class="form-control"
 																		value="<%= (roomVO==null)? "" : roomVO.getRoomName()%>" />
 														</div>
 													</div>
@@ -90,7 +167,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 													<div class="form-group">
 														<label class="col-sm-3 control-label">房間總數</label>
 														<div class="col-sm-9">
-																<input type="TEXT" name="roomTotalNo" size="10" class="form-control"
+																<input type="TEXT" id="roomTotalNo" name="roomTotalNo" size="10" class="form-control"
 																	value="<%= (roomVO==null)? "" : (roomVO.getRoomTotalNo()==null?"":roomVO.getRoomTotalNo())%>" />
 														</div>
 													</div>
@@ -98,7 +175,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 													<div class="form-group">
 														<label class="col-sm-3 control-label">房間定價</label>
 														<div class="col-sm-9">
-																<input type="TEXT" name="roomPrice" size="45" class="form-control"
+																<input type="TEXT" id="roomPrice" name="roomPrice" size="45" class="form-control"
 																	value="<%= (roomVO==null)? "" : (roomVO.getRoomPrice()==null?"":roomVO.getRoomPrice())%>" />
 														</div>
 													</div>
@@ -107,14 +184,14 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 														<label class="col-sm-3 control-label">娛樂</label>
 														<div class="col-sm-9">
 																
-																<textarea rows="3" cols="50" name="roomFun" maxlength="50" class="form-control"><%= (roomVO==null)? "" : roomVO.getRoomFun()%></textarea>
+																<textarea rows="3" cols="50" id="roomFun" name="roomFun" maxlength="50" class="form-control"><%= (roomVO==null)? "" : roomVO.getRoomFun()%></textarea>
 														</div>
 													</div>	
 													
 													<div class="form-group">
 														<label class="col-sm-3 control-label">餐飲</label>
 														<div class="col-sm-9">
-																<textarea rows="3" cols="50" name="roomMeal" maxlength="50" class="form-control"><%= (roomVO==null)? "" : roomVO.getRoomMeal()%></textarea>
+																<textarea rows="3" cols="50" id="roomMeal" name="roomMeal" maxlength="50" class="form-control"><%= (roomVO==null)? "" : roomVO.getRoomMeal()%></textarea>
 																
 														</div>
 													</div>
@@ -122,7 +199,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 													<div class="form-group">
 														<label class="col-sm-3 control-label">舒適睡眠</label>
 														<div class="col-sm-9">
-																<textarea rows="3" cols="50" name="roomSleep" maxlength="50" class="form-control"><%= (roomVO==null)? "" : roomVO.getRoomSleep()%></textarea>
+																<textarea rows="3" cols="50" id="roomSleep" name="roomSleep" maxlength="50" class="form-control"><%= (roomVO==null)? "" : roomVO.getRoomSleep()%></textarea>
 																
 														</div>
 													</div>
@@ -131,7 +208,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 														<label class="col-sm-3 control-label">設施</label>
 														<div class="col-sm-9">
 																
-																<textarea rows="3" cols="50" name="roomFacility" maxlength="50" class="form-control"><%= (roomVO==null)? "" : roomVO.getRoomFacility()%></textarea>
+																<textarea rows="3" cols="50" id="roomFacility" name="roomFacility" maxlength="50" class="form-control"><%= (roomVO==null)? "" : roomVO.getRoomFacility()%></textarea>
 														</div>
 													</div>
 													
@@ -139,7 +216,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 														<label class="col-sm-3 control-label">貼心服務</label>
 														<div class="col-sm-9">
 																
-																<textarea rows="3" cols="50" name="roomSweetFacility" maxlength="50" class="form-control"><%= (roomVO==null)? "" : roomVO.getRoomSweetFacility()%></textarea>
+																<textarea rows="3" cols="50" id="roomSweetFacility" name="roomSweetFacility" maxlength="50" class="form-control"><%= (roomVO==null)? "" : roomVO.getRoomSweetFacility()%></textarea>
 														</div>
 													</div>	
 								
@@ -150,7 +227,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 													 		 	<% String[] roomCapName ={"單人房","雙人房","四人房","六人房","八人房"};%>
 														
 															
-																<select  name="roomCapacity" class="form-control" style="width:100px">	
+																<select  name="roomCapacity" id="roomCapacity" class="form-control" style="width:100px">	
 													  			<% for(int i =0;i<5;i++){%>
 																	<option value="<%=roomCap[i]%>"	<%=roomVO==null?"":((roomVO.getRoomCapacity()==roomCap[i])?"selected":"")%>	><%=roomCapName[i]%>	
 																<%}%>	  			
@@ -162,7 +239,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 													<div class="form-group">
 														<label class="col-sm-3 control-label">單人床數</label>
 														<div class="col-sm-9">
-																<select  name="roomOneBed" class="form-control" style="width:100px">			
+																<select  id="roomOneBed" name="roomOneBed" class="form-control" style="width:100px">			
 																<% for(int i =0;i<9;i++){%>
 																	<option value="<%=i%>"	<%=roomVO==null?"":((roomVO.getRoomOneBed()==i)?"selected":"")%>	><%=i%>	
 																<%}%>
@@ -173,7 +250,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 													<div class="form-group">
 														<label class="col-sm-3 control-label">雙人床數</label>
 														<div class="col-sm-9">
-																<select  name="roomTwoBed" class="form-control" style="width:100px">
+																<select  name="roomTwoBed" id="roomTwoBed" class="form-control" style="width:100px">
 													  	
 													  			<% for(int i =0;i<5;i++){%>
 																	<option value="<%=i%>"	<%=roomVO==null?"":(roomVO.getRoomTwoBed()==i?"selected":"")%>	><%=i%>	
@@ -182,7 +259,7 @@ RoomVO roomVO = (RoomVO) request.getAttribute("roomVO");
 														</div>
 													</div>
 						
-						
+													<input type="button" class="btn btn-success" value="神奇小按鈕" onclick="magic()" >
 										 </div>
 									 
 										 

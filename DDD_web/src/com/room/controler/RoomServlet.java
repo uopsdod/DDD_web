@@ -1345,7 +1345,8 @@ public class RoomServlet extends HttpServlet {
 	        	 OnData.remove(roomId); 	//清空資料
 	        	 System.out.println("下架了");
 	        	 MyEchoServer.BufferBox(roomId,-500,"已下架",0); //第四個參數告訴方法,是要是要儲存資料到buffer
-	        	 MyEchoServer.changeRemainNo(roomId,0); //下架時將剩餘房數歸0往前端推	
+	        	 MyEchoServer.changeRemainNo(roomId,0); //下架時將剩餘房數歸0往前端推
+	        	 downData.put(roomId, false);	//用來防止在售完下架後,定時下架卻無法限制訂單取消再上架的問題
 	        	 /*************下架了***************/
 	        	 }//synchronized
 	        }
@@ -1480,6 +1481,7 @@ public class RoomServlet extends HttpServlet {
 	        	 System.out.println("下架了");
 	        	 MyEchoServer.BufferBox(roomId,-500,"已下架",0);  //第四個參數告訴方法,是要是要儲存資料到buffer
 	        	 MyEchoServer.changeRemainNo(roomId,0); //下架時,將剩餘房數歸0
+	        	 downData.put(roomId, false);	//用來防止在售完下架後,定時下架卻無法限制訂單取消再上架的問題
 	        	 } //synchronized
 	        	 /*************下架了***************/
 	         }
