@@ -200,6 +200,8 @@ public class RoomSetOrder extends HttpServlet {
 	
 	public synchronized static OrdVO setOrder(String ordHotelId,String ordRoomId,String ordMemId,int ordPrice,String ordMail,String ordPhone,ServletContext box){
 		
+		RoomServlet.downData.remove(ordRoomId);
+		 
 		
 		
 		 HotelService hotelSvc = new HotelService();			
@@ -440,26 +442,27 @@ public class RoomSetOrder extends HttpServlet {
 	        	
 	        	
 	        	 
-	        	 if(sellNow==false&&remainNo2==1&&reUpTime<=(downTime-1000*60*30)){	//再次上架時間要比原定下架時間提前30min才再次上架
-	        		
-	        		 int price = downSellPrice.get(ordRoomId);
-	        		 int roomPrice= roomVO2.getRoomPrice();
-		        	 int roomDisccountPercent = roomVO2.getRoomDisccountPercent();
-		        	 Float cutPrice = roomPrice*roomDisccountPercent*0.01f;
-					 int cutPriceInt = cutPrice.intValue();
-		        	 int bottomPrice = roomVO2.getRoomBottomPrice();
-		        	 boolean roomOnePrice = roomVO2.getRoomOnePrice(); 
-	        	     RoomServlet.DynamicPrice(ordRoomId,false,roomDiscountHr*10*1000,price,cutPriceInt,bottomPrice,roomOnePrice,downTime,remainNo2); 
-	        	     roomVO2.setRoomForSell(true);	
+	        	 if(sellNow==false&&remainNo2==1){	//再次上架時間要比原定下架時間提前30min才再次上架
+	        		 Boolean downSell = RoomServlet.downData.get(ordRoomId);
+	        		 if(downSell==null)
+	        		 {	
+		        		 int price = downSellPrice.get(ordRoomId);
+		        		 int roomPrice= roomVO2.getRoomPrice();
+			        	 int roomDisccountPercent = roomVO2.getRoomDisccountPercent();
+			        	 Float cutPrice = roomPrice*roomDisccountPercent*0.01f;
+						 int cutPriceInt = cutPrice.intValue();
+			        	 int bottomPrice = roomVO2.getRoomBottomPrice();
+			        	 boolean roomOnePrice = roomVO2.getRoomOnePrice(); 
+		        	     RoomServlet.DynamicPrice(ordRoomId,false,roomDiscountHr*10*1000,price,cutPriceInt,bottomPrice,roomOnePrice,downTime,remainNo2); 
+		        	     roomVO2.setRoomForSell(true);
+	        	 	}
 	        	 }else if(remainNo2!=1){	//上架的推送房數資料,由DynamicPrice方法內來推送
 	        		 MyEchoServer.changeRemainNo(ordRoomId,remainNo2); //將剩餘房數+1 並往前推
 	        	 }
 	        	 
 	        	 roomSvc2.update(roomVO2);	//房型修改剩餘房數
 	        	 
-	        	 if(remainNo2==1&&reUpTime<=(downTime-1000*60*30)){
-	        	 MyEchoServer.changeRemainNo(ordRoomId,roomVO2.getRoomRemainNo());
-	        	 }
+	        	
 	        	 
 	        	 String addOrdId = newOrdVO.getOrdId();         	 
 	        	 OrdVO thisOrdVO = ordSvc.getOneOrd(addOrdId);
@@ -561,8 +564,10 @@ public class RoomSetOrder extends HttpServlet {
     	 
     	 	 
     	 
-    	 if(sellNow==false&&remainNo2==1&&divideTime<=(downTime-1000*60*30)){	//再次上架時間要比原定下架時間提前30min才再次上架
-    		
+    	 if(sellNow==false&&remainNo2==1){	//再次上架時間要比原定下架時間提前30min才再次上架
+    		 Boolean downSell = RoomServlet.downData.get(ordRoomId);
+    		 if(downSell==null)
+    		 {	
     		 int price = downSellPrice.get(ordRoomId);
     		 int roomPrice= roomVO2.getRoomPrice();
         	 int roomDisccountPercent = roomVO2.getRoomDisccountPercent();
@@ -572,6 +577,8 @@ public class RoomSetOrder extends HttpServlet {
         	 boolean roomOnePrice = roomVO2.getRoomOnePrice(); 
     	     RoomServlet.DynamicPrice(ordRoomId,false,roomDiscountHr*10*1000,price,cutPriceInt,bottomPrice,roomOnePrice,downTime,remainNo2); 
     	     roomVO2.setRoomForSell(true);	
+    		 }
+    	     
     	 }else{	//上架的推送房數資料,由DynamicPrice方法內來推送
     		 MyEchoServer.changeRemainNo(ordRoomId,remainNo2); //將剩餘房數+1 並往前推
     	 }
