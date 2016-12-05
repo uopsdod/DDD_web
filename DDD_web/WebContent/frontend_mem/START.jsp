@@ -34,7 +34,7 @@
 <!--         <iframe class="imgur-embed" width="100%" height="861px" frameborder="0" src="http://i.imgur.com/KTgjEZL.gifv#embed"></iframe> -->
 <%--             <img src="<%=request.getContextPath()%>/frontend_mem/GIF/wind.gif" class="animsition"> --%>
 <!-- 		<img src="data:image/gif;base64,ICAgICAgICAKICMKICMg/kcov2xiOkJhc2U2NAz7qADRAUhUTUw1ANEBxQeERGF0YVVSSeV3CiAjIC8BIFBORwFHSUYBSlBHAUJNUAFUSUYBUFNEAUlDTyBJPA8KICMKICAgICAgICA=" width="100%" height="1000px"> -->
-        <video src="<%=request.getContextPath()%>/frontend_mem/video/wind.mp4"  autoplay  loop width="2220px" height="1010px"></video>
+        <video src="<%=request.getContextPath()%>/frontend_mem/video/wind.mp4"  autoplay  loop width="2220px" height="1010px" class="animsition"></video>
         
         </div>
     </div>
