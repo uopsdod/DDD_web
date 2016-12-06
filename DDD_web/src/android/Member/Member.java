@@ -78,7 +78,11 @@ public class Member extends HttpServlet {
 			OutputStream os = rp.getOutputStream();
 			String id = jsonObject.get("id").getAsString();
 			int imageSize = jsonObject.get("imageSize").getAsInt();
-			byte[] image = dao.getOneMem(id).getMemProfile();
+			byte[] image = null;
+			if(dao.getOneMem(id).getMemProfile() != null){
+				image = dao.getOneMem(id).getMemProfile();
+			}
+			
 			if (image != null) {
 				image = ImageUtil.shrink(image, imageSize);
 				rp.setContentType("image/jpeg");
@@ -94,6 +98,10 @@ public class Member extends HttpServlet {
 			// byte[] image = Base64.decodeBase64(imageBase64);
 
 			memVO.setMemBlackList("0");
+			if(memVO.getMemGender() == null || memVO.getMemGender().equals(null)){
+				memVO.setMemGender("m");
+			}
+		
 //			byte[] memProfile = memVO.getMemProfile();
 //			System.out.println("memProfile :" + memProfile);
 //			if (memProfile.equals(null) || memProfile == null) {
