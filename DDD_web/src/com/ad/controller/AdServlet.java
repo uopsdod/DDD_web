@@ -230,7 +230,7 @@ public class AdServlet extends HttpServlet {
 				 *************/
 			
 				//request.setAttribute("adVO", adVO); // 資料庫update成功後,正確的的empVO物件,存入req
-				String url = "http://localhost:8081/DDD_web/backend/Ad/listAllAdPage.jsp";
+				String url = request.getContextPath()+"/backend/Ad/listAllAdPage.jsp";
 				response.sendRedirect(url);
 //				RequestDispatcher successView = request.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 //				successView.forward(request, response);
@@ -330,7 +330,7 @@ public class AdServlet extends HttpServlet {
 			/***************************
 			 * 3.新增完成,準備轉交(Send the Success view)
 			 ***********/
-			String url = "http://localhost:8081/DDD_web/frontend_hotel/ad/listAllByHotelIdPage.jsp";/* 要跳轉頁面 */
+			String url = request.getContextPath()+"/frontend_hotel/ad/listAllByHotelIdPage.jsp";/* 要跳轉頁面 */
 			response.sendRedirect(url);
 			
 //			RequestDispatcher successView = request.getRequestDispatcher(url); // 轉交
