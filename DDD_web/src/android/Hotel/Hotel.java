@@ -66,6 +66,7 @@ public class Hotel extends HttpServlet {
 			list = dao.getAll();
 			for (HotelVO myVO: list){
 				myVO.setHotelCoverPic(null);
+				myVO.setHotelRegisterPic(null);
 			}
 			
 			outStr = gson.toJson(list);
