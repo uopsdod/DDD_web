@@ -9,13 +9,13 @@
 		
 		<div class="col-xs-12 col-sm-10 bb" style="background-color:#FFFAF0;postion:relative;top:220px">
 					<ol class="breadcrumb">
-						<li>
+						<li> 
 							房型資料
 						</li>
 						<li class="active">上架管理</li>
 					</ol>
 
-				  <table class="table table-hover" border="1">
+				  <table class="table table-hover" border="1" style="font-size:20px;vertical-align: middle;text-align: center;">
 				    <thead>
 				      <tr style="background-color:#B0C4DE;">
 					<th>房間名稱</th>
