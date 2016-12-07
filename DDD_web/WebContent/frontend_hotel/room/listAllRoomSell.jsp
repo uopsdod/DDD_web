@@ -5,16 +5,38 @@
 <%@ page import="com.room.model.RoomVO"%>		
 		<%@ include file="../head.jsp"%>
 
+<script>
+	var timeBox;
+	var serverTime = <%=new Date().getTime()%>;
+	var time;
+	var i = 1;
+	function ShowTime(){		
+	 	time = serverTime +1000*i;	 
+	 	timeBox.innerHTML = new Date(time);	
+		i++;
+		setTimeout('ShowTime()',1000);
+	}
+	function nowTime(){
+		
+		timeBox = document.getElementById('showbox');
+		timeBox.innerHTML = new Date(serverTime);
+		setTimeout('ShowTime()',1000);
+	}
+	
+	window.addEventListener( "load", nowTime, false );	
+</script>
+
 		
 		
 		<div class="col-xs-12 col-sm-10 bb" style="background-color:#FFFAF0;postion:relative;top:220px">
+					<span style="text-align:right"><div id="showbox" style="color:red;font-size:30px"></div></span>
 					<ol class="breadcrumb">
 						<li> 
 							房型資料
 						</li>
 						<li class="active">上架管理</li>
 					</ol>
-
+				  	
 				  <table class="table table-hover" border="1" style="font-size:20px;vertical-align: middle;text-align: center;">
 				    <thead>
 				      <tr style="background-color:#B0C4DE;">
