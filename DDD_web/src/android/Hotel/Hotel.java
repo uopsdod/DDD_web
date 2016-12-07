@@ -29,7 +29,7 @@ public class Hotel extends HttpServlet {
 	private List<String> category;
 	private List<Spot> computerList;
 	private List<Spot> comicList;
-
+ 
 
 	@Override
 	public void doPost(HttpServletRequest rq, HttpServletResponse rp)
