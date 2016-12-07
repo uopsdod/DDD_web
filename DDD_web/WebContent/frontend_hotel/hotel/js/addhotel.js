@@ -8,8 +8,8 @@ function magic(){
 	$("[name~='hotelName']").val("圓山大飯店");
 	$("[name~='hotelTaxId']").val("58748721");
 	$("[name~='hotelCity']").val("台北市");
-	$("[name~='hotelCounty']").val("中山區");
-	$("[name~='hotelRoad']").val("中山北路四段一號");
+	$("[name~='hotelCounty']").val("信義區");
+	$("[name~='hotelRoad']").val("光復南路415巷99號");
 	$("[name~='hotelOwner']").val("宗才怡");
 	$("[name~='hotelAccount']").val("ck001583219@gmail.com");
 	$("[name~='hotelPwd']").val("a123456");
