@@ -79,6 +79,7 @@ public class OrdServlet extends HttpServlet {
 				myVO.setOrdMemVO(new MemVO());
 				myVO.setOrdRoomVO(new RoomVO());
 				myVO.getOrdHotelVO().setHotelCoverPic(null);
+				myVO.getOrdHotelVO().setHotelRegisterPic(null);
 			}
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			ObjectMapper mapper = new ObjectMapper();
@@ -170,7 +171,8 @@ public class OrdServlet extends HttpServlet {
 			ordVO.setOrdQrPic(null);
 			ordVO.setOrdMemVO(new MemVO());
 			ordVO.setOrdRoomVO(new RoomVO());
-			ordVO.getOrdHotelVO().setHotelCoverPic(null);	
+			ordVO.getOrdHotelVO().setHotelCoverPic(null);
+			ordVO.getOrdHotelVO().setHotelRegisterPic(null);
 			
 			DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			ObjectMapper mapper = new ObjectMapper();
