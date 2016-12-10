@@ -104,6 +104,10 @@
 	}
 </style>
 <script>
+var capacityMap = new Map();
+var roomMap;
+var XspanMap;
+var remainMap;
 var imgArray;
 var count = 100;
 
@@ -187,7 +191,7 @@ function showRoom(roomId){
 function RoomDetail(data){
 // 	console.log(data);
 	var allBag	= JSON.parse(data);
-	
+	$("#c-contentBox").empty();
     var bgBox = document.getElementById("c-bgBox");
     var contentBox = document.getElementById("c-contentBox");
 	
@@ -541,7 +545,7 @@ function RoomDetail(data){
 							
 							<div >
 							<span >${roomVO.roomName}</span>
-							<div><input type="button" class="btn btn-info"  value="查看"  onclick="showRoom(${roomVO.roomId})" ></div>
+							<div><input type="button" class="btn btn-info"  value="查看"  onclick="showRoom('${roomVO.roomId}')" ></div>
 							</div>
 							
 							</div>

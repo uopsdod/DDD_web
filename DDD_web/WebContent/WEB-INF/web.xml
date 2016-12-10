@@ -233,4 +233,16 @@
   <listener>
     <listener-class>com.listener.InitializeHotelRepStatusTransListener</listener-class>
   </listener>
+  <error-page>
+  	<error-code>400</error-code>
+  	<location>/error.jsp</location>
+  </error-page>
+  <error-page>
+  	<error-code>404</error-code>
+  	<location>/error.jsp</location>
+  </error-page>
+  <error-page>
+  	<error-code>500</error-code>
+  	<location>/error.jsp</location>
+  </error-page>
 </web-app>

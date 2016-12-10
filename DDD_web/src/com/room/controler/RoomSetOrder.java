@@ -71,7 +71,7 @@ public class RoomSetOrder extends HttpServlet {
 			session.setAttribute("orderPrice", req.getParameter("orderPrice"));
 			session.setAttribute("orderRoomId", req.getParameter("orderRoomId"));
 			session.setAttribute("orderHotelId", req.getParameter("orderHotelId"));		
-			session.setAttribute("location", req.getRequestURI()); // 含有輸入格式錯誤的empVO物件,也存入req			
+			session.setAttribute("location_mem", req.getRequestURI()); // 含有輸入格式錯誤的empVO物件,也存入req			
 			res.sendRedirect(req.getContextPath()+"/frontend_mem/mem/loginOfmember.jsp");
 			return;
 			

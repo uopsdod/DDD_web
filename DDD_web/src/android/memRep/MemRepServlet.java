@@ -88,9 +88,11 @@ public class MemRepServlet extends HttpServlet {
 			
 			memRepVO.getMemRepHotelVO().setBs64(null);
 			memRepVO.getMemRepHotelVO().setHotelCoverPic(null);
+			memRepVO.getMemRepHotelVO().setHotelRegisterPic(null);
 			
 			memRepVO.getMemRepOrdVO().getOrdHotelVO().setBs64(null);
 			memRepVO.getMemRepOrdVO().getOrdHotelVO().setHotelCoverPic(null);
+			memRepVO.getMemRepOrdVO().getOrdHotelVO().setHotelRegisterPic(null);
 			
 			memRepVO.getMemRepOrdVO().getOrdMemVO().setBs64(null);
 			memRepVO.getMemRepOrdVO().getOrdMemVO().setMemProfile(null);
