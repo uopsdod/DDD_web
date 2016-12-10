@@ -40,7 +40,7 @@ public class Hotel extends HttpServlet {
 		StringBuilder jsonIn = new StringBuilder();
 		String line = null;
 		while ((line = br.readLine()) != null) {
-			jsonIn.append(line);
+			jsonIn.append(line); 
 		}
 		JsonObject jsonObject = gson.fromJson(jsonIn.toString(),
 				JsonObject.class);
