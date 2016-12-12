@@ -53,8 +53,14 @@ public class AndroidForDevelop extends HttpServlet {
 		// 注意:是大寫
 		if ("AllSell".equals(action)) {
 			//String url = req.getContextPath() + "/room/room.do";
-			String url = "http://" + req.getServerName() + ":8081/DDD_web/room/room.do";
-			System.out.println("url"+  url);
+			String url = null;
+			if ("10.0.2.2".equals(req.getServerName())){
+				url = "http://" + "localhost" + ":8081/DDD_web/room/room.do";
+			}else{
+				url = "http://" + req.getServerName() + ":8081/DDD_web/room/room.do";				
+			}
+			
+			//String url = "http://" + "localhost" + ":8081/DDD_web/room/room.do";
 			System.out.println("url: " + url);
 			String charset = "UTF-8";  // Or in Java 7 and later, use the constant: java.nio.charset.StandardCharsets.UTF_8.name()
 			String param1 = "AllSell";
