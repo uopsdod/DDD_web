@@ -1,0 +1,3381 @@
+/*
+ *  [好心提醒] 
+ *  (1) 由於資料比較多 可以透過搜尋像是 ord (訂單) 到指定table去補充資料
+ *  (2) level 2 3 4的外來鍵假資料 可以參考level數較前面 (level 1 2 3) 的
+ *
+ *
+ * table建置順序 :
+ * 
+ *
+ *  [Level 1] (NO Foreign Key) 
+ * 員工 權限 一般會員 廠商會員 Banner方案 聊天室 附加服務 共住條件
+ * 
+ * [Level 2] (Foreign Key在 lv1)
+ * 員工權限 聊天室內容 上架月租紀錄 附加服務細項 Banner 一般會員的共住條件
+ * 房型
+ *
+ * [Level 3] (Foreign Key在 lv1~2)
+ * 訂單 房型照片 願望項目
+ *
+ * [Level 4] (Foreign Key在 lv1~3)
+ * 一般會員檢舉單 廠商會員檢舉單
+ *
+ */
+/*
+ *  [好心提醒] 
+ *  (1) 由於資料比較多 可以透過搜尋像是 ord (訂單) 到指定table去補充資料
+ *  (2) level 2 3 4的外來鍵假資料 可以參考level數較前面 (level 1 2 3) 的
+ *
+ *
+ * table建置順序 :
+ * 
+ *
+ *  [Level 1] (NO Foreign Key) 
+ * 員工 權限 一般會員 廠商會員 Banner方案 聊天室 附加服務 共住條件
+ * 
+ * [Level 2] (Foreign Key在 lv1)
+ * 員工權限 聊天室內容 上架月租紀錄 附加服務細項 Banner 一般會員的共住條件
+ * 房型
+ *
+ * [Level 3] (Foreign Key在 lv1~2)
+ * 訂單 房型照片 願望項目
+ *
+ * [Level 4] (Foreign Key在 lv1~3)
+ * 一般會員檢舉單 廠商會員檢舉單
+ *
+ */
+/* 整個table殺光光指令 */
+DROP TABLE hotelRep;
+DROP SEQUENCE hotelRep_seq;
+DROP TABLE memRep;
+DROP SEQUENCE memRep_seq;
+DROP TABLE wish;
+DROP TABLE roomphoto;
+DROP SEQUENCE roomphoto_seq;
+DROP TABLE ORD;
+DROP SEQUENCE ord_seq;
+DROP TABLE ROOM;
+DROP SEQUENCE ROOM_seq;
+DROP TABLE memLiveCond;
+drop table Ad;
+drop SEQUENCE Ad_seq;
+DROP TABLE hotelServ;
+DROP TABLE rent;
+DROP SEQUENCE rent_seq;
+DROP TABLE memchat;
+DROP SEQUENCE memChat_seq;
+DROP TABLE empAuth;
+DROP TABLE LiveCond;
+DROP SEQUENCE livecond_seq;
+DROP TABLE serv;
+DROP SEQUENCE serv_seq;
+DROP TABLE chat;
+DROP SEQUENCE chat_seq;
+DROP TABLE adPlan;
+DROP SEQUENCE adPlan_seq;
+DROP TABLE hotel;
+DROP SEQUENCE hotel_seq;
+DROP TABLE mem;
+DROP SEQUENCE mem_seq;
+DROP TABLE AUTH;
+DROP SEQUENCE auth_seq;
+DROP TABLE EMP;
+DROP SEQUENCE emp_seq;
+/* [Level 1] 員工 權限 一般會員 廠商會員 Banner方案 聊天室 附加服務 共住條件 *
+/* 員工 */
+CREATE TABLE EMP (
+ empId          VARCHAR2(5) NOT NULL,
+ empName        VARCHAR2(20),
+ empAccount     VARCHAR2(60) UNIQUE,
+ empPwd         VARCHAR2(20),
+ empPhone       VARCHAR2(10),
+ empHireDate	DATE,
+ empFireDate    DATE,
+ empStatus      VARCHAR2(1),
+ empBirthDate   DATE,
+ empProfile	    BLOB,
+ empROCId	    VARCHAR2(10),
+ empAddress 	VARCHAR2(40),
+ CONSTRAINT EMP_EMPID_PK PRIMARY KEY (empId)
+);
+ 
+CREATE SEQUENCE emp_seq
+INCREMENT BY 1
+START WITH 10001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'Alen','a12345@hotmail.com','a123456','0953589679',SYSDATE,SYSDATE,'0',TO_DATE('1993-02-27','YYYY-MM-DD'),'','A177712238','桃園市楊梅區民族路16號');
+INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'Singleton','b12345@hotmail.com','a123456','0923558778',SYSDATE,SYSDATE,'0',TO_DATE('1987-08-07','YYYY-MM-DD'),'','A194531193','高雄市楠梓區右昌街187號');
+INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'YoYoMan','c12345@hotmail.com','a123456','0912356895',SYSDATE,SYSDATE,'0',TO_DATE('1992-02-27','YYYY-MM-DD'),'','A187836423','台中市豐原區右右路87號');
+INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'Wendy','d12345@hotmail.com','a123456','0988087087',SYSDATE,SYSDATE,'0',TO_DATE('1995-02-27','YYYY-MM-DD'),'','A162371494','新竹市金山街100號');
+INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'Atom','e12345@hotmail.com','a123456','0972556556',SYSDATE,SYSDATE,'0',TO_DATE('1990-02-27','YYYY-MM-DD'),'','A164040858','桃園市楊梅區新農街116號');
+INSERT INTO EMP VALUES (emp_seq.NEXTVAL,'cucuBoy','f12345@hotmail.com','a123456','0923558778',SYSDATE,SYSDATE,'0',TO_DATE('1991-02-27','YYYY-MM-DD'),'','A194531193','台北市信義區信義路10號');
+commit;
+/* 權限 */
+CREATE TABLE AUTH (
+ authId      VARCHAR2(3) NOT NULL,
+ authName	 VARCHAR2(25),
+ CONSTRAINT AUTH_authId_PK PRIMARY KEY (authId)
+);
+ 
+CREATE SEQUENCE auth_seq
+INCREMENT BY 1
+START WITH 101
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+INSERT INTO AUTH VALUES(auth_seq.NEXTVAL,'人事管理');
+INSERT INTO AUTH VALUES(auth_seq.NEXTVAL,'行政業務管理');
+INSERT INTO AUTH VALUES(auth_seq.NEXTVAL,'首頁管理');
+INSERT INTO AUTH VALUES(auth_seq.NEXTVAL,'客服管理');
+commit;
+/* 一般會員 */
+create table mem(
+        memId varchar2(8) not null,
+        memAccount varchar2(60) UNIQUE,
+        memPsw varchar2(60),
+        memName varchar2(60),
+        memGender varchar2(1),
+        memTwId varchar2(10),
+        memBirthDate Date,
+        memPhone varchar2(60),
+        memLiveBudget number(7),
+        memIntro clob,
+        memProfile blob,
+        memBlackList varchar2(60),
+        memCreditCardNo varchar2(16),
+        memCreditCheckNo varchar2(3),
+        memCreditDueDate varchar2(15),
+ 		CONSTRAINT mem_memId_PK PRIMARY KEY (memId)
+ );
+create sequence mem_seq
+                increment by 1
+                start with 10000001
+                NOMAXVALUE
+                nocache
+                nocycle;
+insert into mem(memId, memAccount, memPsw, memName, memGender, memTwId, memBirthDate, memPhone, memlivebudget, memintro, memprofile, memblacklist, memcreditcardno, memcreditcheckno, memcreditduedate) 
+      values(mem_seq.NEXTVAL, 'mem01@ddd.com', 'AA104G4', '譚芝穎', 'f', 'G207842621', to_Date('1994-04-25', 'yyyy-mm-dd'), '0977885526', 1500, '我崇尚自然，希望靠這次旅行，能認識更多的人', null, '0', '5590143876967822', '641', '2021-10');
+insert into mem(memId, memAccount, memPsw, memName, memGender, memTwId, memBirthDate, memPhone, memlivebudget, memintro, memprofile, memblacklist, memcreditcardno, memcreditcheckno, memcreditduedate) 
+      values(mem_seq.NEXTVAL, 'mem02@ddd.com', 'AA104G4', '伊凡卡.川普', 'f', 'E20512648', to_Date('1994-12-10', 'yyyy-mm-dd'), '0954198656', 9900, '我是川普女孩', null, '0', '4556512342942332', '816', '2019-12');
+insert into mem(memId, memAccount, memPsw, memName, memGender, memTwId, memBirthDate, memPhone, memlivebudget, memintro, memprofile, memblacklist, memcreditcardno, memcreditcheckno, memcreditduedate) 
+      values(mem_seq.NEXTVAL, 'mem03@ddd.com', 'AA104G4', '林威廷', 'm', 'C106824310', to_Date('1973-04-22', 'yyyy-mm-dd'), '0952221456', 2000, '哈哈哈哈哈', null, '0', '4485055095528840', '724', '2021-05');
+insert into mem(memId, memAccount, memPsw, memName, memGender, memTwId, memBirthDate, memPhone, memlivebudget, memintro, memprofile, memblacklist, memcreditcardno, memcreditcheckno, memcreditduedate) 
+      values(mem_seq.NEXTVAL, 'mem04@ddd.com', 'AA104G4', '胡淑玲', 'f', 'F243467258', to_Date('1983-06-06', 'yyyy-mm-dd'), '0912556674', 1200, '1s,1h', null, '0', '5544368296299202', '696', '2020-11');
+insert into mem(memId, memAccount, memPsw, memName, memGender, memTwId, memBirthDate, memPhone, memlivebudget, memintro, memprofile, memblacklist, memcreditcardno, memcreditcheckno, memcreditduedate) 
+      values(mem_seq.NEXTVAL, 'mem05@ddd.com', 'AA104G4', '白冠霖', 'm', 'A167463308', to_Date('1993-12-23', 'yyyy-mm-dd'), '0955123225', 1800, '全國最大的裸聊', null, '0', '4485789622527244', '795', '2018-11');
+insert into mem(memId, memAccount, memPsw, memName, memGender, memTwId, memBirthDate, memPhone, memlivebudget, memintro, memprofile, memblacklist, memcreditcardno, memcreditcheckno, memcreditduedate) 
+      values(mem_seq.NEXTVAL, 'mem06@ddd.com', 'AA104G4', '黃仙珊', 'f', 'L167425787', to_Date('1996-10-02', 'yyyy-mm-dd'), '0921254297', 2100, '喜歡旅行、認識新朋友，夢想是有一天能走片世界各地', null, '0', '3337908044924274', '820', '2019-11');
+INSERT INTO mem VALUES (mem_seq.NEXTVAL,'a12345@hotmail.com','AA104G4','Alen','m','H121335148',TO_DATE('1991-02-27','YYYY-MM-DD'),'0953545123','0','大家好','','0','4752145612541121','587','2018-05');
+INSERT INTO mem VALUES (mem_seq.NEXTVAL,'b12345@hotmail.com','AA104G4','Jax','m','H121335148',TO_DATE('1993-03-27','YYYY-MM-DD'),'0953554523','0','大家好','','0','4752145612541121','587','2018-05');
+INSERT INTO mem VALUES (mem_seq.NEXTVAL,'c12345@hotmail.com','AA104G4','Ben','m','H121335148',TO_DATE('1997-04-27','YYYY-MM-DD'),'0925745123','0','大家好','','0','4752145612541121','587','2018-05');
+INSERT INTO mem VALUES (mem_seq.NEXTVAL,'d12345@hotmail.com','AA104G4','Scott','m','H121335148',TO_DATE('1993-05-27','YYYY-MM-DD'),'0912545123','0','大家好','','0','4752145612541121','587','2018-05');
+INSERT INTO mem VALUES (mem_seq.NEXTVAL,'e12345@hotmail.com','AA104G4','iris','f','H221335148',TO_DATE('1998-06-27','YYYY-MM-DD'),'0953542143','0','大家好','','0','4752145612541121','587','2018-05');
+insert into mem(memId, memAccount, memPsw, memName, memGender, memTwId, memBirthDate, memPhone, memlivebudget, memintro, memprofile, memblacklist, memcreditcardno, memcreditcheckno, memcreditduedate) 
+      values(mem_seq.NEXTVAL, 'PengYaPing@rhyta.com', 'AA104G4', '彭雅萍', 'f', 'E204746648', to_Date('1991-12-10', 'yyyy-mm-dd'), '0954122356', 1700, '天馬行空的幻想', null, '0', '4556548042942332', '836', '2018-12');
+commit;	
+/* 廠商會員 */
+CREATE TABLE hotel (
+ hotelId            VARCHAR2(5) NOT NULL,
+ hotelType	 	    VARCHAR2(20),
+ hotelName	 	    VARCHAR2(60),
+ hotelTaxId	 	    VARCHAR2(8),
+ hotelRegisterPic   BLOB,
+ hotelCity	 	    VARCHAR2(12),
+ hotelCounty	    VARCHAR2(12),
+ hotelRoad	 	    VARCHAR2(50),
+ hotelOwner		    VARCHAR2(15),
+ hotelAccount	    VARCHAR2(60) UNIQUE,
+ hotelPwd	 	    VARCHAR2(40),
+ hotelPhone	 	    VARCHAR2(10),
+ hotelLon	 	    NUMBER(9,6),
+ hotelLat	 	    NUMBER(9,6),
+ hotelIntro	 	    VARCHAR2(1200),
+ hotelCoverPic	    BLOB,
+ hotelLink	 	    VARCHAR2(60),
+ hotelStatus	    VARCHAR2(1),
+ hotelBlackList	    VARCHAR2(1),
+ hotelRatingTotal   NUMBER(10),
+ hotelRatingResult  NUMBER(10),
+ hotelCreditCardNo  VARCHAR2(16),
+ hotelCreditCheckNo VARCHAR2(3),
+ hotelCreditDueDate VARCHAR2(15),
+ CONSTRAINT hotel_hotelId_pk PRIMARY KEY (hotelId)
+);
+ 
+CREATE SEQUENCE hotel_seq
+INCREMENT BY 1
+START WITH 10001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+
+
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'汽車旅館','圍牆外的森林','51231655','','桃園市','平鎮區','德育路二段5號','郭董','house1@gmail.com','AA104a123456','0925884648','121.219245','24.945254','幸運草時尚旅店坐落在桃園，設有1間餐廳，提供免費WiFi。
+圍牆外的森林距離中壢火車站有5分鐘車程，距離中壢夜市有9分鐘的車程，距離桃園國際機場有26分鐘的車程。
+禁煙客房設有空調。周到的圍牆外的森林可為吸煙的客人安排指定的吸煙區。旅店亦為設有方便殘疾客人的設施。旅店設有1張餐桌。私人浴室配有淋浴、吹風機和免費洗浴用品。旅店還設有1台洗衣機、1台保險箱和床單。
+圍牆外的森林設有24小時前台，也提供1間共用休息室和洗衣設施，還設有1家內部商店方便客人，配有免費停車場。
+旅店內提供自助餐點。旅店附近設有眾多當地餐廳。中壢夜市也供應各類美味的當地菜餚與小吃。旅店距離夜市不到9分鐘步行路程。
+','','https://www.agoda.com/zh-tw/city/taipei-tw.html','2','0','0','5','4705381232568781','138','2023-05');
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'飯店','中壢大飯店','51231655','','桃園市','中壢區','延平路645號4樓','邱桑','house2@gmail.com','AA104a123456','0925990128','121.223162','24.957420','中壢大飯店位於中壢市中心，距離擁有多家商店和各種餐飲場所的購物街有5分鐘的步行路程，提供帶免費無線網絡連接的客房和24小時前台。
+中壢大飯店距離中壢火車站有10分鐘的步行路程，距離崇光百貨商場或中壢夜市有10分鐘的車程，距離地鐵步行購物中心僅有20分鐘的車程，距離桃園機場有20分鐘的車程。
+所有空調客房均提供有線電視和電話叫醒服務。私人浴室配有吹風機。
+飯店應要求提供保險箱、貨幣兌換和行李寄存服務，並每日提供清潔服務。
+','','https://www.agoda.com/zh-tw/city/taipei-tw.html','2','0','0','5','4705381232568781','138','2023-05');
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'渡假村','南方莊園度假飯店','51231655','','桃園市','中壢區','樹籽路8號','馬拉桑','house3@gmail.com','AA104a123456','0925990128','121.178187','24.967761','南方莊園度假飯店位於桃園縣境內，距離台灣高鐵有8分鐘的車程，設有溫泉、寬敞的綠色草地和3個餐飲場所。
+南方莊園度假飯店距離中壢夜市有4公里，距離桃園國際機場有14公里，提供免費停車場。
+空調客房均設有寬敞的室內空間，提供免費上網服務。每間客房都配備了迷你吧、辦公桌以及開通有線頻道的電視。
+客人可以在酒店內的兩個熱溫泉放鬆休息，或者在健身中心鍛煉。酒店還設有一間小組健身室和一間帶台球桌的娛樂室。
+南餐廳供應中國菜。花園餐廳提供西餐。位於酒店大堂的Cheers Bar酒吧則提供飲品和小吃。
+','','https://www.agoda.com/zh-tw/city/taipei-tw.html','2','0','0','5','4705381232568781','138','2023-05');
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'飯店','福容大飯店','51231655','','桃園市','中壢區','中正路89號','阿水伯','house4@gmail.com','AA104a123456','0925990128','121.223330','24.954659','Fullon Hotel Jhongli酒店位於桃園縣，便利地坐落在中壢火車站前，提供現代住宿設施，設有一個健身中心、免費停車場和客房內的免費無線網絡連接。
+每間寬敞的客房都配備了一個迷你吧、沏茶/咖啡設施以及一台帶有線頻道的平面電視。
+Jhongli Fullon酒店距離鶯歌陶瓷博物館有22分鐘車程，距離三峽祖師廟有30分鐘車程，距離台灣桃園國際機場有35分鐘車程。
+Fullon酒店的餐廳供應浙江菜餚。Corner Bar酒吧則提供各種飲品和點心。
+酒店擁有一間提供傳真和復印服務的商務中心，並可應要求提供保險箱。
+','','https://www.agoda.com/zh-tw/city/taipei-tw.html','2','0','0','5','4705381232568781','138','2023-05');
+
+
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'汽車旅館','168中壢馬卡龍館','55421287','','桃園市','中壢區','中美路二段160號','楊筱解','house5@gmail.com','AA104a123456','0925087542','121.220162','24.960153','168中壢馬卡龍館位於中壢市，設有自助餐廳，距離中正公園有10分鐘的車程，於所有區域提供免費的無線網絡連接。168中壢馬卡龍館距離中壢夜市有10分鐘的步行路程，距離中壢火車站有15分鐘的步行路程。客房配有平面電視、空調和迷你吧。私人浴室設有spa浴缸、吹風機和免費的洗浴用品。還額外設有一個休息區。酒店內設有免費的停車場。請注意，客人需在20:00後辦理入住。 
+汽車旅館：24 間客房
+','','https://168inn.com.tw/hotel_room_index.php?hotel_sn=7','2','0','0','5','4705125478541231','128','2023-05');
+
+
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'汽車旅館','松荷汽車旅館','95221287','','桃園市','中壢區','成章三街91號','張西西','house6@gmail.com','AA104a123456','0924082542','121.256322','24.980155','松荷汽車旅館位於中壢，提供現代化的客房、時尚的設計和免費WiFi，並設有一個24小時服務的前台。
+松荷汽車旅館距離桃園國際機場有13公里。客房設有一個Spa浴缸、有線電視、空調、暖氣以及一間帶淋浴和浴缸的浴室。松荷汽車旅館提供一個花園和一間禮品店，其附近設有免費停車場。 
+汽車旅館：45 間客房
+','','http://www.matsuni.com','2','0','0','5','4705125478543431','328','2025-05');
+
+
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'民宿','福隆假期旅館','38541227','','桃園市','中壢區','中平路16號','王老伯','house7@gmail.com','AA104a123456','0953754212','121.225733','24.954719','福隆假期旅館距離中壢火車站只有短短2分鐘漫步路程，提供免費無線網絡連接和24小時前台。裝飾典雅的客房配備了空調。
+
+
+酒店位於中壢，距離中壢夜市僅有1.2公里，距離桃園國際機場有16公里，距離中壢夜市有15分鐘車程，距離中原大學熱鬧的景像有8分鐘的車程。
+
+
+客房擁有舒適的裝飾，配有木地板，設有一台平面有線電視和一間帶免費洗浴用品及吹風機的連接浴室。
+福隆旅館提供行李存儲空間和停車設施。這家禁煙旅館的每個樓層都提供電梯。
+雖然旅館沒有餐館，但包括流行的火鍋餐廳在內的多種本地餐飲場所距離旅館有不到10分鐘步行路程。 
+此住宿被評為中壢性價比最高的選擇！相較城市其他相似住宿，此間住宿更物超所值！
+飯店客房數量: 38
+','','http://www.booking.com/hotel/tw/fulong-hotel.zh-tw.html','2','0','0','5','4532389113369710','398','2021-08');
+
+																																								
+
+																																																							
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'飯店','古華花園飯店','47512543','','桃園市','中壢區','民權路398號','錢老闆','house19@gmail.com','AA104a123456','0937284312','121.217243','24.964732',
+'古華花園飯店靠近光明公園和崇光百貨，距離桃園國際機場有20分鐘車程，提供免費Wi-Fi、4間餐飲場所、健康俱樂部和室外游泳池，距離公共自行車站僅有5分鐘步行路程。
+古華花園飯店距離中壢夜市有3分鐘步行路程，距離中壢火車站有5分鐘車程，距離桃園高鐵站有10分鐘車程。
+古華花園飯店的每間客房均配有衛星電視、沏茶/咖啡設備、房內保險箱以及帶洗浴用品的私人連接浴室。
+酒店?客人提供健身?施以及配套完善的?部商?中心。
+明皇?供?中式美食；??西餐?提供西餐；客人?可在Soho酒廊酒吧享用?品。
+此住宿被評為中壢性價比最高的選擇！相較城市其他相似住宿，此間住宿更物超所值！ ','','http://www.wtaipei.com.tw','2','0','0','5','4929023188622288','888','2021-08');
+
+
+
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'飯店','台北W酒店','47512548','','台北市','信義區','忠孝東路5段10號','陳銘','house8@gmail.com','AA104a123456','0937284212','121.565866','25.040667','藝術、時尚而豪華的台北W酒店坐落於信義區中心，位於統一阪急百貨之上，提供漂亮的WETR室外游泳池、AWAYR水療中心的舒緩按摩服務和時尚的Woobar夜總會。
+所有時尚的客房均設有落地窗，享有台北市景和山景，配有平面電視和BOSE音響系統。特色W床寬大而舒適。浴室均配有浴缸和Bliss SpaR洗浴用品。
+台北W酒店距離市政府捷運站有5分鐘步行路程，距離標誌性的台北101大樓有10分鐘步行路程，距離松山國際機場有20分鐘的車程，距離桃園國際機場有45分鐘的車程，距離台北火車站有15分鐘的車程。
+420平方米的FITR健身中心提供帶iPod基座的現代健身器材、瑜伽室和私人教練。客人還可使用全天24小時開放的商務中心。
+有名的YEN餐廳擁有優雅的用餐環境，供應現代中式美食。其他餐飲選擇包括提供國際自助餐的The Kitchen Table西餐廳和提供雞尾酒的池畔酒吧。 
+信義區是文化、城市之旅、精緻美食的絕佳選擇。
+飯店客房數量:405, 連鎖飯店: W酒店
+','','http://www.wtaipei.com.tw','2','0','0','5','4929023188622288','888','2021-08');
+
+
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'汽車旅館','誠品行旅','45124458','','台北市','信義區','菸廠路98號','楊洋','house9@gmail.com','AA104a123456','0987124888','121.561504','25.044978',' 誠品行旅位於松山文化創意園，擁有國際最先進的健身中心、寬敞的宴會廳以及裝飾奢華的客房，距離國父紀念館捷運站僅有10分鐘步行路程。
+酒店距離台北松山機場僅有10分鐘車程，距離台北火車站有15分鐘車程，距離松山火車站有10分鐘車程，距離桃園國際機場有45分鐘車程。
+空調客房舖有地毯，設有1個帶城市全景的私人陽台、42英寸平面有線電視、DVD播放器、品牌音響、咖啡機以及帶深浸式浴缸、坐浴盆、柔軟的浴袍和免費浴室用品的大型連接浴室。
+誠品行旅在24小時前台提供行李寄存服務，還提供旅遊諮詢台、設施齊全的商務中心以及額外收費的停車設施和網絡連接。
+The Lounge酒廊供應各式飲品；而The Chapter餐廳則供應創意融合料理。酒店還設有1間In Between西餐廳供應歐陸式美食。 
+飯店客房數量:104
+','','http://www.eslitehotel.com','2','0','0','5','5118154893400179','288','2023-08');
+
+
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'飯店','天閣酒店台北信義','12548542','','台北市','信義區','忠孝東路五段297號','胡歌','house10@gmail.com','AA104a123456','0925121254','121.573249','25.041239','這家時尚的酒店坐落在台北，距離捷運市政廳站有4分鐘的步行路程，設有免費有線網絡和無線網絡連接，還提供1個健身中心、1個專業的商務中心以及帶spa浴缸的客房。著名的台北101距離酒店約有15分鐘的步行路程。
+酒店寬敞的空調客房均配備齊全，設有大屏幕平面電視和DVD播放機，還配有迷你吧、熨燙設施和個人保險箱。部分客房設有1台洗衣機。
+天閣酒店台北信義距離饒河夜市和信義計劃區均有10分鐘的車程，距離松山機場和五分埔商圈有20分鐘的車程，距離桃園機場有50分鐘的車程。
+酒店24小時服務的前台提供每日報紙，亦可提供乾洗和熨燙服務。
+客人可以在時尚的酒廊中享用每日自助早餐。 
+信義區是文化、城市之旅、精緻美食的絕佳選擇。
+此住宿被評為台北市性價比最高的選擇！相較城市其他相似住宿，此間住宿更物超所值！
+飯店客房數量: 105
+','','http://www.tango-hotels.com','2','0','0','5','8741408012458745','111','2021-02');
+
+
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'飯店','台北君悅酒店','75451235','','台北市','信義區','松壽路2號','周星星','house11@gmail.com','AA104a123456','0925996457','121.563400','25.035194','入住台北君悅酒店，享受宛如明星待遇的世界級服務
+五星級的奢華君悅酒店坐落在繁華的信義區，毗鄰耀眼的台北101大樓、台北世界貿易中心和國際會議中心，設有室外游泳池、spa和康體中心、桑拿浴室以及健身中心。
+酒店距離市政府捷運站和台北101/世貿中心捷運站均有不到10分鐘步行路程，距離嵩山文化公園有5分鐘車程，距離著名的國父紀念館僅有10分鐘步行路程，距離桃園國際機場有40分鐘車程。
+每間客房和套房均融合了傳統中國元素，享有典雅時尚的設計，並提供平板有線電視、迷你吧、手提電腦大小的保險箱、休息區以及帶步入式淋浴間、拖鞋、吹風機、浴袍和免費洗浴用品的私人浴室。此外，所有典雅的客房和套房均享有台北101或城市的景緻。
+客人可在健身中心鍛煉後前往酒吧享用雞尾酒，亦可在泳池暢遊或在桑拿浴室放鬆身心。旅遊諮詢台的工作人員很樂意提供旅遊建議或協助客人安排觀光遊覽活動。先進的會議室或宴會廳可以安排大型活動或華麗的派對。
+飯店客房數量:853
+','','https://taipei.grand.hyatt.com/','2','0','0','5','4705380495421118','121','2025-02');
+
+
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'飯店','寒舍艾麗酒店','88054561','','台北市','信義區','松高路18號','張明','house12@gmail.com','AA104a123456','0925445874','121.567486','25.038972',' 寒舍艾麗酒店位於信義區，提供配有免費無線網絡連接的寬敞現代客房，設有自家的健身中心和餐廳。
+寒舍艾麗酒店距離捷運市政府站和台北101大樓有5分鐘步行路程，距離國立國父紀念館有7分鐘步行路程，距離台北火車站和松山機場則有15分鐘車程。
+所有客房均配有木製家具、書桌和沙發，亦配有平面有線/衛星電視、迷你吧和保險箱。私人浴室配有浴缸、淋浴、吹風機和免費洗浴用品。
+寒舍艾麗酒店提供禮賓服務並設有24小時前台。其他設施包括旅遊諮詢台和行李寄存。
+La Farfalla意式餐廳供應由意大利廚師烹製的傳統意大利佳餚。The Terrace大廳酒吧供應各式各樣的飲料，配有落地窗並享有花園的景緻。 
+信義區是文化、城市之旅、精緻美食的絕佳選擇。
+此住宿被評為台北市性價比最高的選擇！相較城市其他相似住宿，此間住宿更物超所值！
+飯店客房數量: 235
+','','http://www.humblehousehotels.com/zh-tw','2','0','0','5','3801452169841234','568','2027-04');
+
+
+
+
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'民宿','巴客來青年旅館','44576684','','台北市','信義區','松隆路205-1號','李黑馬','house13@gmail.com','AA104a123456','0925445874','121.576253','25.048507',' 巴客來青年旅館位於台北，距離五分埔服飾批發區500米，距離孫中山歷史博物館1.8公里。
+每間客房均設有電視。額外設施包括拖鞋和吹風機。巴客來青年旅館提供覆蓋各處的免費WiFi。
+旅舍設有共用休息室。
+巴客來青年旅館距離台北101大樓2.1公里，而距離台北小巨蛋2.7公里，距離最近的台北松山機場3公里。 
+信義區是文化、城市之旅、精緻美食的絕佳選擇。
+青年旅館：10 間客房
+','','http://www.hostels.com.tw','2','0','0','5','7805124577452548','448','2020-06');
+
+
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'飯店','窩客國際旅館101館','80845621','','台北市','信義區','基隆路二段48號','陽名山','house14@gmail.com','AA104a123456','0925445874','121.576253','25.048507','窩客國際旅館101館位於台北，提供覆蓋各處的免費Wifi。
+窩客國際旅館101館距離台北101大廈和台北101 /世貿中心地鐵站有10分鐘的步行路程，距離信義購物區有12分鐘步行路程。通化街夜市擁有各種街頭食品和商店，位於不到7分鐘的步行路程內。
+所有客房都設有空調，配有個人閱讀燈和平板電視。共用浴室配有淋浴設施。
+24小時前台提供旅游資料。客人還可以要求使用複印/傳真和行李寄存服務。為了讓客人感到舒適，旅館內也設有洗衣設施。在入住期間，客人隨時在公共休息室與他人交流旅行體驗或坐下來休息一下。
+旅館提供帶基本烹飪設施和冰箱的共用廚房，供客人自己準備餐點。 
+信義區是文化、城市之旅、精緻美食的絕佳選擇。
+窩客國際旅館101館自 2016 年 6 月 1 日開始接待 Booking.com 的旅客入住。
+青年旅館：80 間客房
+','','http://www.workinn.com.tw/','2','0','0','5','4450807412345555','954','2019-06');
+
+
+INSERT INTO hotel VALUES(hotel_seq.NEXTVAL,'飯店','成旅晶贊飯店-台北蘆洲','45875441','','台北市','蘆洲區','中山一路8號','張芷若','house15@gmail.com','AA104a123456','0988045277','121.480265','25.080521','成旅晶贊飯店台北蘆洲位於徐匯廣場，距離蘆洲線徐匯中學站有1分鐘步行路程。這家四星級禁菸酒店提供免費Wi-Fi和兩處餐飲場所。
+獨具風格的客房以現代化內飾、柔和的牆壁顏色及獨特的壁畫為典雅裝飾，均設有沙發休息區、平板電視和大型浴室。
+客人可以在健身房鍛煉，或使用商務中心的設施。24小時前台的工作人員將盡可能滿足客人的要求。
+晶饌廳供應精選的中國特色菜餚。柏克菲提供簡餐和清涼飲料。
+成旅晶贊飯店台北蘆洲可直通台北地鐵站，距離桃園國際機場有50分鐘車程。 
+蘆洲是當地美食、文化、居民友善的絕佳選擇。
+此住宿被評為台北市性價比最高的選擇！相較城市其他相似住宿，此間住宿更物超所值
+飯店客房數量: 140
+','','http://www.parkcthotel.com','2','0','0','5','4705380245681745','250','2017-06');
+
+
+
+
+
+
+commit;
+/* Banner方案 */
+CREATE TABLE adPlan(
+ adPlanId             VARCHAR2(8) NOT NULL,
+ adPlanName           VARCHAR2(90),
+ adPlanStartDate      DATE,
+ adPlanEndDate        DATE,
+ adPlanPrice          Number(6),
+ adPlanRemainNo       Number(2),
+ CONSTRAINT adPlan_adPlanId_PK PRIMARY KEY (adPlanId)
+ );
+CREATE SEQUENCE adPlan_seq
+INCREMENT BY 1
+START WITH 10000001
+NOMAXVALUE;
+INSERT INTO adPlan (adPlanId,adPlanName,adPlanStartDate,adPlanEndDate,adPlanPrice,adPlanRemainNo) VALUES (adPlan_seq.NEXTVAL,'11月方案',to_date('11 1,2016','MM DD,YYYY'), to_date('11 30,2016','MM DD,YYYY'),5000, 0);
+INSERT INTO adPlan 
+(adPlanId,adPlanName,adPlanStartDate,adPlanEndDate,adPlanPrice,adPlanRemainNo) VALUES (adPlan_seq.NEXTVAL,'12月方案',to_date('12 1,2016','MM DD,YYYY'), to_date('12 31,2016','MM DD,YYYY'),5000, 1);
+INSERT INTO adPlan 
+(adPlanId,adPlanName,adPlanStartDate,adPlanEndDate,adPlanPrice,adPlanRemainNo) VALUES (adPlan_seq.NEXTVAL,'1月方案',to_date('1 1,2017','MM DD,YYYY'), to_date('1 31,2017','MM DD,YYYY'),5000, 12);
+
+
+
+
+commit;
+/* 聊天室 */
+CREATE TABLE chat(
+ chatId   VARCHAR2(8) NOT NULL,
+ chatName VARCHAR2(30),
+ CONSTRAINT chat_chatId_pk PRIMARY KEY (chatId)
+);
+CREATE SEQUENCE chat_seq
+INCREMENT BY 1
+START WITH 10000001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+INSERT INTO chat		
+VALUES(chat_seq.NEXTVAL, null);		
+INSERT INTO chat		
+VALUES(chat_seq.NEXTVAL, null);		
+INSERT INTO chat		
+VALUES(chat_seq.NEXTVAL, null);
+INSERT INTO chat
+VALUES(chat_seq.NEXTVAL, null);
+INSERT INTO chat
+VALUES(chat_seq.NEXTVAL, null);
+INSERT INTO chat
+VALUES(chat_seq.NEXTVAL, null);
+commit;
+/* 附加服務 */
+create table  serv(
+              servId VARCHAR2(3) not null,
+              servName  VARCHAR2(60),
+              constraint serv_primary_key primary key (servId)
+              );
+create sequence serv_seq
+                increment by 1
+                start with 101
+                NOMAXVALUE
+                nocache
+                nocycle;
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '早餐');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '禁菸飯店');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '停車場(車位有限)');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '室外游泳池');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '免費Wi-Fi');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '電梯');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '免費ADSL');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '洗衣設施');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '健身設施');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '旅遊資訊');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '行李寄放');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '公共區域提供咖啡/茶');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '大廳提供免費報紙');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '餐廳');
+insert into serv(servId, servname) values(serv_seq.NEXTVAL, '櫃台保險箱');
+commit;		
+/* 共住條件 */
+CREATE TABLE liveCond(
+  liveCondId VARCHAR2(3) NOT NULL,
+  liveCondName VARCHAR2(90),
+  CONSTRAINT livecond_livecondid_pk PRIMARY KEY (livecondid)
+);
+CREATE SEQUENCE livecond_seq
+INCREMENT BY 1
+START WITH 101
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+INSERT INTO livecond (liveCondId, liveCondName)
+VALUES(livecond_seq.NEXTVAL, '被男的找');
+INSERT INTO livecond (liveCondId, liveCondName)
+VALUES(livecond_seq.NEXTVAL, '被女的找');
+commit;	
+/* [Level 2] 員工權限 聊天室內容 上架月租紀錄 附加服務細項 Banner 一般會員的共住條件 房型 */
+/* 員工權限 */
+CREATE TABLE empAuth (
+ empAuthEmpId            VARCHAR2(5) NOT NULL,
+ empAuthAuthId	 	   VARCHAR2(3) NOT NULL,
+ 
+ CONSTRAINT empAuth_empAuthEmpId_FK FOREIGN KEY (empAuthEmpId) REFERENCES EMP (empId),
+ CONSTRAINT empAuth_empAuthAuthId_FK FOREIGN KEY (empAuthAuthId) REFERENCES AUTH (authId),
+ CONSTRAINT empAuth_empAuthAuthId_PK PRIMARY KEY (empAuthEmpId,empAuthAuthId));
+ 
+ 
+ INSERT INTO empAuth VALUES(10001,101);
+ INSERT INTO empAuth VALUES(10001,102);
+ INSERT INTO empAuth VALUES(10001,103);
+ INSERT INTO empAuth VALUES(10001,104);
+ INSERT INTO empAuth VALUES(10002,101);
+INSERT INTO empAuth VALUES(10002,102);
+INSERT INTO empAuth VALUES(10002,103);
+INSERT INTO empAuth VALUES(10002,104);
+ INSERT INTO empAuth VALUES(10003,101);
+ INSERT INTO empAuth VALUES(10003,102);
+ INSERT INTO empAuth VALUES(10003,103);
+ INSERT INTO empAuth VALUES(10003,104);
+ INSERT INTO empAuth VALUES(10004,101);
+ INSERT INTO empAuth VALUES(10004,102);
+ INSERT INTO empAuth VALUES(10004,103);
+ INSERT INTO empAuth VALUES(10004,104);
+ INSERT INTO empAuth VALUES(10005,101);
+ INSERT INTO empAuth VALUES(10005,102);
+ INSERT INTO empAuth VALUES(10005,103);
+ INSERT INTO empAuth VALUES(10005,104);
+ 
+ 
+ commit;
+
+ /* 聊天室內容 */  
+CREATE TABLE memChat(
+  memChatId VARCHAR2(10) NOT NULL,
+  memChatChatId VARCHAR2(8) NOT NULL,
+  memChatMemId VARCHAR2(8) NOT NULL,
+  memChatDate TIMESTAMP,
+  memChatContent CLOB,
+  memChatStatus VARCHAR2(1),
+  memChatToMemId VARCHAR2(8) NOT NULL,
+  
+  CONSTRAINT memChat_memChatMemId_fk FOREIGN KEY (memChatMemId) REFERENCES mem(memId),
+  CONSTRAINT memChat_memChatChatId_fk FOREIGN KEY (memChatChatId) REFERENCES chat(chatId),
+  CONSTRAINT memChat_memChatToMemId_fk FOREIGN KEY (memChatToMemId) REFERENCES mem(memId),
+  CONSTRAINT memChat_memChatId_pk PRIMARY KEY (memChatId),
+  CONSTRAINT memChat_memChatToMemId_chk CHECK (memChatMemId != memChatToMemId)
+);
+CREATE SEQUENCE memChat_seq
+INCREMENT BY 1
+START WITH 1000000001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+        (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+       (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1),
+        TO_TIMESTAMP ('2016-10-01 14:00:00.123', 'YYYY-MM-DD HH24:MI:SS.FF'), 
+        '你好，我也在找房間，要一起嗎',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2)
+       );
+-- 10000001聊天室: 第二個會員 to 第一個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+       (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2),
+        TO_TIMESTAMP ('2016-10-01 14:01:00.456', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '好啊，你也是自己出來自助旅行嗎?',
+        0,
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1)
+       );
+-- 10000001聊天室: 第一個會員 to 第二個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1),
+         TO_TIMESTAMP ('2016-10-01 14:02:00.456', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '哈我不是，我是被公司臨時叫到這出差',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2)
+       );
+       
+-- 10000001聊天室: 第二個會員 to 第一個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2),
+         TO_TIMESTAMP ('2016-10-01 14:03:00.123', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '好辛苦qq',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1)
+       );       
+-- 10000001聊天室: 第一個會員 to 第二個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1),
+         TO_TIMESTAMP ('2016-10-01 14:04:00.456', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '還好啦。不過還是滿羨慕你的，可以到處走來走去',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2)
+       );       
+-- 10000001聊天室: 第二個會員 to 第一個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2),
+         TO_TIMESTAMP ('2016-10-01 14:05:00.123', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '哈我也沒那麼幸運，這個假日可是我的特休',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1)
+       );
+-- 10000001聊天室: 第一個會員 to 第二個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1),
+         TO_TIMESTAMP ('2016-10-01 14:06:00.789', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '原來也是同道中人XD。我看到這間還不錯，雙人房899$，你看看。
+         http://tw.yahoo.com/',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2)
+       ); 
+-- 10000001聊天室: 第二個會員 to 第一個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2),
+         TO_TIMESTAMP ('2016-10-01 14:07:00.456', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '真的還不錯，我先加到我的願望清單。那你現在在哪裡?',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1)
+       );       
+-- 10000001聊天室: 第一個會員 to 第二個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1),
+         TO_TIMESTAMP ('2016-10-01 14:08:00.123', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '這個APP可以直接幫忙定位，你直接點"你在哪"按鈕就能看到了。',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2)
+       ); 
+-- 10000001聊天室: 第二個會員 to 第一個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2),
+         TO_TIMESTAMP ('2016-10-01 14:09:00.456', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '找到了，好像都離旅館不遠! 那我們等等直接到那間旅館會面吧。我叫小愛，穿紅色披肩和白色清衫',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1)
+       );
+-- 10000001聊天室: 第一個會員 to 第二個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 1)
+        where rnum >= 1),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1),
+         TO_TIMESTAMP ('2016-10-01 14:10:00.123', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '恩恩好。我叫大城，正統西裝男，那待回見了小愛。',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2)
+       );
+       
+-- 10000002聊天室: 第一個會員 to 第三個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 2)
+        where rnum >= 2),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 1)
+        where rnum >= 1),
+         TO_TIMESTAMP ('2016-10-21 12:10:00.123', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '找不到房間。',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 3)
+        where rnum >= 3)
+       );       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--10000003聊天室: 第二個會員 to 第三個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 3)
+        where rnum >= 3),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2),
+         TO_TIMESTAMP ('2016-10-21 12:10:00.123', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '新朋友您好。',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 3)
+        where rnum >= 3)
+       ); 
+--10000003聊天室: 第三個會員 to 第二個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 3)
+        where rnum >= 3),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 3)
+        where rnum >= 3),
+         TO_TIMESTAMP ('2016-10-21 12:15:00.123', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        'Hi,你也在旅遊阿。',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2)
+       );        
+
+
+
+
+
+
+
+
+--10000004聊天室: 第四個會員 to 第二個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 4)
+        where rnum >= 4),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 4)
+        where rnum >= 4),
+         TO_TIMESTAMP ('2015-10-21 17:23:12.123', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '聽說中壢資策會風水不錯，要不要一起去住個半年',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2)
+       );        
+
+
+
+
+
+
+
+
+--10000005聊天室: 第五個會員 to 第二個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 5)
+        where rnum >= 5),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 5)
+        where rnum >= 5),
+         TO_TIMESTAMP ('2015-11-05 11:23:12.123', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '沒錢了QQ,請問要不要一起分擔這間雙人房',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2)
+       );
+       
+--10000006聊天室: 第二個會員 to 第六個會員
+INSERT INTO memchat
+VALUES(memChat_seq.NEXTVAL,
+      (select chatId 
+        from (select rownum rnum, chatId
+              from chat
+              where rownum <= 6)
+        where rnum >= 6),
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 2)
+        where rnum >= 2),
+         TO_TIMESTAMP ('2015-07-05 11:23:12.123', 'YYYY-MM-DD HH24:MI:SS.FF'),
+        '你好，我爸爸剛選上總統，你覺得如何?',
+        '0',
+        (select memid 
+        from (select rownum rnum, memid
+              from mem
+              where rownum <= 6)
+        where rnum >= 6)
+       );       
+       
+
+
+
+
+       
+commit;
+
+ 
+/* 上架月租紀錄 */
+create table rent(
+ rentId VARCHAR2(10 char) constraint rent_rentId_pk primary key,
+ rentHotelId VARCHAR2(5 char) not null constraint rent_rentHotelId_fk references hotel(hotelid),
+ rentPayDate Date not null,
+ rentStartDate Date not null,
+ rentEndDate Date not null,
+ rentPrice Number not null
+);
+CREATE SEQUENCE rent_seq
+INCREMENT BY 1
+START WITH 1000000001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+commit;
+/* 附加服務細項 */
+create table  hotelServ(
+  hotelServServId varchar(3) not null,
+  hotelServHotelId varchar(5) not null,
+  constraint hotelServ_hotelServId_fk foreign key (hotelServServId) references serv(servId),
+  constraint hotelServ_hotelServHotelId_fk foreign key (hotelServHotelId) references hotel(hotelId),
+  constraint hotelServ_primaryKey_pk primary key (hotelServServId,hotelServHotelId)
+);
+insert into hotelserv values(101, 10001);
+insert into hotelserv values(102, 10001);
+insert into hotelserv values(103, 10001);
+insert into hotelserv values(104, 10001);
+insert into hotelserv values(105, 10001);
+insert into hotelserv values(106, 10001);
+insert into hotelserv values(107, 10001);
+insert into hotelserv values(108, 10001);
+insert into hotelserv values(109, 10001);
+insert into hotelserv values(110, 10001);
+insert into hotelserv values(111, 10001);
+insert into hotelserv values(112, 10001);
+insert into hotelserv values(113, 10001);
+insert into hotelserv values(114, 10001);
+insert into hotelserv values(115, 10001);
+
+insert into hotelserv values(101, 10002);
+insert into hotelserv values(103, 10002);
+insert into hotelserv values(106, 10002);
+insert into hotelserv values(113, 10002);
+insert into hotelserv values(115, 10002);
+
+insert into hotelserv values(101, 10003);
+insert into hotelserv values(102, 10003);
+insert into hotelserv values(103, 10003);
+insert into hotelserv values(110, 10003);
+insert into hotelserv values(106, 10003);
+insert into hotelserv values(109, 10003);
+insert into hotelserv values(107, 10003);
+
+insert into hotelserv values(101, 10004);
+insert into hotelserv values(102, 10004);
+insert into hotelserv values(103, 10004);
+insert into hotelserv values(104, 10004);
+insert into hotelserv values(105, 10004);
+insert into hotelserv values(106, 10004);
+insert into hotelserv values(107, 10004);
+insert into hotelserv values(108, 10004);
+insert into hotelserv values(109, 10004);
+insert into hotelserv values(110, 10004);
+
+insert into hotelserv values(111, 10005);
+insert into hotelserv values(112, 10005);
+insert into hotelserv values(113, 10005);
+insert into hotelserv values(114, 10005);
+insert into hotelserv values(115, 10005);
+
+
+insert into hotelserv values(111, 10006);
+insert into hotelserv values(102, 10006);
+insert into hotelserv values(103, 10006);
+insert into hotelserv values(104, 10006);
+insert into hotelserv values(115, 10006);
+
+insert into hotelserv values(101, 10007);
+insert into hotelserv values(102, 10007);
+insert into hotelserv values(103, 10007);
+insert into hotelserv values(104, 10007);
+insert into hotelserv values(105, 10007);
+
+insert into hotelserv values(111, 10008);
+insert into hotelserv values(112, 10008);
+insert into hotelserv values(113, 10008);
+insert into hotelserv values(114, 10008);
+insert into hotelserv values(115, 10008);
+
+insert into hotelserv values(101, 10009);
+insert into hotelserv values(102, 10009);
+insert into hotelserv values(103, 10009);
+insert into hotelserv values(104, 10009);
+insert into hotelserv values(105, 10009);
+insert into hotelserv values(106, 10009);
+insert into hotelserv values(107, 10009);
+insert into hotelserv values(108, 10009);
+insert into hotelserv values(109, 10009);
+insert into hotelserv values(110, 10009);
+insert into hotelserv values(111, 10009);
+insert into hotelserv values(112, 10009);
+insert into hotelserv values(113, 10009);
+insert into hotelserv values(114, 10009);
+insert into hotelserv values(115, 10009);
+
+insert into hotelserv values(101, 10010);
+insert into hotelserv values(112, 10010);
+insert into hotelserv values(102, 10010);
+insert into hotelserv values(103, 10010);
+insert into hotelserv values(105, 10010);
+insert into hotelserv values(107, 10010);
+insert into hotelserv values(109, 10010);
+
+insert into hotelserv values(101, 10011);
+insert into hotelserv values(102, 10011);
+insert into hotelserv values(103, 10011);
+insert into hotelserv values(104, 10011);
+insert into hotelserv values(113, 10011);
+insert into hotelserv values(114, 10011);
+insert into hotelserv values(115, 10011);
+
+insert into hotelserv values(109, 10012);
+insert into hotelserv values(110, 10012);
+insert into hotelserv values(111, 10012);
+insert into hotelserv values(102, 10012);
+insert into hotelserv values(103, 10012);
+insert into hotelserv values(104, 10012);
+insert into hotelserv values(105, 10012);
+
+insert into hotelserv values(109, 10013);
+insert into hotelserv values(110, 10013);
+insert into hotelserv values(101, 10013);
+insert into hotelserv values(102, 10013);
+insert into hotelserv values(103, 10013);
+insert into hotelserv values(114, 10013);
+insert into hotelserv values(115, 10013);
+
+insert into hotelserv values(108, 10014);
+insert into hotelserv values(107, 10014);
+insert into hotelserv values(101, 10014);
+insert into hotelserv values(112, 10014);
+insert into hotelserv values(103, 10014);
+insert into hotelserv values(114, 10014);
+insert into hotelserv values(105, 10014);
+
+insert into hotelserv values(108, 10015);
+insert into hotelserv values(107, 10015);
+insert into hotelserv values(101, 10015);
+insert into hotelserv values(112, 10015);
+insert into hotelserv values(103, 10015);
+insert into hotelserv values(114, 10015);
+insert into hotelserv values(105, 10015);
+
+insert into hotelserv values(108, 10016);
+insert into hotelserv values(107, 10016);
+insert into hotelserv values(101, 10016);
+insert into hotelserv values(112, 10016);
+insert into hotelserv values(103, 10016);
+insert into hotelserv values(114, 10016);
+insert into hotelserv values(105, 10016);
+
+commit;
+/* Banner */
+CREATE TABLE Ad (
+ adId               VARCHAR2(8) NOT NULL,
+ adAdPlanId         VARCHAR2(8) NOT NULL,
+ adHotelId          VARCHAR2(5) NOT NULL,
+ adStatus           VARCHAR2(1) ,
+ adPayDate          DATE,
+ adPic              BLOB,
+ adPicContent      VARCHAR2(150),
+ adHit              NUMBER(4) ,
+ 
+ CONSTRAINT Ad_adId_PK PRIMARY KEY (adId));
+CREATE SEQUENCE Ad_seq
+INCREMENT BY 1
+START WITH 10000001
+NOMAXVALUE;
+INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPicContent,adHit)VALUES (Ad_seq.NEXTVAL,10000001,10001,4,sysdate,'http://www.evergreen-hotels.com/',50);
+INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPicContent,adHit)VALUES (Ad_seq.NEXTVAL,10000002,10002,4,sysdate,'http://www.lemidi-hotel.com/',50);
+INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPicContent,adHit)VALUES (Ad_seq.NEXTVAL,10000003,10003,4,sysdate,'http://www.southgarden.com.tw/',50);
+INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPicContent,adHit)VALUES (Ad_seq.NEXTVAL,10000001,10004,4,sysdate,'http://www.fullon-hotels.com.tw/',50);
+INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPicContent,adHit)VALUES (Ad_seq.NEXTVAL,10000002,10005,4,sysdate,'https://168inn.com.tw/hotel_room_index.php?hotel_sn=7',50);
+INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPicContent,adHit)VALUES (Ad_seq.NEXTVAL,10000003,10006,4,sysdate,'http://www.matsuni.com/',50);
+INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPicContent,adHit)VALUES (Ad_seq.NEXTVAL,10000001,10007,4,sysdate,'http://www.greenhotel.com.tw/zh/about-zh/',50);
+INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPicContent,adHit)VALUES (Ad_seq.NEXTVAL,10000002,10008,4,sysdate,'http://www.kuva-chateau.com.tw/',50);
+INSERT INTO Ad (adId,adAdPlanId,adHotelId,adStatus,adPayDate,adPicContent,adHit)VALUES (Ad_seq.NEXTVAL,10000003,10010,4,sysdate,'http://www.eslitehotel.com/',50);
+commit;
+/* 一般會員的共住條件 */
+CREATE TABLE memLiveCond(
+  memLiveCondLiveCondId VARCHAR2(3),
+  memLiveCondMemId VARCHAR2(8),
+  
+  CONSTRAINT memLiveCond_memLCLCId_fk FOREIGN KEY (memLiveCondLiveCondId) REFERENCES LiveCond(LiveCondId),
+  CONSTRAINT memLiveCond_memLCLCMemId_fk FOREIGN KEY (memLiveCondMemId) REFERENCES Mem(MemId)
+);
+-- 會員1000000001只想被女的找
+INSERT INTO memLiveCond (memLiveCondLiveCondId, memLiveCondMemId)
+VALUES (102, 10000001);
+-- 會員1000000002只想被男的找
+INSERT INTO memLiveCond (memLiveCondLiveCondId, memLiveCondMemId)
+VALUES (101, 10000002);
+-- 會員1000000003都可以，所以沒有設定
+ 
+commit;
+/* 房型 */
+create table room(
+ roomId VARCHAR2(7 char) constraint room_roomId_pk primary key,
+ roomHotelId VARCHAR2(5 char) not null constraint room_roomHotelId_fk references hotel(hotelid),
+ roomName VARCHAR2(30 char),
+ roomTotalNo NUMBER(3),
+ roomPrice NUMBER(7),
+ roomBottomPrice NUMBER(7),
+ roomForSell VARCHAR2(1) constraint room_roomForSell_ck check(roomForSell ='0' or roomForSell='1'),
+ roomForSellAuto VARCHAR2(1) constraint room_roomForSellAuto_ck check(roomForSellAuto ='0' or roomForSellAuto='1'),
+ roomRemainNo NUMBER(3), constraint room_roomRemainNo_ck check(roomRemainNo <= roomTotalNo),
+ roomDefaultNo NUMBER(3), constraint room_roomDefaultNo_ck check(roomDefaultNo <= roomTotalNo),
+ roomDiscountStartDate NUMBER,
+ roomDiscountEndDate NUMBER,
+ roomDisccountPercent NUMBER,
+ roomDiscountHr NUMBER(1),
+ roomOnePrice VARCHAR2(1) constraint room_roomOnePrice_ck check(roomOnePrice ='0' or roomOnePrice='1'),
+ roomFun VARCHAR2(50 char),
+ roomMeal VARCHAR2(50 char),
+ roomSleep VARCHAR2(50 char),
+ roomFacility VARCHAR2(50 char),
+ roomSweetFacility VARCHAR2(50 char),
+ roomCapacity NUMBER(2),
+ roomOneBed NUMBER(2),
+ roomTwoBed NUMBER(2)
+);
+CREATE SEQUENCE room_seq
+INCREMENT BY 1
+START WITH 1000001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10005','雙人房',10,4800,1000,'0','0',5,10,64800000,79200000,3,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,2,0
+);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10005','豪華客房',10,6000,1000,'0','0',5,10,64800000,79200000,3,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,2,0
+);
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10005','高級客房',10,7500,1000,'0','0',5,10,64800000,79200000,3,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道、可欣賞市區景觀',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,0,1
+);
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10005','豪華四人房',10,8000,1000,'0','0',5,10,64800000,79200000,3,1,'0',
+'免費無線和有線上網、付費電視頻道、可欣賞市區景觀',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',4,0,2
+);
+
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10004','標準雙床間',15,3000,1200,'0','0',12,12,64800000,79200000,3,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、義大利濃縮咖啡機、電熱水壺和免費瓶裝水',
+'遮光窗簾',
+'保險箱、書桌和熨斗及熨衣板 (可要求)，可要求提供 免費搖籃/嬰兒床',
+'空調和每日客房清潔服務',4,2,1);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10004','豪華雙床間',15,3000,1200,'0','0',12,12,64800000,79200000,3,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、義大利濃縮咖啡機、電熱水壺和免費瓶裝水',
+'遮光窗簾',
+'保險箱、書桌和熨斗及熨衣板 (可要求)，可要求提供 免費搖籃/嬰兒床',
+'空調和每日客房清潔服務',4,2,1);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10004','情侶雙床間',15,3000,1200,'0','0',12,12,64800000,79200000,3,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、義大利濃縮咖啡機、電熱水壺和免費瓶裝水',
+'遮光窗簾',
+'保險箱、書桌和熨斗及熨衣板 (可要求)，可要求提供 免費搖籃/嬰兒床',
+'空調和每日客房清潔服務',4,2,1);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10004','家庭房',15,3000,1200,'0','0',12,12,64800000,79200000,2,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、義大利濃縮咖啡機、電熱水壺和免費瓶裝水',
+'遮光窗簾',
+'保險箱、書桌和熨斗及熨衣板 (可要求)，可要求提供 免費搖籃/嬰兒床',
+'空調和每日客房清潔服務',4,2,1);
+
+
+-------------------------------------------------------------------------------
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10003','家庭標準客房',15,3000,1200,'0','0',12,12,64800000,79200000,2,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、義大利濃縮咖啡機、電熱水壺和免費瓶裝水',
+'遮光窗簾',
+'保險箱、書桌和熨斗及熨衣板 (可要求)，可要求提供 免費搖籃/嬰兒床',
+'空調和每日客房清潔服務',4,2,1);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10003','尊榮客房',20,10900,5000,'0','0',13,12,64800000,79200000,2,1,'0',
+'免費無線和有線上網、40 吋電視',
+'24 小時客房送餐服務、迷你吧和免費瓶裝水',
+'低過敏寢具、遮光窗簾和開床服務',
+'保險箱、免費報紙和書桌，可要求提供 免費搖籃/嬰兒床',
+'空調和每日客房清潔服務,非吸煙客房',6,2,2
+);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10002','尊榮客房',20,10900,6200,'0','0',13,12,64800000,79200000,2,1,'0',
+'免費無線和有線上網、40 吋電視',
+'24 小時客房送餐服務、迷你吧和免費瓶裝水',
+'低過敏寢具、遮光窗簾和開床服務',
+'保險箱、免費報紙和書桌，可要求提供 免費搖籃/嬰兒床',
+'空調和每日客房清潔服務,非吸煙客房',6,2,2
+);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10002','高級客房',15,3000,1200,'0','0',12,12,64800000,79200000,2,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、義大利濃縮咖啡機、電熱水壺和免費瓶裝水',
+'遮光窗簾',
+'保險箱、書桌和熨斗及熨衣板 (可要求)，可要求提供 免費搖籃/嬰兒床',
+'空調和每日客房清潔服務',4,2,1
+);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10002','尊榮客房',20,10900,5200,'0','0',13,12,64800000,79200000,2,1,'0',
+'免費無線和有線上網、40 吋電視',
+'24 小時客房送餐服務、迷你吧和免費瓶裝水',
+'低過敏寢具、遮光窗簾和開床服務',
+'保險箱、免費報紙和書桌，可要求提供 免費搖籃/嬰兒床',
+'空調和每日客房清潔服務,非吸煙客房',6,2,2
+);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10002','家庭標準客房',15,3000,1200,'0','0',12,12,64800000,79200000,2,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、義大利濃縮咖啡機、電熱水壺和免費瓶裝水',
+'遮光窗簾',
+'保險箱、書桌和熨斗及熨衣板 (可要求)，可要求提供 免費搖籃/嬰兒床',
+'空調和每日客房清潔服務',4,2,1
+);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10001','高級客房',10,9000,1000,'0','0',2,8,39600000,43140000,1,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、義大利濃縮咖啡機、電熱水壺和免費瓶裝水',
+'遮光窗簾',
+'保險箱、書桌和熨斗及熨衣板 (可要求)，可要求提供 免費搖籃/嬰兒床',
+'空調和每日客房清潔服務',4,2,1
+);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10001','標準客房',10,9000,1000,'0','0',1,8,39600000,43140000,1,1,'1',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、義大利濃縮咖啡機、電熱水壺和免費瓶裝水',
+'遮光窗簾',
+'保險箱、書桌和熨斗及熨衣板 (可要求)，可要求提供 免費搖籃/嬰兒床',
+'空調和每日客房清潔服務',4,2,1
+);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10001','雅逸居一大床',10,9000,1000,'0','0',1,7,39600000,43140000,10,2,'1',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、迷你吧、24 小時客房送餐服務和免費瓶裝水',
+'高級寢具、多種枕頭選擇、遮光窗簾和開床服務',
+'保險箱、免費報紙和書桌，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務',4,2,1
+);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10001','雲天露臺客房',15,9000,5000,'0','0',4,12,39600000,43140000,30,1,'1',
+'免費無線和有線上網、42 吋平面電視',
+'冰箱、迷你吧、24 小時客房送餐服務和免費瓶裝水',
+'高級寢具、多種枕頭選擇、遮光窗簾和開床服務',
+'沙發床、保險箱和免費報紙，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務,非吸煙客房',4,0,2
+);
+
+
+-------------------------------------------------------------------------------
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10009','行政雙人房',10,8500,3000,'0','0',5,10,39600000,43140000,1,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,2,0
+);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10009','豪華標準客房',10,5800,2900,'0','0',5,10,64800000,79200000,1,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,2,0
+);
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10009','高級客房',10,7174,2500,'0','0',5,10,64800000,79200000,1,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道、可欣賞市區景觀',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,0,1
+);
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10009','豪華標準客房',10,10880,3000,'0','0',5,10,64800000,79200000,1,1,'0',
+'免費無線和有線上網、付費電視頻道、可欣賞市區景觀',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',4,0,2
+);
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10009','豪華雙人房',10,8200,3000,'0','0',5,10,64800000,79200000,1,2,'0',
+'免費無線和有線上網、付費電視頻道、可欣賞市區景觀',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',4,0,2
+);
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10009','普通套房',10,5940,2500,'0','0',5,10,64800000,79200000,1,3,'0',
+'免費無線和有線上網、32 吋LCD 液晶電視',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,0,1
+);
+
+
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10006','雙人房',10,4800,1000,'0','0',5,10,64800000,79200000,1,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,2,0
+);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10007','豪華客房',10,6000,1000,'0','0',5,10,64800000,79200000,2,2,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,2,0
+);
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10008','高級客房',10,7500,1000,'0','0',5,10,64800000,79200000,1,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道、可欣賞市區景觀',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,0,1
+);
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10010','高級雙人房',10,7000,1000,'0','0',5,10,64800000,79200000,1,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,2,0
+);
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10011','豪華客房',10,12000,1000,'0','0',5,10,64800000,79200000,1,2,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,2,0
+);
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10012','一品客房',10,7500,1000,'0','0',5,10,64800000,79200000,1,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道、可欣賞市區景觀',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,0,1
+);
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10013','豪華雙人房',10,8000,1000,'0','0',5,10,64800000,79200000,1,1,'0',
+'免費無線和有線上網、付費電視頻道、可欣賞市區景觀',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',4,0,2
+);
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10014','四人房',10,8200,3000,'0','0',5,10,64800000,79200000,1,2,'0',
+'免費無線和有線上網、付費電視頻道、可欣賞市區景觀',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',4,0,2
+);
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10015','特級套房',10,8000,2500,'0','0',5,10,64800000,79200000,2,3,'0',
+'免費無線和有線上網、32 吋LCD 液晶電視',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,0,1
+);
+
+insert into room(
+roomId,roomHotelId,roomName,roomTotalNo,roomPrice,roomBottomPrice,roomForSell,
+roomForSellAuto,roomRemainNo,roomDefaultNo,roomDiscountStartDate,roomDiscountEndDate,
+roomDisccountPercent,roomDiscountHr,roomOnePrice,roomFun,roomMeal,
+roomSleep,roomFacility,roomSweetFacility,roomCapacity,roomOneBed,roomTwoBed
+)values(
+room_seq.NEXTVAL,'10016','高級雙人房',10,7000,1000,'0','0',5,10,64800000,79200000,2,1,'0',
+'免費無線上網、48 吋LCD 液晶電視和付費電視頻道',
+'冰箱、咖啡機/沖茶器、客房送餐服務和免費瓶裝水',
+'遮光窗簾',
+'設有豪華浴缸和獨立淋浴間的私人浴室，保險箱、書桌和電話，可要求提供折疊床/加床和免費搖籃/嬰兒床',
+'空調和每日客房清潔服務，非吸煙客房',2,2,0
+);
+
+
+---------------------------------------------------
+commit;
+/* [Level 3] 訂單 房型照片 願望項目 */
+/* 訂單 */
+CREATE TABLE ORD (
+ORDID              VARCHAR2(10) NOT NULL,
+ORDROOMID          VARCHAR2(7) NOT NULL,
+ORDMEMID           VARCHAR2(8) NOT NULL,
+ORDHOTELID         VARCHAR2(5) NOT NULL,
+ORDPRICE           VARCHAR2(7),
+ORDLIVEDATE        DATE,
+ORDDATE            DATE,
+ORDSTATUS          VARCHAR2(1),
+ORDRATINGCONTENT   VARCHAR2(150),
+ORDRATINGSTARNO    NUMBER(2),
+ORDQRPIC           BLOB,
+ORDMSGNO           VARCHAR2(5),  
+CONSTRAINT ORD_ORDID_PK PRIMARY KEY (ORDID),
+CONSTRAINT ORD_ORDROOMID_FK FOREIGN KEY (ORDROOMID) REFERENCES ROOM (ROOMID),
+CONSTRAINT ORD_ORDMEMID_FK FOREIGN KEY (ORDMEMID) REFERENCES MEM (MEMID),
+CONSTRAINT ORD_ORDHOTELID_FK FOREIGN KEY (ORDHOTELID) REFERENCES HOTEL (HOTELID)
+);
+
+CREATE SEQUENCE ord_seq
+INCREMENT BY 1
+START WITH 1001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000001',
+'10001',
+4800,
+TO_DATE('2016/05/15 10:00:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/15 19:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+1,
+null,
+'ABCDA'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000011',
+'10000002',
+'10002',
+7000,
+TO_DATE('2016/01/01 7:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/01/01 4:03:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+1,
+null,
+'ABCDB'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000010',
+'10000003',
+'10003',
+3700,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+2,
+null,
+'ABCDC'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000005',
+'10000004',
+'10004',
+1999,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+3,
+null,
+'EFGHD'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000004',
+'10000003',
+'10005',
+3550,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+3,
+null,
+'ABCDE'
+);
+ 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000012',
+'10000004',
+'10002',
+7800,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+4,
+null,
+'EFGHF'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000010',
+'10000001',
+'10003',
+2200,
+TO_DATE('2016/05/15 10:00:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/15 19:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+2,
+null,
+'ABCDG'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000005',
+'10000002',
+'10004',
+9900,
+TO_DATE('2016/01/01 7:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/01/01 4:03:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+1,
+null,
+'ABCDH'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000001',
+'10000003',
+'10005',
+500,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+1,
+null,
+'ABCDI'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000004',
+'10001',
+770,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+2,
+null,
+'EFGHJ'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000012',
+'10000003',
+'10002',
+6240,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+null, --star rating no
+null,
+'ABCDK'
+);
+ 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000010',
+'10000004',
+'10003',
+4250,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+0,
+null,
+'EFGHL'
+); 
+commit;
+
+--分隔線 1
+
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000001',
+'10001',
+1500,
+TO_DATE('2016/06/15 19:01:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/06/15 19:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'環境還滿乾淨的',
+5,
+null,
+'ZACDA'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000002',
+'10001',
+7000,
+TO_DATE('2016/01/01 7:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/01/01 8:03:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'環境還滿乾淨的',
+5,
+null,
+'ZACDB'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000003',
+'10001',
+3000,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 21:48:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'環境還滿乾淨的',
+5,
+null,
+'ZACDC'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000004',
+'10001',
+1999,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 14:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'環境還滿乾淨的',
+5,
+null,
+'ZAGHD'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000003',
+'10001',
+2999,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:00:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'環境還滿乾淨的',
+5,
+null,
+'ZACDE'
+);
+ 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000017',
+'10000004',
+'10001',
+7800,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 14:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'環境還滿乾淨的',
+5,
+null,
+'ZAGHF'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000018',
+'10000001',
+'10001',
+10000,
+TO_DATE('2016/05/15 19:00:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/15 19:29:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'超便宜的',
+5,
+null,
+'ZACDG'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000002',
+'10001',
+200,
+TO_DATE('2016/01/01 7:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/01/01 7:23:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'環境還滿乾淨的',
+5,
+null,
+'ZACDH'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000003',
+'10001',
+3000,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:00:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'環境還滿乾淨的',
+5,
+null,
+'ZACDI'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000004',
+'10001',
+770,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 14:13:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'環境還滿乾淨的',
+5,
+null,
+'ZAGHJ'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000017',
+'10000003',
+'10001',
+2400,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:10:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'環境還滿乾淨的',
+null, --star rating no
+null,
+'ZACDK'
+);
+ 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000004',
+'10001',
+2250,
+TO_DATE('2015/11/15 17:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'環境還滿乾淨的',
+5,
+null,
+'ZAGHL'
+); 
+commit;
+
+--分隔線 2
+
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000001',
+'10001',
+2800,
+TO_DATE('2016/05/15 18:00:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'下次還會再來',
+5,
+null,
+'YYCDA'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000002',
+'10001',
+3000,
+TO_DATE('2016/01/01 4:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/01/01 4:16:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'下次還會再來',
+5,
+null,
+'YYCDB'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000018',
+'10000003',
+'10001',
+8000,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 21:48:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'下次還會再來',
+5,
+null,
+'YYCDC'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000004',
+'10001',
+1999,
+TO_DATE('2015/11/15 18:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'下次還會再來',
+5,
+null,
+'YYGHD'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000018',
+'10000003',
+'10001',
+3000,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'下次還會再來',
+5,
+null,
+'YYCDE'
+);
+ 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000017',
+'10000004',
+'10001',
+1000,
+TO_DATE('2015/11/15 15:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 15:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'下次還會再來',
+5,
+null,
+'YYGHF'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000001',
+'10001',
+1000,
+TO_DATE('2016/05/15 10:00:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/15 10:29:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'下次還會再來',
+5,
+null,
+'YYCDG'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000002',
+'10001',
+1000,
+TO_DATE('2016/01/01 7:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/01/01 7:23:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'下次還會再來',
+5,
+null,
+'YYCDH'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000018',
+'10000003',
+'10001',
+1000,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:48:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'下次還會再來',
+5,
+null,
+'YYCDI'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000004',
+'10001',
+1000,
+TO_DATE('2015/11/15 15:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 15:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'下次還會再來',
+5,
+null,
+'YYGHJ'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000017',
+'10000003',
+'10001',
+1000,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'下次還會再來',
+5, --star rating no
+null,
+'YYCDK'
+);
+ 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000004',
+'10001',
+1000,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 14:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'下次還會再來',
+5,
+null,
+'YYGHL'
+); 
+commit;
+
+--分隔線 3
+
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000001',
+'10001',
+2000,
+TO_DATE('2016/05/15 19:00:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/15 19:03:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'XXCDA'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000002',
+'10001',
+2000,
+TO_DATE('2016/01/01 7:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/01/01 7:17:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'XXCDB'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000003',
+'10001',
+2000,
+TO_DATE('2016/04/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/04/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'XXCDC'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000017',
+'10000004',
+'10001',
+1999,
+TO_DATE('2015/12/15 18:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/12/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'XXGHD'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000003',
+'10001',
+2000,
+TO_DATE('2016/03/18 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/18 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'XXCDE'
+);
+ 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000017',
+'10000004',
+'10001',
+2000,
+TO_DATE('2015/11/15 18:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'XXGHF'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000001',
+'10001',
+2000,
+TO_DATE('2016/05/15 10:00:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/15 10:13:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+2,
+null,
+'XXCDG'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000017',
+'10000002',
+'10001',
+2000,
+TO_DATE('2016/01/01 7:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/01/01 4:03:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'XXCDH'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000018',
+'10000003',
+'10001',
+2000,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'XXCDI'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000004',
+'10001',
+2000,
+TO_DATE('2015/11/14 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/14 14:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'XXGHJ'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000012',
+'10000003',
+'10001',
+2000,
+TO_DATE('2016/05/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+null,
+null, --star rating no
+null,
+'XXCDK'
+);
+ 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000004',
+'10001',
+2000,
+TO_DATE('2015/11/14 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/14 14:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+0,
+null,
+'XXGHL'
+); 
+commit;
+
+--分隔線 4
+
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000001',
+'10001',
+2400,
+TO_DATE('2016/04/15 14:00:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/04/15 14:04:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'和朋友一起來住過 CP值滿高的',
+4,
+null,
+'DDCDA'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000002',
+'10001',
+2400,
+TO_DATE('2016/04/01 4:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/04/01 4:19:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'和朋友一起來住過 CP值滿高的',
+4,
+null,
+'DDCDB'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000003',
+'10001',
+2400,
+TO_DATE('2016/04/01 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/04/01 22:04:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'和朋友一起來住過 CP值滿高的',
+4,
+null,
+'DDCDC'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000017',
+'10000004',
+'10001',
+2499,
+TO_DATE('2015/04/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/04/15 14:24:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'和朋友一起來住過 CP值滿高的',
+4,
+null,
+'DDGHD'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000003',
+'10001',
+2400,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'和朋友一起來住過 CP值滿高的',
+4,
+null,
+'DDCDE'
+);
+ 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000017',
+'10000004',
+'10001',
+2400,
+TO_DATE('2015/04/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/04/15 14:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'和朋友一起來住過 CP值滿高的',
+4,
+null,
+'DDGHF'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000001',
+'10001',
+2200,
+TO_DATE('2016/05/14 19:00:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/14 19:19:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'和朋友一起來住過 CP值滿高的',
+4,
+null,
+'DDCDG'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000002',
+'10001',
+2200,
+TO_DATE('2016/04/04 7:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/04/04 7:24:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'和朋友一起來住過 CP值滿高的',
+4,
+null,
+'DDCDH'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000018',
+'10000003',
+'10001',
+2200,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 21:59:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'和朋友一起來住過 CP值滿高的',
+4,
+null,
+'DDCDI'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000004',
+'10001',
+2000,
+TO_DATE('2015/01/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/01/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'和朋友一起來住過 CP值滿高的',
+4,
+null,
+'DDGHJ'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000018',
+'10000003',
+'10001',
+2000,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'和朋友一起來住過 CP值滿高的',
+null, --star rating no
+null,
+'DDCDK'
+);
+ 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000004',
+'10001',
+2050,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'和朋友一起來住過 CP值滿高的',
+4,
+null,
+'DDGHL'
+); 
+commit;
+
+--分隔線 5
+
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000001',
+'10001',
+3000,
+TO_DATE('2016/05/05 05:05:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/05 05:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'EECDA'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000002',
+'10001',
+3000,
+TO_DATE('2016/05/01 7:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/01 7:23:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'EECDB'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000003',
+'10001',
+3000,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:17:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'EECDC'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000018',
+'10000004',
+'10001',
+3000,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'EEGHD'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000017',
+'10000003',
+'10001',
+3000,
+TO_DATE('2016/03/21 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/21 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'EECDE'
+);
+ 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000017',
+'10000004',
+'10001',
+3000,
+TO_DATE('2015/11/15 18:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'EEGHF'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000001',
+'10001',
+2200,
+TO_DATE('2016/05/15 10:00:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/15 19:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'EECDG'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000002',
+'10001',
+3000,
+TO_DATE('2016/01/01 7:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/01/01 4:03:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'EECDH'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000001',
+'10000003',
+'10005',
+500,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'EECDI'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000004',
+'10001',
+1700,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+5,
+null,
+'EFGHJ'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000017',
+'10000003',
+'10001',
+2000,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+null, --star rating no
+null,
+'ABCDK'
+);
+ 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000004',
+'10001',
+4250,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+0,
+null,
+'EFGHL'
+); 
+commit;
+
+--分隔線 6
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000015',
+'10000001',
+'10001',
+4800,
+TO_DATE('2016/05/15 10:00:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/15 19:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+1,
+null,
+'ABCDA'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000011',
+'10000002',
+'10002',
+7000,
+TO_DATE('2016/01/01 7:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/01/01 4:03:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+1,
+null,
+'ABCDB'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000010',
+'10000003',
+'10003',
+3700,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+2,
+null,
+'ABCDC'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000005',
+'10000004',
+'10004',
+1999,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+3,
+null,
+'EFGHD'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000004',
+'10000003',
+'10005',
+3550,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+3,
+null,
+'ABCDE'
+);
+ 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000012',
+'10000004',
+'10002',
+7800,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+4,
+null,
+'EFGHF'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000010',
+'10000001',
+'10003',
+2200,
+TO_DATE('2016/05/15 10:00:00', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/05/15 19:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+2,
+null,
+'ABCDG'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000005',
+'10000002',
+'10004',
+9900,
+TO_DATE('2016/01/01 7:15:21', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/01/01 4:03:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+1,
+null,
+'ABCDH'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000001',
+'10000003',
+'10005',
+500,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+1,
+null,
+'ABCDI'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000016',
+'10000004',
+'10001',
+770,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+2,
+null,
+'EFGHJ'
+); 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000012',
+'10000003',
+'10002',
+6240,
+TO_DATE('2016/03/22 21:47:54', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2016/03/22 22:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+null, --star rating no
+null,
+'ABCDK'
+);
+ 
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000010',
+'10000004',
+'10003',
+4250,
+TO_DATE('2015/11/15 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/11/15 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+'這旅館不錯值得推薦',
+0,
+null,
+'EFGHL'
+); 
+
+INSERT INTO ORD
+VALUES (
+CONCAT(TO_CHAR(SYSDATE,'YYYYMM'),ord_seq.NEXTVAL),
+'1000010',
+'10000002',
+'10003',
+4250,
+TO_DATE('2015/12/06 14:03:27', 'YYYY/MM/DD HH24:MI:SS'), -- 入住日期時分秒
+TO_DATE('2015/12/06 18:30:25', 'YYYY/MM/DD HH24:MI:SS'), -- 下單日期時分秒
+2,
+null,
+null,
+null,
+'EFGHL'
+);
+
+commit;
+
+
+
+/* 房型照片 */
+create table roomphoto(
+ roomPhotoId VARCHAR2(12 char) constraint roomphoto_roomphotoId_pk primary key,
+ roomPhotoRoomId VARCHAR2(7 char) not null constraint roomphoto_roomPhotoRoomId_fk references room(roomid),
+ roomPhotoPic blob
+);
+CREATE SEQUENCE roomphoto_seq
+INCREMENT BY 1
+START WITH 10001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+commit;
+
+/* 願望項目 */
+create table wish(
+  wishMemId varchar(8) not null,
+  wishRoomId varchar(7) not null,
+  constraint wish_wishMemId_fk foreign key (wishMemId) references mem(memId),
+  constraint wish_wishRoomId_fk foreign key (wishRoomId) references room(roomId),
+  constraint wish_primaryKey_pk primary key (wishMemId,wishRoomId));
+ INSERT INTO wish VALUES(10000001,1000001);
+ INSERT INTO wish VALUES(10000001,1000002);
+ INSERT INTO wish VALUES(10000001,1000003);
+ INSERT INTO wish VALUES(10000002,1000002);
+ INSERT INTO wish VALUES(10000002,1000003);
+ INSERT INTO wish VALUES(10000002,1000004);
+ INSERT INTO wish VALUES(10000002,1000011);
+ INSERT INTO wish VALUES(10000002,1000022);
+ INSERT INTO wish VALUES(10000002,1000032);
+ INSERT INTO wish VALUES(10000002,1000024);
+ INSERT INTO wish VALUES(10000002,1000025);
+ INSERT INTO wish VALUES(10000002,1000026);
+ INSERT INTO wish VALUES(10000003,1000002);
+ INSERT INTO wish VALUES(10000003,1000003);
+ INSERT INTO wish VALUES(10000003,1000004);
+ INSERT INTO wish VALUES(10000003,1000005);
+ INSERT INTO wish VALUES(10000003,1000006);
+ INSERT INTO wish VALUES(10000003,1000007);
+ INSERT INTO wish VALUES(10000003,1000008);
+ INSERT INTO wish VALUES(10000003,1000009);
+ INSERT INTO wish VALUES(10000003,1000010);
+ INSERT INTO wish VALUES(10000003,1000012);
+ INSERT INTO wish VALUES(10000003,1000022);
+ INSERT INTO wish VALUES(10000003,1000032);
+ INSERT INTO wish VALUES(10000003,1000017);
+ INSERT INTO wish VALUES(10000004,1000002);
+ INSERT INTO wish VALUES(10000004,1000003);
+ INSERT INTO wish VALUES(10000004,1000004);
+ INSERT INTO wish VALUES(10000004,1000005);
+ INSERT INTO wish VALUES(10000004,1000006);
+ INSERT INTO wish VALUES(10000004,1000007);
+ INSERT INTO wish VALUES(10000004,1000008);
+ INSERT INTO wish VALUES(10000004,1000009);
+ INSERT INTO wish VALUES(10000004,1000011);
+ INSERT INTO wish VALUES(10000004,1000013);
+ INSERT INTO wish VALUES(10000004,1000012);
+ INSERT INTO wish VALUES(10000004,1000015);
+ INSERT INTO wish VALUES(10000004,1000016);
+ INSERT INTO wish VALUES(10000004,1000017);
+ INSERT INTO wish VALUES(10000004,1000020);
+ INSERT INTO wish VALUES(10000004,1000021);
+ INSERT INTO wish VALUES(10000004,1000022);
+ INSERT INTO wish VALUES(10000004,1000023);
+ INSERT INTO wish VALUES(10000004,1000024);
+ INSERT INTO wish VALUES(10000004,1000025);
+ INSERT INTO wish VALUES(10000004,1000033);
+ INSERT INTO wish VALUES(10000005,1000020);
+ INSERT INTO wish VALUES(10000006,1000001);
+ INSERT INTO wish VALUES(10000006,1000002);
+ INSERT INTO wish VALUES(10000006,1000003);
+ INSERT INTO wish VALUES(10000006,1000004);
+ INSERT INTO wish VALUES(10000006,1000005);
+ INSERT INTO wish VALUES(10000006,1000006);
+ INSERT INTO wish VALUES(10000006,1000007);
+ INSERT INTO wish VALUES(10000006,1000008);
+ INSERT INTO wish VALUES(10000006,1000009);
+ INSERT INTO wish VALUES(10000006,1000010);
+ INSERT INTO wish VALUES(10000007,1000001);
+ INSERT INTO wish VALUES(10000007,1000011);
+ INSERT INTO wish VALUES(10000007,1000021);
+ INSERT INTO wish VALUES(10000007,1000031);
+ INSERT INTO wish VALUES(10000007,1000013);
+commit;
+
+/* [Level 4] 一般會員檢舉單 廠商會員檢舉單 */
+/* 一般會員檢舉單 */
+CREATE TABLE memrep( 
+  memrepId VARCHAR2(10) NOT NULL,
+  memrepOrdId VARCHAR2(10) NOT NULL,
+  memrepMemId VARCHAR2(8) NOT NULL,
+  memrepHotelId VARCHAR2(5) NOT NULL,
+  memrepEmpId VARCHAR2(8), --只有審核之後才會填入資料，因此可以是Null
+  memrepContent VARCHAR2(150),
+  memrepStatus VARCHAR2(1),
+  memrepDate DATE,
+  memrepReviewDate DATE,
+  
+  CONSTRAINT memrep_memrepId_pk PRIMARY KEY (memrepId),
+  CONSTRAINT memrep_memrepOrdId_fk FOREIGN KEY (memrepOrdId) REFERENCES ord(ordId),
+  CONSTRAINT memrep_memrepMemId_fk FOREIGN KEY (memrepMemId) REFERENCES mem(memId),  
+  CONSTRAINT memrep_memrepHotelId_fk FOREIGN KEY (memrepHotelId) REFERENCES hotel(hotelId),  
+  CONSTRAINT memrep_memrepEmpId_fk FOREIGN KEY (memrepEmpId) REFERENCES emp(empId)  
+);
+CREATE SEQUENCE memrep_seq
+INCREMENT BY 1
+START WITH 1000000001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+-- 此檢舉單根據第一個訂單提出(根據訂單，附上memId以及hotelId)，且尚未處理
+INSERT INTO memrep (memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus,memrepDate,memrepReviewDate  )
+VALUES ( memrep_seq.NEXTVAL,
+        (select ordid 
+          from (select rownum rnum, ordid
+                from ord
+                where rownum <= 1)
+          where rnum >= 1), 
+        (select ordmemid
+          from (select rownum rnum, ordid, ordmemid
+                from ord
+                where rownum <= 1)
+          where rnum >= 1),
+        (select ordhotelid
+          from (select rownum rnum, ordid, ordhotelid
+                from ord
+                where rownum <= 1)
+          where rnum >= 1),
+          null,
+          '此旅館的服務態度很差',
+          0, --0.未審核 1.已審核未通過 2.已審核已通過
+         (select ordDate 
+          from (select rownum rnum, ordDate
+                from ord
+                where rownum <= 1)
+          where rnum >= 1)+1, --檢舉單提出日-訂單日+1天
+          null
+          );
+-- 有空再補強: 增加check - 欄位: memrepEmpId, memrepStatus, memrepReviewDate 有連動關係
+-- 此檢舉單根據第二個訂單提出(根據訂單，附上memId以及hotelId)，且已由第一位員工處理
+INSERT INTO memrep (memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus,memrepDate,memrepReviewDate  )
+VALUES ( memrep_seq.NEXTVAL,
+        (select ordid 
+          from (select rownum rnum, ordid
+                from ord
+                where rownum <= 2)
+          where rnum >= 2), 
+        (select ordmemid
+          from (select rownum rnum, ordid, ordmemid
+                from ord
+                where rownum <= 2)
+          where rnum >= 2),
+        (select ordhotelid
+          from (select rownum rnum, ordid, ordhotelid
+                from ord
+                where rownum <= 2)
+          where rnum >= 2),
+          (select empid
+          from (select rownum rnum, empid
+                from emp
+                where rownum <= 1)
+          where rnum >= 1), -- 第一位員工
+          '我到了旅館，他們卻要跟我說兩倍的價格，太可惡。',
+          1, --0.未審核 1.已審核未通過 2.已審核已通過
+         (select ordDate 
+          from (select rownum rnum, ordDate
+                from ord
+                where rownum <= 2)
+          where rnum >= 2)+1, --檢舉單提出日-訂單日+1天
+          (select ordDate 
+          from (select rownum rnum, ordDate
+                from ord
+                where rownum <= 2)
+          where rnum >= 2)+2 --檢舉單提出日-訂單日+2天
+          );
+--UPDATE hotel
+--SET hotelBlackList = 1
+--WHERE hotelId = (select ordHotelId
+--          from (select rownum rnum, ordid, ordHotelId
+--                from ord
+--                where rownum <= 2)
+--          where rnum >= 2);
+--當審核狀態更改為2，要連動將廠商會員的'黑名單狀態'作相對應更動  
+-- 此檢舉單根據第三個訂單提出(根據訂單，附上memId以及hotelId)，且已由第四位員工處理
+INSERT INTO memrep (memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus,memrepDate,memrepReviewDate  )
+VALUES ( memrep_seq.NEXTVAL,
+        (select ordid 
+          from (select rownum rnum, ordid
+                from ord
+                where rownum <= 3)
+          where rnum >= 3), 
+        (select ordmemid
+          from (select rownum rnum, ordid, ordmemid
+                from ord
+                where rownum <= 3)
+          where rnum >= 3),
+        (select ordhotelid
+          from (select rownum rnum, ordid, ordhotelid
+                from ord
+                where rownum <= 3)
+          where rnum >= 3),
+          (select empid
+          from (select rownum rnum, empid
+                from emp
+                where rownum <= 4)
+          where rnum >= 4), -- 第四位員工
+          '浴室設備老舊。',
+          1, --0.未審核 1.已審核未通過 2.已審核已通過
+         (select ordDate 
+          from (select rownum rnum, ordDate
+                from ord
+                where rownum <= 3)
+          where rnum >= 3)+2, --檢舉單提出日-訂單日+2天
+         (select ordDate 
+          from (select rownum rnum, ordDate
+                from ord
+                where rownum <= 3)
+          where rnum >= 3)+3 --檢舉單提出日-訂單日+3天
+          );
+commit;
+-- 此檢舉單根據第四個訂單提出(根據訂單，附上memId以及hotelId)，尚未處理
+INSERT INTO memrep (memrepId, memrepOrdId, memrepMemId, memrepHotelId, memrepEmpId, memrepContent, memrepStatus,memrepDate,memrepReviewDate  )
+VALUES ( memrep_seq.NEXTVAL,
+        (select ordid 
+          from (select rownum rnum, ordid
+                from ord
+                where rownum <= 4)
+          where rnum >= 4), 
+        (select ordmemid
+          from (select rownum rnum, ordid, ordmemid
+                from ord
+                where rownum <= 4)
+          where rnum >= 4),
+        (select ordhotelid
+          from (select rownum rnum, ordid, ordhotelid
+                from ord
+                where rownum <= 4)
+          where rnum >= 4),
+          null, 
+          '旅館附近停車不方便。',
+          0, --0.未審核 1.已審核未通過 2.已審核已通過
+         (select ordDate 
+          from (select rownum rnum, ordDate
+                from ord
+                where rownum <= 4)
+          where rnum >= 4)+2, --檢舉單提出日-訂單日+2天
+          null --檢舉單提出日-訂單日+3天
+          );
+commit;
+/* 廠商會員檢舉單 */
+CREATE TABLE HOTELREP(
+hotelRepId       VARCHAR2(9) NOT NULL,
+hotelRepHotelId  VARCHAR2(5) NOT NULL,
+hotelRepMemId    VARCHAR2(8) NOT NULL, 
+hotelRepOrdId    VARCHAR2(10) NOT NULL, 
+hotelRepEmpId    VARCHAR2(5), 
+hotelRepContent  VARCHAR2(150), 
+hotelRepStatus   VARCHAR2(1), 
+hotelRepDate     DATE,
+hotelRepReviewDate DATE,
+CONSTRAINT HOTELREP_HOTELREPID_PK PRIMARY KEY (hotelRepId),
+CONSTRAINT HOTELREP_hotelRepHotelId_FK FOREIGN KEY (hotelRepHotelId) REFERENCES HOTEL (HOTELID),
+CONSTRAINT HOTELREP_hotelRepMemId_FK FOREIGN KEY (hotelRepMemId) REFERENCES MEM (MEMID),
+CONSTRAINT HOTELREP_hotelRepOrdId_FK FOREIGN KEY (hotelRepOrdId) REFERENCES ORD (ORDID),
+CONSTRAINT HOTELREP_hotelRepEmpId_FK FOREIGN KEY (hotelRepEmpId) REFERENCES EMP (EMPID)
+);
+CREATE SEQUENCE hotelRep_seq
+INCREMENT BY 1
+START WITH 100000001
+NOMAXVALUE
+NOCYCLE
+NOCACHE;
+INSERT INTO HOTELREP
+VALUES (
+hotelRep_seq.NEXTVAL,
+'10001',
+'10000001',
+to_char(sysdate,'yyyymm')||'1001',
+'10001',
+'客人態度不好',
+'1',
+sysdate,
+sysdate
+); 
+INSERT INTO HOTELREP
+VALUES (
+hotelRep_seq.NEXTVAL,
+'10002',
+'10000002',
+to_char(sysdate,'yyyymm')||'1002',
+'10001',
+'旅客弄亂房間',
+'1',
+sysdate,
+sysdate
+); 
+INSERT INTO HOTELREP
+VALUES (
+hotelRep_seq.NEXTVAL,
+'10003',
+'10000003',
+to_char(sysdate,'yyyymm')||'1003',
+'10001',
+'製造噪音',
+'1',
+sysdate,
+sysdate
+); 
+INSERT INTO HOTELREP
+VALUES (
+hotelRep_seq.NEXTVAL,
+'10004',
+'10000004',
+to_char(sysdate,'yyyymm')||'1004',
+'10001',
+'偷棉被',
+'1',
+sysdate,
+sysdate
+); 
+INSERT INTO HOTELREP
+VALUES (
+hotelRep_seq.NEXTVAL,
+'10005',
+'10000003',
+to_char(sysdate,'yyyymm')||'1005',
+'10001',
+'偷電視',
+'1',
+sysdate,
+sysdate
+); 
+INSERT INTO HOTELREP
+VALUES (
+hotelRep_seq.NEXTVAL,
+'10002',
+'10000004',
+to_char(sysdate,'yyyymm')||'1006',
+'10001',
+'製造噪音',
+'1',
+sysdate,
+sysdate
+); 
+INSERT INTO HOTELREP
+VALUES (
+hotelRep_seq.NEXTVAL,
+'10003',
+'10000001',
+to_char(sysdate,'yyyymm')||'1007',
+'10001',
+'在室內抽煙',
+'1',
+sysdate,
+sysdate
+); 
+INSERT INTO HOTELREP
+VALUES (
+hotelRep_seq.NEXTVAL,
+'10004',
+'10000005',
+to_char(sysdate,'yyyymm')||'1002',
+null,
+'客人破壞公物',
+'0',
+sysdate,
+null
+); 
+commit;
+
+
+/* 計算評價總人數與結果 */
+UPDATE hotel
+SET hotelRatingTotal = (SELECT COUNT(ordRatingStarNo)  FROM ord WHERE ordHotelId = 10001)
+WHERE hotelId = 10001;
+
+UPDATE hotel
+SET hotelRatingResult = (SELECT ROUND(AVG(NVL(ordRatingStarNo,0)),0)
+                         FROM (SELECT * FROM ord WHERE ordHotelId = 10001)
+                         GROUP BY ordHotelId)
+WHERE hotelId = 10001;
+--select hotelId, hotelRatingTotal, hotelRatingResult from hotel where hotelId = 10001;
+
+UPDATE hotel
+SET hotelRatingTotal = (SELECT COUNT(ordRatingStarNo)  FROM ord WHERE ordHotelId = 10002)
+WHERE hotelId = 10002;
+
+UPDATE hotel
+SET hotelRatingResult = (SELECT ROUND(AVG(NVL(ordRatingStarNo,0)),0)
+                         FROM (SELECT * FROM ord WHERE ordHotelId = 10002)
+                         GROUP BY ordHotelId)
+WHERE hotelId = 10002;
+--select hotelId, hotelRatingTotal, hotelRatingResult from hotel where hotelId = 10002;
+
+
+commit;
+
+

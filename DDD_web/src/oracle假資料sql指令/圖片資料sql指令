@@ -1,0 +1,408 @@
+--------------------------------------------------------
+--  FUNCTION for Table PRODUCT BLOB
+--------------------------------------------------------
+/* 檔案儲存的目錄路徑 
+
+請在C槽下建立目錄DB_photos1
+並把圖片放入此目錄
+
+*/ 
+CREATE OR REPLACE  DIRECTORY MEDIA_DIR AS 'C:/DB_photos1/'; 
+
+/* 擷取檔案的FUNCTION */ 
+CREATE OR REPLACE FUNCTION load_blob( myFileName VARCHAR) RETURN BLOB as result BLOB;  
+  myBFILE      BFILE;
+  myBLOB       BLOB;
+BEGIN
+    myBFILE := BFILENAME('MEDIA_DIR',myFileName);
+    dbms_lob.createtemporary(myBLOB, TRUE);
+    dbms_lob.fileopen(myBFILE,dbms_lob.file_readonly);
+    dbms_lob.loadfromfile(myBLOB,myBFILE,dbms_lob.getlength(myBFILE) );
+    dbms_lob.fileclose(myBFILE);
+    RETURN myBLOB;
+END load_blob;
+
+/* 注意: 上下兩段要分開來個跑一次 */
+/* *************************************************************************************** */
+
+--load_blob('xxx.jpg')
+
+-- roomphoto
+
+																				/* 圖片名稱*/	
+																				
+																				
+																				
+																				
+																				
+																				
+																				
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000001, load_blob('room501001.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000001, load_blob('room501002.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000001, load_blob('room501003.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000001, load_blob('room501004.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000001, load_blob('room501005.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000002, load_blob('room502001.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000002, load_blob('room502002.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000002, load_blob('room502003.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000002, load_blob('room502004.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000003, load_blob('room503001.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000003, load_blob('room503002.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000003, load_blob('room503003.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000003, load_blob('room503004.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000003, load_blob('room503005.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000004, load_blob('room504001.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000004, load_blob('room504002.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000004, load_blob('room504003.jpg'));
+INSERT INTO roomphoto  VALUES (10005||roomphoto_seq.NEXTVAL,1000004, load_blob('room504004.jpg'));
+
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000005, load_blob('room401001.jpg'));
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000005, load_blob('room401002.jpg'));
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000005, load_blob('room401003.jpg'));
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000005, load_blob('room401004.jpg'));
+
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000006, load_blob('room402001.jpg'));
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000006, load_blob('room402002.jpg'));
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000006, load_blob('room402003.jpg'));
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000006, load_blob('room402004.jpg'));
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000007, load_blob('room403001.jpg'));
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000007, load_blob('room403002.jpg'));
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000007, load_blob('room403003.jpg'));
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000007, load_blob('room403004.jpg'));
+
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000008, load_blob('room404001.jpg'));
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000008, load_blob('room404002.jpg'));
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000008, load_blob('room404003.jpg'));
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000008, load_blob('room404004.jpg'));
+INSERT INTO roomphoto  VALUES (10004||roomphoto_seq.NEXTVAL,1000008, load_blob('room404005.jpg'));																				
+
+INSERT INTO roomphoto  VALUES (10003||roomphoto_seq.NEXTVAL,1000009, load_blob('room301001.jpg'));
+INSERT INTO roomphoto  VALUES (10003||roomphoto_seq.NEXTVAL,1000009, load_blob('room301002.jpg'));
+INSERT INTO roomphoto  VALUES (10003||roomphoto_seq.NEXTVAL,1000009, load_blob('room301003.jpg'));
+
+INSERT INTO roomphoto  VALUES (10003||roomphoto_seq.NEXTVAL,1000010, load_blob('room302001.jpg'));
+INSERT INTO roomphoto  VALUES (10003||roomphoto_seq.NEXTVAL,1000010, load_blob('room302002.jpg'));
+INSERT INTO roomphoto  VALUES (10003||roomphoto_seq.NEXTVAL,1000010, load_blob('room302003.jpg'));
+
+INSERT INTO roomphoto  VALUES (10002||roomphoto_seq.NEXTVAL,1000011, load_blob('room201001.jpg'));
+INSERT INTO roomphoto  VALUES (10002||roomphoto_seq.NEXTVAL,1000011, load_blob('room201002.jpg'));
+INSERT INTO roomphoto  VALUES (10002||roomphoto_seq.NEXTVAL,1000011, load_blob('room201003.jpg'));
+INSERT INTO roomphoto  VALUES (10002||roomphoto_seq.NEXTVAL,1000011, load_blob('room201004.jpg'));
+
+INSERT INTO roomphoto  VALUES (10002||roomphoto_seq.NEXTVAL,1000012, load_blob('room202001.jpg'));
+INSERT INTO roomphoto  VALUES (10002||roomphoto_seq.NEXTVAL,1000012, load_blob('room202002.jpg'));
+INSERT INTO roomphoto  VALUES (10002||roomphoto_seq.NEXTVAL,1000012, load_blob('room202003.jpg'));
+
+INSERT INTO roomphoto  VALUES (10002||roomphoto_seq.NEXTVAL,1000013, load_blob('room203001.jpg'));
+INSERT INTO roomphoto  VALUES (10002||roomphoto_seq.NEXTVAL,1000013, load_blob('room203002.jpg'));
+INSERT INTO roomphoto  VALUES (10002||roomphoto_seq.NEXTVAL,1000013, load_blob('room203003.jpg'));
+
+
+INSERT INTO roomphoto  VALUES (10002||roomphoto_seq.NEXTVAL,1000014, load_blob('room204001.jpg'));
+INSERT INTO roomphoto  VALUES (10002||roomphoto_seq.NEXTVAL,1000014, load_blob('room204002.jpg'));
+INSERT INTO roomphoto  VALUES (10002||roomphoto_seq.NEXTVAL,1000014, load_blob('room204003.jpg'));
+
+
+
+
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000015, load_blob('room101001.jpg'));
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000015, load_blob('room101002.jpg'));
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000015, load_blob('room101003.jpg'));
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000015, load_blob('room101004.jpg'));
+
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000016, load_blob('room102001.jpg'));
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000016, load_blob('room102002.jpg'));
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000016, load_blob('room102003.jpg'));
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000016, load_blob('room102004.jpg'));
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000016, load_blob('room102005.jpg'));
+
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000017, load_blob('room103001.jpg'));
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000017, load_blob('room103002.jpg'));
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000017, load_blob('room103003.jpg'));
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000017, load_blob('room103004.jpg'));
+
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000018, load_blob('room104001.jpg'));
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000018, load_blob('room104002.jpg'));
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000018, load_blob('room104003.jpg'));
+INSERT INTO roomphoto  VALUES (10001||roomphoto_seq.NEXTVAL,1000018, load_blob('room104004.jpg'));
+
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000019, load_blob('room901001.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000019, load_blob('room901002.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000019, load_blob('room901003.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000020, load_blob('room902001.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000020, load_blob('room902002.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000020, load_blob('room902003.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000021, load_blob('room903001.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000021, load_blob('room903002.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000021, load_blob('room903003.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000022, load_blob('room904001.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000022, load_blob('room904002.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000022, load_blob('room904003.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000023, load_blob('room905001.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000023, load_blob('room905002.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000023, load_blob('room905003.jpg'));
+INSERT INTO roomphoto  VALUES (10009||roomphoto_seq.NEXTVAL,1000023, load_blob('room905004.jpg'));
+
+
+INSERT INTO roomphoto  VALUES (10006||roomphoto_seq.NEXTVAL,1000024, load_blob('room601001.jpg'));
+INSERT INTO roomphoto  VALUES (10007||roomphoto_seq.NEXTVAL,1000025, load_blob('room601002.jpg'));
+INSERT INTO roomphoto  VALUES (10008||roomphoto_seq.NEXTVAL,1000026, load_blob('room601003.jpg'));	
+
+INSERT INTO roomphoto  VALUES (10010||roomphoto_seq.NEXTVAL,1000027, load_blob('room601004.jpg'));
+INSERT INTO roomphoto  VALUES (10011||roomphoto_seq.NEXTVAL,1000028, load_blob('room601005.jpg'));
+INSERT INTO roomphoto  VALUES (10012||roomphoto_seq.NEXTVAL,1000029, load_blob('room602004.jpg'));
+INSERT INTO roomphoto  VALUES (10013||roomphoto_seq.NEXTVAL,1000030, load_blob('room602001.jpg'));
+INSERT INTO roomphoto  VALUES (10014||roomphoto_seq.NEXTVAL,1000031, load_blob('room602002.jpg'));
+INSERT INTO roomphoto  VALUES (10015||roomphoto_seq.NEXTVAL,1000032, load_blob('room602003.jpg'));
+INSERT INTO roomphoto  VALUES (10016||roomphoto_seq.NEXTVAL,1000033, load_blob('room603001.jpg'));
+
+commit;
+
+
+--mem
+UPDATE mem 
+SET memProfile = (load_blob('mem10000001.jpg'))
+WHERE memId = '10000001';
+UPDATE mem 
+SET memProfile = (load_blob('mem10000002.jpg'))
+WHERE memId = '10000002';
+UPDATE mem 
+SET memProfile = (load_blob('mem10000003.jpg'))
+WHERE memId = '10000003';
+UPDATE mem 
+SET memProfile = (load_blob('mem10000004.jpg'))
+WHERE memId = '10000004';
+UPDATE mem 
+SET memProfile = (load_blob('mem10000005.jpg'))
+WHERE memId = '10000005';
+UPDATE mem 
+SET memProfile = (load_blob('mem10000006.jpg'))
+WHERE memId = '10000006';
+UPDATE mem 
+SET memProfile = (load_blob('mem10000007.jpg'))
+WHERE memId = '10000007';
+UPDATE mem 
+SET memProfile = (load_blob('mem10000008.jpg'))
+WHERE memId = '10000008';
+UPDATE mem 
+SET memProfile = (load_blob('mem10000009.jpg'))
+WHERE memId = '10000009';
+UPDATE mem 
+SET memProfile = (load_blob('mem10000010.jpg'))
+WHERE memId = '10000010';
+UPDATE mem 
+SET memProfile = (load_blob('mem10000011.jpg'))
+WHERE memId = '10000011';
+commit;
+UPDATE mem 
+SET memProfile = (load_blob('mem10000012.jpg'))
+WHERE memId = '10000012';
+commit;
+
+
+--hotelcoverPicture
+
+
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel1.jpg'))
+WHERE hotelId = '10001';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel2.jpg'))
+WHERE hotelId = '10002';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel3.jpg'))
+WHERE hotelId = '10003';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel4.jpg'))
+WHERE hotelId = '10004';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel5.jpg'))
+WHERE hotelId = '10005';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel6.jpg'))
+WHERE hotelId = '10006';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel7.jpg'))
+WHERE hotelId = '10007';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel8.jpg'))
+WHERE hotelId = '10008';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel9.jpg'))
+WHERE hotelId = '10009';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel10.jpg'))
+WHERE hotelId = '10010';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel11.jpg'))
+WHERE hotelId = '10011';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel12.jpg'))
+WHERE hotelId = '10012';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel13.jpg'))
+WHERE hotelId = '10013';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel14.jpg'))
+WHERE hotelId = '10014';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel15.jpg'))
+WHERE hotelId = '10015';
+
+UPDATE hotel 
+SET HOTELCOVERPIC = (load_blob('hotel16.jpg'))
+WHERE hotelId = '10016';
+
+commit;
+
+--Adpic
+
+UPDATE ad
+SET adpic = (load_blob('banner1.jpg'))
+WHERE adid = '10000001';
+
+UPDATE ad
+SET adpic = (load_blob('banner2.jpg'))
+WHERE adid = '10000002';
+
+UPDATE ad
+SET adpic = (load_blob('banner3.jpg'))
+WHERE adid = '10000003';
+
+UPDATE ad
+SET adpic = (load_blob('banner4.jpg'))
+WHERE adid = '10000004';
+
+UPDATE ad
+SET adpic = (load_blob('banner5.jpg'))
+WHERE adid = '10000005';
+
+UPDATE ad
+SET adpic = (load_blob('banner6.jpg'))
+WHERE adid = '10000006';
+
+UPDATE ad
+SET adpic = (load_blob('banner7.jpg'))
+WHERE adid = '10000007';
+
+UPDATE ad
+SET adpic = (load_blob('banner8.jpg'))
+WHERE adid = '10000008';
+
+UPDATE ad
+SET adpic = (load_blob('banner9.jpg'))
+WHERE adid = '10000009';
+
+commit;
+
+
+------emp-------
+
+UPDATE emp 
+SET EMPPROFILE = (load_blob('1.jpg'))
+WHERE EMPID = '10001';
+
+UPDATE emp 
+SET EMPPROFILE = (load_blob('2.jpg'))
+WHERE EMPID = '10002';
+
+UPDATE emp 
+SET EMPPROFILE = (load_blob('3.jpg'))
+WHERE EMPID = '10003';
+
+UPDATE emp 
+SET EMPPROFILE = (load_blob('4.jpg'))
+WHERE EMPID = '10004';
+
+UPDATE emp 
+SET EMPPROFILE = (load_blob('5.jpg'))
+WHERE EMPID = '10005';
+
+UPDATE emp 
+SET EMPPROFILE = (load_blob('6.jpg'))
+WHERE EMPID = '10006';
+
+commit
+---登記---
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10001';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10002';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10003';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10004';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10005';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10006';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10007';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10008';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10009';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10010';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10011';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10012';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10013';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10014';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10015';
+
+UPDATE hotel
+SET HOTELREGISTERPIC = (load_blob('hotel.jpg'))
+WHERE HOTELID = '10016';
+
+commit;
+
+
