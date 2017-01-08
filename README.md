@@ -7,11 +7,21 @@ The specialty of our platform is 'dynamic pricing' with which hotel owners can r
 
 [Mobile(Android) demo](https://www.youtube.com/watch?v=bQDPjrmgqyY&t=8s&list=PLVVMQF8vWNCLX7kVI7vP1RfOo0KfJcARQ&index=1)
 
+[PowerPoint presentation](https://docs.google.com/presentation/d/1MXuj1pCkYTa1yXKrtqx7IIYWKonkRnqCmNZFVIlF_DY/edit?usp=sharing)
+
 # Developing environment
 **OS**: windows 7
+
 **IDE**: Eclipse Neon
-**Database**: Oracle
+
+**Server**: Tomcat 7.0.73
+
+**Database**: Oracle XE
+
 **Design pattern**: MVC
-**View(Web)**: JSP, JavaScript, Html, CSS
-**Model**: Hibernate
-**Controller**: Servlet
+
+**View(Web)**: JSP 2.2, JavaScript, Html, CSS
+
+**Model**: Hibernate 3
+
+**Controller**: Servlet 3.0
