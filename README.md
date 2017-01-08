@@ -1,6 +1,9 @@
 # DDD_web
+[Link to DDD_mobile](https://github.com/uopsdod/DDD_mobile)
+
 This is a hotel booking platform like Airbnb or Booking.
 The specialty of our platform is 'dynamic pricing' with which hotel owners can reduce their room price hourly to attract backpackers to check in.
+
 
 # demo
 [Website demo](https://www.youtube.com/watch?v=HBqEe0Ad_8Y&list=PLVVMQF8vWNCLd6hdMiXBWu_VvNQ8M30dY&index=1)
